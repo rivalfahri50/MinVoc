@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\authController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::controller(authController::class)->group(function () {
+    Route::get('/', 'viewMasuk');
+    Route::get('/masuk-Admin', 'viewMasukAdmin');
+    Route::get('/buat-akun', 'viewBuatAkun');
+    Route::get('/lupa-password', 'viewLupaPassword');
+    Route::get('/ubah-password', 'viewUbahPassword');
 });
