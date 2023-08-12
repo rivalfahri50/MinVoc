@@ -215,6 +215,16 @@ iframe {
     color: #555555;
 }
 
+#button{
+    color: #555555;
+    background-color: transparent;
+    border: 3px solid #957dad;
+}
+
+#opo{
+    background-color:#eaeaea;
+}
+
 .txt2 {
     font-family: Montserrat-Regular;
     font-size: 13px;

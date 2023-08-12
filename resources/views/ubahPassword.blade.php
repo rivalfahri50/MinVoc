@@ -8,43 +8,35 @@
                     <form class="login100-form validate-form">
                         <div class="d-flex mb-3 flex-column">
                             <span style="font-size: 2pc; font-weight: bolder;" class="mb-3">
-                                Masuk
+                                Ubah Password
+                            </span>
+                            <span style="color: #5f5f5f; font-weight: 400" class="">
+                                E-mail verifikasi akan dikirim ke mailbox.
                             </span>
                             <span style="color: #5f5f5f; font-weight: 400" class="mb-3">
-                                Selamat datang di <span style="color: #957DAD; font-weight: 600">MusiCave</span>
+                                Tolong cek E-mail anda
                             </span>
                         </div>
 
                         <div class="mb-3">
-                            <input placeholder="Nama pengguna" type="email" class="form-control rounded-3"
+                            <input placeholder="Password baru" type="password" id="opo" class="form-control rounded-3"
                                 id="exampleInputEmail1" aria-describedby="emailHelp">
                         </div>
 
 
                         <div class="mb-3">
-                            <input placeholder="Kata Kunci" type="email" class="form-control rounded-3"
+                            <input placeholder="Korfirmasi password" type="email" id="opo" class="form-control rounded-3"
                                 id="exampleInputEmail1" aria-describedby="emailHelp">
                         </div>
 
-                        <div class="flex-sb-m w-full p-t-3 p-b-32">
-                            <div class="contact100-form-checkbox">
-                                <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
-                                <label class="label-checkbox100" for="ckb1">
-                                    Kebijakan Privasi
-                                </label>
-                            </div>
-
-                            <div>
-                                <a style="text-decoration: none; font-family: Poppins" href="#" class="txt1">
-                                    Tidak Ingat Kata Sandi
-                                </a>
-                            </div>
+                        <div class="container-login100-form-btn mb-3 mt-5">
+                            <button class="login100-form-btn rounded-4">
+                                    Kirim
+                            </button>
                         </div>
-
-
                         <div class="container-login100-form-btn">
-                            <button class="login100-form-btn">
-                                Masuk
+                            <button id="button" class="login100-form-btn rounded-4">
+                                Kembali
                             </button>
                         </div>
                     </form>
