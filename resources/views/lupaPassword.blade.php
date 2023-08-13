@@ -5,13 +5,13 @@
         <div class="container-login100">
             <div class="wrap-login100">
                 <div class="d-flex">
-                    <form class="login100-form validate-form " >
+                    <form class="login100-form validate-form ">
                         <div class="d-flex mb-3 flex-column">
                             <span style="font-size: 2pc; font-weight: bolder;" class="mb-3">
                                 Lupa password
                             </span>
                             <span style="color: #5f5f5f; font-weight: 400" class="mb-3">
-                                 E-mail verifikasi akan dikirim ke mailbox.
+                                E-mail verifikasi akan dikirim ke mailbox.
                             </span>
                             <span style="color: #5f5f5f; font-weight: 400" class="mb-3">
                                 Tolong cek E-mail anda
