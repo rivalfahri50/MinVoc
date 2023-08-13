@@ -35,7 +35,7 @@
                             </div>
 
                             <div>
-                                <a style="text-decoration: none; font-family: Poppins" href="#" class="txt1">
+                                <a style="text-decoration: none; font-family: Poppins" href="{{ route('lupaSandi') }}" class="txt1">
                                     Tidak Ingat Kata Sandi
                                 </a>
                             </div>
@@ -58,11 +58,4 @@
             </div>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous">
-    </script>
-    </body>
-
-    </html>
 @endsection

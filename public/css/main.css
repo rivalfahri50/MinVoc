@@ -168,7 +168,6 @@ iframe {
 /*==================================================================
 [ Text ]*/
 .txt1 {
-    font-family: Montserrat-Regular;
     font-size: 13px;
     line-height: 1.4;
     color: #555555;
@@ -185,7 +184,6 @@ iframe {
 }
 
 .txt2 {
-    font-family: Montserrat-Regular;
     font-size: 13px;
     line-height: 1.4;
     color: #999999;
@@ -254,7 +252,7 @@ iframe {
 /*==================================================================
 [ login more ]*/
 .login100-more {
-    width: calc(100% - 560px);
+    width: calc(100% - 600px);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -278,7 +276,7 @@ iframe {
 [ Form ]*/
 
 .login100-form {
-    width: 560px;
+    width: 600px;
     min-height: 100vh;
     display: block;
     background-color: #ffffff;
@@ -316,7 +314,6 @@ iframe {
 }
 
 .label-input100 {
-    font-family: Montserrat-Regular;
     font-size: 18px;
     color: #999999;
     line-height: 1.2;
@@ -339,7 +336,6 @@ iframe {
     display: block;
     width: 100%;
     background: transparent;
-    font-family: Montserrat-Regular;
     font-size: 18px;
     color: #555555;
     line-height: 1.2;
@@ -504,6 +500,7 @@ input.input100 {
     line-height: 1.2;
     text-transform: uppercase;
     letter-spacing: 1px;
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
 
     -webkit-transition: all 0.4s;
     -o-transition: all 0.4s;
@@ -526,7 +523,7 @@ input.input100 {
     }
 
     .login100-more {
-        width: 50%;
+        width: 40%;
     }
 }
 

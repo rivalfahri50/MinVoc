@@ -11,7 +11,7 @@
                                 Masuk
                             </span>
                             <span style="color: #5f5f5f; font-weight: 400" class="mb-3">
-                                Selamat datang di <span style="color: #957DAD; font-weight: 600">MusiCave</span>
+                                Selamat datang di admin <span style="color: #957DAD; font-weight: 600">MusiCave</span>
                             </span>
                         </div>
 
@@ -35,7 +35,7 @@
                             </div>
 
                             <div>
-                                <a style="text-decoration: none; font-family: Poppins" href="#" class="txt1">
+                                <a style="text-decoration: none; font-family: Poppins" href="{{ route('lupaSandi') }}" class="txt1">
                                     Tidak Ingat Kata Sandi
                                 </a>
                             </div>

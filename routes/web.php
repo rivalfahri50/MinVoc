@@ -15,9 +15,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::controller(authController::class)->group(function () {
-    Route::get('/', 'viewMasuk');
-    Route::get('/masuk-Admin', 'viewMasukAdmin');
+    Route::get('/', 'viewWelcome');
+    Route::get('/masuk', 'viewMasuk')->name('pengguna');
+    Route::get('/masuk-Admin', 'viewMasukAdmin')->name('admin');
     Route::get('/buat-akun', 'viewBuatAkun');
-    Route::get('/lupa-password', 'viewLupaPassword');
+    Route::get('/lupa-password', 'viewLupaPassword')->name('lupaSandi');
     Route::get('/ubah-password', 'viewUbahPassword');
-});
+})->middleware('guest');
