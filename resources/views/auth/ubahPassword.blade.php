@@ -30,12 +30,12 @@
                         </div>
 
                         <div class="container-login100-form-btn mb-3 mt-5">
-                            <button class="login100-form-btn rounded-4">
+                            <button class="login100 rounded-4">
                                     Kirim
                             </button>
                         </div>
                         <div class="container-login100-form-btn">
-                            <button id="button" class="login100-form-btn rounded-4">
+                            <button id="button" class="login100 rounded-4">
                                 Kembali
                             </button>
                         </div>
