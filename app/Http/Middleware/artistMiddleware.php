@@ -16,7 +16,7 @@ class artistMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && auth()->user()->role === "artis") {
+        if (Auth::check() && auth()->user()->role_id === 2) {
             return $next($request);
         }
         return response()->redirectTo('/masuk')->with('error', 'Anda Tidak Mendapatkan Akses Untuk Halaman Ini.');
