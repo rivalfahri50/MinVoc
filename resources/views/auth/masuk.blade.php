@@ -5,7 +5,8 @@
         <div class="container-login100">
             <div class="wrap-login100">
                 <div class="d-flex">
-                    <form class="login100-form validate-form">
+                    <form class="login100-form validate-form" action="{{ route('storeSignIn') }}" method="POST">
+                        @csrf
                         <div class="d-flex mb-3 flex-column">
                             <span style="font-size: 2pc; font-weight: bolder;" class="mb-3">
                                 Masuk
@@ -15,14 +16,27 @@
                             </span>
                         </div>
 
+                        @if (session()->has('status'))
+                            <div class="alert alert-success" role="alert">
+                                {{ session('status') }}
+                            </div>
+                        @endif
+                        @if (session()->has('email'))
+                        @endif
+                        @error('email')
+                            <div class="alert alert-danger" role="alert">
+                                {{ $message }}
+                            </div>
+                        @enderror
+
                         <div class="mb-3">
-                            <input placeholder="Nama pengguna" type="email" class="form-control rounded-3"
+                            <input name="name" placeholder="Nama pengguna" type="text" class="form-control rounded-3"
                                 id="exampleInputEmail1" aria-describedby="emailHelp">
                         </div>
 
 
                         <div class="mb-3">
-                            <input placeholder="Kata Kunci" type="email" class="form-control rounded-3"
+                            <input name="password" placeholder="Kata Kunci" type="password" class="form-control rounded-3"
                                 id="exampleInputEmail1" aria-describedby="emailHelp">
                         </div>
 
@@ -35,7 +49,8 @@
                             </div>
 
                             <div>
-                                <a style="text-decoration: none; font-family: Poppins" href="{{ route('lupaSandi') }}" class="txt1">
+                                <a style="text-decoration: none; font-family: Poppins" href="{{ route('lupaSandi') }}"
+                                    class="txt1">
                                     Tidak Ingat Kata Sandi
                                 </a>
                             </div>
@@ -46,6 +61,13 @@
                             <button class="login100">
                                 Masuk
                             </button>
+                        </div>
+
+                        <div class="flex-sb-m w-full p-t-3 p-b-32 mt-4">
+                            <div style="color: black; font-weight: 600; font-size: 13px">
+                                <span>belum punya akun? klik <a href="/buat-akun"
+                                        style="font-weight: 600; color: #957DAD; text-decoration: none">daftar</a></span>
+                            </div>
                         </div>
                     </form>
                 </div>

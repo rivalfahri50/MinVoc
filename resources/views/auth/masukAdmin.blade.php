@@ -5,24 +5,30 @@
         <div class="container-login100">
             <div class="wrap-login100">
                 <div class="d-flex">
-                    <form class="login100-form validate-form">
+                    <form class="login100-form validate-form" action="{{ route('storeSignIn.admin') }}" method="POST">
+                        @csrf
                         <div class="d-flex mb-3 flex-column">
                             <span style="font-size: 2pc; font-weight: bolder;" class="mb-3">
                                 Masuk
                             </span>
                             <span style="color: #5f5f5f; font-weight: 400" class="mb-3">
-                                Selamat datang di admin <span style="color: #957DAD; font-weight: 600">MusiCave</span>
+                                Selamat datang admin di <span style="color: #957DAD; font-weight: 600">MusiCave</span>
                             </span>
                         </div>
 
+                        @error('name')
+                            <div class="mb-2">{{ $message }}</div>
+                        @enderror
                         <div class="mb-3">
-                            <input placeholder="Nama pengguna" type="email" class="form-control rounded-3"
-                                id="exampleInputEmail1" aria-describedby="emailHelp">
+                            <input name="name" placeholder="Nama pengguna" type="text" class="form-control rounded-3"
+                                id="exampleInputEmail1" aria-describedby="emailHelp" autofocus>
                         </div>
 
-
+                        @error('passwordF')
+                            <div class="mb-2">{{ $message }}</div>
+                        @enderror
                         <div class="mb-3">
-                            <input placeholder="Kata Kunci" type="email" class="form-control rounded-3"
+                            <input name="password" placeholder="Kata Kunci" type="password" class="form-control rounded-3"
                                 id="exampleInputEmail1" aria-describedby="emailHelp">
                         </div>
 
@@ -35,7 +41,8 @@
                             </div>
 
                             <div>
-                                <a style="text-decoration: none; font-family: Poppins" href="{{ route('lupaSandi') }}" class="txt1">
+                                <a style="text-decoration: none; font-family: Poppins" href="{{ route('lupaSandi') }}"
+                                    class="txt1">
                                     Tidak Ingat Kata Sandi
                                 </a>
                             </div>

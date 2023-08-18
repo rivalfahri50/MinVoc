@@ -5,8 +5,11 @@
         <div class="container-login100">
             <div class="wrap-login100">
                 <div class="d-flex">
-                    <form class="login100-form validate-form">
+                    <form class="login100-form validate-form" action="{{ route('password.update') }}" method="POST">
+                        @csrf
                         <div class="d-flex mb-3 flex-column">
+                            <input type="hidden" name="token" value="{{ request()->token }}">
+                            <input type="hidden" name="email" value="{{ request()->email }}">
                             <span style="font-size: 2pc; font-weight: bolder;" class="mb-3">
                                 Ubah Password
                             </span>
@@ -18,20 +21,33 @@
                             </span>
                         </div>
 
+
+                        @if (session()->has('status'))
+                            <div class="alert alert-success" role="alert">
+                                {{ session('status') }}
+                            </div>
+                        @endif
+
+                        @error('password')
+                            <div class="text-red-500">{{ $message }}</div>
+                        @enderror
                         <div class="mb-3">
-                            <input placeholder="Password baru" type="password" id="opo" class="form-control rounded-3"
-                                id="exampleInputEmail1" aria-describedby="emailHelp">
+                            <input name="password" placeholder="Password baru" type="password" id="opo" value="{{ old('password') }}"
+                                class="form-control rounded-3" id="exampleInputEmail1" aria-describedby="emailHelp">
                         </div>
 
-
+                        @error('password_confirmation')
+                            <div class="text-red-500">{{ $message }}</div>
+                        @enderror
                         <div class="mb-3">
-                            <input placeholder="Korfirmasi password" type="email" id="opo" class="form-control rounded-3"
-                                id="exampleInputEmail1" aria-describedby="emailHelp">
+                            <input name="password_confirmation" placeholder="Korfirmasi password" type="password" value="{{ old('password_confirmation') }}"
+                                id="opo" class="form-control rounded-3" id="exampleInputEmail1"
+                                aria-describedby="emailHelp">
                         </div>
 
                         <div class="container-login100-form-btn mb-3 mt-5">
                             <button class="login100 rounded-4">
-                                    Kirim
+                                Kirim
                             </button>
                         </div>
                         <div class="container-login100-form-btn">

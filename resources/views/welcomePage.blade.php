@@ -29,7 +29,7 @@
                             </div>
                             <div class="d-flex flex-row flex-wrap gap-3">
                                 <div class="container-login100-form-btn" style="width: 40%">
-                                    <button id="pengguna" class="selected login100-form-btn rounded-4" style="font-weight: bolder">
+                                    <button id="user_pengguna" class="selected login100-form-btn rounded-4" style="font-weight: bolder">
                                         <span>
                                             <svg class="mt-2 selected" width="38" height="30" viewBox="0 0 40 38"
                                                 fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -44,7 +44,7 @@
                                     </button>
                                 </div>
                                 <div class="container-login100-form-btn" style="width: 40%">
-                                    <button id="button" class="login100-form-btn d-flex gap-2 rounded-4"
+                                    <button id="user_admin" class="login100-form-btn d-flex gap-2 rounded-4"
                                         style="font-weight: bolder">
                                         <span>
                                             <svg class="selected" style="margin-top: 11px" width="38" height="24" viewBox="0 0 28 22"
@@ -65,8 +65,8 @@
     </div>
 
     <script>
-        const pengguna = document.querySelector('#pengguna')
-        const admin = document.querySelector('#button')
+        const pengguna = document.querySelector('#user_pengguna')
+        const admin = document.querySelector('#user_admin')
 
         pengguna.addEventListener('click', () => {
             window.location = '{{ route('pengguna') }}';
