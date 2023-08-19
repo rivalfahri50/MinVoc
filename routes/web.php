@@ -49,15 +49,17 @@ Route::controller(AdminController::class)->group(function () {
     });
 })->middleware('guest');
 
-
-
 Route::prefix('artis')->middleware(['auth', 'artist'])->group(function () {
     Route::get('/dashboard', function () {
         return view('artis.dashboard');
     });
 });
 
-
+Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('artisVerified.dashboard');
+    });
+});
 
 Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->group(function () {
     Route::get('/dashboard', function () {

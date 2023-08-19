@@ -62,7 +62,7 @@
                         </div>
 
                         @error('role')
-                            <div class="mb-2">{{ $message }}</div>
+                            <div class="mb-2 text-danger">{{ $message }}</div>
                         @enderror
 
                         <div class="mb-3">

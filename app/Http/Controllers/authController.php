@@ -104,10 +104,12 @@ class authController extends Controller
             [
                 'name' => 'required|string|max:50|exists:users,name',
                 'password' => 'required|string|min:6',
+                'kebijakan_privasi' => 'required',
             ],
             [
                 'name.required' => 'Kolom nama wajib diisi.',
                 'name.string' => 'Kolom nama harus berupa teks.',
+                'kebijakan_privasi.required' => 'Anda harus menyetujui kebijakan privasi.',
                 'name.max' => 'Panjang nama tidak boleh lebih dari :max karakter.',
                 'name.exists' => 'Nama yang dimasukkan tidak valid.',
                 'password.required' => 'Kolom password wajib diisi.',
@@ -129,6 +131,9 @@ class authController extends Controller
                 return redirect()->intended('/pengguna/dashboard');
             } else if (auth()->user()->role_id == 2) {
                 return redirect()->intended('/artis/dashboard');
+            } else if(auth()->user()->role_id == 1)
+            {
+                return redirect()->intended('/artis-verified/dashboard');
             }
         }
 
