@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('admins', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('code', 100);
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
@@ -26,9 +25,8 @@ return new class extends Migration
         DB::table('admins')->insert([
             [
                 'name' => 'admin',
-                'code' => Str::uuid(),
                 'email' => 'untukprojects123@gmail.com',
-                'password' => Str::uuid()
+                'password' => 'adminadmin'
             ],
         ]);
     }

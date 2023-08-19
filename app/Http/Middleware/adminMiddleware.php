@@ -19,6 +19,6 @@ class adminMiddleware
         if (Auth::check() && Auth::guard('admin')) {
             return $next($request);
         }
-        return response()->redirectTo('/masuk')->with('error', 'Anda Tidak Mendapatkan Akses Untuk Halaman Ini.');
+        return response()->redirectTo('/masuk-Admin')->with('message', 'Anda Tidak Mendapatkan Akses Untuk Halaman Ini.');
     }
 }

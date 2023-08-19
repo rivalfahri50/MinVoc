@@ -15,18 +15,9 @@ class AdminController extends Controller
 {
     use AuthAuthenticatable;
 
-    protected $redirectTo = '/admin/dashboard';
-
-    public function __construct()
-    {
-        $this->middleware('guest:admin')->except('logout');
-    }
     protected function storeSignIn(Request $request, admin $admin)
     {
-        $credentials = $request->only('name', 'password');
-
-        if (Auth::guard('admin')->attempt($credentials)) {
-            // Authentication successful
+        if (auth()->guard('admin')->attempt($request->only('name', 'password'))) {
             return redirect()->intended('/admin/dashboard');
         }
 

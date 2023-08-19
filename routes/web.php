@@ -2,7 +2,11 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\authController;
+use App\Models\admin;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +25,6 @@ Route::controller(authController::class)->group(function () {
     Route::get('/masuk-Admin', 'viewMasukAdmin')->name('admin');
     Route::get('/buat-akun', 'viewBuatAkun');
     Route::get('/lupa-password', 'viewLupaPassword')->name('lupaSandi');
-    Route::get('/ubah-password', 'viewUbahPassword');
 
     // operations datas
     Route::post('/validationSignIn', 'storeSignIn')->name('storeSignIn');
@@ -33,6 +36,8 @@ Route::controller(authController::class)->group(function () {
     Route::post('/ubah-password', 'ubahPassword')->name('password.update');
 })->middleware('guest');
 
+
+
 Route::controller(AdminController::class)->group(function () {
     // validation admin signIn
     Route::post('/validationSignInAdmin', 'storeSignIn')->name('storeSignIn.admin');
@@ -42,13 +47,17 @@ Route::controller(AdminController::class)->group(function () {
             return view('admin.dashboard');
         });
     });
-});
+})->middleware('guest');
+
+
 
 Route::prefix('artis')->middleware(['auth', 'artist'])->group(function () {
     Route::get('/dashboard', function () {
         return view('artis.dashboard');
     });
 });
+
+
 
 Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->group(function () {
     Route::get('/dashboard', function () {

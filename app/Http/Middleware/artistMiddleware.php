@@ -19,6 +19,6 @@ class artistMiddleware
         if (Auth::check() && auth()->user()->role_id === 2) {
             return $next($request);
         }
-        return response()->redirectTo('/masuk')->with('error', 'Anda Tidak Mendapatkan Akses Untuk Halaman Ini.');
+        return response()->redirectTo('/masuk')->with('message', 'Anda Tidak Mendapatkan Akses Untuk Halaman Ini.');
     }
 }

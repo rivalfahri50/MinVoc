@@ -78,7 +78,7 @@ class authController extends Controller
         $request->validate([
             'token' => 'required',
             'email' => 'required|email',
-            'password' => 'required|min:8|confirmed',
+            'password' => 'required|string|min:6|same:password_confirmation|confirmed',
         ]);
 
         $status = Password::reset(
@@ -99,10 +99,22 @@ class authController extends Controller
 
     protected function storeSignIn(Request $request)
     {
-        $validate = Validator::make($request->only('name', 'password'), [
-            'name' => 'required|string|max:50|exists:users,name',
-            'password' => 'required|string|min:6',
-        ]);
+        $validate = Validator::make(
+            $request->only('name', 'password'),
+            [
+                'name' => 'required|string|max:50|exists:users,name',
+                'password' => 'required|string|min:6',
+            ],
+            [
+                'name.required' => 'Kolom nama wajib diisi.',
+                'name.string' => 'Kolom nama harus berupa teks.',
+                'name.max' => 'Panjang nama tidak boleh lebih dari :max karakter.',
+                'name.exists' => 'Nama yang dimasukkan tidak valid.',
+                'password.required' => 'Kolom password wajib diisi.',
+                'password.string' => 'Kolom password harus berupa teks.',
+                'password.min' => 'Panjang password minimal :min karakter.',
+            ]
+        );
 
         if ($validate->fails()) {
             return redirect()->back()
@@ -127,13 +139,31 @@ class authController extends Controller
 
     protected function storeSignUp(Request $request)
     {
-        
-        $validate = Validator::make($request->all(), [
-            'role' => 'required|in:pengguna,artis',
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+
+        $validate = Validator::make(
+            $request->all(),
+            [
+                'role' => 'required|in:pengguna,artis',
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|string|min:6|same:password_confirmation|confirmed',
+            ],
+            [
+                'role.required' => 'Peran harus diisi.',
+                'role.in' => 'Peran harus salah satu dari: pengguna, artis.',
+                'name.required' => 'Nama harus diisi.',
+                'name.string' => 'Nama harus berupa teks.',
+                'name.max' => 'Nama tidak boleh lebih dari :max karakter.',
+                'email.required' => 'Alamat email harus diisi.',
+                'email.email' => 'Alamat email harus valid.',
+                'email.unique' => 'Alamat email sudah digunakan.',
+                'password.required' => 'Kata sandi harus diisi.',
+                'password.string' => 'Kata sandi harus berupa teks.',
+                'password.min' => 'Kata sandi harus memiliki minimal :min karakter.',
+                'password.same' => 'Kata sandi dan konfirmasi kata sandi harus sama.',
+                'password.confirmed' => 'Konfirmasi kata sandi tidak cocok.'
+            ]
+        );
 
         if ($validate->fails()) {
             return redirect()->back()

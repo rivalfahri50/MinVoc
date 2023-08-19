@@ -5,7 +5,7 @@
         <div class="container-login100">
             <div class="wrap-login100">
                 <div class="d-flex">
-                    <form class="login100-form validate-form" action="{{ route('storeSignIn.admin') }}" method="POST">
+                    <form class="login100-form validate-form" action="{{ route('storeSignIn.admin') }}" method="POST"  autocomplete="off">
                         @csrf
                         <div class="d-flex mb-3 flex-column">
                             <span style="font-size: 2pc; font-weight: bolder;" class="mb-3">
@@ -21,7 +21,7 @@
                         @enderror
                         <div class="mb-3">
                             <input name="name" placeholder="Nama pengguna" type="text" class="form-control rounded-3"
-                                id="exampleInputEmail1" aria-describedby="emailHelp" autofocus>
+                                id="exampleInputEmail1" aria-describedby="emailHelp">
                         </div>
 
                         @error('passwordF')
