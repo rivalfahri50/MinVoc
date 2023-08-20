@@ -100,7 +100,7 @@ class authController extends Controller
     protected function storeSignIn(Request $request)
     {
         $validate = Validator::make(
-            $request->only('name', 'password'),
+            $request->only('name', 'password', 'kebijakan_privasi'),
             [
                 'name' => 'required|string|max:50|exists:users,name',
                 'password' => 'required|string|min:6',
