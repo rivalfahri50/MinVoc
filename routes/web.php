@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ArtistVerifiedController;
 use App\Http\Controllers\authController;
 use App\Models\admin;
 use Illuminate\Http\Request;
@@ -55,10 +56,12 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->group(function () {
     });
 });
 
-Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('artisVerified.dashboard');
-    });
+Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->controller(ArtistVerifiedController::class)->group(function () {
+    Route::get('/dashboard', 'viewDashboard');
+
+    // unggah audio
+    Route::get('/unggahAudio', 'viewUnggahAudio');
+    Route::post('/unggahAudio', 'unggahAudio')->name('unggah');
 });
 
 Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->group(function () {

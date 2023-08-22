@@ -1,4 +1,4 @@
-@extends('components.authTemplate')
+@extends('auth.components.authTemplate')
 
 @section('content')
     <div class="limiter">

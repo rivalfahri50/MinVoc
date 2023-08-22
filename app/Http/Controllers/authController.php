@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\artist;
 use App\Models\role;
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
@@ -131,8 +132,7 @@ class authController extends Controller
                 return redirect()->intended('/pengguna/dashboard');
             } else if (auth()->user()->role_id == 2) {
                 return redirect()->intended('/artis/dashboard');
-            } else if(auth()->user()->role_id == 1)
-            {
+            } else if (auth()->user()->role_id == 1) {
                 return redirect()->intended('/artis-verified/dashboard');
             }
         }
@@ -180,7 +180,7 @@ class authController extends Controller
         $defaultRole = role::where('name', $request->only('role'))->first();
 
         try {
-            User::create(
+            $user = User::create(
                 [
                     'code' => $code,
                     'role_id' => $defaultRole->id,
@@ -189,6 +189,18 @@ class authController extends Controller
                     'password' => $request->input('password')
                 ]
             );
+
+            if ($user->role_id == 2) {
+                artist::create([
+                    'user_id' => $user->id,
+                    'is_verified' => false
+                ]);
+            } else if ($user->role_id == 1) {
+                artist::create([
+                    'user_id' => $user->id,
+                    'is_verified' => true
+                ]);
+            }
         } catch (Throwable $e) {
             return response()->redirectTo('/buat-akun')->with('failed', "Gagal untuk register!!");
         }
