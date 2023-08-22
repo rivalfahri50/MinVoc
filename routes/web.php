@@ -56,12 +56,30 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->group(function () {
     });
 });
 
+
 Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->controller(ArtistVerifiedController::class)->group(function () {
     Route::get('/dashboard', 'viewDashboard');
-
+});
     // unggah audio
     Route::get('/unggahAudio', 'viewUnggahAudio');
     Route::post('/unggahAudio', 'unggahAudio')->name('unggah');
+// gawe ngetest tampilan web
+Route::get('/dashboard', function () {
+             return view('artis.dashboard');
+         });
+Route::get('/kolaborasi', function () {
+             return view('artis.kolaborasi');
+         })->name('kolaborasi');
+Route::get('/kolaborasi2', function () {
+             return view('artis.kolaborasi2');
+         })->name('kolaborasi2');
+// yoooooo
+
+Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('artisVerified.dashboard');
+    });
+
 });
 
 Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->group(function () {
