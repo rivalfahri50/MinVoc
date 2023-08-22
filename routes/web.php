@@ -61,8 +61,8 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
     Route::get('/dashboard', 'viewDashboard');
 });
     // unggah audio
-    Route::get('/unggahAudio', 'viewUnggahAudio');
-    Route::post('/unggahAudio', 'unggahAudio')->name('unggah');
+    // Route::get('/unggahAudio', 'viewUnggahAudio');
+    // Route::post('/unggahAudio', 'unggahAudio')->name('unggah');
 // gawe ngetest tampilan web
 Route::get('/dashboard', function () {
              return view('artis.dashboard');
