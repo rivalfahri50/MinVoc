@@ -16,7 +16,7 @@ class adminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::guard('admin')) {
+        if (Auth::guard('admin')->check()) {
             return $next($request);
         }
         return response()->redirectTo('/masuk-Admin')->with('message', 'Anda Tidak Mendapatkan Akses Untuk Halaman Ini.');

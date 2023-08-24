@@ -41,6 +41,7 @@
                                     </label>
                                 </span>
                             </div>
+                            <input type="radio" name="role" placeholder="admin" value="admin">
                             <div class="container-login100-form-btn">
                                 <span id="button2" style="width: 80%"
                                     class="login100-form-btn d-flex gap-3 rounded-4 selected">

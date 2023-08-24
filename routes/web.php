@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\ArtistVerifiedController;
 use App\Http\Controllers\authController;
 use App\Models\admin;
+use App\Models\artist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -37,50 +39,38 @@ Route::controller(authController::class)->group(function () {
     Route::post('/ubah-password', 'ubahPassword')->name('password.update');
 })->middleware('guest');
 
-
-
-Route::controller(AdminController::class)->group(function () {
-    // validation admin signIn
-    Route::post('/validationSignInAdmin', 'storeSignIn')->name('storeSignIn.admin');
-
-    Route::prefix('admin')->middleware(['auth:admin', 'admin'])->group(function () {
-        Route::get('/dashboard', function () {
-            return view('admin.dashboard');
-        });
-    });
-})->middleware('guest');
-
-Route::prefix('artis')->middleware(['auth', 'artist'])->group(function () {
+Route::prefix('admin')->middleware('admin')->controller(AdminController::class)->group(function () {
+    // Route::post('/validationSignInAdmin', 'storeSignIn')->name('storeSignIn.admin');
     Route::get('/dashboard', function () {
-        return view('artis.dashboard');
+        return view('admin.dashboard');
     });
+    Route::post('/project', 'createProject')->name('createProject.admin');
 });
 
+Route::post('/validationSIgnInAdmin', [AdminController::class, 'storeSignIn'])->name('storeSignIn.admin');
+
+Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistController::class)->group(function () {
+    Route::get('/dashboard', 'viewDashboard');
+    Route::get('/kolaborasi', 'viewKolaborasi')->name('kolaborasi');
+    Route::get('/lirik-chat/{code}', 'viewLirikAndChat')->name('lirikAndChat');
+    Route::get('/show/{code}', 'showData')->name('project.show');
+    Route::get('/logout', 'logout')->name('logout.artis');
+
+    // create lirik in colaboryti
+    Route::post('/create-lirik', 'Project')->name('create.project');
+    Route::post('/message', 'message')->name('message.project');
+    Route::post('/reject-project', 'rejectProject')->name('reject.project');
+});
 
 Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->controller(ArtistVerifiedController::class)->group(function () {
     Route::get('/dashboard', 'viewDashboard');
 });
-    // unggah audio
-    // Route::get('/unggahAudio', 'viewUnggahAudio');
-    // Route::post('/unggahAudio', 'unggahAudio')->name('unggah');
+
+// unggah audio
+// Route::get('/unggahAudio', 'viewUnggahAudio');
+// Route::post('/unggahAudio', 'unggahAudio')->name('unggah');
 // gawe ngetest tampilan web
-Route::get('/dashboard', function () {
-             return view('artis.dashboard');
-         });
-Route::get('/kolaborasi', function () {
-             return view('artis.kolaborasi');
-         })->name('kolaborasi');
-Route::get('/kolaborasi2', function () {
-             return view('artis.kolaborasi2');
-         })->name('kolaborasi2');
-// yoooooo
 
-Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('artisVerified.dashboard');
-    });
-
-});
 
 Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->group(function () {
     Route::get('/dashboard', function () {

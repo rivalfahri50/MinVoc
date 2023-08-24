@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\admin;
 use App\Models\artist;
 use App\Models\role;
 use App\Models\User;
@@ -126,7 +127,7 @@ class authController extends Controller
         }
 
         $credentials = $request->only('name', 'password');
-
+        
         if (Auth::attempt($credentials)) {
             if (auth()->user()->role_id == 3) {
                 return redirect()->intended('/pengguna/dashboard');
@@ -148,7 +149,7 @@ class authController extends Controller
         $validate = Validator::make(
             $request->all(),
             [
-                'role' => 'required|in:pengguna,artis',
+                'role' => 'required|in:pengguna,artis,admin',
                 'name' => 'required|string|max:255',
                 'email' => 'required|email|unique:users,email',
                 'password' => 'required|string|min:6|same:password_confirmation|confirmed',
@@ -199,6 +200,13 @@ class authController extends Controller
                 artist::create([
                     'user_id' => $user->id,
                     'is_verified' => true
+                ]);
+            } else if ($user->role_id == 4) {
+                admin::create([
+                    'user_id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'password' => $user->password,
                 ]);
             }
         } catch (Throwable $e) {

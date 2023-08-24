@@ -15,6 +15,7 @@ class admin extends Model implements Authenticatable
     use HasFactory, Notifiable;
 
     protected $fillable = [
+        'user_id',
         'name',
         'email',
         'password',
