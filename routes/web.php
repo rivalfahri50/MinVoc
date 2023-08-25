@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\ArtistVerifiedController;
 use App\Http\Controllers\authController;
+use App\Http\Controllers\penggunaController;
 use App\Models\admin;
 use App\Models\artist;
 use Illuminate\Http\Request;
@@ -64,16 +65,22 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
 
 Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->controller(ArtistVerifiedController::class)->group(function () {
     Route::get('/dashboard', 'viewDashboard');
+    Route::get('/unggahAudio', 'viewUnggahAudio');
+    Route::post('/unggahAudio', 'unggahAudio')->name('unggah');
 });
 
-// unggah audio
-// Route::get('/unggahAudio', 'viewUnggahAudio');
-// Route::post('/unggahAudio', 'unggahAudio')->name('unggah');
-// gawe ngetest tampilan web
 
 
-Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('users.dashboard');
-    });
+Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(penggunaController::class)->group(function () {
+    Route::get('/dashboard', 'index');
+    Route::get('/pencarian', 'pencarian');
+    Route::get('/playlist', 'playlist');
+    Route::get('/profile', 'profile');
+    Route::get('/profile-ubah', 'profile_ubah');
+    Route::get('/billboard', 'billboard');
+    Route::get('/album', 'album');
+    Route::get('/kategori', 'kategori');
+    Route::get('/buat-playlist', 'buatPlaylist');
+    Route::get('/contoh-playlist', 'contohPlaylist');
+    Route::get('/disukai-playlist', 'disukaiPlaylist');
 });
