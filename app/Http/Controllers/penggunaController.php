@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class penggunaController extends Controller
 {
@@ -77,5 +78,11 @@ class penggunaController extends Controller
     {
         $title = "MusiCave";
         return response()->view('users.playlist.disukai', compact('title'));
+    }
+
+    protected function logout(Request $request)
+    {
+        Auth::logout();
+        return response()->redirectTo("/masuk");
     }
 }

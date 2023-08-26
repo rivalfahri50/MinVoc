@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('code', 100);
             $table->string('name');
             $table->string('genre');
-            $table->longText('konsep');
-            $table->longText('judul')->default("none");
-            $table->longText('lirik')->default("none");
+            $table->string('konsep');
+            $table->string('judul')->default("none");
+            $table->string('lirik')->default("none");
             $table->string('harga');
             $table->integer('artist_id')->default(0);
             $table->boolean('is_approved')->default(false);

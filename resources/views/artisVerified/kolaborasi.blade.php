@@ -1,4 +1,4 @@
-@extends('artis.components.artisTemplate')
+@extends('artisVerified.components.artisVerifiedTemplate')
 
 @foreach ($datas as $item)
     <div class="modal fade" id="staticBackdrop-{{ $item->code }}" data-bs-backdrop="static" data-bs-keyboard="false"

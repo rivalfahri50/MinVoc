@@ -12,10 +12,76 @@ use Throwable;
 
 class ArtistVerifiedController extends Controller
 {
-    protected function viewDashboard(Request $request): Response
+    protected function index(): Response
     {
-        $title = "Dashboard";
+        $title = "MusiCave";
         return response()->view('artisVerified.dashboard', compact('title'));
+    }
+
+    protected function pencarian(): Response
+    {
+        $title = "MusiCave";
+        return response()->view('artisVerified.pencarian', compact('title'));
+    }
+
+    protected function playlist(): Response
+    {
+        $title = "MusiCave";
+        return response()->view('artisVerified.playlist', compact('title'));
+    }
+
+    protected function riwayat(): Response
+    {
+        $title = "MusiCave";
+        return response()->view('artisVerified.riwayat', compact('title'));
+    }
+
+    protected function profile(): Response
+    {
+        $title = "MusiCave";
+        return response()->view('artisVerified.profile.profile', compact('title'));
+    }
+
+    protected function profile_ubah(): Response
+    {
+        $title = "MusiCave";
+        return response()->view('artisVerified.profile.profile_ubah', compact('title'));
+    }
+
+    protected function billboard(): Response
+    {
+        $title = "MusiCave";
+        return response()->view('artisVerified.billboard.billboard', compact('title'));
+    }
+
+    protected function album(): Response
+    {
+        $title = "MusiCave";
+        return response()->view('artisVerified.billboard.album', compact('title'));
+    }
+
+    protected function kategori(): Response
+    {
+        $title = "MusiCave";
+        return response()->view('artisVerified.kategori.kategori', compact('title'));
+    }
+
+    protected function buatPlaylist(): Response
+    {
+        $title = "MusiCave";
+        return response()->view('artisVerified.playlist.buat', compact('title'));
+    }
+
+    protected function contohPlaylist(): Response
+    {
+        $title = "MusiCave";
+        return response()->view('artisVerified.playlist.contoh', compact('title'));
+    }
+
+    protected function disukaiPlaylist(): Response
+    {
+        $title = "MusiCave";
+        return response()->view('artisVerified.playlist.disukai', compact('title'));
     }
 
     protected function viewUnggahAudio(Request $request): Response

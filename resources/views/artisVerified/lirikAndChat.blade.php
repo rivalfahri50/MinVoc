@@ -1,4 +1,4 @@
-@extends('artis.components.artisTemplate')
+@extends('artisVerified.components.artisVerifiedTemplate')
 
 @section('content')
     <div class="main-panel">

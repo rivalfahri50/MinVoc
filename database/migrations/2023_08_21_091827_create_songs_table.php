@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('genre');
             $table->string('audio');
             $table->string('image');
+            $table->integer('didengar')->default(0);
+            $table->integer('likes')->default(0);
             $table->foreignId('artist_id')->constrained('artists');
             $table->boolean('is_approved')->default(false);
             $table->timestamps();

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\messages;
 use App\Models\projects;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -15,10 +16,76 @@ use Throwable;
 
 class ArtistController extends Controller
 {
-    protected function viewDashboard(Request $request)
+    protected function index(): Response
     {
-        $title = "Beranda";
+        $title = "MusiCave";
         return response()->view('artis.dashboard', compact('title'));
+    }
+
+    protected function pencarian(): Response
+    {
+        $title = "MusiCave";
+        return response()->view('artis.pencarian', compact('title'));
+    }
+
+    protected function playlist(): Response
+    {
+        $title = "MusiCave";
+        return response()->view('artis.playlist', compact('title'));
+    }
+
+    protected function riwayat(): Response
+    {
+        $title = "MusiCave";
+        return response()->view('artis.riwayat', compact('title'));
+    }
+
+    protected function profile(): Response
+    {
+        $title = "MusiCave";
+        return response()->view('artis.profile.profile', compact('title'));
+    }
+
+    protected function profile_ubah(): Response
+    {
+        $title = "MusiCave";
+        return response()->view('artis.profile.profile_ubah', compact('title'));
+    }
+
+    protected function billboard(): Response
+    {
+        $title = "MusiCave";
+        return response()->view('artis.billboard.billboard', compact('title'));
+    }
+
+    protected function album(): Response
+    {
+        $title = "MusiCave";
+        return response()->view('artis.billboard.album', compact('title'));
+    }
+
+    protected function kategori(): Response
+    {
+        $title = "MusiCave";
+        return response()->view('artis.kategori.kategori', compact('title'));
+    }
+
+    protected function buatPlaylist(): Response
+    {
+        $title = "MusiCave";
+        return response()->view('artis.playlist.buat', compact('title'));
+    }
+
+    protected function contohPlaylist(): Response
+    {
+        $title = "MusiCave";
+        return response()->view('artis.playlist.contoh', compact('title'));
+    }
+
+    protected function disukaiPlaylist(): Response
+    {
+        $title = "MusiCave";
+        return response()->view('artis.playlist.disukai', compact('title'));
     }
 
     protected function viewKolaborasi(Request $request)

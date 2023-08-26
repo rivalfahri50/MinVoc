@@ -11,7 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="/user/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="/user/assets/css/style.css">
-    <link rel="shortcut icon" href="/user/assets/images/favicon.png" />
+    <link rel="shortcut icon" href="/images/favicon.svg" type="image/x-icon">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,400;0,500;1,100;1,200&display=swap');
 
@@ -155,7 +155,7 @@
                                         <p class="preview-subject mb-1">Profile</p>
                                     </div>
                                 </a>
-                                <a class="dropdown-item preview-item">
+                                <a class="dropdown-item preview-item" href="{{ route('logout.users') }}">
                                     <div class="preview-thumbnail">
                                         <div class="preview-icon rounded-circle">
                                             <i class="mdi mdi-logout"></i>

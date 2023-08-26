@@ -51,11 +51,24 @@ Route::prefix('admin')->middleware('admin')->controller(AdminController::class)-
 Route::post('/validationSIgnInAdmin', [AdminController::class, 'storeSignIn'])->name('storeSignIn.admin');
 
 Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistController::class)->group(function () {
-    Route::get('/dashboard', 'viewDashboard');
+    // Route::get('/dashboard', 'viewDashboard');
     Route::get('/kolaborasi', 'viewKolaborasi')->name('kolaborasi');
     Route::get('/lirik-chat/{code}', 'viewLirikAndChat')->name('lirikAndChat');
     Route::get('/show/{code}', 'showData')->name('project.show');
     Route::get('/logout', 'logout')->name('logout.artis');
+
+    Route::get('/dashboard', 'index');
+    Route::get('/pencarian', 'pencarian');
+    Route::get('/playlist', 'playlist');
+    Route::get('/riwayat', 'riwayat');
+    Route::get('/profile', 'profile');
+    Route::get('/profile-ubah', 'profile_ubah');
+    Route::get('/billboard', 'billboard');
+    Route::get('/album', 'album');
+    Route::get('/kategori', 'kategori');
+    Route::get('/buat-playlist', 'buatPlaylist');
+    Route::get('/contoh-playlist', 'contohPlaylist');
+    Route::get('/disukai-playlist', 'disukaiPlaylist');
 
     // create lirik in colaboryti
     Route::post('/create-lirik', 'Project')->name('create.project');
@@ -64,8 +77,21 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
 });
 
 Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->controller(ArtistVerifiedController::class)->group(function () {
-    Route::get('/dashboard', 'viewDashboard');
+    // Route::get('/dashboard', 'viewDashboard');
+    Route::get('/dashboard', 'index');
     Route::get('/unggahAudio', 'viewUnggahAudio');
+    Route::get('/pencarian', 'pencarian');
+    Route::get('/playlist', 'playlist');
+    Route::get('/riwayat', 'riwayat');
+    Route::get('/profile', 'profile');
+    Route::get('/profile-ubah', 'profile_ubah');
+    Route::get('/billboard', 'billboard');
+    Route::get('/album', 'album');
+    Route::get('/kategori', 'kategori');
+    Route::get('/buat-playlist', 'buatPlaylist');
+    Route::get('/contoh-playlist', 'contohPlaylist');
+    Route::get('/disukai-playlist', 'disukaiPlaylist');
+
     Route::post('/unggahAudio', 'unggahAudio')->name('unggah');
 });
 
@@ -75,6 +101,7 @@ Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(pengguna
     Route::get('/dashboard', 'index');
     Route::get('/pencarian', 'pencarian');
     Route::get('/playlist', 'playlist');
+    Route::get('/riwayat', 'riwayat');
     Route::get('/profile', 'profile');
     Route::get('/profile-ubah', 'profile_ubah');
     Route::get('/billboard', 'billboard');
@@ -83,4 +110,7 @@ Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(pengguna
     Route::get('/buat-playlist', 'buatPlaylist');
     Route::get('/contoh-playlist', 'contohPlaylist');
     Route::get('/disukai-playlist', 'disukaiPlaylist');
+
+
+    Route::get('/logout', 'logout')->name('logout.users');
 });
