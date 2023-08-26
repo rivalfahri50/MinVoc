@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('code', 100);
             $table->string('name');
             $table->string('genre');
-            $table->string('konsep');
+            $table->text('konsep');
             $table->string('judul')->default("none");
             $table->string('lirik')->default("none");
             $table->string('harga');

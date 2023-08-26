@@ -5,7 +5,8 @@
         <div class="container-login100">
             <div class="wrap-login100">
                 <div class="d-flex">
-                    <form class="login100-form validate-form" action="{{ route('storeSignIn.admin') }}" method="POST"  autocomplete="off">
+                    <form class="login100-form validate-form" action="{{ route('storeSignIn.admin') }}" method="POST"
+                        autocomplete="off">
                         @csrf
                         <div class="d-flex mb-3 flex-column">
                             <span style="font-size: 2pc; font-weight: bolder;" class="mb-3">
@@ -36,8 +37,10 @@
                             <div class="contact100-form-checkbox">
                                 <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
                                 <label class="label-checkbox100" for="ckb1" data-bs-toggle="modal"
-                                data-bs-target="#staticBackdrop">
-                                    Kebijakan Privasi
+                                    data-bs-target="#staticBackdrop">
+                                    <span>
+                                        Kebijakan Privasi
+                                    </span>
                                 </label>
                             </div>
 
@@ -67,7 +70,7 @@
         </div>
     </div>
 
-    
+
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -149,5 +152,4 @@
             </div>
         </div>
     </div>
-
 @endsection

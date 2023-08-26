@@ -73,7 +73,7 @@
                         <li class="nav-item w-75">
                             <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
                                 <div class="input-group mb-3">
-                                    <span class="input-group-text" style="border-radius: 15px 0px 0px 15px">
+                                    <span class="input-group-text" style="border-radius: 15px 0px 0px 15px; border: 1px solid #eaeaea">
                                         <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path
                                                 d="M18 18L13.9865 13.9795M16.2105 8.60526C16.2105 12.8055 12.8055 16.2105 8.60526 16.2105C4.40499 16.2105 1 12.8055 1 8.60526C1 4.40499 4.40499 1 8.60526 1C12.8055 1 16.2105 4.40499 16.2105 8.60526Z"

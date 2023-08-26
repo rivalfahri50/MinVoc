@@ -44,7 +44,9 @@
                                 <input class="input-checkbox100" id="ckb1" type="checkbox" name="kebijakan_privasi">
                                 <label class="label-checkbox100" for="ckb1" data-bs-toggle="modal"
                                     data-bs-target="#staticBackdrop">
-                                    Kebijakan Privasi
+                                    <span>
+                                        Kebijakan Privasi
+                                    </span>
                                 </label>
                                 @error('kebijakan_privasi')
                                     <div class="text-danger">{{ $message }}</div>

@@ -76,7 +76,7 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($datas as $item)
-                                            @if (!$item->is_reject && $item->judul == "none"  && $item->lirik == "none")
+                                        @if (!$item->is_reject && $item->judul == "none"  && $item->lirik == "none")
                                                 <tr>
                                                     <td>
                                                         <span class="pl-2">{{ $item->name }}</span>

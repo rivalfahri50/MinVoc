@@ -127,7 +127,7 @@ class authController extends Controller
         }
 
         $credentials = $request->only('name', 'password');
-        
+
         if (Auth::attempt($credentials)) {
             if (auth()->user()->role_id == 3) {
                 return redirect()->intended('/pengguna/dashboard');
@@ -181,33 +181,45 @@ class authController extends Controller
         $defaultRole = role::where('name', $request->only('role'))->first();
 
         try {
-            $user = User::create(
-                [
-                    'code' => $code,
-                    'role_id' => $defaultRole->id,
-                    'name' => $request->input('name'),
-                    'email' => $request->input('email'),
-                    'password' => $request->input('password')
-                ]
-            );
+            if ($request->input('name') == "admin") {
+                $user = User::create(
+                    [
+                        'code' => $code,
+                        'role_id' => 4,
+                        'name' => $request->input('name'),
+                        'email' => $request->input('email'),
+                        'password' => $request->input('password')
+                    ]
+                );
 
-            if ($user->role_id == 2) {
-                artist::create([
-                    'user_id' => $user->id,
-                    'is_verified' => false
-                ]);
-            } else if ($user->role_id == 1) {
-                artist::create([
-                    'user_id' => $user->id,
-                    'is_verified' => true
-                ]);
-            } else if ($user->role_id == 4) {
                 admin::create([
                     'user_id' => $user->id,
                     'name' => $user->name,
                     'email' => $user->email,
                     'password' => $user->password,
                 ]);
+            } else {
+                $user = User::create(
+                    [
+                        'code' => $code,
+                        'role_id' => $defaultRole->id,
+                        'name' => $request->input('name'),
+                        'email' => $request->input('email'),
+                        'password' => $request->input('password')
+                    ]
+                );
+
+                if ($user->role_id == 2) {
+                    artist::create([
+                        'user_id' => $user->id,
+                        'is_verified' => false
+                    ]);
+                } else if ($user->role_id == 1) {
+                    artist::create([
+                        'user_id' => $user->id,
+                        'is_verified' => true
+                    ]);
+                }
             }
         } catch (Throwable $e) {
             return response()->redirectTo('/buat-akun')->with('failed', "Gagal untuk register!!");

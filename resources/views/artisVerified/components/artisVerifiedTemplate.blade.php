@@ -101,7 +101,7 @@
                         <li class="nav-item w-75">
                             <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
                                 <div class="input-group mb-3">
-                                    <span class="input-group-text" style="border-radius: 15px 0px 0px 15px">
+                                    <span class="input-group-text" style="border-radius: 15px 0px 0px 15px; border: 1px solid #eaeaea">
                                         <svg width="19" height="19" viewBox="0 0 19 19" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
