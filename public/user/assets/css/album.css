@@ -1,0 +1,81 @@
+.coba {
+    width: 90%;
+    padding-top: 90%;
+    position: relative;
+    overflow: hidden;
+}
+
+.coba img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.custom-container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 100%;
+}
+
+.bottom-left-text {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: 10px;
+}
+
+.divider {
+    border: none;
+    border-top: 2px solid #6d6d6d;
+    margin: 20px 0;
+}
+
+.scroll {
+    position: relative;
+    overflow-y: scroll;
+    height: 50vh;
+}
+
+.scrollbar-down::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    border-radius: 10px;
+}
+
+.scrollbar-down::-webkit-scrollbar {
+    width: 12px;
+    background-color: #f5f5f5;
+}
+
+.scrollbar-down::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+    background-color: #957dad;
+}
+
+.thin::-webkit-scrollbar {
+    width: 6px;
+}
+
+.warna-kostum-like {
+    color: #957dad;
+}
+
+.img-and-text {
+    display: flex;
+    align-items: center;
+}
+
+.img-and-text img {
+    margin-right: 10px;
+}
+
+.judulnottebal {
+    margin: 0;
+    display: flex;
+    align-items: center;
+}

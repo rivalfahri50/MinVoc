@@ -14,23 +14,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('admins', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('code', 100);
+            $table->id();
+            $table->foreignId('user_id')->constrained('users');
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
         });
-
-        DB::table('admins')->insert([
-            [
-                'name' => 'admin',
-                'code' => Str::uuid(),
-                'email' => 'untukprojects123@gmail.com',
-                'password' => Str::uuid()
-            ],
-        ]);
     }
 
     /**

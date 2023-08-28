@@ -1,4 +1,4 @@
-@extends('components.authTemplate')
+@extends('auth.components.authTemplate')
 
 @section('content')
     <div class="limiter">
@@ -28,7 +28,6 @@
                                 <span id="button1" style="width: 80%" class="login100-form-btn rounded-4 selected">
                                     <input type="radio" id="pengguna" name="role" value="pengguna">
                                     <label for="pengguna">
-
                                         <span>
                                             <svg style="margin-top: 7px" width="40" height="38" viewBox="0 0 40 38"
                                                 fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -37,12 +36,12 @@
                                                 <path class="svg1 selected"
                                                     d="M29.7953 33.2499C30.2343 33.2499 30.6554 33.0831 30.9658 32.7862C31.2762 32.4892 31.4506 32.0865 31.4506 31.6666C31.4506 28.7271 30.2298 25.908 28.0568 23.8295C25.8838 21.751 22.9366 20.5833 19.8635 20.5833C16.7904 20.5833 13.8432 21.751 11.6702 23.8295C9.49715 25.908 8.27637 28.7271 8.27637 31.6666C8.27637 32.0865 8.45077 32.4892 8.76119 32.7862C9.07162 33.0831 9.49266 33.2499 9.93167 33.2499H29.7953Z" />
                                             </svg>
-
                                         </span>
                                         Pengguna
                                     </label>
                                 </span>
                             </div>
+                            {{-- <input type="radio" name="role" placeholder="admin" value="admin"> --}}
                             <div class="container-login100-form-btn">
                                 <span id="button2" style="width: 80%"
                                     class="login100-form-btn d-flex gap-3 rounded-4 selected">
@@ -64,14 +63,14 @@
                         </div>
 
                         @error('role')
-                            <div class="mb-2">{{ $message }}</div>
+                            <div class="mb-2 text-danger">{{ $message }}</div>
                         @enderror
 
                         <div class="mb-3">
                             <input placeholder="Nama pengguna" name="name" type="text" class="form-control rounded-3"
                                 id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ old('name') }}">
                             @error('name')
-                                <div class="">{{ $message }}</div>
+                                <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
 
@@ -79,7 +78,7 @@
                             <input placeholder="Email" name="email" type="email" class="form-control rounded-3"
                                 id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ old('email') }}">
                             @error('email')
-                                <div class="">{{ $message }}</div>
+                                <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
 
@@ -87,7 +86,7 @@
                             <input placeholder="Kata Kunci" name="password" type="password" class="form-control rounded-3"
                                 id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ old('password') }}">
                             @error('password')
-                                <div class="">{{ $message }}</div>
+                                <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
 
@@ -96,8 +95,8 @@
                             <input placeholder="Konfirmasi Kata Kunci" name="password_confirmation" type="password"
                                 class="form-control rounded-3" id="exampleInputEmail1" aria-describedby="emailHelp"
                                 value="{{ old('password_confirmation') }}">
-                            @error('Cpassword')
-                                <div class="">{{ $message }}</div>
+                            @error('password_confirmation')
+                                <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
 
@@ -118,7 +117,7 @@
 
                 <div class="login100-more" style="padding-top: 40px">
                     <div class="d-flex justify-content-center align-items-center">
-                        <img src="/images/logo.svg" alt="" srcset="">
+                        <img src="/image/logo.svg" alt="" srcset="">
                     </div>
                 </div>
             </div>

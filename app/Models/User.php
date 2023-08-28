@@ -21,6 +21,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'code',
+        'avatar',
+        'deskripsi',
         'name',
         'email',
         'password',
@@ -46,6 +48,4 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
-    protected $guard = 'web';
 }

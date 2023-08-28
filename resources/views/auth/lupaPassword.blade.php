@@ -1,4 +1,4 @@
-@extends('components.authTemplate')
+@extends('auth.components.authTemplate')
 
 @section('content')
     <div class="limiter">
@@ -53,7 +53,7 @@
 
                 <div class="login100-more" style="padding-top: 40px">
                     <div class="d-flex justify-content-center align-items-center">
-                        <img src="/images/logo.svg" alt="" srcset="">
+                        <img src="/image/logo.svg" alt="" srcset="">
                     </div>
                 </div>
             </div>

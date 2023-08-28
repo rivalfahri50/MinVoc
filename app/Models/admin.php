@@ -6,29 +6,48 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 // use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Auth\Authenticatable as AuthenticatableTrait;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use PhpParser\Node\Expr\AssignOp\Mod;
+use Illuminate\Contracts\Auth\Authenticatable;
 
-class admin extends Authenticatable
+
+class admin extends Model implements Authenticatable
 {
-    use HasFactory, AuthenticatableTrait, Notifiable;
-
-    protected $guard = 'admin';
+    use HasFactory, Notifiable;
 
     protected $fillable = [
-        'code',
+        'user_id',
         'name',
         'email',
         'password',
     ];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    public function getAuthIdentifierName()
+    {
+        return 'id';
+    }
 
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
+    public function getAuthIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getAuthPassword()
+    {
+        return $this->password;
+    }
+
+    public function getRememberTokenName()
+    {
+        return 'remember_token';
+    }
+
+    public function getRememberToken()
+    {
+        return $this->{$this->getRememberTokenName()};
+    }
+
+    public function setRememberToken($value)
+    {
+        $this->{$this->getRememberTokenName()} = $value;
+    }
 }

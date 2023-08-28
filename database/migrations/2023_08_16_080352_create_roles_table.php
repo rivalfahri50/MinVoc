@@ -24,6 +24,7 @@ return new class extends Migration
             ['name' => 'artis_verified', 'code' => Str::uuid()],
             ['name' => 'artis', 'code' => Str::uuid()],
             ['name' => 'pengguna', 'code' => Str::uuid()],
+            ['name' => 'admin', 'code' => Str::uuid()],
         ]);
     }
 
