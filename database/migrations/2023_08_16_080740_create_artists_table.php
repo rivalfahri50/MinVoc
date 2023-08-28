@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('artists', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
+            $table->integer('didengar')->default(0);
+            $table->integer('likes')->default(0);
             $table->boolean('is_verified')->default(false);
             $table->timestamps();
         });

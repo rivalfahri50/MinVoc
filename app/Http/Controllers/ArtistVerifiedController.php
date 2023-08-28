@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\song;
+use getID3;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -132,6 +133,20 @@ class ArtistVerifiedController extends Controller
         if ($request->file('image') && $request->file('audio')) {
             $image = $request->file('image')->store('images', 'public');
             $audio = $request->file('audio')->store('musics', 'public');
+            $getID3 = new getID3();
+
+            // Mendapatkan informasi tentang berkas audio
+            $audioInfo = $getID3->analyze($request->file('audio')->path());
+
+            // Durasi audio dalam detik
+            $durationInSeconds = $audioInfo['playtime_seconds'];
+
+            // Konversi durasi ke menit dan detik dengan padding nol
+            $durationMinutes = floor($durationInSeconds / 60);
+            $durationSeconds = $durationInSeconds % 60;
+
+            // Format durasi dengan padding nol
+            $formattedDuration = sprintf('%02d:%02d', $durationMinutes, $durationSeconds);
             try {
                 song::create(
                     [
@@ -140,6 +155,7 @@ class ArtistVerifiedController extends Controller
                         'genre' => $request->input('genre'),
                         'audio' => $audio,
                         'image' => $image,
+                        'waktu' => "$formattedDuration",
                         'artist_id' => Auth::user()->id,
                         'is_approved' => false,
                     ]

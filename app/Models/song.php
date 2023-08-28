@@ -15,6 +15,9 @@ class song extends Model
         'genre',
         'audio',
         'image',
+        'waktu',
+        'likes',
+        'didengar',
         'artist_id',
         'is_approved',
     ];

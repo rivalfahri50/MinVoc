@@ -6,7 +6,7 @@
             <div class="wrap-login100">
                 <div class="login100-more" style="padding-top: 40px">
                     <div class="d-flex justify-content-center align-items-center">
-                        <img src="/images/welcomeLogo.svg" alt="" srcset="">
+                        <img src="/image/welcomeLogo.svg" alt="" srcset="">
                     </div>
                 </div>
 

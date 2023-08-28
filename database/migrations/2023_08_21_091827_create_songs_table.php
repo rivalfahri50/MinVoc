@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('genre');
             $table->string('audio');
             $table->string('image');
+            $table->string('waktu')->default("none");
             $table->integer('didengar')->default(0);
             $table->integer('likes')->default(0);
             $table->foreignId('artist_id')->constrained('artists');

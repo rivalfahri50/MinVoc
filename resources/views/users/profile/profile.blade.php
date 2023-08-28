@@ -12,35 +12,32 @@
                     <div class="col-md-12">
                         <div class="mb-3">
                             <h4 style="font-size: 20px; font-weight: 600; color: #957dad">Foto profil</h4>
-                            <img src="../assets/images/faces/face15.jpg" class="rounded-circle" width="100px">
+                            <img  src="{{ asset('storage/' . auth()->user()->avatar) }}" class="rounded-circle" width="100px">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="nama" class="form-label" style="font-size: 20px; font-weight: 600; color: #957dad">Nama pengguna</label>
-                            <input type="text" class="form-control" id="nama" value="Henry Klein" readonly disabled>
+                            <input type="text" class="form-control" id="nama" value="{{ auth()->user()->name }}" readonly disabled>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="email" class="form-label" style="font-size: 20px; font-weight: 600; color: #957dad">Email</label>
-                            <input type="email" class="form-control" id="email" value="henry123@gmail.com" readonly
+                            <input type="email" class="form-control" id="email" value="{{ auth()->user()->email }}" readonly
                                 disabled>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="mb-3">
                             <label for="deskripsi" class="form-label" style="font-size: 20px; font-weight: 600; color: #957dad">Deskripsi</label>
-                            <textarea id="deskripsi" class="form-control" maxlength="500" rows="5" readonly disabled>Halo! Saya Johan, jiwa petualang yang penuh rasa ingin tahu dan selalu dalam pencarian ilmu dan penemuan diri.
-Minat: Teknologi, ilmu pengetahuan, dan inovasi Membaca, menulis, dan puisi Alam, mendaki, berkemah, dan fotografi
-Filosofi: Terimalah tantangan dan kegagalan untuk pertumbuhan pribadi Ketangguhan dan adaptabilitas adalah kunci
-Saya sangat menyukai percakapan bermakna dan kolaborasi! Hubungi saya, dan mari kita berdampak positif bersama.</textarea>
+                            <textarea id="deskripsi" class="form-control" maxlength="500" rows="5" readonly disabled>{{ (auth()->user()->deskripsi === "none") ? "" : auth()->user()->deskripsi }}</textarea>
                             <div id="counter" class="float-right"></div>
                             <div class="invalid-feedback"></div>
                         </div>
                     </div>
                     <div class="col-1">
-                        <a href="/pengguna/profile-ubah" class="btn" type="submit">Perbarui</a>
+                        <a href="{{ route('ubah.profile', auth()->user()->code) }}" class="btn" type="submit">Perbarui</a>
                     </div>
                 </form>
             </div>

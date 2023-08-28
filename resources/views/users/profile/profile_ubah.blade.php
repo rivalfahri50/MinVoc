@@ -8,37 +8,52 @@
                     <h4 style="font-size: 20px; font-weight: 600; color: #957dad">Profil</h4>
                     <p>Atur akun anda, Semua perubahan akan di aplikasikan ke semua halaman</p>
                 </div>
-                <form class="row" action="">
+                <form class="row" action="{{ route('update.profile', $user[0]->code) }}" method="POST"
+                    enctype="multipart/form-data">
+                    @csrf
                     <div class="col-md-2">
                         <div class="mb-3">
                             <h4 style="font-size: 20px; font-weight: 600; color: #957dad">Foto profil</h4>
-                            <img src="../assets/images/faces/face15.jpg" class="rounded-circle" width="100px">
+                            <img src="{{ asset('storage/' . $user[0]->avatar) }}" class="rounded-circle" width="100px">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="p-5">
-                            <input type="file" id="foto" name="foto" class="form-control" aria-label="file example" required>
+                            <input type="file" id="foto" name="avatar" class="form-control"
+                                aria-label="file example">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="nama" class="form-label" style="font-size: 20px; font-weight: 600; color: #957dad">Nama pengguna</label>
-                            <input type="text" class="form-control" id="nama" value="Henry Klein" required>
+                            <label for="nama" class="form-label"
+                                style="font-size: 20px; font-weight: 600; color: #957dad">Nama pengguna</label>
+                            <input type="text" class="form-control" name="name" id="nama"
+                                value="{{ $user[0]->name }}" aria-describedby="validationServer03Feedback">
+                            @error('name')
+                                <div id="validationServer03Feedback" class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="email" class="form-label" style="font-size: 20px; font-weight: 600; color: #957dad">Email</label>
-                            <input type="email" class="form-control" id="email" value="henry123@gmail.com" required>
+                            <label for="email" class="form-label"
+                                style="font-size: 20px; font-weight: 600; color: #957dad">Email</label>
+                            <input type="email" class="form-control" name="email" id="email"
+                                value="{{ $user[0]->email }}" required>
+                            @error('email')
+                                <div id="validationServer03Feedback" class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="mb-3">
-                            <label for="deskripsi" class="form-label" style="font-size: 20px; font-weight: 600; color: #957dad">Deskripsi</label>
-                            <textarea id="deskripsi" class="form-control" maxlength="500" rows="5" required>Halo! Saya Johan, jiwa petualang yang penuh rasa ingin tahu dan selalu dalam pencarian ilmu dan penemuan diri.
-Minat: Teknologi, ilmu pengetahuan, dan inovasi Membaca, menulis, dan puisi Alam, mendaki, berkemah, dan fotografi
-Filosofi: Terimalah tantangan dan kegagalan untuk pertumbuhan pribadi Ketangguhan dan adaptabilitas adalah kunci
-Saya sangat menyukai percakapan bermakna dan kolaborasi! Hubungi saya, dan mari kita berdampak positif bersama.</textarea>
+                            <label for="deskripsi" class="form-label"
+                                style="font-size: 20px; font-weight: 600; color: #957dad">Deskripsi</label>
+                            <textarea id="deskripsi" class="form-control" name="deskripsi" maxlength="500" rows="5">{{ $user[0]->deskripsi === 'none' ? '' : $user[0]->deskripsi }}</textarea>
                             <div id="counter" class="float-right"></div>
                         </div>
                     </div>

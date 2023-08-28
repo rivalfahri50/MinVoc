@@ -103,14 +103,15 @@ Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(pengguna
     Route::get('/playlist', 'playlist');
     Route::get('/riwayat', 'riwayat');
     Route::get('/profile', 'profile');
-    Route::get('/profile-ubah', 'profile_ubah');
+    Route::get('/profile-ubah/{code}', 'profile_ubah')->name('ubah.profile');
     Route::get('/billboard', 'billboard');
     Route::get('/album', 'album');
     Route::get('/kategori', 'kategori');
-    Route::get('/buat-playlist', 'buatPlaylist');
+    Route::get('/buat-playlist', 'buatPlaylist')->name('buat.playlist');
     Route::get('/contoh-playlist', 'contohPlaylist');
     Route::get('/disukai-playlist', 'disukaiPlaylist');
-
-
+    Route::get('/search', 'search')->name('search');
     Route::get('/logout', 'logout')->name('logout.users');
+
+    Route::post('/update/profile/{code}', 'updateProfile')->name('update.profile');
 });
