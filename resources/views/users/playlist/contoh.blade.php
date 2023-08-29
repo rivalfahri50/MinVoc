@@ -84,12 +84,15 @@
             <div class="card-body">
                 <a href="#" class="close-button mdi mdi-close-circle-outline"></a>
                 <h3 class="judul">Buat Playlist</h2>
-                    <form class="row" action="{{ route('buat.playlist') }}" method="POST" enctype="multipart/form-data">
+                    <form class="row" action="{{ route('ubah.playlist', $playlistDetail->code) }}" method="POST"
+                        enctype="multipart/form-data">
                         @csrf
                         <div class="col-4">
                             <div class="card cobai">
                                 <label for="gambar" id="tampil_gambar">
-                                    <i class="fas fa-pen fa-2x"></i>
+                                    <img src="{{ asset('storage/' . $playlistDetail->images) }}"
+                                        style="background-size: cover; background-repeat: no-repeat" width="150"
+                                        alt="Gambar">
                                 </label>
                                 <input type="file" id="gambar" name="images" accept="image/png,image/jpg">
                             </div>
@@ -97,14 +100,15 @@
                         <div class="col-md-7 ml-4">
                             <div class="mb-3">
                                 <input type="text" class="form-control form-i" name="name" id="nama"
-                                    placeholder="Judul Playlist">
+                                    placeholder="{{ $playlistDetail->name }}">
                             </div>
                             <div class="mb-3">
-                                <textarea id="deskripsi" class="form-control" name="deskripsi" maxlength="500" rows="6" placeholder="Deskripsi"></textarea>
+                                <textarea id="deskripsi" class="form-control" name="deskripsi" maxlength="500" rows="6"
+                                    placeholder="{{ $playlistDetail->deskripsi == 'none' ? '' : "$playlistDetail->deskripsi" }}"></textarea>
                             </div>
                         </div>
                         <div class="text-md-right">
-                            <button class="btn" type="submit">Simpan</button>
+                            <button class="btn" type="submit">Ubah</button>
                         </div>
                     </form>
             </div>
@@ -117,5 +121,21 @@
             x.classList.toggle("fas"); // Menambahkan kelas "fas fa-heart"
             x.classList.toggle("warna-kostum-like"); // Menambahkan kelas warna merah
         }
+
+        const gambar = document.querySelector("#gambar");
+
+        const tampilGambar = document.querySelector("#tampil_gambar");
+
+        gambar.addEventListener("change", function() {
+            const reader = new FileReader();
+
+            reader.addEventListener("load", () => {
+                tampilGambar.style.backgroundImage = `url(${reader.result})`;
+
+                tampilGambar.innerHTML = "";
+            });
+
+            reader.readAsDataURL(this.files[0]);
+        });
     </script>
 @endsection

@@ -114,6 +114,42 @@ class penggunaController extends Controller
         return response()->view('users.playlist', compact('title', 'playlists'));
     }
 
+    protected function ubahPlaylist(Request $request, string $code)
+    {
+        $title = "MusiCave";
+        $playlists = playlist::where('code', $code)->first();
+        try {
+            if (!$request->file()) {
+                $values =
+                    [
+                        'code' => $code,
+                        'name' => $request->input('name') == null ? $playlists->name : $request->input('name'),
+                        'deskripsi' => $request->input('deskripsi') == null ? $playlists->deskripsi : $request->input('deskripsi'),
+                        'images' => $playlists->images,
+                        'user_id' => $playlists->user_id
+                    ];
+            } else if ($existImage = $request->file('images')->store('images', 'public')) {
+                if (Storage::disk('public')->exists($playlists->images)) {
+                    Storage::disk('public')->delete($playlists->images);
+                }
+
+                $values =
+                    [
+                        'code' => $code,
+                        'name' => $request->input('name') == null ? $playlists->name : $request->input('name'),
+                        'deskripsi' => $request->input('deskripsi') == null ? $playlists->deskripsi : $request->input('deskripsi'),
+                        'images' => $existImage,
+                        'user_id' => $playlists->user_id
+                    ];
+            }
+            playlist::where('code', $code)->update($values);
+            $playlists = playlist::all();
+        } catch (\Throwable $th) {
+            return response()->view('users.playlist', compact('title'));
+        }
+        return response()->view('users.playlist', compact('title', 'playlists'));
+    }
+
     protected function detailPlaylist(string $code): Response
     {
         $playlistDetail = playlist::where('code', $code)->first();
@@ -225,10 +261,9 @@ class penggunaController extends Controller
                     'role_id' => $user->role_id,
                 ];
             }
-            dd(($value));
         }
-        User::where('code', $code)->update($value);
         try {
+            User::where('code', $code)->update($value);
         } catch (Throwable $e) {
             return response()->redirectTo('/pengguna/profile')->with('failed', "failed");
         }
