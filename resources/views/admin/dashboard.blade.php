@@ -50,7 +50,6 @@
                                         <span>{{ $message }}</span>
                                     @enderror
                                 </div>
-                                
                                 <div class="mb-3">
                                     <label for="konsep" class="form-label">Konsep</label>
                                     <textarea class="form-control" name="konsep" id="konsep" rows="3"></textarea>
@@ -58,7 +57,6 @@
                                         <span>{{ $message }}</span>
                                     @enderror
                                 </div>
-                                
                                 <div class="mb-3">
                                     <label for="harga" class="form-label">Harga</label>
                                     <input type="number" class="form-control" id="harga" name="harga">

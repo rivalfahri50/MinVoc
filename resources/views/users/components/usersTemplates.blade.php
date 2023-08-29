@@ -11,6 +11,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="/user/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="/user/assets/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ asset('style.css') }}">
     <link rel="shortcut icon" href="/image/favicon.svg" type="image/x-icon">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,400;0,500;1,100;1,200&display=swap');
@@ -25,8 +27,8 @@
     <div class="container-scroller">
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
             <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-                <a class="sidebar-brand brand-logo" href="/pengguna/dashboard"><img
-                        src="/user/assets/images/logo.svg" alt="logo" /></a>
+                <a class="sidebar-brand brand-logo" href="/pengguna/dashboard"><img src="/user/assets/images/logo.svg"
+                        alt="logo" /></a>
             </div>
             <ul class="nav">
                 <li class="nav-item menu-items">
@@ -71,6 +73,62 @@
                     </a>
                 </li>
             </ul>
+            <footer
+                style="background-color: #6c6c6c; color: #957DAD; width: 100%; position: fixed; bottom: 0; height: 85px;"
+                id="lagu-diputar">
+                <div class="music-player">
+                    <div class="song-bar">
+                        <div class="song-infos">
+                            <div class="image-container1">
+                                <img src="https://d2y6mqrpjbqoe6.cloudfront.net/image/upload/f_auto,q_auto/media/library-400/216_636967437355378335Your_Lie_Small_hq.jpg"
+                                    alt="" id="track_image" />
+                            </div>
+                            <div class="song-description">
+                                <p id="title">
+                                    Watashitachi
+                                </p>
+                                <p id="artist">Masaru Yokoyama</p>
+                            </div>
+                        </div>
+                        <div class="icons">
+                            <i class="far fa-heart fr fh" onclick="myFunction(this)"></i>
+                        </div>
+                    </div>
+                    <div class="progress-controller">
+                        <div class="control-buttons">
+                            <div id="controls">
+                                <button onclick="previous_song()" id="pre"><i class="fa fa-step-backward"
+                                        aria-hidden="true"></i></button>
+                                <button onclick="justplay()" id="play"><i class="far fa-play-circle fr"
+                                        aria-hidden="true"></i></button>
+                                <button onclick="next_song()" id="next"><i class="fa fa-step-forward"
+                                        aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                        <div class="progress-container">
+                            <span id="current-time" class="durasi">00:00</span>
+                            <div class="progress-bar">
+                                <div class="duration">
+                                    <input type="range" class="progress" min="0" max="100" value="0"
+                                        id="duration_slider" onchange="change_duration()">
+                                </div>
+                            </div>
+                            <span id="duration" class="durasi">00:00</span>
+                        </div>
+                    </div>
+
+                    <div class="other-features">
+                        <div class="volume-bar">
+                            <i class="fas fa-volume-up vu" onclick="mute_sound()" aria-hidden="true"
+                                id="volume_icon"></i>
+                            <input type="range" class="volume" min="0" max="100" value="100"
+                                onchange="volume_change()" id="volume">
+                            <p id="volume_show">100</p>
+
+                        </div>
+                    </div>
+                </div>
+            </footer>
         </nav>
         <!-- partial -->
         <div class="container-fluid page-body-wrapper">
@@ -80,7 +138,8 @@
                         <li class="nav-item w-75">
                             <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
                                 <div class="input-group mb-3">
-                                    <span class="input-group-text" style="border-radius: 15px 0px 0px 15px; border: 1px solid #eaeaea">
+                                    <span class="input-group-text"
+                                        style="border-radius: 15px 0px 0px 15px; border: 1px solid #eaeaea">
                                         <svg width="19" height="19" viewBox="0 0 19 19" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -141,17 +200,18 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                                 <div class="navbar-profile">
-                                    <img class="img-xs rounded-circle"  src="{{ asset('storage/' . auth()->user()->avatar) }}"
-                                        alt="">
+                                    <img class="img-xs rounded-circle"
+                                        src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
                                 </div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                                 aria-labelledby="profileDropdown">
                                 <div class="p-3 mb-0 gap-3"
                                     style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
-                                    <img class="img-xs rounded-circle"  src="{{ asset('storage/' . auth()->user()->avatar) }}"
-                                        alt="">
-                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ auth()->user()->name }}</p>
+                                    <img class="img-xs rounded-circle"
+                                        src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
+                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ auth()->user()->name }}
+                                    </p>
                                 </div>
                                 <a href="/pengguna/profile" class="dropdown-item preview-item">
                                     <div class="preview-thumbnail">
@@ -160,7 +220,7 @@
                                         </div>
                                     </div>
                                     <div class="preview-item-content">
-                                            <p class="preview-subject mb-1">Profile</p>
+                                        <p class="preview-subject mb-1">Profile</p>
                                     </div>
                                 </a>
                                 <a class="dropdown-item preview-item" href="{{ route('logout.users') }}">

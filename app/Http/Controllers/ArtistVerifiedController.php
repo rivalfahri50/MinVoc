@@ -122,6 +122,7 @@ class ArtistVerifiedController extends Controller
             ],
         ]);
 
+
         if ($validate->fails()) {
             return redirect()->back()
                 ->withErrors($validate)
@@ -148,7 +149,7 @@ class ArtistVerifiedController extends Controller
             // Format durasi dengan padding nol
             $formattedDuration = sprintf('%02d:%02d', $durationMinutes, $durationSeconds);
             try {
-                song::create(
+             song::create(
                     [
                         'code' => $code,
                         'judul' => $request->input('judul'),

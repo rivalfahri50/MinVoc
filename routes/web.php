@@ -1,10 +1,13 @@
 <?php
 
+
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\ArtistVerifiedController;
 use App\Http\Controllers\authController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\penggunaController;
+use App\Http\Controllers\songController;
 use App\Models\admin;
 use App\Models\artist;
 use Illuminate\Http\Request;
@@ -117,3 +120,6 @@ Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(pengguna
     Route::post('/buat-playlist', 'storePlaylist')->name('buat.playlist');
     Route::post('/ubah-playlist/{code}', 'ubahPlaylist')->name('ubah.playlist');
 });
+
+
+Route::get('/ambil-lagu', [songController::class, 'ambillagu']);

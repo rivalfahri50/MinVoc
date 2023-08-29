@@ -31,7 +31,7 @@
                 <div class="col-md-7">
                     <div class="card border-0 bg-dark coba">
                         <div id="carouselExampleAutoplaying" class="carousel slide carousel-fade" data-bs-ride="carousel">
-                            <div class="carousel-inner">
+                                <div class="carousel-inner">
                                 <div class="carousel-item active" data-bs-interval="2000">
                                     <a href="billboard/billboard.html" class="image-container">
                                         <img src="/user/assets/images/dashboard/img_3.jpg" class="d-block try"
@@ -78,13 +78,16 @@
                             <div class="row" style="margin-top: -20px">
                                 <div class="col-12">
                                     <div class="preview-list">
+                                        @php
+                                            $i = 0
+                                        @endphp
                                         @foreach ($songs as $item)
                                             <div class="preview-item">
                                                 <div class="preview-thumbnail">
                                                     <img src="{{ asset('storage/' . $item->image) }}" width="10%">
                                                 </div>
                                                 <div class="preview-item-content d-sm-flex flex-grow">
-                                                    <a href="" class="flex-grow text-decoration-none link">
+                                                    <a href="#lagu-diputar" class="flex-grow text-decoration-none link" onclick="putar({{$i++}})">
                                                         <h6 class="preview-subject">{{ $item->judul }}</h6>
                                                         <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
                                                     </a>
