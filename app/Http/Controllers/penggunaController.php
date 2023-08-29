@@ -181,16 +181,27 @@ class penggunaController extends Controller
 
             $newImage = $request->file('avatar')->store('images', 'public');
 
-            $value = [
-                'code' => $code,
-                'name' => $request->input('name'),
-                'email' => $request->input('email'),
-                'avatar' => $newImage,
-                'deskripsi' => $request->input('deskripsi'),
-                'password' => $user->password,
-                'role_id' => $user->role_id,
-            ];
-
+            if ($request->input('deskripsi') === "none" || $request->input('deskripsi') === null) {
+                $value = [
+                    'code' => $code,
+                    'name' => $request->input('name'),
+                    'email' => $request->input('email'),
+                    'deskripsi' => "none",
+                    'avatar' => $newImage,
+                    'password' => $user->password,
+                    'role_id' => $user->role_id,
+                ];
+            } else {
+                $value = [
+                    'code' => $code,
+                    'name' => $request->input('name'),
+                    'email' => $request->input('email'),
+                    'deskripsi' => $request->input('deskripsi'),
+                    'avatar' => $newImage,
+                    'password' => $user->password,
+                    'role_id' => $user->role_id,
+                ];
+            }
             if (Storage::disk('public')->exists($existingPhotoPath)) {
                 Storage::disk('public')->delete($existingPhotoPath);
             }
@@ -214,9 +225,10 @@ class penggunaController extends Controller
                     'role_id' => $user->role_id,
                 ];
             }
+            dd(($value));
         }
+        User::where('code', $code)->update($value);
         try {
-            User::where('code', $code)->update($value);
         } catch (Throwable $e) {
             return response()->redirectTo('/pengguna/profile')->with('failed', "failed");
         }

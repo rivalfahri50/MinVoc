@@ -12,7 +12,7 @@
                     <div class="col-md-12">
                         <div class="mb-3">
                             <h4 style="font-size: 20px; font-weight: 600; color: #957dad">Foto profil</h4>
-                            <img  src="{{ asset('storage/' . auth()->user()->avatar) }}" class="rounded-circle" width="100px">
+                                <img  src="{{ asset('storage/' . auth()->user()->avatar) }}" class="rounded-circle" width="150" height="150">
                         </div>
                     </div>
                     <div class="col-md-6">

@@ -5,6 +5,29 @@
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="row">
+                <div class="col-md-12 grid-margin stretch-card">
+                    <h3 class="card-title mt-2 judul" style="font-size: 20px; font-weight: 600">Kategori</h3>
+                    <div class="cards">
+                      <a href="kategori/pop.html" class="card card-scroll">
+                        <img src="https://planetmusiksite.files.wordpress.com/2016/10/top-rock-songs.jpg" class="img-fluid rounded-4 this">
+                      </a>
+                      <a href="#" class="card card-scroll">
+                        <img src="https://planetmusiksite.files.wordpress.com/2016/10/top-rock-songs.jpg" class="img-fluid rounded-4 this">
+                      </a>
+                      <a href="#" class="card card-scroll">
+                        <img src="https://planetmusiksite.files.wordpress.com/2016/10/top-rock-songs.jpg" class="img-fluid rounded-4 this">
+                      </a>
+                      <a href="#" class="card card-scroll">
+                        <img src="https://planetmusiksite.files.wordpress.com/2016/10/top-rock-songs.jpg" class="img-fluid rounded-4 this">
+                      </a>
+                      <a href="#" class="card card-scroll">
+                        <img src="https://planetmusiksite.files.wordpress.com/2016/10/top-rock-songs.jpg" class="img-fluid rounded-4 this">
+                      </a>
+                      <a href="#" class="card card-scroll">
+                        <img src="https://planetmusiksite.files.wordpress.com/2016/10/top-rock-songs.jpg" class="img-fluid rounded-4 this">
+                      </a>
+                    </div>
+                </div>
                 <div class="col-md-7">
                     <div class="card border-0 bg-dark coba">
                         <div id="carouselExampleAutoplaying" class="carousel slide carousel-fade" data-bs-ride="carousel">

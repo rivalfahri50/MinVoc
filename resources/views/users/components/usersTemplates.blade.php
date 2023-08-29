@@ -38,28 +38,29 @@
                     </a>
                 </li>
                 <li class="nav-item menu-items">
-                    <a class="nav-link" href="/pengguna/pencarian">
-                        <span class="menu-icon">
-                            <i class="mdi mdi-magnify"></i>
-                        </span>
-                        <span class="menu-title">Pencarian</span>
-                    </a>
-                </li>
-                <li class="nav-item menu-items">
                     <a class="nav-link" href="/pengguna/playlist">
-                        <span class="menu-icon">
-                            <i class="mdi mdi-music"></i>
+                      <span class="menu-icon">
+                        <i class="mdi mdi-music"></i>
+                      </span>
+                      <span class="menu-title">Playlist</span>
+                      <a href="#ui-basic" data-toggle="collapse" aria-expanded="false" aria-controls="ui-basic">
+                        <span class="menu-arrow">
+                          <i class="mdi mdi-chevron-right"></i>
                         </span>
-                        <span class="menu-title">Playlist</span>
+                      </a>
                     </a>
-                </li>
-                <li class="nav-item menu-items">
-                    <a class="nav-link" href="{{ route('buat.playlist') }}">
-                        <span class="menu-icon">
-                            <i class="mdi mdi-music"></i>
-                        </span>
-                        <span class="menu-title">buat playlist</span>
-                    </a>
+                    <div class="collapse" id="ui-basic">
+                      <ul class="nav flex-column sub-menu">
+                        <li class="nav-item">
+                          <a class="nav-link" href="{{ route('buat.playlist') }}">
+                            <span class="menu-icon">
+                              <i class="mdi mdi-plus-circle-outline"></i>
+                            </span>
+                            <span class="menu-title">Buat Playlist</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
                 </li>
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="/pengguna/riwayat">
@@ -92,7 +93,6 @@
                                 </div>
                             </form>
                         </li>
-
                     </ul>
                     <ul class="navbar-nav navbar-nav-right">
                         <li class="nav-item dropdown">
@@ -186,13 +186,21 @@
             @yield('content')
 
             <script>
+                $(document).ready(function () {
+                    $('.menu-arrow').click(function () {
+                        $(this).find('i').toggleClass('mdi-chevron-right mdi-chevron-down');
+                    });
+                });
+
+
                 function myFunction(x) {
                     x.classList.toggle("far");
                     x.classList.toggle("fas");
                     x.classList.toggle("warna-kostum-like");
                 }
             </script>
-
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
             <script src="/user/assets/vendors/js/vendor.bundle.base.js"></script>
             <script src="/user/assets/vendors/chart.js/Chart.min.js"></script>
             <script src="/user/assets/vendors/progressbar.js/progressbar.min.js"></script>

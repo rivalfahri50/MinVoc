@@ -30687,7 +30687,7 @@ div.tagsinput span.tag a {
 .content-wrapper {
   background: #FFFFFF;
   /*  >>> DISINI <<< */
-  padding: 1.875rem 1.75rem;
+  padding: 0.5rem 1.75rem;
   width: 100%;
   -webkit-flex-grow: 1;
   flex-grow: 1;
@@ -30717,4 +30717,17 @@ div.tagsinput span.tag a {
 .text-group p {
   display: table-cell;
   padding-right: 10px;
+}
+
+/* Style dropdown sidebar--Mengatur tampilan menu dropdown */
+.menu-items .nav-link {
+  position: relative;
+}
+
+.menu-arrow {
+  color: inherit;
+  position: absolute;
+  left: 185px;
+  top: 140px;
+  transform: translateY(-50%);
 }
