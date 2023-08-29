@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('deskripsi');
             $table->string('images');
+            $table->foreignId('user_id')->constrained('users');
             // $table->unsignedBigInteger('song_id')->default(0); // This is a separate column, not a foreign key
             // $table->foreign('song_id')->references('id')->on('songs');
             $table->timestamps();

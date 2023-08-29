@@ -13,7 +13,8 @@ class playlist extends Model
         'code',
         'name',
         'deskripsi',
-        'image',
-        'song_id',
+        'images',
+        'user_id',
+        // 'song_id',
     ];
 }

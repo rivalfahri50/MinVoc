@@ -126,15 +126,20 @@ class authController extends Controller
                 ->withInput();
         }
 
+
         $credentials = $request->only('name', 'password');
 
         if (Auth::attempt($credentials)) {
             if (auth()->user()->role_id == 3) {
-                return redirect()->intended('/pengguna/dashboard');
+            return redirect()->intended('/pengguna/dashboard');
             } else if (auth()->user()->role_id == 2) {
                 return redirect()->intended('/artis/dashboard');
             } else if (auth()->user()->role_id == 1) {
                 return redirect()->intended('/artis-verified/dashboard');
+            } else if (auth()->user()->role_id == 4) {
+                if (auth()->guard('admin')->attempt($credentials)) {
+                    return redirect()->intended('/admin/dashboard');
+                }
             }
         }
 

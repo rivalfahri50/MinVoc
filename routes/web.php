@@ -107,11 +107,12 @@ Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(pengguna
     Route::get('/billboard', 'billboard');
     Route::get('/album', 'album');
     Route::get('/kategori', 'kategori');
-    Route::get('/buat-playlist', 'buatPlaylist')->name('buat.playlist');
-    Route::get('/contoh-playlist', 'contohPlaylist');
+    Route::get('/buat-playlist', 'buatPlaylist');
+    Route::get('/detail-playlist/{code}', 'detailPlaylist')->name('detailPlaylist');
     Route::get('/disukai-playlist', 'disukaiPlaylist');
     Route::get('/search', 'search')->name('search');
     Route::get('/logout', 'logout')->name('logout.users');
 
     Route::post('/update/profile/{code}', 'updateProfile')->name('update.profile');
+    Route::post('/buat-playlist', 'storePlaylist')->name('buat.playlist');
 });

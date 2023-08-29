@@ -35,7 +35,8 @@ class penggunaController extends Controller
     protected function playlist(): Response
     {
         $title = "MusiCave";
-        return response()->view('users.playlist', compact('title'));
+        $playlists = playlist::all();
+        return response()->view('users.playlist', compact('title', 'playlists'));
     }
 
     protected function riwayat(): Response
@@ -78,22 +79,47 @@ class penggunaController extends Controller
     protected function buatPlaylist(): Response
     {
         $title = "MusiCave";
-        try {
-            $data = playlist::create(
-                [
-                    'code' => Str::uuid(),
-                ]
-            );
-        } catch (\Throwable $th) {
-            return response()->view('users.playlist.buat', compact('title'));
-        }
-        return response()->view('users.playlist.buat', compact('title', 'data'));
+        $songs = song::all();
+        return response()->view('users.playlist.buat', compact('title', 'songs'));
     }
 
-    protected function contohPlaylist(): Response
+    protected function storePlaylist(Request $request)
     {
         $title = "MusiCave";
-        return response()->view('users.playlist.contoh', compact('title'));
+        try {
+            if (!$request->file()) {
+                $values =
+                    [
+                        'code' => Str::uuid(),
+                        'name' => $request->input('name') == null ? "Playlist Lagu" : $request->input('name'),
+                        'deskripsi' => $request->input('deskripsi') == null ? "none" : $request->input('deskripsi'),
+                        'images' => 'images/defaultPlaylist.png',
+                        'user_id' => Auth::user()->id
+                    ];
+            } else if ($existImage = $request->file('images')->store('images', 'public')) {
+                $values =
+                    [
+                        'code' => Str::uuid(),
+                        'name' => $request->input('name') == null ? "Playlist Lagu" : $request->input('name'),
+                        'deskripsi' => $request->input('deskripsi') == null ? "none" : $request->input('deskripsi'),
+                        'images' => $existImage,
+                        'user_id' => Auth::user()->id
+                    ];
+            }
+            playlist::create($values);
+            $playlists = playlist::all();
+        } catch (\Throwable $th) {
+            return response()->view('users.playlist', compact('title'));
+        }
+        return response()->view('users.playlist', compact('title', 'playlists'));
+    }
+
+    protected function detailPlaylist(string $code): Response
+    {
+        $playlistDetail = playlist::where('code', $code)->first();
+        $songs = song::all();
+        $title = "MusiCave";
+        return response()->view('users.playlist.contoh', compact('title', 'playlistDetail', 'songs'));
     }
 
     protected function disukaiPlaylist(): Response
