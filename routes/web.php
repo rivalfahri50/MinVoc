@@ -115,4 +115,5 @@ Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(pengguna
 
     Route::post('/update/profile/{code}', 'updateProfile')->name('update.profile');
     Route::post('/buat-playlist', 'storePlaylist')->name('buat.playlist');
+    Route::post('/ubah-playlist/{code}', 'ubahPlaylist')->name('ubah.playlist');
 });
