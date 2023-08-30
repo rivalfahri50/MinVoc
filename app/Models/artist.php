@@ -19,6 +19,6 @@ class artist extends Model
     public function user()
     {
         return $this->hasOne(user::class, 'id', 'user_id');
-    } 
+    }
 
 }

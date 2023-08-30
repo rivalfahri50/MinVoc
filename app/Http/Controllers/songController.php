@@ -11,6 +11,5 @@ class songController extends Controller
     public function ambillagu(){
        $semualagu = song::all();
        return response()->json($semualagu);
-
     }
 }
