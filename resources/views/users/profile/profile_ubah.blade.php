@@ -4,7 +4,7 @@
 <style>
     .cobai {
             width: 150px;
-            height: 130px;
+            height: 140px;
             border-radius: 100px;
             position: relative;
             overflow: hidden;

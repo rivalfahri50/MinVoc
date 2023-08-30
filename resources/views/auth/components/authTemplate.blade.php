@@ -2,10 +2,10 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" name="desc">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $title }}</title>
-    <link rel="shortcut icon" href="images/favicon.svg" type="image/x-icon">
+    <link rel="shortcut icon" href="/image/favicon.svg" type="image/x-icon">
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">

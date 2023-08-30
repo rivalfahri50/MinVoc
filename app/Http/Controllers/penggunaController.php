@@ -270,13 +270,13 @@ class penggunaController extends Controller
         return response()->redirectTo('/pengguna/profile')->with('failed', "failed");
     }
 
-    protected function search(Request $request)
+    public function search(Request $request)
     {
-        // if($request->ajax())
-        // {
-        //     $datas = 
-        // }
+        $query = $request->input('query');
+        $results = User::where('name', 'LIKE', '%' . $query . '%')->get();
+        return response()->json(['results' => $results]);
     }
+
 
     protected function logout(Request $request)
     {
