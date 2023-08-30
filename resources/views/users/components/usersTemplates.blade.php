@@ -317,6 +317,31 @@
             @yield('content')
 
             <script>
+                     $(document).ready(function() {
+                    $('#search').on('keyup', function() {
+                        var query = $(this).val();
+                        $.ajax({
+                            url: '/pengguna/search/',
+                            type: 'GET',
+                            data: {
+                                query: query
+                            },
+                            dataType: 'json',
+                            success: function(response) {
+                                var results = response.results;
+                                var $searchResults = $('#search-results');
+                                $searchResults.empty();
+
+                                $.each(results, function(index, result) {
+                                    $searchResults.append('<li>' + result.name + '</li>');
+                                });
+                            }
+                        });
+                    });
+                });
+            </script>
+
+            <script>
                 $(document).ready(function() {
                     $('.menu-arrow').click(function() {
                         $(this).find('i').toggleClass('mdi-chevron-right mdi-chevron-down');
