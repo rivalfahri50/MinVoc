@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="/user/assets/css/style.css">
 <<<<<<< Updated upstream
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    
+
     <link rel="stylesheet" href="/user/assets/vendors/mdi/css/materialdesignicons.min.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 =======
@@ -255,7 +255,6 @@
 
             <script>
                 $(document).ready(function() {
-<<<<<<< Updated upstream
                     $('#search').on('keyup', function() {
                         var query = $(this).val();
                         $.ajax({
@@ -275,10 +274,6 @@
                                 });
                             }
                         });
-=======
-                    $('.menu-arrow').click(function() {
-                        $(this).find('i').toggleClass('mdi-chevron-right mdi-chevron-down');
->>>>>>> Stashed changes
                     });
                 });
 
@@ -294,9 +289,7 @@
                     x.classList.toggle("warna-kostum-like");
                 }
             </script>
-<<<<<<< Updated upstream
-=======
-            <script>
+             <script>
                 let previous = document.querySelector('#pre');
                 let play = document.querySelector('#play');
                 let next = document.querySelector('#next');
@@ -529,8 +522,6 @@
                     }
                 }
             </script>
-
->>>>>>> Stashed changes
             <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
             <script src="/user/assets/vendors/js/vendor.bundle.base.js"></script>
