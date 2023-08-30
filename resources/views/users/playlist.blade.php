@@ -14,8 +14,12 @@
                                     <a href="{{ route('detailPlaylist', $item->code) }}"
                                         class="card card-scroll coba text-decoration-none">
                                         <div class="card-content">
-                                            <img src="{{ asset('storage/' . $item->images) }}"
-                                                class="img-fluid rounded-1 try" style="border-radius: 15px">
+                                            <div class="kotaktetap">
+                                                <img src="{{ asset('storage/' . $item->images) }}"
+                                                class="img-fluid rounded-1 try">
+                                            </div>
+                                            {{-- <img src="{{ asset('storage/' . $item->images) }}"
+                                                class="img-fluid rounded-1 try" style="border-radius: 15px"> --}}
                                             <h4 class="mt-2 judul">{{ $item->name }}</h4>
                                             <p class="teks">{{ $item->deskripsi === 'none' ? '' : "$item->deskripsi" }}
                                             </p>
@@ -35,8 +39,12 @@
                                     <a href="{{ route('detailPlaylist', $item->code) }}"
                                         class="card card-scroll coba text-decoration-none">
                                         <div class="card-content">
-                                            <img src="{{ asset('storage/' . $item->images) }}"
-                                                class="img-fluid rounded-1 try" style="border-radius: 15px">
+                                            <div class="kotaktetap">
+                                                <img src="{{ asset('storage/' . $item->images) }}"
+                                                class="img-fluid rounded-1 try">
+                                            </div>
+                                            {{-- <img src="{{ asset('storage/' . $item->images) }}"
+                                                class="img-fluid rounded-1 try" style="border-radius: 15px"> --}}
                                             <h4 class="mt-2 judul">{{ $item->name }}</h4>
                                             <p class="teks">{{ $item->deskripsi === 'none' ? '' : "$item->deskripsi" }}
                                             </p>

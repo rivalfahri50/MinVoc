@@ -22,7 +22,71 @@
         body {
             font-family: 'Poppins', sans-serif;
         }
+
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            width: 100%;
+            max-width: 400px; /* Set the maximum width as needed */
+        }
+
+        /* Style Untuk search input */
+        .search-input {
+            border-radius: 15px;
+            border: 1px solid #eaeaea;
+            padding: 5px 10px;
+            width: 100%;
+        }
+
+        /* Style Untuk search results */
+        #search-results {
+            list-style: none;
+            position: absolute;
+            top: 60px;
+            left: 30px;
+            width: 52%;
+            background-color: white;
+            border: 1.5px solid #eaeaea;
+            padding: 10px;
+            display: none;
+            border-radius: 10px;
+            font-size: 15px
+        }
+
+
+        /* Style Untuk Ukuran foto profil */
+        .profile-picture {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 10px;
+        }
+
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
     </style>
+    <script>
+        // INI SCRIPT UNTUK HASIL SEARCH TAMPIL/TIDAK
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchInput = document.getElementById("search");
+            const searchResults = document.getElementById("search-results");
+
+            searchInput.addEventListener("input", function () {
+                if (searchInput.value.trim() !== "") {
+                    searchResults.style.display = "block";
+                } else {
+                    searchResults.style.display = "none";
+                }
+            });
+        });
+    </script>
 </head>
 
 <body>
@@ -149,11 +213,10 @@
                                                 stroke="#957DAD" stroke-width="2" stroke-linecap="round" />
                                         </svg>
                                     </span>
-                                    <input type="text" id="search" class="form-control" placeholder="cari di sini"
-                                        style="border-radius: 0px 15px 15px 0px">
-                                    </div>
-                                </form>
-                                <ul id="search-results"></ul>
+                                    <input type="text" id="search" class="form-control" placeholder="cari di sini" style="border-radius: 0px 15px 15px 0px">
+                                </div>
+                            </form>
+                            <ul id="search-results"></ul>
                         </li>
                     </ul>
                     <ul class="navbar-nav navbar-nav-right">
@@ -202,19 +265,18 @@
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
-                                <div class="navbar-profile">
-                                    <img class="img-xs rounded-circle"
-                                        src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
+                                <div class="navbar-profile profile-picture">
+                                    <img class="img-xs rounded-circle" src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
                                 </div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                                 aria-labelledby="profileDropdown">
-                                <div class="p-3 mb-0 gap-3"
-                                    style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
-                                    <img class="img-xs rounded-circle"
-                                        src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
-                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ auth()->user()->name }}
-                                    </p>
+                                <div class="p-3 mb-0 gap-3" style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
+                                    <div class="profile-picture">
+                                        <img class="img-xs rounded-circle" src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
+                                    </div>
+                                    {{-- <img class="img-xs rounded-circle" src="{{ asset('storage/' . auth()->user()->avatar) }}" alt=""> --}}
+                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ auth()->user()->name }}</p>
                                 </div>
                                 <a href="/pengguna/profile" class="dropdown-item preview-item">
                                     <div class="preview-thumbnail">
