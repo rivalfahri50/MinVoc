@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\artist;
+use App\Models\genre;
 use App\Models\playlist;
 use App\Models\song;
 use App\Models\User;
@@ -20,8 +21,9 @@ class penggunaController extends Controller
     {
         $title = "MusiCave";
         $songs = song::all();
+        $genres = genre::all();
         $artist = artist::with('user')->get();
-        return response()->view('users.index', compact('title', 'songs', 'artist'));
+        return response()->view('users.index', compact('title', 'songs', 'artist', 'genres'));
     }
 
     protected function pencarian(): Response
@@ -70,10 +72,11 @@ class penggunaController extends Controller
         return response()->view('users.billboard.album', compact('title'));
     }
 
-    protected function kategori(): Response
+    protected function kategori(string $code): Response
     {
         $title = "MusiCave";
-        return response()->view('users.kategori.kategori', compact('title'));
+        $genre = genre::where('code', $code)->first();
+        return response()->view('users.kategori.kategori', compact('title', 'genre'));
     }
 
     protected function buatPlaylist(): Response
@@ -277,6 +280,25 @@ class penggunaController extends Controller
         return response()->json(['results' => $results]);
     }
 
+    protected function like(Request $request)
+    {
+        return response()->json(['liked' => true]);
+    }
+
+    protected function filter(Request $request)
+    {
+        $tanggal = $request->input('tanggal');
+        $bulan = $request->input('bulan');
+        $tahun = $request->input('tahun');
+
+        // Lakukan filter data berdasarkan tanggal, bulan, dan tahun
+        $filteredData = song::where('tanggal', $tanggal)
+            ->where('bulan', $bulan)
+            ->where('tahun', $tahun)
+            ->get();
+
+        return response()->json(['data' => $filteredData]);
+    }
 
     protected function logout(Request $request)
     {

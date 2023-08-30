@@ -8,30 +8,18 @@
                 <div class="col-md-12 grid-margin stretch-card">
                     <h3 class="card-title mt-2 judul" style="font-size: 20px; font-weight: 600">Kategori</h3>
                     <div class="cards">
-                      <a href="kategori/pop.html" class="card card-scroll">
-                        <img src="https://planetmusiksite.files.wordpress.com/2016/10/top-rock-songs.jpg" class="img-fluid rounded-4 this">
-                      </a>
-                      <a href="#" class="card card-scroll">
-                        <img src="https://planetmusiksite.files.wordpress.com/2016/10/top-rock-songs.jpg" class="img-fluid rounded-4 this">
-                      </a>
-                      <a href="#" class="card card-scroll">
-                        <img src="https://planetmusiksite.files.wordpress.com/2016/10/top-rock-songs.jpg" class="img-fluid rounded-4 this">
-                      </a>
-                      <a href="#" class="card card-scroll">
-                        <img src="https://planetmusiksite.files.wordpress.com/2016/10/top-rock-songs.jpg" class="img-fluid rounded-4 this">
-                      </a>
-                      <a href="#" class="card card-scroll">
-                        <img src="https://planetmusiksite.files.wordpress.com/2016/10/top-rock-songs.jpg" class="img-fluid rounded-4 this">
-                      </a>
-                      <a href="#" class="card card-scroll">
-                        <img src="https://planetmusiksite.files.wordpress.com/2016/10/top-rock-songs.jpg" class="img-fluid rounded-4 this">
-                      </a>
+                        @foreach ($genres as $item)
+                            <a href="/pengguna/kategori/{{ $item->code }}" class="card card-scroll">
+                                <img src="{{ asset('storage/' . $item->images) }}"
+                                    class="img-fluid rounded-4 this">
+                            </a>
+                        @endforeach
                     </div>
                 </div>
                 <div class="col-md-7">
                     <div class="card border-0 bg-dark coba">
                         <div id="carouselExampleAutoplaying" class="carousel slide carousel-fade" data-bs-ride="carousel">
-                                <div class="carousel-inner">
+                            <div class="carousel-inner">
                                 <div class="carousel-item active" data-bs-interval="2000">
                                     <a href="billboard/billboard.html" class="image-container">
                                         <img src="/user/assets/images/dashboard/img_3.jpg" class="d-block try"
@@ -79,7 +67,7 @@
                                 <div class="col-12">
                                     <div class="preview-list">
                                         @php
-                                            $i = 0
+                                            $i = 0;
                                         @endphp
                                         @foreach ($songs as $item)
                                             <div class="preview-item">
@@ -87,14 +75,15 @@
                                                     <img src="{{ asset('storage/' . $item->image) }}" width="10%">
                                                 </div>
                                                 <div class="preview-item-content d-sm-flex flex-grow">
-                                                    <a href="#lagu-diputar" class="flex-grow text-decoration-none link" onclick="putar({{$i++}})">
+                                                    <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
+                                                        onclick="putar({{ $i++ }})">
                                                         <h6 class="preview-subject">{{ $item->judul }}</h6>
                                                         <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
                                                     </a>
                                                 </div>
                                                 <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                     <div class="text-group align-items-center">
-                                                        <i onclick="myFunction(this)" class="far fa-heart pr-2"></i>
+                                                        <i onclick="toggleLike({{ $item->id }},this)" class="far fa-heart pr-2"></i>
                                                         <p style="pointer-events: none;">{{ $item->waktu }}</p>
                                                         <p style="pointer-events: none;" style="color: #957dad"><svg
                                                                 width="22" height="6" viewBox="0 0 22 6"
@@ -104,7 +93,6 @@
                                                                     fill="#957DAD" />
                                                             </svg>
                                                         </p>
-                                                        {{-- <i class="fas fa-ellipsis-v"></i> --}}
                                                     </div>
                                                 </div>
                                             </div>

@@ -11,19 +11,20 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 
     <link rel="stylesheet" href="/user/assets/css/style.css">
-<<<<<<< Updated upstream
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <link rel="stylesheet" href="/user/assets/vendors/mdi/css/materialdesignicons.min.css">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-=======
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
->>>>>>> Stashed changes
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ asset('style.css') }}">
     <link rel="shortcut icon" href="/image/favicon.svg" type="image/x-icon">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,400;0,500;1,100;1,200&display=swap');
+
         body {
             font-family: 'Poppins', sans-serif;
         }
@@ -154,17 +155,17 @@
                                                 stroke="#957DAD" stroke-width="2" stroke-linecap="round" />
                                         </svg>
                                     </span>
-                                    <input type="text" id="search" class="form-control" placeholder="cari di sini"
-                                        style="border-radius: 0px 15px 15px 0px">
-                                    </div>
-                                </form>
-                                <ul id="search-results"></ul>
+                                    <input type="text" id="search" class="form-control"
+                                        placeholder="cari di sini" style="border-radius: 0px 15px 15px 0px">
+                                </div>
+                            </form>
+                            <ul id="search-results"></ul>
                         </li>
                     </ul>
                     <ul class="navbar-nav navbar-nav-right">
                         <li class="nav-item dropdown">
-                            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
-                                data-toggle="dropdown">
+                            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown"
+                                href="#" data-toggle="dropdown">
                                 <i class="mdi mdi-bell"></i>
                                 <span class="count bg-danger"></span>
                             </a>
@@ -255,41 +256,37 @@
 
             <script>
                 $(document).ready(function() {
-                    $('#search').on('keyup', function() {
-                        var query = $(this).val();
-                        $.ajax({
-                            url: '/pengguna/search/',
-                            type: 'GET',
-                            data: {
-                                query: query
-                            },
-                            dataType: 'json',
-                            success: function(response) {
-                                var results = response.results;
-                                var $searchResults = $('#search-results');
-                                $searchResults.empty();
-
-                                $.each(results, function(index, result) {
-                                    $searchResults.append('<li>' + result.name + '</li>');
-                                });
-                            }
-                        });
-                    });
-                });
-
-                $(document).ready(function() {
                     $('.menu-arrow').click(function() {
                         $(this).find('i').toggleClass('mdi-chevron-right mdi-chevron-down');
                     });
                 });
 
-                function myFunction(x) {
-                    x.classList.toggle("far");
-                    x.classList.toggle("fas");
-                    x.classList.toggle("warna-kostum-like");
+                function toggleLike(itemID, element) {
+                    const isLiked = element.classList.contains("fas");
+                    $.ajax({
+                        type: "GET",
+                        url: "/pengguna/like",
+                        data: {
+                            item_id: itemID,
+                            liked: !isLiked
+                        },
+                        console.log(data);
+                        success: function(response) {
+                            if (response.liked) {
+                                element.classList.add("fas", "warna-kostum-like");
+                                element.classList.remove("far");
+                            } else {
+                                element.classList.add("far");
+                                element.classList.remove("fas", "warna-kostum-like");
+                            }
+                        },
+                        error: function(error) {
+                            console.error("Error:", error);
+                        }
+                    });
                 }
             </script>
-             <script>
+            <script>
                 let previous = document.querySelector('#pre');
                 let play = document.querySelector('#play');
                 let next = document.querySelector('#next');
@@ -322,7 +319,7 @@
                 let All_song = [];
 
                 function ambilDataLagu() {
-                    fetch('/ambil-lagu')
+                    fetch('/pengguna/ambil-lagu')
                         .then(response => response.json())
                         .then(data => {
                             All_song = data.map(lagu => {

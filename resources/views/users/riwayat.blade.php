@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="col-lg-12 grid-margin stretch-card">
                     <div class="row">
-                        <div class="col-4">
+                        <div class="col-3">
                             <div class="dropdown">
                                 <button class="btn dropdown-toggle full-width-btn" type="button" id="tanggalDropdown"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -19,7 +19,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-4">
+                        <div class="col-3">
                             <div class="dropdown">
                                 <button class="btn dropdown-toggle full-width-btn" type="button" id="bulanDropdown"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -31,7 +31,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-4">
+                        <div class="col-3">
                             <div class="dropdown">
                                 <button class="btn dropdown-toggle full-width-btn" type="button" id="tahunDropdown"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -125,7 +125,6 @@
             }, (_, i) => (i + 1).toString());
             populateDropdown("tanggalDropdown", tanggalOptions);
 
-            // Isi dropdown bulan
             var bulanOptions = [
                 "Januari", "Februari", "Maret", "April", "Mei", "Juni",
                 "Juli", "Agustus", "September", "Oktober", "November", "Desember"
@@ -137,7 +136,31 @@
                 length: tahunSekarang - 1999
             }, (_, i) => (2000 + i).toString());
             populateDropdown("tahunDropdown", tahunOptions);
+
+            $("#filterButton").click(function() {
+                var filterData = {
+                    tanggal: $("#tanggalDropdown").val(),
+                    bulan: $("#bulanDropdown").val(),
+                    tahun: $("#tahunDropdown").val(),
+                };
+
+                console.log(filterData);
+
+                $.ajax({
+                    type: "POST",
+                    url: "/pengguna/filter", // Sesuaikan dengan URL endpoint Anda
+                    data: filterData,
+                    success: function(response) {
+                        // Mengupdate tampilan dengan data yang sesuai
+                        $("#filteredData").html(response.data);
+                    },
+                    error: function(err) {
+                        console.error(err);
+                    }
+                });
+            });
         });
+
 
         $(document).ready(function() {
             var itemsPerPage = 5;
