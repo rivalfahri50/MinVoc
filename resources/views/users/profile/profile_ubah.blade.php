@@ -3,36 +3,42 @@
 @section('content')
 <style>
     .cobai {
-            width: 150px;
-            height: 140px;
-            border-radius: 100px;
-            position: relative;
-            overflow: hidden;
-            border: none;
-            color: #957DAD;
-        }
-        .cob {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            width: 100%;
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            margin: 0;
-        }
+        width: 130px;
+        height: 130px;
+        border-radius: 100px;
+        position: relative;
+        overflow: hidden;
+        border: none;
+        color: #957DAD;
+    }
 
-        .upload-label i {
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
+    .cob {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        margin: 0;
+    }
 
-        .form-i {
-            height: 25px;
-            border-radius: 8px;
-        }
+    .cob img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+
+
+    .upload-label i {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .form-i {
+        height: 25px;
+        border-radius: 8px;
+    }
 </style>
     <div class="main-panel">
         <div class="content-wrapper">
@@ -49,7 +55,7 @@
                             <h4 style="font-size: 20px; font-weight: 600; color: #957dad">Foto profil</h4>
                             <div class="rounded-circle">
                                 <label id="tampil_gambar" class="cobai cob">
-                                    <img id="profile-image" src="{{ asset('storage/' . $user[0]->avatar) }}" class="rounded-circle" width="150">
+                                    <img id="profile-image" src="{{ asset('storage/' . $user[0]->avatar) }}" class="rounded-circle" width="150" height="150">
                                 </label>
                             </div>
                         </div>

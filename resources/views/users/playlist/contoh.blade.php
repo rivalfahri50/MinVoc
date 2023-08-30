@@ -9,7 +9,8 @@
                 <div class="col-md-12 stretch-card">
                     <div class="custom-container">
                         <div class="row">
-                            @if ($playlistDetail->user_id === auth()->user()->id)
+                            <div class="col-3">
+                                @if ($playlistDetail->user_id === auth()->user()->id)
                                 <div class="col-3">
                                     <a href="#popup" class="card coba">
                                         <img src="{{ asset('storage/' . $playlistDetail->images) }}" alt="Gambar">
@@ -17,11 +18,34 @@
                                 </div>
                             @else
                                 <div class="col-3">
-                                    <img src="{{ asset('storage/' . $playlistDetail->images) }}" alt="Gambar">
+                                    <div class="card coba">
+                                        <img src="{{ asset('storage/' . $playlistDetail->images) }}" alt="Gambar">
+                                    </div>
                                 </div>
                             @endif
+                            </div>
+                            {{-- @if ($playlistDetail->user_id === auth()->user()->id)
+                                <div class="col-3">
+                                    <a href="#popup" class="card coba">
+                                        <img src="{{ asset('storage/' . $playlistDetail->images) }}" alt="Gambar" width="100">
+                                    </a>
+                                </div>
+                            @else
+                                <div class="col-3">
+                                    <img src="{{ asset('storage/' . $playlistDetail->images) }}" alt="Gambar" width="100">
+                                </div>
+                            @endif --}}
+                            <div class="col-3 text-xxl-end">
+                                <div class="bottom-left-text">
+                                    <h3 class="m-0" style="font-weight: 600">{{ $playlistDetail->name }}
+                                    </h3>
+                                    <p style="font-size: 18px;">
+                                        {{ $playlistDetail->deskripsi == 'none' ? '' : "$playlistDetail->deskripsi" }}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-3 text-xxl-end">
+                        {{-- <div class="col-3 text-xxl-end">
                             <div class="bottom-left-text">
                                 <p class="m-0" style="font-size: 18px; font-weight: 500">{{ $playlistDetail->name }}
                                 </p>
@@ -29,7 +53,7 @@
                                     {{ $playlistDetail->deskripsi == 'none' ? '' : "$playlistDetail->deskripsi" }}
                                 </h3>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>

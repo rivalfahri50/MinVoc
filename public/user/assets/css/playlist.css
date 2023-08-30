@@ -71,3 +71,16 @@
         grid-column-gap: 11px;
     }
 }
+
+.kotaktetap {
+    width: 150px; /* Ganti dengan lebar yang Anda inginkan */
+    height: 150px; /* Ganti dengan tinggi yang Anda inginkan */
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.kotaktetap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
