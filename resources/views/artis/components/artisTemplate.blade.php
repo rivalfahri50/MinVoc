@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.5.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="/user/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="/user/assets/css/style.css">
     <link rel="shortcut icon" href="/image/favicon.svg" type="image/x-icon">
@@ -18,7 +21,72 @@
         body {
             font-family: 'Poppins', sans-serif;
         }
+
+        
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            width: 100%;
+            max-width: 400px;
+            /* Set the maximum width as needed */
+        }
+
+        /* Style Untuk search input */
+        .search-input {
+            border-radius: 15px;
+            border: 1px solid #eaeaea;
+            padding: 5px 10px;
+            width: 100%;
+        }
+
+        /* Style Untuk search results */
+        #search-results {
+            list-style: none;
+            position: absolute;
+            top: 60px;
+            left: 30px;
+            width: 52%;
+            background-color: white;
+            border: 1.5px solid #eaeaea;
+            padding: 10px;
+            display: none;
+            border-radius: 10px;
+            font-size: 15px
+        }
+
+
+        /* Style Untuk Ukuran foto profil */
+        .profile-picture {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 10px;
+        }
+
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     </style>
+    <script>
+        // INI SCRIPT UNTUK HASIL SEARCH TAMPIL/TIDAK
+        document.addEventListener("DOMContentLoaded", function() {
+            const searchInput = document.getElementById("search");
+            const searchResults = document.getElementById("search-results");
+
+            searchInput.addEventListener("input", function() {
+                if (searchInput.value.trim() !== "") {
+                    searchResults.style.display = "block";
+                } else {
+                    searchResults.style.display = "none";
+                }
+            });
+        });
+    </script>
 </head>
 
 <body>
@@ -39,20 +107,29 @@
                     </a>
                 </li>
                 <li class="nav-item menu-items">
-                    <a class="nav-link" href="/artis/pencarian">
-                        <span class="menu-icon">
-                            <i class="mdi mdi-magnify"></i>
-                        </span>
-                        <span class="menu-title">Pencarian</span>
-                    </a>
-                </li>
-                <li class="nav-item menu-items">
                     <a class="nav-link" href="/artis/playlist">
                         <span class="menu-icon">
                             <i class="mdi mdi-music"></i>
                         </span>
                         <span class="menu-title">Playlist</span>
+                        <a href="#ui-basic" data-toggle="collapse" aria-expanded="false" aria-controls="ui-basic">
+                            <span class="menu-arrow">
+                                <i class="mdi mdi-chevron-right"></i>
+                            </span>
+                        </a>
                     </a>
+                    <div class="collapse" id="ui-basic">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('buat.playlist.artis') }}">
+                                    <span class="menu-icon">
+                                        <i class="mdi mdi-plus-circle-outline"></i>
+                                    </span>
+                                    <span class="menu-title">Buat Playlist</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="/artis/kolaborasi">
@@ -69,11 +146,19 @@
                     </a>
                 </li>
                 <li class="nav-item menu-items">
-                    <a class="nav-link" href="/artis/riwayat">
+                    <a class="nav-link" href="/artis/penghasilan">
                         <span class="menu-icon">
                             <img width="30" src="/images/penghasilan.svg" alt="" srcset="">
                         </span>
                         <span class="menu-title">Penghasilan</span>
+                    </a>
+                </li>
+                <li class="nav-item menu-items">
+                    <a class="nav-link" href="/artis/verified">
+                        <span class="menu-icon">
+                            <i class="mdi mdi-account-check-outline"></i>
+                        </span>
+                        <span class="menu-title">Verified</span>
                     </a>
                 </li>
                 <li class="nav-item menu-items">
@@ -91,28 +176,32 @@
             <nav class="navbar p-0 fixed-top d-flex flex-row">
                 <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
                     <ul class="navbar-nav w-75">
-                        <li class="nav-item w-75">
-                            <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text" style="border-radius: 15px 0px 0px 15px; border: 1px solid #eaeaea">
-                                        <svg width="19" height="19" viewBox="0 0 19 19" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M18 18L13.9865 13.9795M16.2105 8.60526C16.2105 12.8055 12.8055 16.2105 8.60526 16.2105C4.40499 16.2105 1 12.8055 1 8.60526C1 4.40499 4.40499 1 8.60526 1C12.8055 1 16.2105 4.40499 16.2105 8.60526Z"
-                                                stroke="#957DAD" stroke-width="2" stroke-linecap="round" />
-                                        </svg>
-                                    </span>
-                                    <input type="text" class="form-control" placeholder="cari di sini"
-                                        style="border-radius: 0px 15px 15px 0px">
-                                </div>
-                            </form>
-                        </li>
+                        <ul class="navbar-nav w-75">
+                            <li class="nav-item w-75">
+                                <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text"
+                                            style="border-radius: 15px 0px 0px 15px; border: 1px solid #eaeaea">
+                                            <svg width="19" height="19" viewBox="0 0 19 19" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M18 18L13.9865 13.9795M16.2105 8.60526C16.2105 12.8055 12.8055 16.2105 8.60526 16.2105C4.40499 16.2105 1 12.8055 1 8.60526C1 4.40499 4.40499 1 8.60526 1C12.8055 1 16.2105 4.40499 16.2105 8.60526Z"
+                                                    stroke="#957DAD" stroke-width="2" stroke-linecap="round" />
+                                            </svg>
+                                        </span>
+                                        <input type="text" id="search" class="form-control"
+                                            placeholder="cari di sini" style="border-radius: 0px 15px 15px 0px">
+                                    </div>
+                                </form>
+                                <ul id="search-results"></ul>
+                            </li>
+                        </ul>
 
                     </ul>
                     <ul class="navbar-nav navbar-nav-right">
                         <li class="nav-item dropdown">
-                            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
-                                data-toggle="dropdown">
+                            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown"
+                                href="#" data-toggle="dropdown">
                                 <i class="mdi mdi-bell"></i>
                                 <span class="count bg-danger"></span>
                             </a>
@@ -156,7 +245,7 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                                 <div class="navbar-profile">
-                                    <img class="img-xs rounded-circle" src="/user/assets/images/faces/face15.jpg"
+                                    <img class="img-xs rounded-circle" src="{{ asset('storage/' . auth()->user()->avatar) }}"
                                         alt="">
                                 </div>
                             </a>
@@ -164,9 +253,9 @@
                                 aria-labelledby="profileDropdown">
                                 <div class="p-3 mb-0 gap-3"
                                     style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
-                                    <img class="img-xs rounded-circle" src="/user/assets/images/faces/face15.jpg"
+                                    <img class="img-xs rounded-circle" src="{{ asset('storage/' . auth()->user()->avatar) }}"
                                         alt="">
-                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">Henry Klein</p>
+                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ auth()->user()->name }}</p>
                                 </div>
                                 <a href="/artis/profile" class="dropdown-item preview-item">
                                     <div class="preview-thumbnail">
@@ -199,6 +288,31 @@
             </nav>
 
             @yield('content')
+
+            <script>
+                $(document).ready(function() {
+                    $('#search').on('keyup', function() {
+                        var query = $(this).val();
+                        $.ajax({
+                            url: '/artis/search/',
+                            type: 'GET',
+                            data: {
+                                query: query
+                            },
+                            dataType: 'json',
+                            success: function(response) {
+                                var results = response.results;
+                                var $searchResults = $('#search-results');
+                                $searchResults.empty();
+
+                                $.each(results, function(index, result) {
+                                    $searchResults.append('<li>' + result.name + '</li>');
+                                });
+                            }
+                        });
+                    });
+                });
+            </script>
 
             <script>
                 function myFunction(x) {

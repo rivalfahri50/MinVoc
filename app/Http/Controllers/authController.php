@@ -101,51 +101,43 @@ class authController extends Controller
 
     protected function storeSignIn(Request $request)
     {
-        $validate = Validator::make(
-            $request->only('name', 'password', 'kebijakan_privasi'),
-            [
-                'name' => 'required|string|max:50|exists:users,name',
-                'password' => 'required|string|min:6',
-                'kebijakan_privasi' => 'required',
-            ],
-            [
-                'name.required' => 'Kolom nama wajib diisi.',
-                'name.string' => 'Kolom nama harus berupa teks.',
-                'kebijakan_privasi.required' => 'Anda harus menyetujui kebijakan privasi.',
-                'name.max' => 'Panjang nama tidak boleh lebih dari :max karakter.',
-                'name.exists' => 'Nama yang dimasukkan tidak valid.',
-                'password.required' => 'Kolom password wajib diisi.',
-                'password.string' => 'Kolom password harus berupa teks.',
-                'password.min' => 'Panjang password minimal :min karakter.',
-            ]
-        );
-
-        if ($validate->fails()) {
-            return redirect()->back()
-                ->withErrors($validate)
-                ->withInput();
-        }
-
-
         $credentials = $request->only('name', 'password');
 
+        $validator = Validator::make($credentials, [
+            'name' => 'required|string|max:50|exists:users,name',
+            'password' => 'required|string|min:6',
+        ], [
+            'name.required' => 'Kolom nama wajib diisi.',
+            'name.string' => 'Kolom nama harus berupa teks.',
+            'name.max' => 'Panjang nama tidak boleh lebih dari :max karakter.',
+            'name.exists' => 'Nama yang dimasukkan tidak valid.',
+            'password.required' => 'Kolom password wajib diisi.',
+            'password.string' => 'Kolom password harus berupa teks.',
+            'password.min' => 'Panjang password minimal :min karakter.',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         if (Auth::attempt($credentials)) {
-            if (auth()->user()->role_id == 3) {
-            return redirect()->intended('/pengguna/dashboard');
-            } else if (auth()->user()->role_id == 2) {
-                return redirect()->intended('/artis/dashboard');
-            } else if (auth()->user()->role_id == 1) {
-                return redirect()->intended('/artis-verified/dashboard');
-            } else if (auth()->user()->role_id == 4) {
-                if (auth()->guard('admin')->attempt($credentials)) {
-                    return redirect()->intended('/admin/dashboard');
-                }
+            $user = auth()->user();
+            switch ($user->role_id) {
+                case 3:
+                    return redirect()->intended(route('user.dashboard'));
+                case 2:
+                    return redirect()->intended(route('artist.dashboard'));
+                case 1:
+                    return redirect()->intended(route('artist-verified.dashboard'));
+                case 4:
+                    if (auth('admin')->attempt($credentials)) {
+                        return redirect()->intended(route('admin.dashboard'));
+                    }
+                    break;
             }
         }
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ]);
+        return back()->withErrors(['password' => 'Invalid credentials.']);
     }
 
     protected function storeSignUp(Request $request)

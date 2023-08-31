@@ -15,13 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('code', 100);
             $table->string('judul');
-            $table->string('genre');
             $table->string('audio');
             $table->string('image');
             $table->string('waktu')->default("none");
             $table->integer('didengar')->default(0);
             $table->integer('likes')->default(0);
-            // $table->fore
             $table->foreignId('artist_id')->constrained('artists');
             $table->boolean('is_approved')->default(false);
             $table->timestamps();

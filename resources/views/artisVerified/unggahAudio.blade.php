@@ -39,8 +39,9 @@
                             </div>
                             <div class="col-md-6">
                                 <select name="genre" class="form-select" aria-label="Default select example">
-                                    <option value="pop" value="{{ old('image') }}">pop</option>
-                                    <option value="pop" value="{{ old('image') }}">pop</option>
+                                    @foreach ($genres as $item)
+                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    @endforeach
                                 </select>
                                 @error('genre')
                                     <div class="text-danger">{{ $message }}</div>
@@ -76,19 +77,21 @@
                                             <span class="d-flex flex-row">
                                                 <span class="d-flex">
                                                     <span>
-                                                        <img width="50"
-                                                            src="{{ asset('storage/' . $item->image) }}"
+                                                        <img width="50" src="{{ asset('storage/' . $item->image) }}"
                                                             alt="">
                                                     </span>
                                                     <span class="d-flex flex-column ml-2">
                                                         <span
                                                             style="font-size: 15px; color: #6C6C6C">{{ $item->judul }}</span>
-                                                        <span style="font-size: 13px; color: #6C6C6C">{{ $item->artist->user->name }}</span>
+                                                        <span
+                                                            style="font-size: 13px; color: #6C6C6C">{{ $item->artist->user->name }}</span>
                                                     </span>
                                                 </span>
                                             </span>
-                                            <span style="font-size: 15px; color: #6C6C6C">{{ $item->created_at->toDateString() }}</span>
-                                            <span style="font-size: 15px; color: #F7941E">{{ ($item->is_approved == 0) ? "Pending" : "Publish" }}</span>
+                                            <span
+                                                style="font-size: 15px; color: #6C6C6C">{{ $item->created_at->toDateString() }}</span>
+                                            <span
+                                                style="font-size: 15px; color: #F7941E">{{ $item->is_approved == 0 ? 'Pending' : 'Publish' }}</span>
                                         </li>
                                     @endforeach
                                 </ul>

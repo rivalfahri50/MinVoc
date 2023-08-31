@@ -18,6 +18,7 @@ class song extends Model
         'waktu',
         'likes',
         'didengar',
+        'genre_id',
         'artist_id',
         'is_approved',
     ];
@@ -25,5 +26,10 @@ class song extends Model
     public function artist()
     {
         return $this->hasOne(artist::class, 'id', 'artist_id');
+    }
+
+    public function genre()
+    {
+        return $this->hasOne(genre::class, 'id', 'genre_id');
     }
 }

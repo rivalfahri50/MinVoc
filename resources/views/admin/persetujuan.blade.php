@@ -1,0 +1,255 @@
+@extends('admin.components.adminTemplate')
+@section('content')
+    <link rel="stylesheet" href="/admin/assets/css/persetujuan.css">
+    <!-- partial | ISI -->
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <h3 class="judul mb-4">Persetujuan Unggah Lagu</h3>
+            <div class="row">
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="dropdown">
+                                <button class="btn dropdown-toggle full-width-btn" type="button" id="tanggalDropdown"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Tanggal
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-scroll scrollbar-down"
+                                    aria-labelledby="tanggalDropdown">
+                                    <!-- Opsi dropdown akan ditambahkan secara dinamis menggunakan JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="dropdown">
+                                <button class="btn dropdown-toggle full-width-btn" type="button" id="bulanDropdown"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Bulan
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-scroll scrollbar-down"
+                                    aria-labelledby="bulanDropdown">
+                                    <!-- Opsi dropdown akan ditambahkan secara dinamis menggunakan JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="dropdown">
+                                <button class="btn dropdown-toggle full-width-btn" type="button" id="tahunDropdown"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Tahun
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-scroll scrollbar-down"
+                                    aria-labelledby="tahunDropdown">
+                                    <!-- Opsi dropdown akan ditambahkan secara dinamis menggunakan JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="table-container">
+                        <table class="table">
+                            <thead class="table-header">
+                                <tr class="table-row">
+                                    <th class="table-cell">Judul Lagu</th>
+                                    <th class="table-cell">Tanggal Pengajuan</th>
+                                    <th class="table-cell">Status</th>
+                                    <th class="table-cell">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($persetujuan as $item)
+                                    <tr class="table-row">
+                                        <td class="table-cell">
+                                            <div class="cell-content">
+                                                <img src="{{ asset('storage/' . $item->image) }}" alt="Face"
+                                                    class="avatar">
+                                                <div>
+                                                    <h6>{{ $item->judul }}</h6>
+                                                    <p class="text-muted m-0">{{ $item->artist->user->name }}</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="table-cell">{{ $item->created_at }}</td>
+                                        <td class="table-cell text-warning">Pending</td>
+                                        <td class="table-cell">
+                                            <button class="btn btnicon view-button" type="button" data-bs-toggle="modal"
+                                                data-bs-target="#staticBackdrop-{{ $item->code }}">
+                                                <i class="far fa-eye text-info"></i>
+                                            </button>
+                                            <button class="btn btnicon">
+                                                <i class="far fa-times-circle text-danger"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <div class="text-center">
+                        <div class="text-center">
+                            <ul class="pagination justify-content-center">
+                                <!-- Item-item pagination akan ditambahkan secara dinamis menggunakan JavaScript -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- partial -->
+    </div>
+
+    <!-- popup -->
+    @foreach ($persetujuan as $item)
+        <div id="staticBackdrop-{{ $item->code }}">
+            <div id="popup">
+                <div class="card window">
+                    <div class="card-body">
+                        <a href="#" class="close-button far fa-times-circle"></a>
+                        <h3 class="judul">Persetujuan Unggah Lagu</h3>
+                        <div class="row mt-4">
+                            <div class="col-md-12">
+                                <h5 class="judul">Tanggal Pengajuan</h5>
+                                <p class="teksbiasa">{{ $item->code }}</p>
+                            </div>
+                            <div class="col-md-12 mb-4">
+                                {{-- <h5 class="judul">{{ $show->judul }}</h5>
+                        <div class="cell-content">
+                            <img src="{{ 'storage/' . $show->image }}" alt="Face" class="avatar"> --}}
+                                <div>
+                                    <h6>Labirin</h6>
+                                    <p class="text-muted m-0">tulus</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-md-right">
+                            <a href="#" class="btn" type="submit">Putar Lagu</a>
+                            <a href="persetujuan.html" class="btn" type="submit">Setujui</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    @endforeach
+
+    </div>
+    <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.view-button').click(function() {
+                // Dapatkan ID data dari tombol "Lihat" yang ditekan
+                var itemId = $(this).data('id');
+
+                // Dapatkan data yang sesuai dari tabel berdasarkan ID
+                var itemData = <?php echo json_encode($persetujuan->toArray()); ?>.filter(function(item) {
+                    return item.id === itemId;
+                })[0];
+
+                // Setel data ke dalam elemen-elemen di dalam pop-up
+                $('#popup h3.judul').text('Persetujuan Unggah Lagu');
+                $('#popup .teksbiasa').text(itemData.created_at);
+                $('#popup h6').text(itemData.judul);
+                $('#popup p.text-muted').text(itemData.artist.user.name);
+
+                // Tampilkan pop-up
+                $('#popup').show();
+            });
+
+            // Tambahkan fungsi untuk menutup pop-up saat tombol "Tutup" ditekan
+            $('#popup .close-button').click(function() {
+                $('#popup').hide();
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            // Isi menu dropdown dengan opsi secara dinamis
+            function populateDropdown(id, options) {
+                var dropdown = $("#" + id + " + .dropdown-menu");
+                options.forEach(function(option) {
+                    dropdown.append("<a class='dropdown-item' href='#'>" + option + "</a>");
+                });
+            }
+
+            // Isi dropdown tanggal
+            var tanggalOptions = Array.from({
+                length: 31
+            }, (_, i) => (i + 1).toString());
+            populateDropdown("tanggalDropdown", tanggalOptions);
+
+            // Isi dropdown bulan
+            var bulanOptions = [
+                "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+            ];
+            populateDropdown("bulanDropdown", bulanOptions);
+
+            // Isi dropdown tahun (dari tahun 2000 hingga tahun sekarang)
+            var tahunSekarang = new Date().getFullYear();
+            var tahunOptions = Array.from({
+                length: tahunSekarang - 1999
+            }, (_, i) => (2000 + i).toString());
+            populateDropdown("tahunDropdown", tahunOptions);
+        });
+
+        /*===================================*/
+
+        $(document).ready(function() {
+            var itemsPerPage = 5;
+
+            // Menyembunyikan semua baris tabel
+            $(".table-row").hide();
+
+
+            // Menampilkan 'itemsPerPage' baris pertama
+            $(".table-row").slice(0, itemsPerPage).show();
+
+
+            // Menghitung jumlah halaman
+            var numPages = Math.ceil($(".table-row").length / itemsPerPage);
+
+
+            // Menambahkan item-item paginatio
+            for (var i = 1; i <= numPages; i++) {
+                $(".pagination").append("<li class='page-item'><a class='page-link' href='#'>" + i + "</a></li>");
+            }
+
+            // Menyembunyikan atau menampilkan pagination berdasarkan jumlah halaman
+            if (numPages <= 1) {
+                $(".pagination").hide();
+            }
+
+            // Mengatur pengklikan pagination
+            $(".pagination a").click(function(e) {
+                e.preventDefault();
+                var page = $(this).text();
+                var start = (page - 1) * itemsPerPage;
+                var end = start + itemsPerPage;
+                $(".table-row").hide();
+                $(".table-row").slice(start, end).show();
+                $(".pagination a").removeClass("active");
+                $(this).addClass("active");
+            });
+
+            // Menampilkan halaman sebelumnya saat tombol '<<' diklik
+            $(".pagination .prev").click(function(e) {
+                e.preventDefault();
+                var activePage = $(".pagination .active").text();
+                var prevPage = parseInt(activePage) - 1;
+                if (prevPage >= 1) {
+                    $(".pagination a").eq(prevPage - 1).click();
+                }
+            });
+        });
+    </script>
+@endsection

@@ -1,14 +1,14 @@
 @extends('artisVerified.components.artisVerifiedTemplate')
 
 @foreach ($datas as $item)
-    <div class="modal fade" id="staticBackdrop-{{ $item->code }}" data-bs-backdrop="static" data-bs-keyboard="false"
-        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="staticBackdrop-{{ $item->code }}" >
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Detail Kolaborasi</h1>
                     <button type="button" class="btn-unstyled" data-bs-dismiss="modal" aria-label="Close">
-                        <i class="mdi mdi-close-circle-outline btn-icon text-danger"></i>
+                        <i class="mdi mdi-close-circle-outline btn-icon text-danger"></i>data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"
                     </button>
                 </div>
                 <div class="modal-body ">
@@ -64,7 +64,6 @@
                     <div class="card rounded-4">
                         <div class="card-body">
                             <div class="table-responsive">
-
                                 <table class="table custom-table mt-3" style="background-color: #6c6c6c;">
                                     <thead>
                                         <tr>

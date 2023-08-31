@@ -1,88 +1,135 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
-    <style>
-        .box {
-            box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
-        }
-    </style>
-</head>
-
-<body>
-
-    <section class="vh-100" style="background-color: whitesmoke;">
-        <div class="container py-5 h-100">
-            <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                    <div class="card shadow-2-strong box" style="border-radius: 1rem;">
-                        <div class="card-body p-5">
-                            <form action="{{ route('createProject.admin') }}" method="POST">
-                                @csrf
-                                <h3 class="mb-5 text-center">Sign Up</h3>
-
-                                @if (session()->has('message'))
-                                    <div class="alert alert-danger" role="alert">
-                                        {{ session('message') }}
-                                    </div>
-                                @endif
-
-                                <div class="mb-3">
-                                    <label for="judul" class="form-label">Judul Projects</label>
-                                    <input type="text" class="form-control" id="judul" name="judul">
-                                    @error('judul')
-                                        <span>{{ $message }}</span>
-                                    @enderror
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="judul" class="form-label">Genre</label>
-                                    <select class="form-select" name="genre" aria-label="Default select example">
-                                        <option selected value="pop">Pop</option>
-                                    </select>
-                                    @error('genre')
-                                        <span>{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="mb-3">
-                                    <label for="konsep" class="form-label">Konsep</label>
-                                    <textarea class="form-control" name="konsep" id="konsep" rows="3"></textarea>
-                                    @error('konsep')
-                                        <span>{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="mb-3">
-                                    <label for="harga" class="form-label">Harga</label>
-                                    <input type="number" class="form-control" id="harga" name="harga">
-                                    @error('harga')
-                                        <span>{{ $message }}</span>
-                                    @enderror
-                                </div>
-
-                                <div class="d-flex flex-column gap-3">
-                                    <span>
-                                        sudah punya akun? <a href="/">login</a>
-                                    </span>
-                                    <button class="btn btn-primary btn-lg btn-block" type="submit">Daftar</button>
-                                </div>
-                            </form>
+@extends('admin.components.adminTemplate')
+@section('content')
+    <link rel="stylesheet" href="/admin/assets/css/dashboard.css">
+    <!-- partial | ISI -->
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <div class="row">
+                        <div class="col-2">
+                            <div class="card coba">
+                                <h3 class="angka m-0">{{ $totalPengguna }} <span class="fas fa-user fa-sm ikon"></span></h3>
+                                <h4 class="judul mb-3">Pengguna</h4>
+                                <p class="teks">Sejak 2023</p>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="card coba">
+                                <h3 class="angka m-0">{{ $totalLagu }}<span
+                                        class="fas fa-microphone-alt fa-sm ikon"></span></h3>
+                                <h4 class="judul mb-3">Lagu</h4>
+                                <p class="teks">Sejak 2023</p>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="card coba">
+                                <h3 class="angka m-0">{{ $totalArtist }} <span class="fas fa-music fa-sm ikon"></span></h3>
+                                <h4 class="judul mb-3">Artis</h4>
+                                <p class="teks">Sejak 2023</p>
+                            </div>
+                        </div>
+                        <div class="col-6 row no-gutters">
+                            <div class="card coba">
+                                <img src="assets/images/logo.svg" width="80%" height="100%" alt="logo"
+                                    class="ml-5 md-3" />
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div class="col-md-12 mb-3">
+                    <div class="card coba">
+                        <canvas id="myChart" width="800" height="300"></canvas>
+                    </div>
+                </div>
+
+
+                <div class="col-md-12">
+                    <h3 class="judul">Riwayat Persetujuan </h3>
+                    <div class="card mb-3">
+                        <div class="table-body">
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead class="table-header">
+                                        <tr class="table-row headerlengkung">
+                                            <th class="table-cell">Judul Lagu</th>
+                                            <th class="table-cell">Genre</th>
+                                            <th class="table-cell">Tanggal Pengajuan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($songs as $item)
+                                            <tr class="table-row">
+                                                <td class="table-cell">
+                                                    <div class="cell-content">
+                                                        <img src="{{ asset('storage/' . $item->images) }}" alt="Face"
+                                                            class="avatar">
+                                                        <div>
+                                                            <h6>{{ $item->judul }}</h6>
+                                                            <p class="text-muted m-0">{{ $item->artist->user->name }}</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="table-cell">{{ $item->genre }}</td>
+                                                <td class="table-cell">{{ $item->created_at->toDateString() }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- partial -->
             </div>
+            <!-- main-panel ends -->
         </div>
-    </section>
+        <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
 
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous">
+    <script>
+        function myFunction(x) {
+            x.classList.toggle("far"); // Menghapus kelas "fa fa-heart"
+            x.classList.toggle("fas"); // Menambahkan kelas "fas fa-heart"
+            x.classList.toggle("warna-kostum-like"); // Menambahkan kelas warna merah
+        }
     </script>
-</body>
-
-</html>
+    <script>
+        // Kode JavaScript untuk membuat grafik
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['January', 'February', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September',
+                    'Oktober', 'November', 'Desember'
+                ],
+                datasets: [{
+                    label: 'Pendapatan',
+                    data: [5, 3.5, 2.5, 0.5, 4.5, 1, 2, 5, 4, 2.5, 3, 1.5],
+                    backgroundColor: [
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(153, 102, 255, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(153, 102, 255, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+@endsection

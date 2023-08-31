@@ -1,0 +1,58 @@
+.card .card-body {
+    padding: 3% 5% 135px;
+}
+
+.highlight {
+    color: #957DAD;
+}
+
+.form-control:disabled {
+    background-color: #ffffff;
+    color: #6c6c6c;
+}
+
+.filecolor {
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #957DAD;
+}
+
+.gayabtn {
+    padding: 7px 80px;
+}
+
+.back {
+    background-color: transparent;
+    border: 1px solid #957DAD;
+    color: #957DAD;
+}
+
+.back:hover {
+    background-color: #957DAD;
+    color: #ffffff;
+}
+
+.judul {
+    color: #957DAD;
+    font-weight: 500;
+}
+
+.judulnottebal {
+    color: #957DAD;
+}
+
+.teks-biasa {
+    color: #6c6c6c;
+}
+
+/* Style dropdown sidebar--Mengatur tampilan menu dropdown */
+.menu-items .nav-link {
+    position: relative;
+}
+.menu-arrow {
+    color: inherit;
+    position: absolute;
+    left: 185px;
+    top: 140px;
+    transform: translateY(-50%);
+}
