@@ -113,13 +113,17 @@
             background-color: white;
             border: 1px solid red;
         }
+        
+        .button-container {
+            display: inline-block;
+        }
     </style>
 
     <div id="popup">
         <div class="card window">
             <div class="card-body">
                 <a href="#" class="close-button mdi mdi-close-circle-outline"></a>
-                <h3 class="judul">Buat Playlist</h3>
+                <h3 class="judul">Edit Playlist</h3>
                 <div>
                     <form class="row" action="{{ route('ubah.playlist', $playlistDetail->code) }}" method="POST"
                         enctype="multipart/form-data">
@@ -144,11 +148,14 @@
                             </div>
                         </div>
                         <div class="text-md-right col-md-12">
-                            <button class="btn btn-primary" type="submit">Ubah</button>
+                            <div class="button-container"> <!-- Add this container -->
+                                <button class="btn btn-primary" type="submit">Ubah</button>
+                                <button form="hapus" class="btn btn-delete" type="submit">Hapus</button>
+                            </div>
+                        </div>
                     </form>
-                    <form action="{{ route('hapus.playlist.user', $playlistDetail->code) }}" method="GET">
+                    <form id="hapus" action="{{ route('hapus.playlist.user', $playlistDetail->code) }}" method="GET">
                         @csrf
-                        <button class="btn btn-delete" type="submit">Hapus</button>
                     </form>
                 </div>
             </div>
