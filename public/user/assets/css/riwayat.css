@@ -1,31 +1,3 @@
-
-.full-width-btn {
-    width: 100%;
-    height: 40px;
-}
-
-.dropdown-menu-scroll {
-    max-height: 100px;
-    overflow-y: auto;
-    border: 1px solid #dad9d9;
-}
-
-.scrollbar-down::-webkit-scrollbar-track {
-    background-color: #ffffff;
-    border-radius: 10px;
-}
-
-.scrollbar-down::-webkit-scrollbar {
-    width: 12px;
-    background-color: #f5f5f5;
-}
-
-.scrollbar-down::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-    background-color: #957dad;
-}
-
 .table-container {
     max-width: 100%;
     overflow-x: auto;
@@ -49,15 +21,12 @@
     overflow: hidden;
     margin-bottom: 10px;
     background-color: #eaeaea;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
 }
 
 .table-cell {
     flex: 1;
     padding-left: 60px;
-    /* Adding left padding */
     text-align: left;
-    /* Left align text */
 }
 
 .table-header {
@@ -74,15 +43,25 @@
     padding: 5px 0;
 }
 
-.table-cell.genre {
-    padding-left: 190px;
-}
 
-/* Mengatur penempatan konten pada kolom Tanggal */
-.table-cell.tanggal {
-    padding-left: 100px;
-}
 
 .table-container {
     margin-bottom: 20px;
+}
+
+.table-sortable th {
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.table-sortable .th-sort-asc::after {
+    content: "\25b4";
+}
+.table-sortable .th-sort-desc::after {
+    content: "\25be";
+}
+
+.table-sortable .th-sort-asc::after, 
+.table-sortable .th-sort-desc::after {
+    margin-left: 10px;
 }

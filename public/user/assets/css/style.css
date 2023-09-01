@@ -11011,7 +11011,9 @@ pre code {
 .jsgrid .jsgrid-table td {
   padding: 0.9375rem;
   vertical-align: top;
-  border-top: 1px solid #2c2e33;
+  border-top: inherit;
+  border-bottom: inherit;
+  background-color: inherit;
 }
 
 .table thead th,
@@ -25839,9 +25841,10 @@ div.tagsinput {
 .table thead th,
 .jsgrid .jsgrid-table thead th {
   border-top: 0;
-  border-bottom-width: 1px;
-  font-weight: 500;
-  color: #6c7293;
+  border-bottom-width: inherit;
+  font-weight: inherit;
+  color: inherit;
+  background-color: inherit;
 }
 
 .table thead th i,
@@ -30339,7 +30342,7 @@ div.tagsinput span.tag a {
 }
 
 .sidebar .nav.sub-menu .nav-item .nav-link:hover {
-  color: #ffffff;
+  color: #C5B7D3;
 }
 
 .sidebar .nav.sub-menu .nav-item:hover {

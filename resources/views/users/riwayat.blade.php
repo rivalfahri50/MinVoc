@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="/user/assets/css/riwayat.css">
         <div class="content-wrapper">
             <div class="row">
-                <div class="col-lg-12 grid-margin stretch-card">
+                {{-- <div class="col-lg-12 grid-margin stretch-card">
                     <div class="row">
                         <div class="col-3">
                             <div class="dropdown">
@@ -44,56 +44,52 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <div class="col-lg-12 grid-margin stretch-card">
                     <div class="table-container">
-                        <div class="table">
-                            <div class="table-row table-header">
-                                <div class="table-cell">Nama dan Artis</div>
-                                <div class="table-cell genre">Genre</div>
-                                <div class="table-cell tanggal">Tanggal</div>
-                            </div>
-                            <div class="table-row">
-                                <div class="table-cell">
-                                    <h6>Labirin</h6>
-                                    <p class="text-muted m-0">tulus</p>
-                                </div>
-                                <div class="table-cell genre">Pop</div>
-                                <div class="table-cell tanggal">08/09/2023</div>
-                            </div>
-                            <div class="table-row">
-                                <div class="table-cell">
-                                    <h6>Labirin</h6>
-                                    <p class="text-muted m-0">tulus</p>
-                                </div>
-                                <div class="table-cell genre">Pop</div>
-                                <div class="table-cell tanggal">08/09/2023</div>
-                            </div>
-                            <div class="table-row">
-                                <div class="table-cell">
-                                    <h6>Labirin</h6>
-                                    <p class="text-muted m-0">tulus</p>
-                                </div>
-                                <div class="table-cell genre">Pop</div>
-                                <div class="table-cell tanggal">08/09/2023</div>
-                            </div>
-                            <div class="table-row">
-                                <div class="table-cell">
-                                    <h6>Labirin</h6>
-                                    <p class="text-muted m-0">tulus</p>
-                                </div>
-                                <div class="table-cell genre">Pop</div>
-                                <div class="table-cell tanggal">08/09/2023</div>
-                            </div>
-                            <div class="table-row">
-                                <div class="table-cell">
-                                    <h6>Labirin</h6>
-                                    <p class="text-muted m-0">tulus</p>
-                                </div>
-                                <div class="table-cell genre">Pop</div>
-                                <div class="table-cell tanggal">08/09/2023</div>
-                            </div>
-                        </div>
+                        <table class="table table-sortable">
+                            <thead>
+                                <tr class="table-row table-header">
+                                    <th class="table-cell">Artis</th>
+                                    <th class="table-cell">Kategori</th>
+                                    <th class="table-cell">Tanggal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-row">
+                                    <td class="table-cell">
+                                        <h6>Cindy</h6>
+                                        <p class="text-muted m-0">Atulus</p>
+                                    </td>
+                                    <td class="table-cell">Dangdut</td>
+                                    <td class="table-cell">04/09/2023</td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td class="table-cell">
+                                        <h6>Bagus</h6>
+                                        <p class="text-muted m-0">Dtulus</p>
+                                    </td>
+                                    <td class="table-cell">Apa</td>
+                                    <td class="table-cell">01/09/2023</td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td class="table-cell">
+                                        <h6>Agus</h6>
+                                        <p class="text-muted m-0">Btulus</p>
+                                    </td>
+                                    <td class="table-cell">Ciee</td>
+                                    <td class="table-cell">02/09/2023</td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td class="table-cell">
+                                        <h6>Denis</h6>
+                                        <p class="text-muted m-0">Ctulus</p>
+                                    </td>
+                                    <td class="table-cell">Bajigur</td>
+                                    <td class="table-cell">10/10/2023</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <div class="text-center">
                         <div class="text-center">
@@ -108,58 +104,58 @@
     </div>
     </div>
 
-
+    <script src="/user/assets/js/tablesort.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        $(document).ready(function() {
-            function populateDropdown(id, options) {
-                var dropdown = $("#" + id + " + .dropdown-menu");
-                options.forEach(function(option) {
-                    dropdown.append("<a class='dropdown-item' href='#'>" + option + "</a>");
-                });
-            }
+        // $(document).ready(function() {
+        //     function populateDropdown(id, options) {
+        //         var dropdown = $("#" + id + " + .dropdown-menu");
+        //         options.forEach(function(option) {
+        //             dropdown.append("<a class='dropdown-item' href='#'>" + option + "</a>");
+        //         });
+        //     }
 
-            var tanggalOptions = Array.from({
-                length: 31
-            }, (_, i) => (i + 1).toString());
-            populateDropdown("tanggalDropdown", tanggalOptions);
+        //     var tanggalOptions = Array.from({
+        //         length: 31
+        //     }, (_, i) => (i + 1).toString());
+        //     populateDropdown("tanggalDropdown", tanggalOptions);
 
-            var bulanOptions = [
-                "Januari", "Februari", "Maret", "April", "Mei", "Juni",
-                "Juli", "Agustus", "September", "Oktober", "November", "Desember"
-            ];
-            populateDropdown("bulanDropdown", bulanOptions);
+        //     var bulanOptions = [
+        //         "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+        //         "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+        //     ];
+        //     populateDropdown("bulanDropdown", bulanOptions);
 
-            var tahunSekarang = new Date().getFullYear();
-            var tahunOptions = Array.from({
-                length: tahunSekarang - 1999
-            }, (_, i) => (2000 + i).toString());
-            populateDropdown("tahunDropdown", tahunOptions);
+        //     var tahunSekarang = new Date().getFullYear();
+        //     var tahunOptions = Array.from({
+        //         length: tahunSekarang - 1999
+        //     }, (_, i) => (2000 + i).toString());
+        //     populateDropdown("tahunDropdown", tahunOptions);
 
-            $("#filterButton").click(function() {
-                var filterData = {
-                    tanggal: $("#tanggalDropdown").val(),
-                    bulan: $("#bulanDropdown").val(),
-                    tahun: $("#tahunDropdown").val(),
-                };
+        //     $("#filterButton").click(function() {
+        //         var filterData = {
+        //             tanggal: $("#tanggalDropdown").val(),
+        //             bulan: $("#bulanDropdown").val(),
+        //             tahun: $("#tahunDropdown").val(),
+        //         };
 
-                console.log(filterData);
+        //         console.log(filterData);
 
-                $.ajax({
-                    type: "POST",
-                    url: "/pengguna/filter", // Sesuaikan dengan URL endpoint Anda
-                    data: filterData,
-                    success: function(response) {
-                        // Mengupdate tampilan dengan data yang sesuai
-                        $("#filteredData").html(response.data);
-                    },
-                    error: function(err) {
-                        console.error(err);
-                    }
-                });
-            });
-        });
+        //         $.ajax({
+        //             type: "POST",
+        //             url: "/pengguna/filter", // Sesuaikan dengan URL endpoint Anda
+        //             data: filterData,
+        //             success: function(response) {
+        //                 // Mengupdate tampilan dengan data yang sesuai
+        //                 $("#filteredData").html(response.data);
+        //             },
+        //             error: function(err) {
+        //                 console.error(err);
+        //             }
+        //         });
+        //     });
+        // });
 
 
         $(document).ready(function() {
