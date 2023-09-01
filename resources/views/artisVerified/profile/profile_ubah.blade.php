@@ -1,6 +1,45 @@
 @extends('artisVerified.components.artisVerifiedTemplate')
 
 @section('content')
+<style>
+    .cobai {
+        width: 130px;
+        height: 130px;
+        border-radius: 100px;
+        position: relative;
+        overflow: hidden;
+        border: none;
+        color: #957DAD;
+    }
+
+    .cob {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        margin: 0;
+    }
+
+    .cob img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+
+
+    .upload-label i {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .form-i {
+        height: 25px;
+        border-radius: 8px;
+    }
+</style>
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="row">
@@ -8,37 +47,56 @@
                     <h4 style="font-size: 20px; font-weight: 600; color: #957dad">Profil</h4>
                     <p>Atur akun anda, Semua perubahan akan di aplikasikan ke semua halaman</p>
                 </div>
-                <form class="row" action="">
+                <form class="row" action="{{ route('update.profile.artisVerified', $user[0]->code) }}" method="POST"
+                    enctype="multipart/form-data">
+                    @csrf
                     <div class="col-md-2">
                         <div class="mb-3">
                             <h4 style="font-size: 20px; font-weight: 600; color: #957dad">Foto profil</h4>
-                            <img src="../assets/images/faces/face15.jpg" class="rounded-circle" width="100px">
+                            <div class="rounded-circle">
+                                <label id="tampil_gambar" class="cobai cob">
+                                    <img id="profile-image" src="{{ asset('storage/' . $user[0]->avatar) }}" class="rounded-circle" width="150" height="150">
+                                </label>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="p-5">
-                            <input type="file" id="foto" name="foto" class="form-control" aria-label="file example" required>
+                            <input type="file" id="gambar" accept="image/png,image/jpg" name="avatar" class="form-control" onchange="previewImage()">
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="nama" class="form-label"
+                                style="font-size: 20px; font-weight: 600; color: #957dad">Nama pengguna</label>
+                            <input type="text" class="form-control" name="name" id="nama"
+                                value="{{ $user[0]->name }}" aria-describedby="validationServer03Feedback">
+                            @error('name')
+                                <div id="validationServer03Feedback" class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="nama" class="form-label" style="font-size: 20px; font-weight: 600; color: #957dad">Nama pengguna</label>
-                            <input type="text" class="form-control" id="nama" value="Henry Klein" required>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="email" class="form-label" style="font-size: 20px; font-weight: 600; color: #957dad">Email</label>
-                            <input type="email" class="form-control" id="email" value="henry123@gmail.com" required>
+                            <label for="email" class="form-label"
+                                style="font-size: 20px; font-weight: 600; color: #957dad">Email</label>
+                            <input type="email" class="form-control" name="email" id="email"
+                                value="{{ $user[0]->email }}" required>
+                            @error('email')
+                                <div id="validationServer03Feedback" class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="mb-3">
-                            <label for="deskripsi" class="form-label" style="font-size: 20px; font-weight: 600; color: #957dad">Deskripsi</label>
-                            <textarea id="deskripsi" class="form-control" maxlength="500" rows="5" required>Halo! Saya Johan, jiwa petualang yang penuh rasa ingin tahu dan selalu dalam pencarian ilmu dan penemuan diri.
-Minat: Teknologi, ilmu pengetahuan, dan inovasi Membaca, menulis, dan puisi Alam, mendaki, berkemah, dan fotografi
-Filosofi: Terimalah tantangan dan kegagalan untuk pertumbuhan pribadi Ketangguhan dan adaptabilitas adalah kunci
-Saya sangat menyukai percakapan bermakna dan kolaborasi! Hubungi saya, dan mari kita berdampak positif bersama.</textarea>
+                            <label for="deskripsi" class="form-label"
+                                style="font-size: 20px; font-weight: 600; color: #957dad">Deskripsi</label>
+                            <textarea id="deskripsi" class="form-control" name="deskripsi" maxlength="500" rows="5">{{ $user[0]->deskripsi === 'none' ? '' : $user[0]->deskripsi }}</textarea>
                             <div id="counter" class="float-right"></div>
                         </div>
                     </div>
@@ -65,6 +123,21 @@ Saya sangat menyukai percakapan bermakna dan kolaborasi! Hubungi saya, dan mari 
             // Count the current number of characters
             const currentLength = target.value.length;
             counterEle.innerHTML = `${currentLength}/${maxLength}`;
+        });
+
+
+        const gambar = document.querySelector("#gambar");
+        const tampilGambar = document.querySelector("#tampil_gambar");
+        gambar.addEventListener("change", function() {
+            const reader = new FileReader();
+
+            reader.addEventListener("load", () => {
+                tampilGambar.style.backgroundImage = `url(${reader.result})`;
+
+                tampilGambar.innerHTML = "";
+            });
+
+            reader.readAsDataURL(this.files[0]);
         });
     </script>
 @endsection

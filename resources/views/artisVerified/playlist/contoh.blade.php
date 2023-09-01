@@ -123,7 +123,7 @@
                 <a href="#" class="close-button mdi mdi-close-circle-outline"></a>
                 <h3 class="judul">Buat Playlist</h3>
                 <div>
-                    <form class="row" action="{{ route('ubah.playlist', $playlistDetail->code) }}" method="POST"
+                    <form class="row" action="{{ route('ubah.playlist.artisVerified', $playlistDetail->code) }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
                         <div class="col-4">
@@ -148,7 +148,7 @@
                         <div class="text-md-right col-md-12">
                             <button class="btn btn-primary" type="submit">Ubah</button>
                     </form>
-                    <form action="{{ route('hapus.playlist.userVerified', $playlistDetail->code) }}" method="GET">
+                    <form action="{{ route('hapus.playlist.artisVerified', $playlistDetail->code) }}" method="GET">
                         @csrf
                         <button class="btn btn-delete" type="submit">Hapus</button>
                     </form>

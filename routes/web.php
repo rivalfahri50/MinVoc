@@ -103,7 +103,7 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
     Route::get('/playlist', 'playlist');
     Route::get('/riwayat', 'riwayat');
     Route::get('/profile', 'profile');
-    Route::get('/profile-ubah', 'profile_ubah');
+    Route::get('/profile-ubah/{code}', 'profile_ubah')->name('ubah.profile.artisVerified');
     Route::get('/billboard', 'billboard');
     Route::get('/album', 'album');
     Route::get('/kategori/{code}', 'kategori');
@@ -111,11 +111,12 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
     Route::get('/buat-playlist', 'buatPlaylist');
     Route::get('/contoh-playlist', 'contohPlaylist');
     Route::get('/disukai-playlist', 'disukaiPlaylist');
-    Route::get('/hapus-playlist/{code}', 'hapusPlaylist')->name('hapus.playlist.userVerified');
+    Route::get('/hapus-playlist/{code}', 'hapusPlaylist')->name('hapus.playlist.artisVerified');
     
     Route::post('/unggahAudio', 'unggahAudio')->name('unggah');
     Route::post('/buat-playlist', 'storePlaylist')->name('buat.playlist.artisVerified');
     Route::post('/ubah-playlist/{code}', 'ubahPlaylist')->name('ubah.playlist.artisVerified');
+    Route::post('/update/profile/{code}', 'updateProfile')->name('update.profile.artisVerified');
 });
 
 Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(penggunaController::class)->group(function () {

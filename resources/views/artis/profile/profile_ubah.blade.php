@@ -104,7 +104,7 @@
                         <button class="btn" type="submit">Simpan</button>
                     </div>
                     <div class="col-1">
-                        <a href="/pengguna/profile" class="btn btn-danger" type="submit">Kembali</a>
+                        <a href="/artis/profile" class="btn btn-danger" type="submit">Kembali</a>
                     </div>
                 </form>
             </div>
