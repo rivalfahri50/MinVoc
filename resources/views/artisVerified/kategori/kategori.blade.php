@@ -10,13 +10,13 @@
                         <div class="row">
                             <div class="col-3">
                                 <div class="card coba">
-                                    <img src="/user/assets/images/faces/face11.jpg" alt="Gambar">
+                                    <img src="{{ asset('storage/' . $genre->images) }}" alt="Gambar">
                                 </div>
                             </div>
                             <div class="col-3 text-xxl-end">
                                 <div class="bottom-left-text d-flex flex-column gap-2">
                                     <p class="m-0" style="font-size: 20px; font-weight: 500">Kategori</p>
-                                    <h3 style="font-size: 24px; font-weight: 700">Musik Pop</h3>
+                                    <h3 style="font-size: 24px; font-weight: 700">Musik {{ $genre->name }}</h3>
                                 </div>
                             </div>
                         </div>
@@ -26,7 +26,8 @@
                     <hr class="divider"> <!-- Divider -->
                 </div>
                 <div class="col-md-12 grid-margin stretch-card">
-                    <h3 class="card-title mb-4" style="font-size: 18px; font-weight: 600">Temukan berbagai lagu bergenre Pop</h3>
+                    <h3 class="card-title mb-4" style="font-size: 18px; font-weight: 600">Temukan berbagai lagu bergenre
+                        {{ $genre->name }}</h3>
                     <div class="card scroll scrollbar-down thin">
                         <div class="card-body">
                             <div class="row" style="margin-top: -20px">

@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\artist;
 use App\Models\genre;
+use App\Models\playlist;
 use App\Models\song;
+use App\Models\User;
 use getID3;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Throwable;
@@ -19,7 +23,10 @@ class ArtistVerifiedController extends Controller
     protected function index(): Response
     {
         $title = "MusiCave";
-        return response()->view('artisVerified.dashboard', compact('title'));
+        $songs = song::all();
+        $genres = genre::all();
+        $artist = artist::with('user')->get();
+        return response()->view('artisVerified.dashboard', compact('title', 'genres', 'artist', 'songs'));
     }
 
     protected function pencarian(): Response
@@ -31,7 +38,8 @@ class ArtistVerifiedController extends Controller
     protected function playlist(): Response
     {
         $title = "MusiCave";
-        return response()->view('artisVerified.playlist', compact('title'));
+        $playlists = playlist::all();
+        return response()->view('artisVerified.playlist', compact('title', 'playlists'));
     }
 
     protected function riwayat(): Response
@@ -64,16 +72,18 @@ class ArtistVerifiedController extends Controller
         return response()->view('artisVerified.billboard.album', compact('title'));
     }
 
-    protected function kategori(): Response
+    protected function kategori(string $code): Response
     {
         $title = "MusiCave";
-        return response()->view('artisVerified.kategori.kategori', compact('title'));
+        $genre = genre::where('code', $code)->first();
+        return response()->view('artisVerified.kategori.kategori', compact('title', 'genre'));
     }
 
     protected function buatPlaylist(): Response
     {
         $title = "MusiCave";
-        return response()->view('artisVerified.playlist.buat', compact('title'));
+        $songs = song::all();
+        return response()->view('artisVerified.playlist.buat', compact('title', 'songs'));
     }
 
     protected function contohPlaylist(): Response
@@ -94,6 +104,109 @@ class ArtistVerifiedController extends Controller
         $datas = song::with('artist')->get();
         $genres = genre::all();
         return response()->view('artisVerified.unggahAudio', compact('title', 'datas', 'genres'));
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+        $results = User::where('name', 'LIKE', '%' . $query . '%')->get();
+        return response()->json(['results' => $results]);
+    }
+
+    protected function storePlaylist(Request $request): Response
+    {
+        $title = "MusiCave";
+        try {
+            if (!$request->file()) {
+                $values =
+                    [
+                        'code' => Str::uuid(),
+                        'name' => $request->input('name') == null ? "Playlist Lagu" : $request->input('name'),
+                        'deskripsi' => $request->input('deskripsi') == null ? "none" : $request->input('deskripsi'),
+                        'images' => 'images/defaultPlaylist.png',
+                        'user_id' => Auth::user()->id
+                    ];
+            } else if ($existImage = $request->file('images')->store('images', 'public')) {
+                $values =
+                    [
+                        'code' => Str::uuid(),
+                        'name' => $request->input('name') == null ? "Playlist Lagu" : $request->input('name'),
+                        'deskripsi' => $request->input('deskripsi') == null ? "none" : $request->input('deskripsi'),
+                        'images' => $existImage,
+                        'user_id' => Auth::user()->id
+                    ];
+            }
+            playlist::create($values);
+            $playlists = playlist::all();
+        } catch (\Throwable $th) {
+            return response()->view('artisVerified.playlist', compact('title'));
+        }
+        return response()->view('artisVerified.playlist', compact('title', 'playlists'));
+    }
+
+    protected function hapusPlaylist(string $code)
+    {
+        $playlist = Playlist::where('code', $code)->first();
+
+        if (!$playlist) {
+            return response()->redirectTo('artis-verified/playlist');
+        }
+
+        try {
+            if (Storage::disk('public')->exists($playlist->images)) {
+                Storage::disk('public')->delete($playlist->images);
+            }
+            $playlist->delete();
+        } catch (\Throwable $th) {
+            Log::error('Error deleting playlist: ' . $th->getMessage());
+            return response()->redirectTo('artis-verified/playlist');
+        }
+
+        return response()->redirectTo('artis-verified/playlist');
+    }
+
+    protected function ubahPlaylist(Request $request, string $code)
+    {
+        $title = "MusiCave";
+        $playlists = playlist::where('code', $code)->first();
+        try {
+            if (!$request->file()) {
+                $values =
+                    [
+                        'code' => $code,
+                        'name' => $request->input('name') == null ? $playlists->name : $request->input('name'),
+                        'deskripsi' => $request->input('deskripsi') == null ? $playlists->deskripsi : $request->input('deskripsi'),
+                        'images' => $playlists->images,
+                        'user_id' => $playlists->user_id
+                    ];
+            } else if ($existImage = $request->file('images')->store('images', 'public')) {
+                if (Storage::disk('public')->exists($playlists->images)) {
+                    Storage::disk('public')->delete($playlists->images);
+                }
+
+                $values =
+                    [
+                        'code' => $code,
+                        'name' => $request->input('name') == null ? $playlists->name : $request->input('name'),
+                        'deskripsi' => $request->input('deskripsi') == null ? $playlists->deskripsi : $request->input('deskripsi'),
+                        'images' => $existImage,
+                        'user_id' => $playlists->user_id
+                    ];
+            }
+            playlist::where('code', $code)->update($values);
+            $playlists = playlist::all();
+        } catch (\Throwable $th) {
+            return response()->view('artisVerified.playlist', compact('title'));
+        }
+        return response()->view('artisVerified.playlist', compact('title', 'playlists'));
+    }
+
+    protected function detailPlaylist(string $code): Response
+    {
+        $playlistDetail = playlist::where('code', $code)->first();
+        $songs = song::all();
+        $title = "MusiCave";
+        return response()->view('artisVerified.playlist.contoh', compact('title', 'playlistDetail', 'songs'));
     }
 
     protected function unggahAudio(Request $request)

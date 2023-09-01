@@ -1,5 +1,6 @@
 @extends('artisVerified.components.artisVerifiedTemplate')
 
+
 @section('content')
     <link rel="stylesheet" href="/user/assets/css/buatPlaylist.css">
     <div class="main-panel">
@@ -15,13 +16,12 @@
                             </div>
                             <div class="col-3 text-xxl-end">
                                 <div class="bottom-left-text d-flex flex-column gap-1">
-                                    <p class="m-0" style="font-size: 18px; font-weight: 500">Playlist</p>
                                     <a href="#popup">
-                                        <h3 style="font-size: 18px; font-weight: 600">Buat Playlist</h3>
+                                        <h3 style="font-size: 18px; font-weight: 500">Buat Playlist</h3>
                                     </a>
                                     <div class="img-and-text">
-                                        <img class="img-ss rounded-circle" src="/user/assets/images/faces/face15.jpg"
-                                            alt="">
+                                        <img class="img-ss rounded-circle"
+                                            src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
                                         <p class="judulnottebal fw-bold">Henry Klein</p>
                                     </div>
                                 </div>
@@ -42,108 +42,27 @@
                             <div class="row" style="margin-top: -20px">
                                 <div class="col-12">
                                     <div class="preview-list">
-                                        <div class="preview-item">
-                                            <div class="preview-thumbnail">
-                                                <img src="/user/assets/images/faces/face1.jpg" width="10%">
-                                            </div>
-                                            <div class="preview-item-content d-sm-flex flex-grow">
-                                                <div class="flex-grow">
-                                                    <h6 class="preview-subject">Tak Ingin Usai</h6>
-                                                    <p class="text-muted mb-0">Keisya</p>
+                                        @foreach ($songs as $item)
+                                            <div class="preview-item">
+                                                <div class="preview-thumbnail">
+                                                    <img src="{{ asset('storage/' . $item->image) }}" width="10%">
                                                 </div>
-                                                <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                    <div class="text-group">
-                                                        <button type="button"
-                                                            class="btn btn-outline-secondary btn-md">Add</button>
+                                                <div class="preview-item-content d-sm-flex flex-grow">
+                                                    <div class="flex-grow">
+                                                        <h6 class="preview-subject">{{ $item->judul }}</h6>
+                                                        <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
+                                                    </div>
+                                                    <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                                        <div class="text-group">
+                                                            <i onclick="myFunction(this)" class="far fa-heart pr-2">
+                                                            </i>
+                                                            <p>{{ $item->waktu }}</p>
+                                                            <i class="fas fa-ellipsis-v"></i>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="preview-item">
-                                            <div class="preview-thumbnail">
-                                                <img src="/user/assets/images/faces/face1.jpg" width="10%">
-                                            </div>
-                                            <div class="preview-item-content d-sm-flex flex-grow">
-                                                <div class="flex-grow">
-                                                    <h6 class="preview-subject">Tak Ingin Usai</h6>
-                                                    <p class="text-muted mb-0">Keisya</p>
-                                                </div>
-                                                <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                    <div class="text-group">
-                                                        <button type="button"
-                                                            class="btn btn-outline-secondary btn-md">Add</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="preview-item">
-                                            <div class="preview-thumbnail">
-                                                <img src="/user/assets/images/faces/face1.jpg" width="10%">
-                                            </div>
-                                            <div class="preview-item-content d-sm-flex flex-grow">
-                                                <div class="flex-grow">
-                                                    <h6 class="preview-subject">Tak Ingin Usai</h6>
-                                                    <p class="text-muted mb-0">Keisya</p>
-                                                </div>
-                                                <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                    <div class="text-group">
-                                                        <button type="button"
-                                                            class="btn btn-outline-secondary btn-md">Add</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="preview-item">
-                                            <div class="preview-thumbnail">
-                                                <img src="/user/assets/images/faces/face1.jpg" width="10%">
-                                            </div>
-                                            <div class="preview-item-content d-sm-flex flex-grow">
-                                                <div class="flex-grow">
-                                                    <h6 class="preview-subject">Tak Ingin Usai</h6>
-                                                    <p class="text-muted mb-0">Keisya</p>
-                                                </div>
-                                                <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                    <div class="text-group">
-                                                        <button type="button"
-                                                            class="btn btn-outline-secondary btn-md">Add</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="preview-item">
-                                            <div class="preview-thumbnail">
-                                                <img src="/user/assets/images/faces/face1.jpg" width="10%">
-                                            </div>
-                                            <div class="preview-item-content d-sm-flex flex-grow">
-                                                <div class="flex-grow">
-                                                    <h6 class="preview-subject">Tak Ingin Usai</h6>
-                                                    <p class="text-muted mb-0">Keisya</p>
-                                                </div>
-                                                <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                    <div class="text-group">
-                                                        <button type="button"
-                                                            class="btn btn-outline-secondary btn-md">Add</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="preview-item">
-                                            <div class="preview-thumbnail">
-                                                <img src="/user/assets/images/faces/face1.jpg" width="10%">
-                                            </div>
-                                            <div class="preview-item-content d-sm-flex flex-grow">
-                                                <div class="flex-grow">
-                                                    <h6 class="preview-subject">Tak Ingin Usai</h6>
-                                                    <p class="text-muted mb-0">Keisya</p>
-                                                </div>
-                                                <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                    <div class="text-group">
-                                                        <button type="button"
-                                                            class="btn btn-outline-secondary btn-md">Add</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
@@ -158,27 +77,28 @@
         <div class="card window">
             <div class="card-body">
                 <a href="#" class="close-button mdi mdi-close-circle-outline"></a>
-                <h3 class="judul">Edit Detail</h2>
-                    <form class="row" action="">
+                <h3 class="judul">Buat Playlist</h2>
+                    <form class="row" action="{{ route('buat.playlist.artisVerified') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
                         <div class="col-4">
                             <div class="card cobai">
                                 <label for="gambar" id="tampil_gambar">
                                     <i class="fas fa-pen fa-2x"></i>
                                 </label>
-                                <input type="file" id="gambar" accept="image/png,image/jpg">
+                                <input type="file" id="gambar" name="images" accept="image/png,image/jpg">
                             </div>
                         </div>
                         <div class="col-md-7 ml-4">
                             <div class="mb-3">
-                                <input type="text" class="form-control form-i" id="nama"
-                                    placeholder="Judul Playlist" required>
+                                <input type="text" class="form-control form-i" name="name" id="nama"
+                                    placeholder="Judul Playlist">
                             </div>
                             <div class="mb-3">
-                                <textarea id="deskripsi" class="form-control" maxlength="500" rows="6" placeholder="Deskripsi" required></textarea>
+                                <textarea id="deskripsi" class="form-control" name="deskripsi" maxlength="500" rows="6" placeholder="Deskripsi"></textarea>
                             </div>
                         </div>
                         <div class="text-md-right">
-                            <a href="buat.html" class="btn" type="submit">Simpan</a>
+                            <button class="btn" type="submit">Simpan</button>
                         </div>
                     </form>
             </div>

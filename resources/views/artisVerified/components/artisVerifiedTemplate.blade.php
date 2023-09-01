@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.5.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <link rel="stylesheet" href="/user/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="/user/assets/css/style.css">
     <link rel="shortcut icon" href="/image/favicon.svg" type="image/x-icon">
@@ -38,20 +42,29 @@
                     </a>
                 </li>
                 <li class="nav-item menu-items">
-                    <a class="nav-link" href="/artis-verified/pencarian">
-                        <span class="menu-icon">
-                            <i class="mdi mdi-magnify"></i>
-                        </span>
-                        <span class="menu-title">Pencarian</span>
-                    </a>
-                </li>
-                <li class="nav-item menu-items">
                     <a class="nav-link" href="/artis-verified/playlist">
                         <span class="menu-icon">
                             <i class="mdi mdi-music"></i>
                         </span>
                         <span class="menu-title">Playlist</span>
+                        <a href="#ui-basic" data-toggle="collapse" aria-expanded="false" aria-controls="ui-basic">
+                            <span class="menu-arrow">
+                                <i class="mdi mdi-chevron-right"></i>
+                            </span>
+                        </a>
                     </a>
+                    <div class="collapse" id="ui-basic">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('buat.playlist.artisVerified') }}">
+                                    <span class="menu-icon">
+                                        <i class="mdi mdi-plus-circle-outline"></i>
+                                    </span>
+                                    <span class="menu-title">Buat Playlist</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="/artis-verified/unggahAudio">
@@ -98,22 +111,26 @@
             <nav class="navbar p-0 fixed-top d-flex flex-row">
                 <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
                     <ul class="navbar-nav w-75">
-                        <li class="nav-item w-75">
-                            <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text" style="border-radius: 15px 0px 0px 15px; border: 1px solid #eaeaea">
-                                        <svg width="19" height="19" viewBox="0 0 19 19" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M18 18L13.9865 13.9795M16.2105 8.60526C16.2105 12.8055 12.8055 16.2105 8.60526 16.2105C4.40499 16.2105 1 12.8055 1 8.60526C1 4.40499 4.40499 1 8.60526 1C12.8055 1 16.2105 4.40499 16.2105 8.60526Z"
-                                                stroke="#957DAD" stroke-width="2" stroke-linecap="round" />
-                                        </svg>
-                                    </span>
-                                    <input type="text" class="form-control" placeholder="cari di sini"
-                                        style="border-radius: 0px 15px 15px 0px">
-                                </div>
-                            </form>
-                        </li>
+                        <ul class="navbar-nav w-75">
+                            <li class="nav-item w-75">
+                                <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text"
+                                            style="border-radius: 15px 0px 0px 15px; border: 1px solid #eaeaea">
+                                            <svg width="19" height="19" viewBox="0 0 19 19" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M18 18L13.9865 13.9795M16.2105 8.60526C16.2105 12.8055 12.8055 16.2105 8.60526 16.2105C4.40499 16.2105 1 12.8055 1 8.60526C1 4.40499 4.40499 1 8.60526 1C12.8055 1 16.2105 4.40499 16.2105 8.60526Z"
+                                                    stroke="#957DAD" stroke-width="2" stroke-linecap="round" />
+                                            </svg>
+                                        </span>
+                                        <input type="text" id="search" class="form-control"
+                                            placeholder="cari di sini" style="border-radius: 0px 15px 15px 0px">
+                                    </div>
+                                </form>
+                                <ul id="search-results"></ul>
+                            </li>
+                        </ul>
 
                     </ul>
                     <ul class="navbar-nav navbar-nav-right">
@@ -213,6 +230,29 @@
                     x.classList.toggle("fas");
                     x.classList.toggle("warna-kostum-like");
                 }
+
+                $(document).ready(function() {
+                    $('#search').on('keyup', function() {
+                        var query = $(this).val();
+                        $.ajax({
+                            url: '/artis-verified/search/',
+                            type: 'GET',
+                            data: {
+                                query: query
+                            },
+                            dataType: 'json',
+                            success: function(response) {
+                                var results = response.results;
+                                var $searchResults = $('#search-results');
+                                $searchResults.empty();
+
+                                $.each(results, function(index, result) {
+                                    $searchResults.append('<li>' + result.name + '</li>');
+                                });
+                            }
+                        });
+                    });
+                });
             </script>
 
             <script src="/user/assets/vendors/js/vendor.bundle.base.js"></script>

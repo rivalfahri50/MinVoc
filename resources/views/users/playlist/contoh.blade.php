@@ -11,18 +11,18 @@
                         <div class="row">
                             <div class="col-3">
                                 @if ($playlistDetail->user_id === auth()->user()->id)
-                                <div class="col-3">
-                                    <a href="#popup" class="card coba">
-                                        <img src="{{ asset('storage/' . $playlistDetail->images) }}" alt="Gambar">
-                                    </a>
-                                </div>
-                            @else
-                                <div class="col-3">
-                                    <div class="card coba">
-                                        <img src="{{ asset('storage/' . $playlistDetail->images) }}" alt="Gambar">
+                                    <div class="col-3">
+                                        <a href="#popup" class="card coba">
+                                            <img src="{{ asset('storage/' . $playlistDetail->images) }}" alt="Gambar">
+                                        </a>
                                     </div>
-                                </div>
-                            @endif
+                                @else
+                                    <div class="col-3">
+                                        <div class="card coba">
+                                            <img src="{{ asset('storage/' . $playlistDetail->images) }}" alt="Gambar">
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
                             {{-- @if ($playlistDetail->user_id === auth()->user()->id)
                                 <div class="col-3">
@@ -103,11 +103,24 @@
     </div>
     </div>
 
+    <style>
+        .btn-delete {
+            background-color: rgb(215, 0, 0);
+        }
+
+        .btn-delete:hover {
+            color: red;
+            background-color: white;
+            border: 1px solid red;
+        }
+    </style>
+
     <div id="popup">
         <div class="card window">
             <div class="card-body">
                 <a href="#" class="close-button mdi mdi-close-circle-outline"></a>
-                <h3 class="judul">Buat Playlist</h2>
+                <h3 class="judul">Buat Playlist</h3>
+                <div>
                     <form class="row" action="{{ route('ubah.playlist', $playlistDetail->code) }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
@@ -127,18 +140,24 @@
                                     placeholder="{{ $playlistDetail->name }}">
                             </div>
                             <div class="mb-3">
-                                <textarea id="deskripsi" class="form-control" name="deskripsi" maxlength="500" rows="6"
-                                    placeholder="{{ $playlistDetail->deskripsi == 'none' ? '' : "$playlistDetail->deskripsi" }}"></textarea>
+                                <textarea id="deskripsi" class="form-control" name="deskripsi" maxlength="500" rows="6" placeholder="{{ $playlistDetail->deskripsi == 'none' ? '' : $playlistDetail->deskripsi }}"></textarea>
                             </div>
                         </div>
-                        <div class="text-md-right">
-                            <button class="btn" type="submit">Ubah</button>
-                        </div>
+                        <div class="text-md-right col-md-12">
+                            <button class="btn btn-primary" type="submit">Ubah</button>
                     </form>
+                    <form action="{{ route('hapus.playlist.user', $playlistDetail->code) }}" method="GET">
+                        @csrf
+                        <button class="btn btn-delete" type="submit">Hapus</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+    </div>
 
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         function myFunction(x) {
             x.classList.toggle("far"); // Menghapus kelas "fa fa-heart"

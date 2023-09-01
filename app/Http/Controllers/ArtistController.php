@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -171,6 +172,28 @@ class ArtistController extends Controller
             return response()->redirectTo('/artis/profile')->with('failed', "failed");
         }
         return response()->redirectTo('/artis/profile')->with('failed', "failed");
+    }
+
+    protected function hapusPlaylist(string $code)
+    {
+        $playlist = Playlist::where('code', $code)->first();
+
+        if (!$playlist) {
+            return response()->redirectTo('artis/playlist');
+        }
+
+        try {
+            if (Storage::disk('public')->exists($playlist->images)) {
+                Storage::disk('public')->delete($playlist->images);
+            }
+            $playlist->delete();
+        } catch (\Throwable $th) {
+            Log::error('Error deleting playlist: ' . $th->getMessage());
+            return response()->redirectTo('artis/playlist');
+        }
+
+
+        return response()->redirectTo('artis/playlist');
     }
 
     protected function billboard(): Response

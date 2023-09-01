@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -278,6 +279,27 @@ class penggunaController extends Controller
         $query = $request->input('query');
         $results = User::where('name', 'LIKE', '%' . $query . '%')->get();
         return response()->json(['results' => $results]);
+    }
+
+    protected function hapusPlaylist(string $code)
+    {
+        $playlist = Playlist::where('code', $code)->first();
+
+        if (!$playlist) {
+            return response()->redirectTo('pengguna/playlist');
+        }
+
+        try {
+            if (Storage::disk('public')->exists($playlist->images)) {
+                Storage::disk('public')->delete($playlist->images);
+            }
+            $playlist->delete();
+        } catch (\Throwable $th) {
+            Log::error('Error deleting playlist: ' . $th->getMessage());
+            return response()->redirectTo('pengguna/playlist');
+        }
+
+        return response()->redirectTo('pengguna/playlist');
     }
 
     protected function like(Request $request)

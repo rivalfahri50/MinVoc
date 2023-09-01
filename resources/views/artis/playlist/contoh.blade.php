@@ -103,12 +103,24 @@
     </div>
     </div>
     </div>
+    <style>
+        .btn-delete {
+            background-color: rgb(215, 0, 0);
+        }
+
+        .btn-delete:hover {
+            color: red;
+            background-color: white;
+            border: 1px solid red;
+        }
+    </style>
 
     <div id="popup">
         <div class="card window">
             <div class="card-body">
                 <a href="#" class="close-button mdi mdi-close-circle-outline"></a>
-                <h3 class="judul">Buat Playlist</h2>
+                <h3 class="judul">Buat Playlist</h3>
+                <div>
                     <form class="row" action="{{ route('ubah.playlist.artis', $playlistDetail->code) }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
@@ -129,15 +141,20 @@
                             </div>
                             <div class="mb-3">
                                 <textarea id="deskripsi" class="form-control" name="deskripsi" maxlength="500" rows="6"
-                                    placeholder="{{ $playlistDetail->deskripsi == 'none' ? '' : "$playlistDetail->deskripsi" }}"></textarea>
+                                    placeholder="{{ $playlistDetail->deskripsi == 'none' ? '' : $playlistDetail->deskripsi }}"></textarea>
                             </div>
                         </div>
-                        <div class="text-md-right">
-                            <button class="btn" type="submit">Ubah</button>
-                        </div>
+                        <div class="text-md-right col-md-12">
+                            <button class="btn btn-primary" type="submit">Ubah</button>
                     </form>
+                    <form action="{{ route('hapus.playlist.artis', $playlistDetail->code) }}" method="GET">
+                        @csrf
+                        <button class="btn btn-delete" type="submit">Hapus</button>
+                    </form>
+                </div>
             </div>
         </div>
+    </div>
     </div>
 
     <script>
@@ -162,4 +179,5 @@
 
             reader.readAsDataURL(this.files[0]);
         });
-    @endsection
+    </script>
+@endsection
