@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\album;
 use App\Models\artist;
 use App\Models\genre;
 use App\Models\playlist;
@@ -77,7 +78,8 @@ class ArtistVerifiedController extends Controller
     {
         $title = "MusiCave";
         $genre = genre::where('code', $code)->first();
-        return response()->view('artisVerified.kategori.kategori', compact('title', 'genre'));
+        $songs = song::where('genre_id', $genre->id)->get();
+        return response()->view('artisVerified.kategori.kategori', compact('title', 'genre', 'songs'));
     }
 
     protected function buatPlaylist(): Response
@@ -104,7 +106,8 @@ class ArtistVerifiedController extends Controller
         $title = "Unggah Audio";
         $datas = song::with('artist')->get();
         $genres = genre::all();
-        return response()->view('artisVerified.unggahAudio', compact('title', 'datas', 'genres'));
+        $albums = album::all();
+        return response()->view('artisVerified.unggahAudio', compact('title', 'datas', 'genres', 'albums'));
     }
 
     public function search(Request $request)
@@ -204,87 +207,75 @@ class ArtistVerifiedController extends Controller
 
     protected function detailPlaylist(string $code): Response
     {
+        $title = "MusiCave";
         $playlistDetail = playlist::where('code', $code)->first();
         $songs = song::all();
-        $title = "MusiCave";
         return response()->view('artisVerified.playlist.contoh', compact('title', 'playlistDetail', 'songs'));
     }
 
     protected function unggahAudio(Request $request)
     {
-        $validate = Validator::make($request->only('image', 'judul', 'audio', 'genre'), [
+        $validator = Validator::make($request->only('image', 'judul', 'audio', 'genre', 'album'), [
             'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'judul' => 'required|string|max:255',
             'audio' => 'required|mimetypes:audio/mpeg,audio/wav|max:20480',
             'genre' => 'required|string|max:255',
+            'album' => 'string|max:255',
         ], [
-            'image' => [
-                'image' => 'File :attribute harus berupa gambar.',
-                'mimes' => 'File :attribute harus berupa file gambar dengan tipe: :values.',
-                'max' => 'File :attribute tidak boleh lebih dari :max kilobita.',
-            ],
-            'judul' => [
-                'required' => 'Kolom :attribute harus diisi.',
-                'string' => 'Kolom :attribute harus berupa teks.',
-                'max' => 'Kolom :attribute tidak boleh lebih dari :max karakter.',
-            ],
-            'audio' => [
-                'required' => 'Kolom :attribute harus diisi.',
-                'mimetypes' => 'File :attribute harus berupa file audio dengan tipe: :values.',
-                'max' => 'File :attribute tidak boleh lebih dari :max kilobita.',
-            ],
-            'genre' => [
-                'required' => 'Kolom :attribute harus diisi.',
-                'string' => 'Kolom :attribute harus berupa teks.',
-                'max' => 'Kolom :attribute tidak boleh lebih dari :max karakter.',
-            ],
+            'image.image' => 'File :attribute harus berupa gambar.',
+            'image.mimes' => 'File :attribute harus berupa file gambar dengan tipe: :values.',
+            'image.max' => 'File :attribute tidak boleh lebih dari :max kilobita.',
+            'judul.required' => 'Kolom :attribute harus diisi.',
+            'judul.string' => 'Kolom :attribute harus berupa teks.',
+            'judul.max' => 'Kolom :attribute tidak boleh lebih dari :max karakter.',
+            'audio.required' => 'Kolom :attribute harus diisi.',
+            'audio.mimetypes' => 'File :attribute harus berupa file audio dengan tipe: :values.',
+            'audio.max' => 'File :attribute tidak boleh lebih dari :max kilobita.',
+            'genre.required' => 'Kolom :attribute harus diisi.',
+            'genre.string' => 'Kolom :attribute harus berupa teks.',
+            'genre.max' => 'Kolom :attribute tidak boleh lebih dari :max karakter.',
         ]);
 
-
-        if ($validate->fails()) {
+        if ($validator->fails()) {
             return redirect()->back()
-                ->withErrors($validate)
+                ->withErrors($validator)
                 ->withInput();
         }
 
-        $code = Str::uuid();
+        try {
+            DB::beginTransaction();
+            $code = Str::uuid();
+            $image = $request->file('image')->store('images', 'public');
+            $audio = $request->file('audio')->store('musics', 'public');
 
-        if ($request->file('image') && $request->file('audio')) {
-            try {
-                DB::beginTransaction();
-                $code = Str::uuid();
-                $image = $request->file('image')->store('images', 'public');
-                $audio = $request->file('audio')->store('musics', 'public');
-                $getID3 = new getID3();
+            $getID3 = new getID3();
 
-                // Analyze the audio file
-                $audioInfo = $getID3->analyze($request->file('audio')->path());
-                $durationInSeconds = $audioInfo['playtime_seconds'];
-                $durationMinutes = floor($durationInSeconds / 60);
-                $durationSeconds = $durationInSeconds % 60;
-                $formattedDuration = sprintf('%02d:%02d', $durationMinutes, $durationSeconds);
+            $audioInfo = $getID3->analyze($request->file('audio')->path());
+            $durationInSeconds = $audioInfo['playtime_seconds'];
+            $durationMinutes = floor($durationInSeconds / 60);
+            $durationSeconds = $durationInSeconds % 60;
+            $formattedDuration = sprintf('%02d:%02d', $durationMinutes, $durationSeconds);
 
-                song::create([
-                    'code' => $code,
-                    'judul' => $request->input('judul'),
-                    'genre' => $request->input('genre'),
-                    'audio' => $audio,
-                    'image' => $image,
-                    'waktu' => $formattedDuration,
-                    'artist_id' => Auth::user()->id,
-                    'is_approved' => false,
-                ]);
-                DB::commit();
+            song::create([
+                'code' => $code,
+                'judul' => $request->input('judul'),
+                'image' => $image,
+                'audio' => $audio,
+                'waktu' => $formattedDuration,
+                'is_approved' => false,
+                'genre_id' => $request->input('genre'),
+                'album_id' => $request->input('album'),
+                'artis_id' => Auth::user()->id,
+            ]);
 
-                return redirect('/artis-verified/unggahAudio')->with('success', 'Song uploaded successfully.');
-            } catch (\Throwable $e) {
-                DB::rollBack();
-                Log::error('Error uploading song: ' . $e->getMessage());
-                return redirect('/artis-verified/unggahAudio')->with('error', 'Failed to upload song.');
-            }
+            DB::commit();
+
+            return redirect('/artis-verified/unggahAudio')->with('success', 'Song uploaded successfully.');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            Log::error('Error uploading song: ' . $e->getMessage());
+            return redirect('/artis-verified/unggahAudio')->with('error', 'Failed to upload song. Please try again later.');
         }
-
-        return response()->redirectTo('/artis-verified/unggahAudio')->with('success', 'User created successfully.');
     }
 
     protected function updateProfile(string $code, Request $request)

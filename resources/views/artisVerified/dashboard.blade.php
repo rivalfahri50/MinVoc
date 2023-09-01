@@ -111,7 +111,7 @@
                             <div class="col-12">
                                 <div class="preview-list">
                                     @foreach ($artist as $item)
-                                        @if (!$item->didengar === 0)
+                                        @if ($item->didengar > 1000)
                                             <div class="preview-item">
                                                 <div class="preview-thumbnail">
                                                     <img src="/user/assets/images/faces/face1.jpg" width="10%">

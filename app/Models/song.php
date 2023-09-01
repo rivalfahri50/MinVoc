@@ -12,20 +12,20 @@ class song extends Model
     protected $fillable = [
         'code',
         'judul',
-        'genre',
         'audio',
         'image',
         'waktu',
-        'likes',
         'didengar',
-        'genre_id',
-        'artist_id',
+        'likes',
         'is_approved',
+        'genre_id',
+        'album_id',
+        'artis_id',
     ];
 
     public function artist()
     {
-        return $this->hasOne(artist::class, 'id', 'artist_id');
+        return $this->hasOne(artist::class, 'id', 'artis_id');
     }
 
     public function genre()

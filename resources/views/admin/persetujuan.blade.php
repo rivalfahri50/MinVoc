@@ -73,7 +73,7 @@
                                         <td class="table-cell">{{ $item->created_at }}</td>
                                         <td class="table-cell text-warning">Pending</td>
                                         <td class="table-cell">
-                                            <button class="btn btnicon view-button" type="button" data-bs-toggle="modal"
+                                            <button type="button" class="btn btnicon" data-bs-toggle="modal"
                                                 data-bs-target="#staticBackdrop-{{ $item->code }}">
                                                 <i class="far fa-eye text-info"></i>
                                             </button>
@@ -103,37 +103,39 @@
 
     <!-- popup -->
     @foreach ($persetujuan as $item)
-        <div id="staticBackdrop-{{ $item->code }}">
-            <div id="popup">
+        <div class="modal fade" id="staticBackdrop-{{ $item->code }}" data-bs-backdrop="static" data-bs-keyboard="false"
+            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
                 <div class="card window">
                     <div class="card-body">
-                        <a href="#" class="close-button far fa-times-circle"></a>
+                        <a href="#" class="close-button far fa-times-circle"  data-bs-dismiss="modal"></a>
                         <h3 class="judul">Persetujuan Unggah Lagu</h3>
                         <div class="row mt-4">
                             <div class="col-md-12">
                                 <h5 class="judul">Tanggal Pengajuan</h5>
-                                <p class="teksbiasa">{{ $item->code }}</p>
+                                <p class="teksbiasa">{{ $item->created_at->toDateString() }}</p>
                             </div>
                             <div class="col-md-12 mb-4">
-                                {{-- <h5 class="judul">{{ $show->judul }}</h5>
-                        <div class="cell-content">
-                            <img src="{{ 'storage/' . $show->image }}" alt="Face" class="avatar"> --}}
-                                <div>
-                                    <h6>Labirin</h6>
-                                    <p class="text-muted m-0">tulus</p>
+                                <h5 class="judul">Judul Lagu</h5>
+                                <div class="cell-content">
+                                    <img src="{{ asset('storage/' . $item->image) }}" alt="Face" class="avatar">
+                                    <div>
+                                        <h6>{{ $item->judul }}</h6>
+                                        <p class="text-muted m-0">{{ $item->artist->user->name }}</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="text-md-right">
-                            <a href="#" class="btn" type="submit">Putar Lagu</a>
-                            <a href="persetujuan.html" class="btn" type="submit">Setujui</a>
+                            <div class="text-md-right">
+                                <a href="#" class="btn" type="submit">Putar Lagu</a>
+                                <a href="persetujuan.html" class="btn" type="submit">Setujui</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        </div>
     @endforeach
+
 
     </div>
     <!-- page-body-wrapper ends -->

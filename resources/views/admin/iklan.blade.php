@@ -49,47 +49,9 @@
                                                         </button>
                                                     </td>
                                                 </tr>
-                                                <tr class="table-row">
-                                                    <td class="table-cell">
-                                                        <div class="cell-content">
-                                                            <img src="../assets/images/faces/face9.jpg" alt="Face"
-                                                                class="avatar">
-                                                        </div>
-                                                    </td>
-                                                    <td class="table-cell">Agnez Monica</td>
-                                                    <td class="table-cell">Agnez Monica ...</td>
-                                                    <td class="table-cell">
-                                                        <a href="#popupdetail" class="btn btnicon">
-                                                            <i class="far fa-eye text-info"></i>
-                                                        </a>
-                                                        <button class="btn btnicon">
-                                                            <i class="far fa-times-circle text-danger"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr class="table-row">
-                                                    <td class="table-cell">
-                                                        <div class="cell-content">
-                                                            <img src="../assets/images/faces/face9.jpg" alt="Face"
-                                                                class="avatar">
-                                                        </div>
-                                                    </td>
-                                                    <td class="table-cell">Agnez Monica</td>
-                                                    <td class="table-cell">Agnez Monica ...</td>
-                                                    <td class="table-cell">
-                                                        <a href="#popupdetail" class="btn btnicon">
-                                                            <i class="far fa-eye text-info"></i>
-                                                        </a>
-                                                        <button class="btn btnicon">
-                                                            <i class="far fa-times-circle text-danger"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
-
-
 
                                     <div class="text-center">
                                         <div class="text-center">
@@ -120,11 +82,6 @@
                                         <div class="mb-3">
                                             <label for="deskripsi" class="form-label judulnottebal">Deskripsi</label>
                                             <textarea id="deskripsi" class="form-control" maxlength="500" rows="6" required></textarea>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="upload" class="form-label judulnottebal">Upload
-                                                foto</label>
-                                            <input type="file" class="form-control form-i" id="namaproyek" required>
                                         </div>
                                     </div>
                                     <div class="text-md-right">

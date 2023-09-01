@@ -21,24 +21,41 @@
                     @enderror
 
                     <div class="d-flex flex-column mb-3 col-lg-9">
-                        <div class="my-2">
-                            <input type="text" class="form-control rounded-lg" id="exampleFormControlInput1"
-                                placeholder="Judul Lagu" name="judul" value="{{ old('judul') }}">
-                            @error('judul')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
+                        <div class="my-2 d-flex flex-row justify-content-around">
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" style="border-radius: 13px"
+                                    id="exampleFormControlInput1" placeholder="Judul Lagu" name="judul"
+                                    value="{{ old('judul') }}">
+                                @error('judul')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-4">
+                                <select name="album" class="form-select" style="border-radius: 13px"
+                                    aria-label="Default select example">
+                                    <option value="" disabled selected>Album</option>
+                                    @foreach ($albums as $item)
+                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('album')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
                         <div class="my-2 d-flex flex-row justify-content-around">
-                            <div class="col-md-6">
-                                <input type="file" class="form-control rounded-lg" id="inputGroupFile04"
+                            <div class="col-md-8">
+                                <input type="file" class="form-control" style="border-radius: 13px" id="inputGroupFile04"
                                     aria-describedby="inputGroupFileAddon04" aria-label="Upload" name="audio"
                                     value="{{ old('audio') }}">
                                 @error('audio')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="col-md-6">
-                                <select name="genre" class="form-select" aria-label="Default select example">
+                            <div class="col-md-4">
+                                <select name="genre" class="form-select" style="border-radius: 13px"
+                                    aria-label="Default select example">
+                                    <option value="" disabled selected>Music Genre</option>
                                     @foreach ($genres as $item)
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
                                     @endforeach

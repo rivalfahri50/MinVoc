@@ -129,6 +129,18 @@
                             </li>
                         </ul>
                     </div>
+                    <div class="collapse" id="ui-basic">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="">
+                                    <span class="menu-icon">
+                                        <i class="mdi mdi-plus-circle-outline"></i>
+                                    </span>
+                                    <span class="menu-title">Buat Album</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="/artis-verified/unggahAudio">
@@ -285,6 +297,7 @@
                     </button>
                 </div>
             </nav>
+            
 
             @yield('content')
 

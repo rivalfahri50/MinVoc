@@ -33,120 +33,27 @@
                             <div class="row" style="margin-top: -20px">
                                 <div class="col-12">
                                     <div class="preview-list">
-                                        <div class="preview-item">
-                                            <div class="preview-thumbnail">
-                                                <img src="/user/assets/images/faces/face1.jpg" width="10%">
-                                            </div>
-                                            <div class="preview-item-content d-sm-flex flex-grow">
-                                                <div class="flex-grow">
-                                                    <h6 class="preview-subject">Tak Ingin Usai</h6>
-                                                    <p class="text-muted mb-0">Keisya</p>
+                                        @foreach ($songs as $item)
+                                            <div class="preview-item">
+                                                <div class="preview-thumbnail">
+                                                    <img src="{{ asset('storage/' . $item->image) }}" width="10%">
                                                 </div>
-                                                <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                    <div class="text-group">
-                                                        <i onclick="myFunction(this)" class="far fa-heart pr-2">
-                                                        </i>
-                                                        <p>2.26</p>
-                                                        <i class="fas fa-ellipsis-v"></i>
+                                                <div class="preview-item-content d-sm-flex flex-grow">
+                                                    <div class="flex-grow">
+                                                        <h6 class="preview-subject">{{ $item->judul }}</h6>
+                                                        <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
+                                                    </div>
+                                                    <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                                        <div class="text-group">
+                                                            <i onclick="myFunction(this)" class="far fa-heart pr-2">
+                                                            </i>
+                                                            <p>{{ $item->waktu }}</p>
+                                                            <i class="fas fa-ellipsis-v"></i>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="preview-item">
-                                            <div class="preview-thumbnail">
-                                                <img src="/user/assets/images/faces/face1.jpg" width="10%">
-                                            </div>
-                                            <div class="preview-item-content d-sm-flex flex-grow">
-                                                <div class="flex-grow">
-                                                    <h6 class="preview-subject">Tak Ingin Usai</h6>
-                                                    <p class="text-muted mb-0">Keisya</p>
-                                                </div>
-                                                <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                    <div class="text-group">
-                                                        <i onclick="myFunction(this)" class="far fa-heart pr-2">
-                                                        </i>
-                                                        <p>2.26</p>
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="preview-item">
-                                            <div class="preview-thumbnail">
-                                                <img src="/user/assets/images/faces/face1.jpg" width="10%">
-                                            </div>
-                                            <div class="preview-item-content d-sm-flex flex-grow">
-                                                <div class="flex-grow">
-                                                    <h6 class="preview-subject">Tak Ingin Usai</h6>
-                                                    <p class="text-muted mb-0">Keisya</p>
-                                                </div>
-                                                <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                    <div class="text-group">
-                                                        <i onclick="myFunction(this)" class="far fa-heart pr-2">
-                                                        </i>
-                                                        <p>2.26</p>
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="preview-item">
-                                            <div class="preview-thumbnail">
-                                                <img src="/user/assets/images/faces/face1.jpg" width="10%">
-                                            </div>
-                                            <div class="preview-item-content d-sm-flex flex-grow">
-                                                <div class="flex-grow">
-                                                    <h6 class="preview-subject">Tak Ingin Usai</h6>
-                                                    <p class="text-muted mb-0">Keisya</p>
-                                                </div>
-                                                <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                    <div class="text-group">
-                                                        <i onclick="myFunction(this)" class="far fa-heart pr-2">
-                                                        </i>
-                                                        <p>2.26</p>
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="preview-item">
-                                            <div class="preview-thumbnail">
-                                                <img src="/user/assets/images/faces/face1.jpg" width="10%">
-                                            </div>
-                                            <div class="preview-item-content d-sm-flex flex-grow">
-                                                <div class="flex-grow">
-                                                    <h6 class="preview-subject">Tak Ingin Usai</h6>
-                                                    <p class="text-muted mb-0">Keisya</p>
-                                                </div>
-                                                <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                    <div class="text-group">
-                                                        <i onclick="myFunction(this)" class="far fa-heart pr-2">
-                                                        </i>
-                                                        <p>2.26</p>
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="preview-item">
-                                            <div class="preview-thumbnail">
-                                                <img src="/user/assets/images/faces/face1.jpg" width="10%">
-                                            </div>
-                                            <div class="preview-item-content d-sm-flex flex-grow">
-                                                <div class="flex-grow">
-                                                    <h6 class="preview-subject">Tak Ingin Usai</h6>
-                                                    <p class="text-muted mb-0">Keisya</p>
-                                                </div>
-                                                <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                    <div class="text-group">
-                                                        <i onclick="myFunction(this)" class="far fa-heart pr-2">
-                                                        </i>
-                                                        <p>2.26</p>
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
