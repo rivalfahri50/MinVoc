@@ -4,6 +4,103 @@
     <link rel="stylesheet" href="/admin/assets/css/dashboard.css">
     <!-- partial | ISI -->
     <div class="main-panel">
+        <style>
+            .table-container {
+               margin-bottom: 20px;
+            }
+
+            .table-sortable th {
+                cursor: pointer;
+                border-radius: 10px;
+            }
+
+            .table-sortable .th-sort-asc::after {
+                content: "\25b4";
+            }
+
+            .table-sortable .th-sort-desc::after {
+                content: "\25be";
+            }
+
+            .table-sortable .th-sort-asc::after, 
+            .table-sortable .th-sort-desc::after {
+                margin-left: 10px;
+            }
+            /*---- style untuk table ----*/
+            .table-body {
+                padding: 20px;
+            }
+
+
+            .table-container {
+                max-width: 100%;
+                overflow-x: auto;
+            }
+
+            .table {
+                width: 100%;
+                border-spacing: 0;
+            }
+
+            .header {
+                margin-bottom: 10px;
+                background-color: #957DAD;
+                overflow: hidden;
+            }
+
+            .table-cell {
+
+                flex: 1;
+
+                padding-left: 10%;
+
+                text-align: left;
+
+                padding: 10px;
+
+            }
+
+            .table-header {
+                padding-top: 10px;
+                padding-bottom: 10px;
+                color: white;
+            }
+
+            .avatar {
+                width: 40px;
+                margin-right: 10px;
+            }
+
+            .table td img {
+                border-radius: 0;
+            }
+
+            .cell-content {
+                display: flex;
+                align-items: center;
+            }
+
+            .table-cell h6,
+            .table-cell p {
+                margin: 0;
+                padding: 5px 0;
+            }
+
+            .table-container {
+                margin-bottom: 20px;
+            }
+
+            /*---- style untuk header dengan border lengkung ----*/
+            .headerlengkung th:first-child {
+                border-top-left-radius: 10px;
+                border-bottom-left-radius: 10px;
+            }
+
+            .headerlengkung th:last-child {
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+            }
+        </style>
         <div class="content-wrapper">
             <div class="row">
                 <div class="col-md-12 mb-3">
@@ -32,8 +129,7 @@
                         </div>
                         <div class="col-6 row no-gutters">
                             <div class="card coba">
-                                <img src="assets/images/logo.svg" width="80%" height="100%" alt="logo"
-                                    class="ml-5 md-3" />
+                                <img src="/assets/images/logo.svg" width="80%" height="100%" alt="logo" class="ml-5 md-3" />
                             </div>
                         </div>
                     </div>
@@ -52,7 +148,7 @@
                             <div class="table-container">
                                 <table class="table">
                                     <thead class="table-header">
-                                        <tr class="table-row headerlengkung">
+                                        <tr class="table-row header headerlengkung">
                                             <th class="table-cell">Judul Lagu</th>
                                             <th class="table-cell">Genre</th>
                                             <th class="table-cell">Tanggal Pengajuan</th>
@@ -76,6 +172,7 @@
                                             </tr>
                                         @endforeach
                                     </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -88,6 +185,7 @@
     </div>
     <!-- container-scroller -->
 
+    <script src="/user/assets/js/tablesort.js"></script>
     <script>
         function myFunction(x) {
             x.classList.toggle("far"); // Menghapus kelas "fa fa-heart"

@@ -116,6 +116,7 @@
         
         .button-container {
             display: inline-block;
+            margin-right: 13px;
         }
     </style>
 

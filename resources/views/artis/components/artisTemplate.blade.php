@@ -71,6 +71,45 @@
             height: 100%;
             object-fit: cover;
         }
+
+        #buat-album {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            background: rgba(0, 0, 0, .7);
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            visibility: hidden;
+        }
+
+        #buat-album .card-body {
+            padding: 10px 7% 10px 7%;
+        }
+
+        /* Memunculkan Jendela Pop Up*/
+        #buat-album:target {
+            visibility: visible;
+        }
+
+        .window {
+            background-color: #ffffff;
+            width: 350px;
+            border-radius: 10px;
+            position: relative;
+            margin: 13% auto;
+            padding: 10px;
+        }
+
+        .close-button {
+            display: block;
+            color: #957DAD;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        
+        
     </style>
     <script>
         // INI SCRIPT UNTUK HASIL SEARCH TAMPIL/TIDAK
@@ -127,6 +166,12 @@
                                     </span>
                                     <span class="menu-title">Buat Playlist</span>
                                 </a>
+                                <a class="nav-link" href="#buat-album">
+                                    <span class="menu-icon">
+                                        <i class="mdi mdi-plus-circle-outline"></i>
+                                    </span>
+                                    <span class="menu-title">Buat Album</span>
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -135,11 +180,11 @@
                     <a class="nav-link" href="/artis/kolaborasi">
                         @if ($title === 'kolaborasi')
                             <span class="menu-icon">
-                                <img width="30" src="/images/kolaborasi.svg" alt="" srcset="">
+                                <i class="mdi mdi-account-group-outline"></i>
                             </span>
                         @else
                             <span class="menu-icon">
-                                <img width="30" src="/images/hover/kolaborasi.svg" alt="" srcset="">
+                                <i class="mdi mdi-account-group-outline"></i>
                             </span>
                             <span class="menu-title">Kolaborasi</span>
                         @endif
@@ -148,7 +193,7 @@
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="/artis/penghasilan">
                         <span class="menu-icon">
-                            <img width="30" src="/images/penghasilan.svg" alt="" srcset="">
+                            <i class="mdi mdi-cash-multiple"></i>
                         </span>
                         <span class="menu-title">Penghasilan</span>
                     </a>
@@ -158,7 +203,7 @@
                         <span class="menu-icon">
                             <i class="mdi mdi-account-check-outline"></i>
                         </span>
-                        <span class="menu-title">Verified</span>
+                        <span class="menu-title">Verifikasi</span>
                     </a>
                 </li>
                 <li class="nav-item menu-items">
@@ -289,6 +334,32 @@
 
             @yield('content')
 
+            <div id="buat-album">
+                <div class="card window">
+                    <div class="card-body">
+                        <a href="#" class="close-button far fa-times-circle"></a>
+                        <h2 class="judul">Buat Album</h2>
+                        <form class="row" action="">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <h3 class="form-label judul">Nama Album</h3>
+                                    <input type="text" class="form-control" id="namaproyek" placeholder="Masukkan nama kategori musik"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <h3 for="upload" class="form-label judul">Upload
+                                        Foto</h3>
+                                    <input type="file" class="form-control" id="namaproyek"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="text-md-right">
+                                <a href="#" class="btn" type="submit">Tambah</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
             <script>
                 $(document).ready(function() {
                     $('#search').on('keyup', function() {

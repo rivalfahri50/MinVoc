@@ -113,6 +113,11 @@
             background-color: white;
             border: 1px solid red;
         }
+
+        .button-container {
+            display: inline-block;
+            margin-right: 13px;
+        }
     </style>
 
     <div id="popup">
@@ -145,11 +150,13 @@
                             </div>
                         </div>
                         <div class="text-md-right col-md-12">
-                            <button class="btn btn-primary" type="submit">Ubah</button>
+                            <div class="button-container">
+                                <button class="btn btn-primary" type="submit">Ubah</button>
+                                <button form="hapus" class="btn btn-delete" type="submit">Hapus</button>
+                            </div>
                     </form>
-                    <form action="{{ route('hapus.playlist.artis', $playlistDetail->code) }}" method="GET">
+                    <form id="hapus" action="{{ route('hapus.playlist.artis', $playlistDetail->code) }}" method="GET">
                         @csrf
-                        <button class="btn btn-delete" type="submit">Hapus</button>
                     </form>
                 </div>
             </div>
