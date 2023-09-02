@@ -1,3 +1,16 @@
+/* Style dropdown sidebar--Mengatur tampilan menu dropdown */
+.menu-items .nav-link {
+    position: relative;
+}
+
+.menu-arrow {
+    color: inherit;
+    position: absolute;
+    left: 185px;
+    top: 185px;
+    transform: translateY(-50%);
+}
+
 .logo {
     width: 400px;
     height: auto;

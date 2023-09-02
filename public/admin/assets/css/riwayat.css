@@ -30,34 +30,44 @@
 }
 
 .table {
+    display: flex;
+    flex-direction: column;
     width: 100%;
+    border-collapse: separate;
     border-spacing: 0;
 }
 
 .table-row {
     display: flex;
     align-items: center;
+    /* Vertically center align content */
     justify-content: space-between;
-    margin-bottom: 10px;
-    background-color: #eaeaea;
+    /* Horizontally distribute content */
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px;
+    background-color: #eaeaea;
 }
 
 .table-cell {
     flex: 1;
-    padding-left: 10%;
+    padding-left: 60px;
     text-align: left;
-    padding: 10px;
 }
 
 .table-header {
     padding-top: 10px;
     padding-bottom: 10px;
+    background-color: #957dad;
     color: white;
 }
 
+.table-cell h6,
+.table-cell p {
+    background-color: inherit;
+    margin: 0;
+    padding: 5px 0;
+}
 .avatar {
     width: 40px;
     margin-right: 10px;
@@ -83,6 +93,22 @@
     margin-bottom: 20px;
 }
 
+.table-sortable th {
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.table-sortable .th-sort-asc::after {
+    content: "\25b4";
+}
+.table-sortable .th-sort-desc::after {
+    content: "\25be";
+}
+
+.table-sortable .th-sort-asc::after,
+.table-sortable .th-sort-desc::after {
+    margin-left: 10px;
+}
 
 /*---- style untuk button icon ----*/
 .btnicon {
@@ -120,3 +146,16 @@
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
     background-color: #957DAD;
 }
+/* Style dropdown sidebar--Mengatur tampilan menu dropdown */
+.menu-items .nav-link {
+    position: relative;
+}
+
+.menu-arrow {
+    color: inherit;
+    position: absolute;
+    left: 185px;
+    top: 185px;
+    transform: translateY(-50%);
+}
+
