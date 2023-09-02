@@ -78,6 +78,22 @@
     margin-bottom: 20px;
 }
 
+.table-sortable th {
+    cursor: pointer;
+}
+
+.table-sortable .th-sort-asc::after {
+    content: "\25b4";
+}
+.table-sortable .th-sort-desc::after {
+    content: "\25be";
+}
+
+.table-sortable .th-sort-asc::after,
+.table-sortable .th-sort-desc::after {
+    margin-left: 10px;
+}
+
 
 /*---- style untuk button icon ----*/
 .btnicon {

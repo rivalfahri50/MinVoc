@@ -4,6 +4,38 @@
 <link rel="stylesheet" href="/admin/assets/css/iklan.css">
     <!-- partial | ISI -->
     <div class="main-panel">
+        <style>
+            .form-control{
+                color: #495057;
+            }
+            .form-select {
+                background-color: #EAEAEA;
+                border: 1px solid #EAEAEA;
+                color: #495057;
+                font-size: 0.875rem;
+            }
+            
+            .gambar-container {
+                display: flex;
+                align-items: center;
+            }
+
+            .gambarbg {
+                width: 190px;
+                height: 90px;
+                margin-right: 10px;
+                border-radius: 0;
+                object-fit: cover; /* Mengisi kotak gambar tanpa mempertahankan aspek asli */
+            }
+
+            .avatar {
+                width: 60px;
+                height: 60px; /* Ketinggian tetap 60px */
+                margin-right: 10px;
+                border-radius: 0; /* Untuk membuatnya segi empat berbentuk lingkaran */
+                object-fit: cover; /* Mengisi kotak gambar tanpa mempertahankan aspek asli */
+            }
+        </style>
         <div class="content-wrapper">
             <div class="row">
                 <div class="col-md-12 mb-3">
@@ -75,13 +107,28 @@
                                 <form class="row" action="">
                                     <div class="col-md-12">
                                         <div class="mb-3">
-                                            <label for="namakategori" class="form-label judulnottebal">Nama
-                                                artis</label>
-                                            <input type="text" class="form-control form-i" id="namaproyek" required>
+                                            <label for="namaartis" class="form-label judulnottebal">Nama artis</label>
+                                            <select class="form-select" id="namaartis">
+                                                <option></option>
+                                                <option>Tulus</option>
+                                                <option>Afgan</option>
+                                            </select>
                                         </div>
                                         <div class="mb-3">
                                             <label for="deskripsi" class="form-label judulnottebal">Deskripsi</label>
-                                            <textarea id="deskripsi" class="form-control" maxlength="500" rows="6" required></textarea>
+                                            <textarea id="deskripsi" class="form-control" maxlength="500" rows="6" placeholder="Masukkan deskripsi" required></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="uploadlatar" class="form-label judulnottebal">Upload
+                                                Background Iklan</label>
+                                            <input type="file" name="images" class="form-control form-i" id="uploadlatar"
+                                                required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="uploadartis" class="form-label judulnottebal">Upload
+                                                Foto Artis</label>
+                                            <input type="file" name="images" class="form-control form-i" id="uploadartis"
+                                                required>
                                         </div>
                                     </div>
                                     <div class="text-md-right">
@@ -91,6 +138,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div id="popupdetail">
                         <div class="card window">
                             <div class="card-body">
@@ -99,13 +147,6 @@
                                 <form class="row" action="">
                                     <div class="col-md-12">
                                         <div class="mb-3">
-                                            <label for="namakategori" class="form-label judulnottebal">Gambar</label>
-                                            <div class="cell-content">
-                                                <img src="../assets/images/faces/face9.jpg" alt="Face"
-                                                    class="avatar">
-                                            </div>
-                                        </div>
-                                        <div class="mb-3">
                                             <label for="namakategori" class="form-label judulnottebal">Nama
                                                 artis</label>
                                             <input type="text" class="form-control form-i" id="namaproyek"
@@ -113,7 +154,19 @@
                                         </div>
                                         <div class="mb-3">
                                             <label for="deskripsi" class="form-label judulnottebal">Deskripsi</label>
-                                            <textarea id="deskripsi" class="form-control" maxlength="500" rows="6" readonly disabled>Agnes Monica Muljoto, yang dikenal dengan nama profesional Agnez Mo, adalah seorang penyanyi, penulis lagu, penari, dan aktris Indonesia. Pada awal kariernya, dia juga dikenal sebagai Agnes Monica. </textarea>
+                                            <textarea id="deskripsi" class="form-control" maxlength="500" rows="4" readonly disabled>Agnes Monica Muljoto, yang dikenal dengan nama profesional Agnez Mo, adalah seorang penyanyi, penulis lagu, penari, dan aktris Indonesia. Pada awal kariernya, dia juga dikenal sebagai Agnes Monica. </textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="namakategori" class="form-label judulnottebal">Gambar background iklan</label>
+                                            <div class="cell-content gambar-container">
+                                                <img src="/admin/assets/images/faces/face9.jpg" alt="Face" class="gambarbg">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="namakategori" class="form-label judulnottebal">Gambar artis</label>
+                                            <div class="cell-content gambar-container">
+                                                <img src="/admin/assets/images/dashboard/img_1.jpg" alt="Face" class="avatar">
+                                            </div>
                                         </div>
                                     </div>
                                 </form>

@@ -67,7 +67,7 @@
 
     <!-- popup -->
     @foreach ($artist as $item)
-        <div id="popup-{{ $item }}">
+        <div id="popup-{{ $item->code }}">
             <div class="card window">
                 <div class="card-body">
                     <a href="#" class="close-button far fa-times-circle"></a>
@@ -77,16 +77,16 @@
                             <h5 class="judul mb-3">Nama :</h5>
                             <td class="table-cell">
                                 <div class="cell-content">
-                                    <img src="../assets/images/faces/face1.jpg" alt="Face" class="avatar">
+                                    <img src="{{ asset('storage/' . $item->user->avatar) }}" alt="Face" class="avatar">
                                     <div>
-                                        <p class="teksbiasa">Johan Akbar</p>
+                                        <p class="teksbiasa">{{ $item->user->name }}</p>
                                     </div>
                                 </div>
                             </td>
                         </div>
                         <div class="col-md-12 mb-4">
                             <h5 class="judul mb-3">Tanggal Pengajuan :</h5>
-                            <p class="teksbiasa">10/08/2023</p>
+                            <p class="teksbiasa">{{ $item->pengajuan_verified_at }}</p>
                         </div>
                         <div class="text-md-right">
                             <a href="#" class="btn" type="submit">Setujui</a>

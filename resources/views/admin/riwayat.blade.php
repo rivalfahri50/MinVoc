@@ -4,7 +4,6 @@
     <!-- partial | ISI -->
     <div class="main-panel">
         <div class="content-wrapper">
-
             <div class="col-lg-12 grid-margin stretch-card">
                 <h3 class="judul mb-3">Riwayat Persetujuan Unggah Lagu</h3>
                 <div class="table-container">
@@ -13,8 +12,8 @@
                             <tr class="table-row table-header">
                                 <th class="table-cell">Nama</th>
                                 <th class="table-cell">Tanggal </th>
-                                <div><th class="table-cell">Status</th>
-                                <th class="table-cell">Aksi</th></div>
+                                <th class="table-cell">Status</th>
+                                <th class="table-cell">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>

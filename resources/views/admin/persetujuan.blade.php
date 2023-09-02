@@ -4,51 +4,10 @@
     <!-- partial | ISI -->
     <div class="main-panel">
         <div class="content-wrapper">
-            <h3 class="judul mb-4">Persetujuan Unggah Lagu</h3>
-            <div class="row">
                 <div class="col-lg-12 grid-margin stretch-card">
-                    <div class="row">
-                        <div class="col-4">
-                            <div class="dropdown">
-                                <button class="btn dropdown-toggle full-width-btn" type="button" id="tanggalDropdown"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Tanggal
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-scroll scrollbar-down"
-                                    aria-labelledby="tanggalDropdown">
-                                    <!-- Opsi dropdown akan ditambahkan secara dinamis menggunakan JavaScript -->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="dropdown">
-                                <button class="btn dropdown-toggle full-width-btn" type="button" id="bulanDropdown"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Bulan
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-scroll scrollbar-down"
-                                    aria-labelledby="bulanDropdown">
-                                    <!-- Opsi dropdown akan ditambahkan secara dinamis menggunakan JavaScript -->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="dropdown">
-                                <button class="btn dropdown-toggle full-width-btn" type="button" id="tahunDropdown"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Tahun
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-scroll scrollbar-down"
-                                    aria-labelledby="tahunDropdown">
-                                    <!-- Opsi dropdown akan ditambahkan secara dinamis menggunakan JavaScript -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-12 grid-margin stretch-card">
+                    <h3 class="judul mb-4">Persetujuan Unggah Lagu</h3>
                     <div class="table-container">
-                        <table class="table">
+                        <table class="table table-sortable">
                             <thead class="table-header">
                                 <tr class="table-row">
                                     <th class="table-cell">Judul Lagu</th>
@@ -96,7 +55,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
         </div>
         <!-- partial -->
     </div>
@@ -139,7 +97,7 @@
     </div>
 
 
-
+    <script src="/user/assets/js/tablesort.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>

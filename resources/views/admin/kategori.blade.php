@@ -3,6 +3,15 @@
     <link rel="stylesheet" href="/admin/assets/css/kategori.css">
 
     <div class="main-panel">
+        <style>
+            .table td img {
+                width: 60px;
+                height: 60px; /* Ketinggian tetap 60px */
+                margin-right: 10px;
+                border-radius: 0; /* Untuk membuatnya segi empat berbentuk lingkaran */
+                object-fit: cover; /* Mengisi kotak gambar tanpa mempertahankan aspek asli */
+            }
+        </style>
         <div class="content-wrapper">
             <div class="row">
                 <div class="col-md-12 mb-3">
@@ -35,7 +44,7 @@
                                                         <td class="table-cell">
                                                             <div class="cell-content">
                                                                 <img src="{{ asset('storage/' . $item->images) }}"
-                                                                    alt="Face" class="avatar">
+                                                                    alt="Face" class="avatar" width="60">
                                                             </div>
                                                         </td>
                                                         <td class="table-cell">{{ $item->name }}</td>

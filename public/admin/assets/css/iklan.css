@@ -68,12 +68,6 @@
     color: white;
 }
 
-.avatar {
-    width: 80px;
-    margin-right: 10px;
-    border-radius: 0;
-}
-
 .table td img {
     width: 35%;
     height: 35%;
@@ -177,7 +171,7 @@
     width: 500px;
     border-radius: 10px;
     position: relative;
-    margin: 6% auto;
+    margin: 3% auto;
     padding: 10px;
 }
 
