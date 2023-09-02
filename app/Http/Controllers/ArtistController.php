@@ -68,6 +68,43 @@ class ArtistController extends Controller
         return response()->view('artis.profile.profile_ubah', compact('title', 'user'));
     }
 
+    protected function verifiedAccount(string $code, Request $request)
+    {
+        $user = User::where('code', $code)->first();
+        $artist = Artist::where('user_id', $user->id)->first();
+
+        $validate = Validator::make(
+            $request->all(),
+            [
+                'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ],
+            [
+                'foto' => [
+                    'image' => 'foto harus berupa gambar.',
+                    'mimes' => 'foto harus dalam format: :values.',
+                    'max' => 'foto tidak boleh lebih dari :max KB.',
+                ],
+            ]
+        );
+        
+        if ($validate->fails()) {
+            return redirect()->back()
+            ->withErrors($validate)
+            ->withInput();
+        }
+        
+        try {
+            $imagePath = $request->file('foto')->store('images', 'public');
+
+            $artist->pengajuan_verified_at = now()->toDateString();
+            $artist->image = $imagePath;
+            $artist->save();
+        } catch (\Throwable $th) {
+            return response()->redirectTo('/artis/verified')->with('failed', "failed");
+        }
+        return response()->redirectTo('/artis/verified')->with('message', "success");
+    }
+
     protected function updateProfile(string $code, Request $request)
     {
         $validate = Validator::make(

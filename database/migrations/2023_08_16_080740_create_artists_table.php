@@ -14,10 +14,14 @@ return new class extends Migration
         Schema::create('artists', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->integer('didengar')->default(0);
-            $table->integer('likes')->default(0);
+            $table->string('image')->default("none");
             $table->boolean('is_verified')->default(false);
+            $table->string('verification_status')->default('pending');
+            $table->date('pengajuan_verified_at')->nullable();
             $table->timestamps();
+
+            $table->index('user_id');
+            $table->index('verification_status');
         });
     }
 

@@ -108,7 +108,7 @@
             <div class="modal-dialog" role="document">
                 <div class="card window">
                     <div class="card-body">
-                        <a href="#" class="close-button far fa-times-circle"  data-bs-dismiss="modal"></a>
+                        <a href="#" class="close-button far fa-times-circle" data-bs-dismiss="modal"></a>
                         <h3 class="judul">Persetujuan Unggah Lagu</h3>
                         <div class="row mt-4">
                             <div class="col-md-12">
@@ -135,12 +135,8 @@
             </div>
         </div>
     @endforeach
-
-
     </div>
-    <!-- page-body-wrapper ends -->
     </div>
-    <!-- container-scroller -->
 
 
 
@@ -148,6 +144,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         $(document).ready(function() {
+
             $('.view-button').click(function() {
                 // Dapatkan ID data dari tombol "Lihat" yang ditekan
                 var itemId = $(this).data('id');

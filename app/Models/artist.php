@@ -10,15 +10,15 @@ class artist extends Model
     use HasFactory;
 
     protected $fillable = [
-        'didengar',
-        'likes',
         'user_id',
+        'image',
         'is_verified',
+        'verification_status',
+        'pengajuan_verified_at',
     ];
 
     public function user()
     {
         return $this->hasOne(user::class, 'id', 'user_id');
     }
-
 }

@@ -85,6 +85,7 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
     Route::get('/verified', 'verified');
     Route::get('/hapus-playlist/{code}', 'hapusPlaylist')->name('hapus.playlist.artis');
     
+    Route::POST('/verified/{code}', 'verifiedAccount')->name('verified');
     Route::post('/create-lirik', 'Project')->name('create.project');
     Route::post('/message', 'message')->name('message.project');
     Route::post('/reject-project', 'rejectProject')->name('reject.project');
@@ -142,6 +143,5 @@ Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(pengguna
     Route::post('/ubah-playlist/{code}', 'ubahPlaylist')->name('ubah.playlist');
     Route::post('/filter', 'filter')->name('filter');
 });
-
 
 Route::get('/ambil-lagu', [songController::class, 'ambillagu']);

@@ -63,7 +63,8 @@ class AdminController extends Controller
     protected function verifikasi(): Response
     {
         $title = "MusiCave";
-        return response()->view('admin.verifikasi', compact('title'));
+        $artist = artist::all();
+        return response()->view('admin.verifikasi', compact('title', 'artist'));
     }
 
     protected function buatGenre(Request $request)
