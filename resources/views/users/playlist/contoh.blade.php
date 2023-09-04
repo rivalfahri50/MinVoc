@@ -1,7 +1,7 @@
 @extends('users.components.usersTemplates')
 
 @section('content')
-    <link rel="stylesheet" href="/user/assets/css/contohPlaylist.css">
+    {{-- <link rel="stylesheet" href="/user/assets/css/contohPlaylist.css"> --}}
     <link rel="stylesheet" href="/user/assets/css/buatPlaylist.css">
     <div class="main-panel">
         <div class="content-wrapper">

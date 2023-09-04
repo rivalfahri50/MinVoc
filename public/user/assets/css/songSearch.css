@@ -1,0 +1,69 @@
+.coba {
+    background-color: #fff;
+    border: 3px solid #957DAD;
+}
+
+.coba:hover {
+    background-color: #ECECEC;
+    border: 3px solid #ECECEC;
+}
+
+
+.avatar {
+    width: 100%;
+    height: 100%;
+    margin-right: 10px;
+    border-radius: 0;
+}
+
+.cell-content {
+    display: flex;
+    align-items: center;
+}
+
+
+/*------ untuk scroll kebawah -------*/
+.scroll {
+    position: relative;
+    overflow-y: scroll;
+    height: 50vh;
+}
+
+.scrollbar-down::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    border-radius: 10px;
+}
+
+.scrollbar-down::-webkit-scrollbar {
+    width: 12px;
+    background-color: #F5F5F5;
+}
+
+.scrollbar-down::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+    background-color: #957DAD;
+}
+
+.thin::-webkit-scrollbar {
+    width: 6px;
+}
+
+.warna-kostum-like {
+    color: #957DAD;
+}
+
+.coba .fa-circle-play {
+    display: none;
+}
+
+.divider {
+    border-top: 3px solid #957DAD;
+    margin-top: 2px;
+    margin-bottom: 3%;
+}
+
+hr {
+    opacity: 1;
+}

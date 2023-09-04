@@ -25,9 +25,10 @@ class penggunaController extends Controller
         $title = "MusiCave";
         $songs = song::all();
         $genres = genre::all();
+        $playlists = playlist::all();
         $artist = artist::with('user')->get();
         $billboards = billboard::all();
-        return response()->view('users.index', compact('title', 'songs', 'artist', 'genres', 'billboards'));
+        return response()->view('users.index', compact('title', 'songs', 'artist', 'genres', 'playlists', 'billboards'));
     }
 
     protected function pencarian(): Response
@@ -84,15 +85,6 @@ class penggunaController extends Controller
         $songs = song::all();
         return response()->view('users.playlist.buat', compact('title', 'songs'));
     }
-
-    protected function detailAlbum(string $code): Response
-    {
-        $albumDetail = album::where('code', $code)->first();
-        $songs = song::all();
-        $title = "MusiCave";
-        return response()->view('users.playlist.contohAlbum', compact('title', 'albumDetail', 'songs'));
-    }
-
 
     protected function storePlaylist(Request $request)
     {

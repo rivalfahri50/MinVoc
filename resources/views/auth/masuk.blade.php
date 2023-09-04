@@ -41,13 +41,13 @@
 
                         <div class="flex-sb-m w-full p-t-3 p-b-32">
                             <div class="contact100-form-checkbox">
-                                <input class="input-checkbox100" id="ckb1" type="checkbox" name="kebijakan_privasi">
-                                <label class="label-checkbox100" for="ckb1" data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdrop">
-                                    <span>
-                                        Kebijakan Privasi
-                                    </span>
+                                <input class="input-checkbox100" id="ckb1" type="checkbox" name="kebijakan_privasi" required >
+                                <label class="label-checkbox100" for="ckb1" ><button data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                <span>Kebijakan Privasi</span>
+                                </button>
+
                                 </label>
+
                                 @error('kebijakan_privasi')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -87,7 +87,7 @@
     </div>
 
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        aria-labelledby="staticBackdropLabel" aria-hidden="false">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">

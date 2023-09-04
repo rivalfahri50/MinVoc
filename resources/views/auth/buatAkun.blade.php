@@ -83,7 +83,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <input placeholder="Kata Kunci" name="password" type="password" class="form-control rounded-3"
+                            <input placeholder="Kata Sandi" name="password" type="password" class="form-control rounded-3"
                                 id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ old('password') }}">
                             @error('password')
                                 <div class="text-danger">{{ $message }}</div>
@@ -92,7 +92,7 @@
 
 
                         <div class="mb-3">
-                            <input placeholder="Konfirmasi Kata Kunci" name="password_confirmation" type="password"
+                            <input placeholder="Konfirmasi Kata Sandi" name="password_confirmation" type="password"
                                 class="form-control rounded-3" id="exampleInputEmail1" aria-describedby="emailHelp"
                                 value="{{ old('password_confirmation') }}">
                             @error('password_confirmation')
