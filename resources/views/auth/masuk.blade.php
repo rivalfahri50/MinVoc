@@ -32,7 +32,7 @@
 
 
                         <div class="mb-3">
-                            <input name="password" placeholder="Kata Kunci" type="password" class="form-control rounded-3"
+                            <input name="password" placeholder="Kata Sandi" type="password" class="form-control rounded-3"
                                 id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ old('password') }}">
                             @error('password')
                                 <div class="text-danger">{{ $message }}</div>
