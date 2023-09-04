@@ -350,30 +350,54 @@
                         $(this).find('i').toggleClass('mdi-chevron-right mdi-chevron-down');
                     });
                 });
+                var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-                function toggleLike(itemID, element) {
-                    const isLiked = element.classList.contains("fas");
-                    $.ajax({
-                        type: "GET",
-                        url: "/pengguna/like",
-                        data: {
-                            item_id: itemID,
-                            liked: !isLiked
-                        },
-                        console.log(data);
-                        success: function(response) {
-                            if (response.liked) {
-                                element.classList.add("fas", "warna-kostum-like");
-                                element.classList.remove("far");
-                            } else {
-                                element.classList.add("far");
-                                element.classList.remove("fas", "warna-kostum-like");
-                            }
-                        },
-                        error: function(error) {
-                            console.error("Error:", error);
-                        }
+                function updateSongLikeStatus(songId, isLiked) {
+                    const likeIcons = document.querySelectorAll(`.shared-icon-like[data-song-id="${songId}"]`);
+                    likeIcons.forEach(likeIcon => {
+                        likeIcon.classList.toggle('fas', isLiked);
+                        likeIcon.classList.toggle('far', !isLiked);
                     });
+                }
+
+                function toggleLike(iconElement, songId) {
+                    iconElement.classList.toggle('fas');
+                    iconElement.classList.toggle('far');
+
+                    const isLiked = iconElement.classList.contains('fas');
+
+                    // updateSongLikeStatus(songId, isLiked);
+                    // const sharedHeartIcons = document.querySelectorAll('.shared-icon-like');
+                    // sharedHeartIcons.forEach(heartIcon => {
+                    //     heartIcon.classList.toggle('fas', isLiked);
+                    //     heartIcon.classList.toggle('far', !isLiked);
+                    // });
+
+                    fetch(`/song/${songId}/like`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': csrfToken
+
+                            },
+                            body: JSON.stringify({
+                                isLiked: iconElement.classList.contains('fas')
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            // updateSongLikeStatus(songId, isLiked);
+
+                            const audioPlayerLikeIcon = document.getElementById('audio-player-like-icon');
+                            if (audioPlayerLikeIcon) {
+                                audioPlayerLikeIcon.classList.toggle('fas', isLiked);
+                                audioPlayerLikeIcon.classList.toggle('far', !isLiked);
+                            }
+
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
                 }
             </script>
              <script>
@@ -411,7 +435,7 @@
                 let All_song = [];
 
                 function ambilDataLagu() {
-                    fetch('/pengguna/ambil-lagu')
+                    fetch('/ambil-lagu')
                         .then(response => response.json())
                         .then(data => {
                             All_song = data.map(lagu => {
