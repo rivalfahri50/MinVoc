@@ -140,6 +140,8 @@ Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(pengguna
     Route::get('/playlist', 'playlist');
     Route::get('/riwayat', 'riwayat');
     Route::get('/profile', 'profile');
+    Route::get('/artis-search', 'searchArtis');
+    Route::get('/song-search', 'searchSong');
     Route::get('/profile-ubah/{code}', 'profile_ubah')->name('ubah.profile');
     Route::get('/billboard', 'billboard');
     Route::get('/album', 'album');

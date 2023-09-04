@@ -23,8 +23,9 @@ class penggunaController extends Controller
         $title = "MusiCave";
         $songs = song::all();
         $genres = genre::all();
+        $playlists = playlist::all();
         $artist = artist::with('user')->get();
-        return response()->view('users.index', compact('title', 'songs', 'artist', 'genres'));
+        return response()->view('users.index', compact('title', 'songs', 'artist', 'genres', 'playlists'));
     }
 
     protected function pencarian(): Response
@@ -85,6 +86,18 @@ class penggunaController extends Controller
         $title = "MusiCave";
         $songs = song::all();
         return response()->view('users.playlist.buat', compact('title', 'songs'));
+    }
+
+    protected function searchArtis(): Response
+    {
+        $title = "MusiCave";
+        return response()->view('users.search.artisSearch', compact('title'));
+    }
+
+    protected function searchSong(): Response
+    {
+        $title = "MusiCave";
+        return response()->view('users.search.songSearch', compact('title'));
     }
 
     protected function storePlaylist(Request $request)

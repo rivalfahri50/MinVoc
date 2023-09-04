@@ -96,6 +96,31 @@
 </head>
 
 <body>
+
+    <div id="tambahkeplaylist">
+        <div class="card window">
+            <div class="card-body">
+                <h3 class="judul p-0 mb-4">Tambah Ke Playlist</h3>
+                <a href="#" class="close-button far fa-times-circle"></a>
+                <form class="row" action="">
+                    <div class="col-md-12">
+                        <div class="mb-4">
+                            <label for="namaartis" class="form-label judulnottebal">Nama Playlist</label>
+                            <select class="form-select" id="namaartis">
+                                @foreach ($playlists as $item)
+                                    <option>{{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="text-md-right">
+                        <a href="#" class="btn" type="submit">Tambah</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div class="container-scroller">
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
             <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
