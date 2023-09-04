@@ -286,7 +286,6 @@
                                         <img class="img-xs rounded-circle"
                                             src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
                                     </div>
-                                    {{-- <img class="img-xs rounded-circle" src="{{ asset('storage/' . auth()->user()->avatar) }}" alt=""> --}}
                                     <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ auth()->user()->name }}
                                     </p>
                                 </div>
@@ -341,7 +340,6 @@
                                 $previewList.empty();
 
                                 $.each(results, function(index, result) {
-                                    console.log(result);
 
                                     var $previewItem = $(
                                         '<div class="preview-item" data-song-id="' + result
@@ -382,9 +380,12 @@
                                 var results = response.results;
                                 var $searchResults = $('#search-results');
                                 $searchResults.empty();
-
-                                $.each(results, function(index, result) {
-                                    $searchResults.append('<li>' + result.name + '</li>');
+                                $.each(results.songs, function(index, result) {
+                                    $searchResults.append(`<li><a href='/pengguna/search/${result.code}'>${result.judul}</a></li>`);
+                                });
+                                $.each(results.artists, function(index, result) {
+                                    console.log(result.code);
+                                    $searchResults.append(`<li><a href='/pengguna/search/${result.code}'>${result.name}</a></li>`);
                                 });
                             }
                         });

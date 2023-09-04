@@ -155,7 +155,9 @@ Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(pengguna
     Route::get('/toggle-like', 'like')->name('toggle-like');
     Route::get('/hapus-playlist/{code}', 'hapusPlaylist')->name('hapus.playlist.user');
     Route::get('/search_song', 'search_song')->name('search.song.pengguna');
+    Route::get('/search/{code}', 'search_result');
     
+    Route::post('/tambah_playlist/{code}', 'tambah_playlist')->name('tambah.playlist');
     Route::post('/update/profile/{code}', 'updateProfile')->name('update.profile');
     Route::post('/buat-playlist', 'storePlaylist')->name('buat.playlist');
     Route::post('/ubah-playlist/{code}', 'ubahPlaylist')->name('ubah.playlist');

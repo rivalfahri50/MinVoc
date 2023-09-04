@@ -48,9 +48,4 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
-    // public function artist()
-    // {
-    //     return $this->hasOne(artist::class, 'user_id', 'role_id');
-    // }
 }
