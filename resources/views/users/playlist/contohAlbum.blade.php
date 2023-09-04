@@ -10,50 +10,30 @@
                     <div class="custom-container">
                         <div class="row">
                             <div class="col-3">
-                                @if ($playlistDetail->user_id === auth()->user()->id)
+                                @if ($albumDetail->artis->user_id === auth()->user()->id)
                                     <div class="col-3">
                                         <a href="#popup" class="card coba">
-                                            <img src="{{ asset('storage/' . $playlistDetail->images) }}" alt="Gambar">
+                                            <img src="{{ asset('storage/' . $albumDetail->image) }}" alt="Gambar">
                                         </a>
                                     </div>
                                 @else
                                     <div class="col-3">
                                         <div class="card coba">
-                                            <img src="{{ asset('storage/' . $playlistDetail->images) }}" alt="Gambar">
+                                            <img src="{{ asset('storage/' . $albumDetail->image) }}" alt="Gambar">
                                         </div>
                                     </div>
                                 @endif
                             </div>
-                            {{-- @if ($playlistDetail->user_id === auth()->user()->id)
-                                <div class="col-3">
-                                    <a href="#popup" class="card coba">
-                                        <img src="{{ asset('storage/' . $playlistDetail->images) }}" alt="Gambar" width="100">
-                                    </a>
-                                </div>
-                            @else
-                                <div class="col-3">
-                                    <img src="{{ asset('storage/' . $playlistDetail->images) }}" alt="Gambar" width="100">
-                                </div>
-                            @endif --}}
                             <div class="col-3 text-xxl-end">
                                 <div class="bottom-left-text">
-                                    <h3 class="m-0" style="font-weight: 600">{{ $playlistDetail->name }}
+                                    <h3 class="m-0" style="font-weight: 600">{{ $albumDetail->name }}
                                     </h3>
                                     <p style="font-size: 18px;">
-                                        {{ $playlistDetail->deskripsi == 'none' ? '' : "$playlistDetail->deskripsi" }}
+                                        {{ $albumDetail->deskripsi == 'none' ? '' : "$albumDetail->deskripsi" }}
                                     </p>
                                 </div>
                             </div>
                         </div>
-                        {{-- <div class="col-3 text-xxl-end">
-                            <div class="bottom-left-text">
-                                <p class="m-0" style="font-size: 18px; font-weight: 500">{{ $playlistDetail->name }}
-                                </p>
-                                <h3 style="font-size: 18px; font-weight: 600">
-                                    {{ $playlistDetail->deskripsi == 'none' ? '' : "$playlistDetail->deskripsi" }}
-                                </h3>
-                            </div>
-                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -72,25 +52,27 @@
                             <div class="col-12">
                                 <div class="preview-list">
                                     @foreach ($songs as $item)
-                                        <div class="preview-item">
-                                            <div class="preview-thumbnail">
-                                                <img src="{{ asset('storage/' . $item->image) }}" width="10%">
-                                            </div>
-                                            <div class="preview-item-content d-sm-flex flex-grow">
-                                                <div class="flex-grow">
-                                                    <h6 class="preview-subject">{{ $item->judul }}</h6>
-                                                    <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
+                                        @if ($item->is_approved && $item->album_id == $albumDetail->id)
+                                            <div class="preview-item">
+                                                <div class="preview-thumbnail">
+                                                    <img src="{{ asset('storage/' . $item->image) }}" width="10%">
                                                 </div>
-                                                <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                    <div class="text-group">
-                                                        <i onclick="myFunction(this)" class="far fa-heart pr-2">
-                                                        </i>
-                                                        <p>{{ $item->waktu }}</p>
-                                                        <i class="fas fa-ellipsis-v"></i>
+                                                <div class="preview-item-content d-sm-flex flex-grow">
+                                                    <div class="flex-grow">
+                                                        <h6 class="preview-subject">{{ $item->judul }}</h6>
+                                                        <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
+                                                    </div>
+                                                    <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                                        <div class="text-group">
+                                                            <i onclick="myFunction(this)" class="far fa-heart pr-2">
+                                                            </i>
+                                                            <p>{{ $item->waktu }}</p>
+                                                            <i class="fas fa-ellipsis-v"></i>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        @endif
                                     @endforeach
                                 </div>
                             </div>
@@ -103,7 +85,6 @@
     </div>
     </div>
     </div>
-
     <style>
         .btn-delete {
             background-color: rgb(215, 0, 0);
@@ -114,7 +95,7 @@
             background-color: white;
             border: 1px solid red;
         }
-        
+
         .button-container {
             display: inline-block;
             margin-right: 13px;
@@ -125,38 +106,34 @@
         <div class="card window">
             <div class="card-body">
                 <a href="#" class="close-button mdi mdi-close-circle-outline"></a>
-                <h3 class="judul">Edit Playlist</h3>
+                <h3 class="judul">Buat Playlist</h3>
                 <div>
-                    <form class="row" action="{{ route('ubah.playlist', $playlistDetail->code) }}" method="POST"
+                    <form class="row" action="{{ route('ubah.album.artis', $albumDetail->code) }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
                         <div class="col-4">
                             <div class="card cobai">
                                 <label for="gambar" id="tampil_gambar">
-                                    <img src="{{ asset('storage/' . $playlistDetail->images) }}"
+                                    <img src="{{ asset('storage/' . $albumDetail->image) }}"
                                         style="background-size: cover; background-repeat: no-repeat" width="150"
                                         alt="Gambar">
                                 </label>
-                                <input type="file" id="gambar" name="images" accept="image/png,image/jpg">
+                                <input type="file" id="gambar" name="image" accept="image/png,image/jpg">
                             </div>
                         </div>
                         <div class="col-md-7 ml-4">
                             <div class="mb-3">
-                                <input type="text" class="form-control form-i" name="name" id="nama"
-                                    placeholder="{{ $playlistDetail->name }}">
-                            </div>
-                            <div class="mb-3">
-                                <textarea id="deskripsi" class="form-control" name="deskripsi" maxlength="500" rows="6" placeholder="{{ $playlistDetail->deskripsi == 'none' ? '' : $playlistDetail->deskripsi }}"></textarea>
+                                <textarea id="deskripsi" class="form-control" name="name" maxlength="500" rows="9"
+                                    placeholder="{{ $albumDetail->name }}"></textarea>
                             </div>
                         </div>
                         <div class="text-md-right col-md-12">
-                            <div class="button-container"> <!-- Add this container -->
+                            <div class="button-container">
                                 <button class="btn btn-primary" type="submit">Ubah</button>
                                 <button form="hapus" class="btn btn-delete" type="submit">Hapus</button>
                             </div>
-                        </div>
                     </form>
-                    <form id="hapus" action="{{ route('hapus.playlist.user', $playlistDetail->code) }}" method="GET">
+                    <form id="hapus" action="{{ route('hapus.albums.artis', $albumDetail->code) }}" method="GET">
                         @csrf
                     </form>
                 </div>
@@ -165,8 +142,8 @@
     </div>
     </div>
 
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
         function myFunction(x) {
             x.classList.toggle("far"); // Menghapus kelas "fa fa-heart"

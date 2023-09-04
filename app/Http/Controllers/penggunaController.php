@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\album;
 use App\Models\artist;
+use App\Models\billboard;
 use App\Models\genre;
 use App\Models\playlist;
 use App\Models\song;
@@ -24,7 +26,8 @@ class penggunaController extends Controller
         $songs = song::all();
         $genres = genre::all();
         $artist = artist::with('user')->get();
-        return response()->view('users.index', compact('title', 'songs', 'artist', 'genres'));
+        $billboards = billboard::all();
+        return response()->view('users.index', compact('title', 'songs', 'artist', 'genres', 'billboards'));
     }
 
     protected function pencarian(): Response
@@ -38,8 +41,9 @@ class penggunaController extends Controller
     protected function playlist(): Response
     {
         $title = "MusiCave";
+        $albums = album::all();
         $playlists = playlist::all();
-        return response()->view('users.playlist', compact('title', 'playlists'));
+        return response()->view('users.playlist', compact('title', 'playlists', 'albums'));
     }
 
     protected function riwayat(): Response
@@ -61,12 +65,6 @@ class penggunaController extends Controller
         return response()->view('users.profile.profile_ubah', compact('title', 'user'));
     }
 
-    protected function billboard(): Response
-    {
-        $title = "MusiCave";
-        return response()->view('users.billboard.billboard', compact('title'));
-    }
-
     protected function album(): Response
     {
         $title = "MusiCave";
@@ -86,6 +84,15 @@ class penggunaController extends Controller
         $songs = song::all();
         return response()->view('users.playlist.buat', compact('title', 'songs'));
     }
+
+    protected function detailAlbum(string $code): Response
+    {
+        $albumDetail = album::where('code', $code)->first();
+        $songs = song::all();
+        $title = "MusiCave";
+        return response()->view('users.playlist.contohAlbum', compact('title', 'albumDetail', 'songs'));
+    }
+
 
     protected function storePlaylist(Request $request)
     {
@@ -152,6 +159,22 @@ class penggunaController extends Controller
             return response()->view('users.playlist', compact('title'));
         }
         return response()->view('users.playlist', compact('title', 'playlists'));
+    }
+
+    public function search_song(Request $request)
+    {
+        $query = $request->input('query');
+        $results = song::with('artist.user')->where('judul', 'like', '%' . $query . '%')->get();
+
+        return response()->json(['results' => $results]);
+    }
+
+    protected function billboard(string $code): Response
+    {
+        $title = "MusiCave";
+        $billboard = billboard::where('code', $code)->first();
+        $albums = album::where('artis_id', $billboard->artis_id)->get();
+        return response()->view('users.billboard.billboard', compact('title', 'billboard', 'albums'));
     }
 
     protected function detailPlaylist(string $code): Response

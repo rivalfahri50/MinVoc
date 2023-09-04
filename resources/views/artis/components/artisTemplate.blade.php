@@ -390,7 +390,6 @@
 
                                 
                                 $.each(results, function(index, result) {
-                                    console.log(result);
                                     $searchResults.append('<li>' + result.judul + '</li>');
                                 });
                             }

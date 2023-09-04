@@ -10,8 +10,7 @@
                     <div class="cards">
                         @foreach ($genres as $item)
                             <a href="/pengguna/kategori/{{ $item->code }}" class="card card-scroll">
-                                <img src="{{ asset('storage/' . $item->images) }}"
-                                    class="img-fluid rounded-4 this">
+                                <img src="{{ asset('storage/' . $item->images) }}" class="img-fluid rounded-4 this">
                             </a>
                         @endforeach
                     </div>
@@ -20,33 +19,17 @@
                     <div class="card border-0 bg-dark coba">
                         <div id="carouselExampleAutoplaying" class="carousel slide carousel-fade" data-bs-ride="carousel">
                             <div class="carousel-inner">
-                                <div class="carousel-item active" data-bs-interval="2000">
-                                    <a href="billboard/billboard.html" class="image-container">
-                                        <img src="/user/assets/images/dashboard/img_3.jpg" class="d-block try"
-                                            alt="...">
-                                        <div class="bottom-left">
-                                            <h3 class="text-light">37 tahun Agnez Mo</h3>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="carousel-item" data-bs-interval="2000">
-                                    <a href="" class="image-container">
-                                        <img src="/user/assets/images/dashboard/img_2.jpg" class="d-block try"
-                                            alt="...">
-                                        <div class="bottom-left">
-                                            <h3 class="text-light">9 tahun Aal</h3>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="carousel-item" data-bs-interval="2000">
-                                    <a href="#" class="image-container">
-                                        <img src="/user/assets/images/dashboard/img_1.jpg" class="d-block try"
-                                            alt="...">
-                                        <div class="bottom-left">
-                                            <h3 class="text-light">99 tahun Agnez Mo</h3>
-                                        </div>
-                                    </a>
-                                </div>
+                                @foreach ($billboards as $item)
+                                    <div class="carousel-item active" data-bs-interval="2000">
+                                        <a href="{{ route('detail.billboard.pengguna', $item->code) }}" class="image-container">
+                                            <img src="{{ asset('storage/' . $item->image_background) }}" class="d-block try"
+                                                alt="...">
+                                            <div class="bottom-left">
+                                                <h3 class="text-light">{{ $item->name }}</h3>
+                                            </div>
+                                        </a>
+                                    </div>
+                                @endforeach
                             </div>
                             <button class="carousel-control-prev" type="button"
                                 data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
@@ -83,7 +66,8 @@
                                                 </div>
                                                 <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                     <div class="text-group align-items-center">
-                                                        <i onclick="toggleLike({{ $item->id }},this)" class="far fa-heart pr-2"></i>
+                                                        <i onclick="toggleLike({{ $item->id }},this)"
+                                                            class="far fa-heart pr-2"></i>
                                                         <p style="pointer-events: none;">{{ $item->waktu }}</p>
                                                         <p style="pointer-events: none;" style="color: #957dad"><svg
                                                                 width="22" height="6" viewBox="0 0 22 6"

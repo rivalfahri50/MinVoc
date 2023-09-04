@@ -16,7 +16,7 @@
                                         <div class="card-content">
                                             <div class="kotaktetap">
                                                 <img src="{{ asset('storage/' . $item->images) }}"
-                                                class="img-fluid rounded-1 try">
+                                                    class="img-fluid rounded-1 try">
                                             </div>
                                             {{-- <img src="{{ asset('storage/' . $item->images) }}"
                                                 class="img-fluid rounded-1 try" style="border-radius: 15px"> --}}
@@ -26,6 +26,28 @@
                                         </div>
                                     </a>
                                 @endif
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
+                <div class="col-md-12 grid-margin stretch-card">
+                    <h3 class="judul" style="font-size: 20px; font-weight: 600">Album</h3>
+                    <div class="cards">
+                        @if (!empty($albums))
+                            @foreach ($albums as $item)
+                                {{-- @if ($item->artis->user_id == auth()->user()->id) --}}
+                                <a href="{{ route('detailAlbumPengguna', $item->code) }}"
+                                    class="card card-scroll coba text-decoration-none">
+                                    <div class="card-content">
+                                        <div class="kotaktetap">
+                                            <img src="{{ asset('storage/' . $item->image) }}"
+                                                class="img-fluid rounded-1 try">
+                                        </div>
+                                        <h4 class="mt-2 judul">{{ $item->name }}</h4>
+                                        </p>
+                                    </div>
+                                </a>
+                                {{-- @endif --}}
                             @endforeach
                         @endif
                     </div>
@@ -41,7 +63,7 @@
                                         <div class="card-content">
                                             <div class="kotaktetap">
                                                 <img src="{{ asset('storage/' . $item->images) }}"
-                                                class="img-fluid rounded-1 try">
+                                                    class="img-fluid rounded-1 try">
                                             </div>
                                             {{-- <img src="{{ asset('storage/' . $item->images) }}"
                                                 class="img-fluid rounded-1 try" style="border-radius: 15px"> --}}

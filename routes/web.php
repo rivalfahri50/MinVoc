@@ -141,16 +141,18 @@ Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(pengguna
     Route::get('/riwayat', 'riwayat');
     Route::get('/profile', 'profile');
     Route::get('/profile-ubah/{code}', 'profile_ubah')->name('ubah.profile');
-    Route::get('/billboard', 'billboard');
+    Route::get('/billboard/{code}', 'billboard')->name('detail.billboard.pengguna');
     Route::get('/album', 'album');
     Route::get('/kategori/{code}', 'kategori');
     Route::get('/buat-playlist', 'buatPlaylist');
     Route::get('/detail-playlist/{code}', 'detailPlaylist')->name('detailPlaylist');
+    Route::get('/detail-album/{code}', 'detailAlbum')->name('detailAlbumPengguna');
     Route::get('/disukai-playlist', 'disukaiPlaylist');
     Route::get('/search', 'search')->name('search');
     Route::get('/logout', 'logout')->name('logout.users');
     Route::get('/toggle-like', 'like')->name('toggle-like');
     Route::get('/hapus-playlist/{code}', 'hapusPlaylist')->name('hapus.playlist.user');
+    Route::get('/search_song', 'search_song')->name('search.song.pengguna');
     
     Route::post('/update/profile/{code}', 'updateProfile')->name('update.profile');
     Route::post('/buat-playlist', 'storePlaylist')->name('buat.playlist');

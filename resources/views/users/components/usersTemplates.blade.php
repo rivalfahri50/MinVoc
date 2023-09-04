@@ -35,7 +35,8 @@
             align-items: center;
             justify-content: flex-end;
             width: 100%;
-            max-width: 400px; /* Set the maximum width as needed */
+            max-width: 400px;
+            /* Set the maximum width as needed */
         }
 
         /* Style Untuk search input */
@@ -76,15 +77,14 @@
             height: 100%;
             object-fit: cover;
         }
-
     </style>
     <script>
         // INI SCRIPT UNTUK HASIL SEARCH TAMPIL/TIDAK
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             const searchInput = document.getElementById("search");
             const searchResults = document.getElementById("search-results");
 
-            searchInput.addEventListener("input", function () {
+            searchInput.addEventListener("input", function() {
                 if (searchInput.value.trim() !== "") {
                     searchResults.style.display = "block";
                 } else {
@@ -219,7 +219,8 @@
                                                 stroke="#957DAD" stroke-width="2" stroke-linecap="round" />
                                         </svg>
                                     </span>
-                                    <input type="text" id="search" class="form-control" placeholder="cari di sini" style="border-radius: 0px 15px 15px 0px">
+                                    <input type="text" id="search" class="form-control"
+                                        placeholder="cari di sini" style="border-radius: 0px 15px 15px 0px">
                                 </div>
                             </form>
                             <ul id="search-results"></ul>
@@ -272,17 +273,21 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                                 <div class="navbar-profile profile-picture">
-                                    <img class="img-xs rounded-circle" src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
+                                    <img class="img-xs rounded-circle"
+                                        src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
                                 </div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                                 aria-labelledby="profileDropdown">
-                                <div class="p-3 mb-0 gap-3" style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
+                                <div class="p-3 mb-0 gap-3"
+                                    style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
                                     <div class="profile-picture">
-                                        <img class="img-xs rounded-circle" src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
+                                        <img class="img-xs rounded-circle"
+                                            src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
                                     </div>
                                     {{-- <img class="img-xs rounded-circle" src="{{ asset('storage/' . auth()->user()->avatar) }}" alt=""> --}}
-                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ auth()->user()->name }}</p>
+                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ auth()->user()->name }}
+                                    </p>
                                 </div>
                                 <a href="/pengguna/profile" class="dropdown-item preview-item">
                                     <div class="preview-thumbnail">
@@ -316,8 +321,53 @@
 
             @yield('content')
 
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
             <script>
-                     $(document).ready(function() {
+                $(document).ready(function() {
+                    $('#search_song').on('keyup', function() {
+                        var query = $(this).val();
+                        $.ajax({
+                            url: '/pengguna/search_song/',
+                            type: 'GET',
+                            data: {
+                                query: query
+                            },
+                            dataType: 'json',
+                            success: function(response) {
+                                var results = response.results;
+                                var $previewList = $('.preview-list');
+                                $previewList.empty();
+
+                                $.each(results, function(index, result) {
+                                    console.log(result);
+
+                                    var $previewItem = $(
+                                        '<div class="preview-item" data-song-id="' + result
+                                        .id + '">');
+                                    
+                                    $previewItem.append(
+                                        '<div class="preview-thumbnail"><img src="http://127.0.0.1:8000/storage/' +
+                                        result.image + '" width="10%"></div>');
+                                    $previewItem.append(
+                                        '<div class="preview-item-content d-sm-flex flex-grow"><div class="flex-grow"><h6 class="preview-subject">' +
+                                        result.judul + '</h6><p class="text-muted mb-0">' +
+                                        result.artist.user.name +
+                                        '</p></div><div class="mr-auto text-sm-right pt-2 pt-sm-0"><div class="text-group"><i onclick="myFunction(this)" class="far fa-heart pr-2"></i><p>' +
+                                        result.waktu +
+                                        '</p><i class="fas fa-ellipsis-v"></i></div></div></div>'
+                                        );
+
+                                    $previewList.append($previewItem);
+                                });
+                            }
+                        });
+                    });
+                });
+
+
+
+                $(document).ready(function() {
                     $('#search').on('keyup', function() {
                         var query = $(this).val();
                         $.ajax({
