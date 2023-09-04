@@ -15,11 +15,11 @@
                                     </div>
                                     <div class="col-3 text-xxl-end">
                                         <div class="bottom-left-text d-flex flex-column gap-2">
-                                            <p class="m-0" style="font-size: 20px; font-weight: 600">Album</p>
+                                            <p class="m-0" style="font-size: 20px; font-weight: 600">Album {{ $album->name }}</p>
                                             <div class="img-and-text">
                                                 <img class="img-ss rounded-circle"
-                                                    src="/user/assets/images/faces/face15.jpg" alt="">
-                                                <p class="judulnottebal" style="font-size: 20px; font-weight: 500">Henry Klein</p>
+                                                    src="{{ asset('storage/' . $album->artis->user->avatar) }}" alt="">
+                                                <p class="judulnottebal" style="font-size: 20px; font-weight: 500">{{ $album->artis->user->name }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -30,7 +30,7 @@
                             <hr class="divider"> <!-- Divider -->
                         </div>
                         <div class="col-md-12 grid-margin stretch-card">
-                            <h3 class="card-title mb-4 judul" style="font-size: 20px; font-weight: 500">Temukan berbagai macam lagu Agnez Monica</h3>
+                            <h3 class="card-title mb-4 judul" style="font-size: 20px; font-weight: 500">Temukan berbagai macam lagu {{ $album->artis->user->name }}</h3>
                             <div class="card scroll scrollbar-down thin">
                                 <div class="card-body">
                                     <div class="row" style="margin-top: -20px">

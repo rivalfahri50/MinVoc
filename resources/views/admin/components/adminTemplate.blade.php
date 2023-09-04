@@ -13,6 +13,46 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="/admin/assets/css/style.css" />
     <link rel="shortcut icon" href="/image/favicon.svg" />
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        function confirmDelete(message, callback) {
+            Swal.fire({
+                title: 'Konfirmasi Hapus',
+                text: message,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    callback();
+                }
+            });
+        }
+
+        function deleteGenre(code) {
+            confirmDelete('Yakin menghapus Genre Lagu ini?', function() {
+                window.location.href = '/admin/hapus-genre/' + code;
+            });
+        }
+
+        function deleteSong(code) {
+            confirmDelete('Yakin menghapus Lagu ini?', function() {
+                window.location.href = '/admin/hapus-music/' + code;
+            });
+        }
+
+        function deleteBillboard(code) {
+            confirmDelete('Yakin menghapus Billboard ini?', function() {
+                window.location.href = '/admin/hapus-billboard/' + code;
+            });
+        }
+    </script>
+
 
 </head>
 
@@ -154,9 +194,9 @@
                     </button>
                 </div>
             </nav>
-            @yield('content')
-            <!-- UNTUK LIKED -->
 
+            @include('sweetalert::alert')
+            @yield('content')
 
             <script src="assets/js/liked.js"></script>
             <!-- plugins:js -->
@@ -179,6 +219,7 @@
             <!-- Custom js for this page -->
             <script src="assets/js/dashboard.js"></script>
             <!-- End custom js for this page -->
+
 </body>
 
 </html>

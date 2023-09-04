@@ -53,8 +53,14 @@ Route::prefix('admin')->middleware('admin')->controller(AdminController::class)-
     Route::get('/riwayat', 'riwayat');
     Route::get('/verifikasi', 'verifikasi');
     Route::get('/show', 'show');
-    Route::get('/hapus-genre', 'hapusGenre')->name('hapus.genre');
+    Route::get('/hapus-billboard/{code}', 'hapusBillboard')->name('hapus.billoard');
+    Route::get('/hapus-music/{code}', 'hapusMusic')->name('hapus.music');
+    Route::get('/hapus-genre/{code}', 'hapusGenre')->name('hapus.genre');
+    Route::get('/hapus-verified/{code}', 'hapusVerified')->name('hapus.verified');
+    Route::get('/setuju-music/{code}', 'setujuMusic')->name('setuju.upload.music');
     
+    Route::POST('/setuju-verified/{code}', 'setujuVerified')->name('tambah.verified');
+    Route::post('/uploadBillboard', 'buatBillboard')->name('uploadBillboard');
     Route::post('/genre', 'buatGenre')->name('buat.genre');
     Route::post('/project', 'createProject')->name('createProject.admin');
 });
@@ -75,8 +81,11 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
     Route::get('/profile', 'profile');
     Route::get('/profile-ubah/{code}', 'profile_ubah')->name('ubah.profile.artis');
     Route::get('/detail-playlist/{code}', 'detailPlaylist')->name('detailPlaylistArtis');
-    Route::get('/billboard', 'billboard');
+    Route::get('/detail-album/{code}', 'detailAlbum')->name('detailAlbumArtis');
+    Route::get('/unggahAudio', 'viewUnggahAudio');
+    Route::get('/billboard/{code}', 'billboard')->name('detail.billboard');
     Route::get('/album', 'album');
+    Route::get('/album-billboard/{code}', 'albumBillboard')->name('albumBillboard');
     Route::get('/kategori/{code}', 'kategori');
     Route::get('/buat-playlist', 'buatPlaylist');
     Route::get('/contoh-playlist', 'contohPlaylist');
@@ -84,14 +93,19 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
     Route::get('/search', 'search')->name('search.artis');
     Route::get('/verified', 'verified');
     Route::get('/hapus-playlist/{code}', 'hapusPlaylist')->name('hapus.playlist.artis');
+    Route::get('/hapus-album/{code}', 'hapusAlbum')->name('hapus.albums.artis');
+    Route::get('/search_song', 'search_song')->name('search.song.artis');
     
+    Route::POST('/buat-album/{code}', 'buatAlbum')->name('tambah.album.artis');
     Route::POST('/verified/{code}', 'verifiedAccount')->name('verified');
     Route::post('/create-lirik', 'Project')->name('create.project');
     Route::post('/message', 'message')->name('message.project');
     Route::post('/reject-project', 'rejectProject')->name('reject.project');
     Route::post('/buat-playlist', 'storePlaylist')->name('buat.playlist.artis');
     Route::post('/ubah-playlist/{code}', 'ubahPlaylist')->name('ubah.playlist.artis');
+    Route::post('/ubah-album/{code}', 'ubahAlbum')->name('ubah.album.artis');
     Route::post('/update/profile/{code}', 'updateProfile')->name('update.profile.artis');
+    Route::post('/unggahAudio', 'unggahAudio')->name('unggah.artis');
     // Route::post('/filter', 'filter')->name('filter');
 });
 

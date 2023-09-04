@@ -208,6 +208,7 @@ class authController extends Controller
 
                 if ($user->role_id == 2) {
                     artist::create([
+                        'code' => Str::uuid(),
                         'user_id' => $user->id,
                         'is_verified' => false
                     ]);

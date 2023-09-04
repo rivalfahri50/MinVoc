@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\admin;
 use App\Models\artist;
+use App\Models\billboard;
 use App\Models\genre;
 use App\Models\projects;
 use App\Models\song;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use RealRashid\SweetAlert\Facades\Alert;
 use Throwable;
 
 class AdminController extends Controller
@@ -33,7 +35,7 @@ class AdminController extends Controller
     protected function persetujuan(): Response
     {
         $title = "MusiCave";
-        $persetujuan = song::all();
+        $persetujuan = song::where('is_approved', false)->get();
         return response()->view('admin.persetujuan', compact('title', 'persetujuan'));
     }
     protected function show($id): Response
@@ -53,18 +55,64 @@ class AdminController extends Controller
     protected function iklan(): Response
     {
         $title = "MusiCave";
-        return response()->view('admin.iklan', compact('title'));
+        $billboards = billboard::all();
+        $artist = artist::where('is_verified', 1)->get();
+        return response()->view('admin.iklan', compact('title', 'artist', 'billboards'));
     }
+
     protected function riwayat(): Response
     {
         $title = "MusiCave";
         return response()->view('admin.riwayat', compact('title'));
     }
+
     protected function verifikasi(): Response
     {
         $title = "MusiCave";
-        $artist = artist::all();
+        $artist = artist::where('is_verified', 0)->get();
         return response()->view('admin.verifikasi', compact('title', 'artist'));
+    }
+
+    protected function setujuMusic(string $code): Response
+    {
+        $title = "MusiCave";
+        $song = song::where('code', $code)->first();
+
+        try {
+            $song->is_approved = true;
+            $song->update();
+            $persetujuan = song::all();
+        } catch (\Throwable $th) {
+            Alert::error('message', 'Lagu Gagal Dalam Perizinan Publish');
+            return response()->view('admin.persetujuan', compact('persetujuan', 'title'));
+        }
+        Alert::success('message', 'Lagu Berhasil Publish');
+        return response()->view('admin.persetujuan', compact('persetujuan', 'title'));
+    }
+
+    protected function buatBillboard(Request $request)
+    {
+        $title = "MusiCave";
+        $artist = artist::where('is_verified', 1)->get();
+        try {
+            if ($request->hasFile('image_background') && $request->hasFile('image_artis')) {
+                $backgroundBillboard = $request->file('image_background')->store('backgorund_billboard', 'public');
+                $backgroundArtis = $request->file('image_artis')->store('image_artis', 'public');
+            }
+
+            billboard::create([
+                'code' => Str::uuid(),
+                'artis_id' => $request->input('artis_id'),
+                'deskripsi' => $request->input('deskripsi'),
+                'image_background' => $backgroundBillboard,
+                'image_artis' => $backgroundArtis,
+            ]);
+        } catch (\Throwable $th) {
+            Alert::error('message', 'Gagal Untuk Menambah Billboard');
+            return response()->view('admin.iklan', compact('artist', 'title'));
+        }
+        Alert::success('message', 'Berhasil Untuk Menambah Billboard');
+        return response()->view('admin.iklan', compact('artist', 'title'));
     }
 
     protected function buatGenre(Request $request)
@@ -101,34 +149,109 @@ class AdminController extends Controller
                 // Commit the transaction
                 DB::commit();
 
+                Alert::success('message', 'Success Membuat Genre');
                 return redirect()->back()->with('success', 'Genre created successfully.');
             } catch (\Throwable $th) {
-                // Roll back the transaction in case of an exception
                 DB::rollBack();
-                // Log the exception for debugging
                 Log::error('Error creating genre: ' . $th->getMessage());
 
+                Alert::success('message', 'Gagal Membuat');
                 return redirect()->back()->with('error', 'Failed to create genre.');
             }
         }
     }
 
-    protected function hapusGenre(Request $request)
+    protected function setujuVerified(Request $request, string $code)
+    {
+        $artis = artist::where('code', $code)->first();
+        $user = User::where('id', $artis->user_id)->first();
+
+        try {
+            $artis->is_verified = true;
+            $artis->verification_status = "success";
+            $user->role_id = 1;
+            $artis->update();
+            $user->update();
+        } catch (\Throwable $th) {
+            Alert::error('message', 'Gagal Update Artis Verified');
+            return redirect()->back()->with('message', 'failed update artis.');
+        }
+        Alert::success('message', 'Success Update Artis Verified');
+        return redirect()->back()->with('message', 'success update artis.');
+    }
+
+    protected function hapusVerified(Request $request, string $code)
+    {
+        $artis = artist::where('code', $code)->first();
+
+        try {
+            $artis->image = "none";
+            $artis->pengajuan_verified_at = null;
+            $artis->verification_status = "failed";
+            $artis->update();
+        } catch (\Throwable $th) {
+            Alert::error('message', 'Gagal Menghapus Artis Verified');
+            return redirect()->back()->with('message', 'failed update artis.');
+        }
+        Alert::success('message', 'Success Menghapus Artis Verified');
+        return redirect()->back()->with('message', 'success update artis.');
+    }
+
+    protected function hapusGenre(Request $request, string $code)
     {
         try {
-            $codeToDelete = $request->input('code');
-            $genre = genre::where('code', $codeToDelete)->first();
+            $genre = genre::where('code', $code)->first();
 
             if (!$genre) {
                 return redirect()->back()->with('error', 'Record not found.');
             }
-            $genre->delete();
 
-            return redirect()->back()->with('success', 'Record deleted successfully.');
+            $genre->delete();
         } catch (\Throwable $th) {
-            Log::error('Error deleting genre: ' . $th->getMessage());
+            Alert::warning('message', 'Lagu Gnere Sedang Digunakan');
             return redirect()->back()->with('error', 'Failed to delete record.');
         }
+
+        Alert::success('message', 'Success Menghapus');
+        return redirect()->back()->with('success', 'Record deleted successfully.');
+    }
+
+    protected function hapusMusic(Request $request, string $code)
+    {
+        try {
+            $music = song::where('code', $code)->first();
+
+            if (!$music) {
+                return redirect()->back()->with('error', 'Record not found.');
+            }
+
+            $music->delete();
+        } catch (\Throwable $th) {
+            Alert::warning('message', 'Lagu Sedang Digunakan');
+            return redirect()->back()->with('error', 'Failed to delete record.');
+        }
+
+        Alert::success('message', 'Success Menghapus');
+        return redirect()->back()->with('success', 'Record deleted successfully.');
+    }
+
+    protected function hapusBillboard(Request $request, string $code)
+    {
+        try {
+            $billboard = billboard::where('code', $code)->first();
+
+            if (!$billboard) {
+                return redirect()->back()->with('error', 'Record not found.');
+            }
+
+            $billboard->delete();
+        } catch (\Throwable $th) {
+            Alert::warning('message', 'Billboard Sedang Digunakan');
+            return redirect()->back()->with('error', 'Failed to delete record.');
+        }
+
+        Alert::success('message', 'Success Menghapus');
+        return redirect()->back()->with('success', 'Record deleted successfully.');
     }
 
     protected function storeSignIn(Request $request, admin $admin)

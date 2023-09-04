@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('artists', function (Blueprint $table) {
             $table->id();
+            $table->string('code', 100);
             $table->foreignId('user_id')->constrained('users');
             $table->string('image')->default("none");
             $table->boolean('is_verified')->default(false);

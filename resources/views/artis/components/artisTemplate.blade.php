@@ -10,8 +10,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="/user/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="/user/assets/css/style.css">
     <link rel="shortcut icon" href="/image/favicon.svg" type="image/x-icon">
@@ -22,7 +22,7 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        
+
         .search-container {
             position: relative;
             display: flex;
@@ -108,8 +108,6 @@
             top: 10px;
             right: 10px;
         }
-        
-        
     </style>
     <script>
         // INI SCRIPT UNTUK HASIL SEARCH TAMPIL/TIDAK
@@ -175,6 +173,14 @@
                             </li>
                         </ul>
                     </div>
+                </li>
+                <li class="nav-item menu-items">
+                    <a class="nav-link" href="/artis/unggahAudio">
+                        <span class="menu-icon">
+                            <i class="mdi mdi-music-note-plus"></i>
+                        </span>
+                        <span class="menu-title">Unggah</span>
+                    </a>
                 </li>
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="/artis/kolaborasi">
@@ -290,17 +296,18 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                                 <div class="navbar-profile">
-                                    <img class="img-xs rounded-circle" src="{{ asset('storage/' . auth()->user()->avatar) }}"
-                                        alt="">
+                                    <img class="img-xs rounded-circle"
+                                        src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
                                 </div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                                 aria-labelledby="profileDropdown">
                                 <div class="p-3 mb-0 gap-3"
                                     style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
-                                    <img class="img-xs rounded-circle" src="{{ asset('storage/' . auth()->user()->avatar) }}"
-                                        alt="">
-                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ auth()->user()->name }}</p>
+                                    <img class="img-xs rounded-circle"
+                                        src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
+                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ auth()->user()->name }}
+                                    </p>
                                 </div>
                                 <a href="/artis/profile" class="dropdown-item preview-item">
                                     <div class="preview-thumbnail">
@@ -339,28 +346,58 @@
                     <div class="card-body">
                         <a href="#" class="close-button far fa-times-circle"></a>
                         <h2 class="judul">Buat Album</h2>
-                        <form class="row" action="">
+                        <form class="row" action="{{ route('tambah.album.artis', auth()->user()->code) }}"
+                            method="POST" enctype="multipart/form-data">
+                            @csrf
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <h3 class="form-label judul">Nama Album</h3>
-                                    <input type="text" class="form-control" id="namaproyek" placeholder="Masukkan nama kategori musik"
-                                        required>
+                                    <input type="text" name="name" class="form-control" id="namaproyek"
+                                        placeholder="Masukkan nama kategori musik" required>
                                 </div>
                                 <div class="mb-3">
                                     <h3 for="upload" class="form-label judul">Upload
                                         Foto</h3>
-                                    <input type="file" class="form-control" id="namaproyek"
+                                    <input type="file" name="image" class="form-control" id="namaproyek"
                                         required>
                                 </div>
                             </div>
                             <div class="text-md-right">
-                                <a href="#" class="btn" type="submit">Tambah</a>
+                                <button class="btn" type="submit">Tambah</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
             <script>
+                $(document).ready(function() {
+                    $('#search_song').on('keyup', function() {
+                        var query = $(this).val();
+                        $.ajax({
+                            url: '/artis/search_song/',
+                            type: 'GET',
+                            data: {
+                                query: query
+                            },
+                            dataType: 'json',
+                            success: function(response) {
+                                var results = response.results;
+                                var $searchResults = $('#search-results-song');
+                                $searchResults.empty();
+
+                                
+                                $.each(results, function(index, result) {
+                                    console.log(result);
+                                    $searchResults.append('<li>' + result.judul + '</li>');
+                                });
+                            }
+                        });
+                    });
+                });
+
                 $(document).ready(function() {
                     $('#search').on('keyup', function() {
                         var query = $(this).val();

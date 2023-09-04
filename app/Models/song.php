@@ -20,6 +20,7 @@ class song extends Model
         'is_approved',
         'genre_id',
         'album_id',
+        'playlist_id',
         'artis_id',
     ];
 

@@ -1,15 +1,14 @@
 @extends('admin.components.adminTemplate')
 @section('content')
     <link rel="stylesheet" href="/admin/assets/css/kategori.css">
-
     <div class="main-panel">
         <style>
             .table td img {
                 width: 60px;
-                height: 60px; /* Ketinggian tetap 60px */
+                height: 60px;
                 margin-right: 10px;
-                border-radius: 0; /* Untuk membuatnya segi empat berbentuk lingkaran */
-                object-fit: cover; /* Mengisi kotak gambar tanpa mempertahankan aspek asli */
+                border-radius: 0;
+                object-fit: cover;
             }
         </style>
         <div class="content-wrapper">
@@ -50,13 +49,10 @@
                                                         <td class="table-cell">{{ $item->name }}</td>
                                                         <td class="table-cell">{{ $item->created_at->toDateString() }}</td>
                                                         <td class="table-cell">
-                                                            <form action="{{ route('hapus.genre', $item->code) }}"
-                                                                method="get">
-                                                                <button class="btn btnicon">
-                                                                    <input type="hidden" name="code" value="{{ $item->code }}">
-                                                                    <i class="far fa-times-circle text-danger"></i>
-                                                                </button>
-                                                            </form>
+                                                            <button class="btn btnicon"
+                                                                onclick="deleteGenre('{{ $item->code }}')">
+                                                                <i class="far fa-times-circle text-danger"></i>
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -113,9 +109,6 @@
                 </div>
                 <!-- page-body-wrapper ends -->
             </div>
-            <!-- container-scroller -->
-
-
 
             <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

@@ -43,25 +43,27 @@
                                 <div class="col-12">
                                     <div class="preview-list">
                                         @foreach ($songs as $item)
-                                            <div class="preview-item">
-                                                <div class="preview-thumbnail">
-                                                    <img src="{{ asset('storage/' . $item->image) }}" width="10%">
-                                                </div>
-                                                <div class="preview-item-content d-sm-flex flex-grow">
-                                                    <div class="flex-grow">
-                                                        <h6 class="preview-subject">{{ $item->judul }}</h6>
-                                                        <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
+                                            @if ($item->is_approved)
+                                                <div class="preview-item">
+                                                    <div class="preview-thumbnail">
+                                                        <img src="{{ asset('storage/' . $item->image) }}" width="10%">
                                                     </div>
-                                                    <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                        <div class="text-group">
-                                                            <i onclick="myFunction(this)" class="far fa-heart pr-2">
-                                                            </i>
-                                                            <p>{{ $item->waktu }}</p>
-                                                            <i class="fas fa-ellipsis-v"></i>
+                                                    <div class="preview-item-content d-sm-flex flex-grow">
+                                                        <div class="flex-grow">
+                                                            <h6 class="preview-subject">{{ $item->judul }}</h6>
+                                                            <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
+                                                        </div>
+                                                        <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                                            <div class="text-group">
+                                                                <i onclick="myFunction(this)" class="far fa-heart pr-2">
+                                                                </i>
+                                                                <p>{{ $item->waktu }}</p>
+                                                                <i class="fas fa-ellipsis-v"></i>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            @endif
                                         @endforeach
                                     </div>
                                 </div>
@@ -78,7 +80,8 @@
             <div class="card-body">
                 <a href="#" class="close-button mdi mdi-close-circle-outline"></a>
                 <h3 class="judul">Buat Playlist</h2>
-                    <form class="row" action="{{ route('buat.playlist.artis') }}" method="POST" enctype="multipart/form-data">
+                    <form class="row" action="{{ route('buat.playlist.artis') }}" method="POST"
+                        enctype="multipart/form-data">
                         @csrf
                         <div class="col-4">
                             <div class="card cobai">

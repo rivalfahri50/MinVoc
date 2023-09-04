@@ -6,18 +6,25 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::table('songs', function (Blueprint $table) {
-            $table->foreignId('album_id')->constrained('albums');
+            $table->unsignedBigInteger('playlist_id')->nullable();
+            $table->foreign('playlist_id')->references('id')->on('playlists')->nullable();
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::table('songs', function (Blueprint $table) {
-            $table->dropForeign(['album_id']);
-            $table->dropColumn('album_id');
+            $table->dropForeign(['playlist_id']);
+            $table->dropColumn('playlist_id');
         });
     }
 };
