@@ -58,7 +58,7 @@ Route::prefix('admin')->middleware('admin')->controller(AdminController::class)-
     Route::get('/hapus-genre/{code}', 'hapusGenre')->name('hapus.genre');
     Route::get('/hapus-verified/{code}', 'hapusVerified')->name('hapus.verified');
     Route::get('/setuju-music/{code}', 'setujuMusic')->name('setuju.upload.music');
-    
+
     Route::POST('/setuju-verified/{code}', 'setujuVerified')->name('tambah.verified');
     Route::post('/uploadBillboard', 'buatBillboard')->name('uploadBillboard');
     Route::post('/genre', 'buatGenre')->name('buat.genre');
@@ -95,7 +95,7 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
     Route::get('/hapus-playlist/{code}', 'hapusPlaylist')->name('hapus.playlist.artis');
     Route::get('/hapus-album/{code}', 'hapusAlbum')->name('hapus.albums.artis');
     Route::get('/search_song', 'search_song')->name('search.song.artis');
-    
+
     Route::POST('/buat-album/{code}', 'buatAlbum')->name('tambah.album.artis');
     Route::POST('/verified/{code}', 'verifiedAccount')->name('verified');
     Route::post('/create-lirik', 'Project')->name('create.project');
@@ -127,7 +127,7 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
     Route::get('/contoh-playlist', 'contohPlaylist');
     Route::get('/disukai-playlist', 'disukaiPlaylist');
     Route::get('/hapus-playlist/{code}', 'hapusPlaylist')->name('hapus.playlist.artisVerified');
-    
+
     Route::post('/unggahAudio', 'unggahAudio')->name('unggah');
     Route::post('/buat-playlist', 'storePlaylist')->name('buat.playlist.artisVerified');
     Route::post('/ubah-playlist/{code}', 'ubahPlaylist')->name('ubah.playlist.artisVerified');
@@ -156,7 +156,7 @@ Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(pengguna
     Route::get('/hapus-playlist/{code}', 'hapusPlaylist')->name('hapus.playlist.user');
     Route::get('/search_song', 'search_song')->name('search.song.pengguna');
     Route::get('/search/{code}', 'search_result');
-    
+
     Route::post('/tambah_playlist/{code}', 'tambah_playlist')->name('tambah.playlist');
     Route::post('/update/profile/{code}', 'updateProfile')->name('update.profile');
     Route::post('/buat-playlist', 'storePlaylist')->name('buat.playlist');
@@ -164,4 +164,9 @@ Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(pengguna
     Route::post('/filter', 'filter')->name('filter');
 });
 
-Route::get('/ambil-lagu', [songController::class, 'ambillagu']);
+Route::controller(SongController::class)->group(function () {
+    Route::post('/song/{song}/like', 'toggleLike');
+    Route::get('/ambil-lagu', 'ambillagu');
+    Route::post('/update-play-count/{song_id}', 'playCount');
+    Route::get('/get-song-like-status/{song}', 'songLikeStatus');
+});

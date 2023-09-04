@@ -10,9 +10,9 @@
                     <a href="#" class="close-button far fa-times-circle"></a>
                     <form class="row" action="{{ route('tambah.playlist', $item->code) }}" method="POST">
                         @csrf
-                        <div class="col-md-12">
+                        <div class="col-m`d-12">
                             <div class="mb-4">
-                                <label for="namaartis" class="form-label judulnottebal">Nama Playlist</label>
+                            <label for="namaartis" class="form-label judulnottebal">Nama Playlist</label>
                                 <select name="playlist_id" class="form-select" id="namaartis">
                                     @foreach ($playlists as $item)
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -80,7 +80,7 @@
                                 <div class="col-12">
                                     <div class="preview-list">
                                         @php
-                                            $i = 0;
+                                            $index_no = 0;
                                         @endphp
                                         @foreach ($songs as $item)
                                             <div class="preview-item">
@@ -89,15 +89,23 @@
                                                 </div>
                                                 <div class="preview-item-content d-sm-flex flex-grow">
                                                     <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
-                                                        onclick="putar({{ $i++ }})">
+                                                        onclick="putar({{ $item->id }})">
                                                         <h6 class="preview-subject">{{ $item->judul }}</h6>
                                                         <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
                                                     </a>
                                                 </div>
+                                                @if ($loop->index == $index_no)
+                                                    @php
+                                                        $currentSong = $item;
+                                                        $currentSongId = $currentSong->id;
+                                                        $currentSongLiked = $currentSong->likes > 0;
+                                                    @endphp
+                                                @endif
                                                 <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                     <div class="text-group align-items-center">
-                                                        <i onclick="toggleLike({{ $item->id }},this)"
-                                                            class="far fa-heart pt-1 pr-2"></i>
+                                                        <i id="audio-player-like-icon like" data-id="{{ $item->id }}"
+                                                            onclick="toggleLike(this, {{ $item->id }})"
+                                                            class="shared-icon-like {{ $item->likes > 0 ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                         <p style="pointer-events: none;">{{ $item->waktu }}</p>
                                                         <a data-bs-toggle="modal"
                                                             data-bs-target="#staticBackdrop-{{ $item->code }}"
@@ -139,7 +147,7 @@
                                                             <p class="text-muted mb-0">{{ $item->didengar }} didengar</p>
                                                         </div>
                                                         <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                            <i onclick="myFunction(this)" class="far fa-heart pr-2"></i>
+                                                            <i onclick="toggleLike(this)" class="far fa-heart pr-2"></i>
                                                         </div>
                                                     </div>
                                                 </div>

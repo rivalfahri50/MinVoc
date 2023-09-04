@@ -4,6 +4,7 @@
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{{ $title }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.5.0/css/all.min.css">
@@ -14,10 +15,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
     <link rel="stylesheet" href="/user/assets/vendors/mdi/css/materialdesignicons.min.css">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ asset('style.css') }}">
@@ -27,55 +26,6 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-        }
-
-        .search-container {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            width: 100%;
-            max-width: 400px;
-            /* Set the maximum width as needed */
-        }
-
-        /* Style Untuk search input */
-        .search-input {
-            border-radius: 15px;
-            border: 1px solid #eaeaea;
-            padding: 5px 10px;
-            width: 100%;
-        }
-
-        /* Style Untuk search results */
-        #search-results {
-            list-style: none;
-            position: absolute;
-            top: 60px;
-            left: 30px;
-            width: 52%;
-            background-color: white;
-            border: 1.5px solid #eaeaea;
-            padding: 10px;
-            display: none;
-            border-radius: 10px;
-            font-size: 15px
-        }
-
-
-        /* Style Untuk Ukuran foto profil */
-        .profile-picture {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            overflow: hidden;
-            margin-right: 10px;
-        }
-
-        .profile-picture img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
         }
     </style>
     <script>
@@ -164,7 +114,9 @@
                             </div>
                         </div>
                         <div class="icons">
-                            <i class="far fa-heart fr fh" onclick="myFunction(this)"></i>
+                            <i id="audio-player-like-icon like"
+                                class="shared-icon-like {{ $currentSongLiked ? 'fas' : 'far' }} fa-heart fr fh"
+                                data-id="{{ $currentSongId }}" onclick="toggleLike(this, {{ $currentSongId }})"></i>
                         </div>
                     </div>
                     <div class="progress-controller">
@@ -182,8 +134,9 @@
                             <span id="current-time" class="durasi">00:00</span>
                             <div class="progress-bar">
                                 <div class="duration">
-                                    <input type="range" class="progress" min="0" max="100" value="0"
-                                        id="duration_slider" onchange="change_duration()">
+                                    <input type="range" class="progress" min="0" step="1"
+                                        max="100" value="0" id="duration_slider"
+                                        onchange="change_duration()">
                                 </div>
                             </div>
                             <span id="duration" class="durasi">00:00</span>
@@ -192,10 +145,10 @@
 
                     <div class="other-features">
                         <div class="volume-bar">
-                            <i class="fas fa-volume-up vu" onclick="mute_sound()" aria-hidden="true"
+                            <i class="mdi mdi-volume-high " onclick="mute_sound()" aria-hidden="true"
                                 id="volume_icon"></i>
-                            <input type="range" class="volume" min="0" max="100" value="100"
-                                onchange="volume_change()" id="volume">
+                            <input type="range" class="volume" min="0" max="100" step="1"
+                                value="100" onchange="volume_change()" id="volume">
                             <p id="volume_show">100</p>
 
                         </div>
@@ -321,8 +274,6 @@
 
             @yield('content')
 
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
             <script>
                 $(document).ready(function() {
                     $('#search_song').on('keyup', function() {
@@ -344,7 +295,7 @@
                                     var $previewItem = $(
                                         '<div class="preview-item" data-song-id="' + result
                                         .id + '">');
-                                    
+
                                     $previewItem.append(
                                         '<div class="preview-thumbnail"><img src="http://127.0.0.1:8000/storage/' +
                                         result.image + '" width="10%"></div>');
@@ -425,7 +376,7 @@
                     });
                 }
             </script>
-            <script>
+             <script>
                 let previous = document.querySelector('#pre');
                 let play = document.querySelector('#play');
                 let next = document.querySelector('#next');
@@ -443,10 +394,12 @@
                 let auto_play = document.querySelector('#auto');
                 // let present = document.querySelector('#present');
                 // let total = document.querySelector('#total');
-                let audio = document.querySelector('audio');
+                // let audio = document.querySelector('audio');
 
                 let timer;
                 let autoplay = 0;
+                let playCount = 0;
+                let prevVolume;
 
                 let index_no = 0;
                 let Playing_song = false;
@@ -467,10 +420,11 @@
                                     judul: lagu.judul,
                                     audio: lagu.audio,
                                     image: lagu.image,
-                                    artistId: lagu.artist_id
+                                    artistId: lagu.artist.user.name
                                 };
                             });
                             console.log(All_song);
+                            load_track(index_no);
                         })
                         .catch(error => {
                             console.error('Error fetching data:', error);
@@ -478,18 +432,16 @@
                 }
 
                 ambilDataLagu();
-                console.log(All_song);
                 // semua function
 
                 // function load the track
                 function load_track(index_no) {
                     clearInterval(timer)
                     reset_slider();
-                    track.src = 'storage/' + All_song[index_no].audio;
-                    console.log(All_song[index_no].audio);
+                    track.src = '{{ asset('storage') }}' + '/' + All_song[index_no].audio;
                     title.innerHTML = All_song[index_no].judul;
                     artist.innerHTML = All_song[index_no].artistId;
-                    track_image.src = 'storage/' + All_song[index_no].image;
+                    track_image.src = '{{ asset('storage') }}' + '/' + All_song[index_no].image;
                     track.load();
 
                     timer = setInterval(range_slider, 1000);
@@ -502,9 +454,12 @@
                 // fungsi mute sound
                 function mute_sound() {
                     if (track.volume === 0) {
-                        track.volume = recent_volume.value / 100;
+                        track.volume = prevVolume;
+                        recent_volume.value = prevVolume * 100;
                     } else {
+                        prevVolume = track.volume;
                         track.volume = 0;
+                        recent_volume.value = 0;
                     }
                     updateMuteButtonIcon();
                 }
@@ -525,11 +480,43 @@
 
                 // play song
                 function playsong() {
-                    track.play();
-                    Playing_song = true;
-                    play.innerHTML = '<i class="far fa-pause-circle fr" aria-hidden="true"></i>'
+                    if (track.paused) {
+                        track.play();
+                        Playing_song = true;
+                        play.innerHTML = '<i class="far fa-pause-circle fr" aria-hidden="true"></i>';
+                    } else {
+                        track.pause();
+                        Playing_song = false;
+                        play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>';
+                    }
 
+                    // Periksa apakah index_no memiliki nilai yang benar
+                    if (index_no >= 0 && index_no < All_song.length) {
+                        // Perbarui playCount dengan songId yang sesuai
+                        const songId = All_song[index_no].id;
+                        console.log(All_song[index_no])
+                        updatePlayCount(songId);
+                    }
                     track.addEventListener('timeupdate', updateDuration);
+                    playCount++;
+                }
+
+                function updatePlayCount(songId) {
+                    const headers = new Headers();
+                    headers.append('X-CSRF-TOKEN', csrfToken);
+
+                    fetch(`/update-play-count/${songId}`, {
+                            method: 'POST',
+                            headers: headers,
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Play count updated:', data.message);
+                        })
+                        .catch(error => {
+                            // Tangani error jika diperlukan
+                            console.error('Error updating play count:', error);
+                        });
                 }
 
                 // pause song
@@ -540,12 +527,25 @@
                 }
 
                 function putar(id) {
+                    console.log('ID yang dikirim:', id);
+                    id =id -1;
+                    const lagu = All_song[id];
                     // alert(All_song.length - 1 + " " + id);
-                    if (id <= All_song.length - 1) {
-                        load_track(id);
+                    if (lagu) {
+                        const new_index_no = All_song.indexOf(lagu);
+                        if (new_index_no >= 0) {
+                            index_no = new_index_no;
+                            load_track(id);
+                            playsong();
+                        } else {
+                            index_no = 0;
+                            load_track(index_no);
+                            playsong();
+                        }
                     } else {
-                        load_track(0);
+                        console.error('Lagu dengan ID ' + id + ' tidak ditemukan dalam data lagu.');
                     }
+
                 }
 
                 // fungsi untuk memutar lagu sesudahnya
@@ -570,19 +570,27 @@
                     playsong();
                 }
 
+                // ubah posisi slider
+                function change_duration() {
+                    let slider_position = track.duration * (slider.value / 100);
+                    track.currentTime = slider_position;
+                }
+
                 // ubah volume
                 function volume_change() {
                     volume_show.innerHTML = recent_volume.value;
                     track.volume = recent_volume.value / 100;
                 }
 
-
-
-                // ubah posisi slider
-                function change_duration() {
-                    let slider_position = track.duration * (slider.value / 100);
-                    track.currentTime = slider_position;
-                }
+                slider.addEventListener('input', function() {
+                    change_duration();
+                    clearInterval(timer);
+                    track.currentTime = track.duration * (slider.value / 100);
+                    Playing_song = true;
+                    play.innerHTML = '<i class="far fa-pause-circle fr" aria-hidden="true"></i>';
+                    track.addEventListener('timeupdate', updateDuration)
+                    track.play();
+                })
 
                 // range slider
                 function range_slider() {
@@ -591,6 +599,7 @@
                     if (!isNaN(track.duration)) {
                         position = track.currentTime * (100 / track.duration);
                         slider.value = position;
+                        // console.log(track.duration);
                     }
 
                     if (track.ended) {
@@ -599,6 +608,7 @@
                             index_no += 1;
                             load_track(index_no);
                             playsong();
+                            console.log(track.ended);
                         }
                     }
 
@@ -609,6 +619,8 @@
                     const formattedDuration = `${durationMinutes}:${durationSeconds < 10 ? '0' : ''}${durationSeconds}`;
                     durationElement.textContent = formattedDuration;
                 }
+
+                // console.log(range_slider());
 
                 // fungsi ini akan dijalankan ketika lagu selesai (mengubah icon play menjadi pause)
                 if (track.ended) {
@@ -647,14 +659,28 @@
                     updateMuteButtonIcon();
                 });
 
+                recent_volume.addEventListener('input', function() {
+                    // Calculate volume value based on slider position
+                    let slider_value = recent_volume.value / 100;
+                    track.volume = slider_value;
+
+                    // Update mute button icon and volume display
+                    updateMuteButtonIcon();
+                    volume_show.innerHTML = Math.round(slider_value * 100);
+                });
+
+
                 // Function to update mute button icon
                 function updateMuteButtonIcon() {
                     if (track.volume === 0) {
-                        muteButton.classList.remove('fa-volume-up');
-                        muteButton.classList.add('fa-volume-down');
+                        muteButton.classList.remove('mdi-volume-heigh');
+                        muteButton.classList.add('mdi-volume-off');
+                        volume_show.innerHTML = 0;
                     } else {
-                        muteButton.classList.remove('fa-volume-down');
-                        muteButton.classList.add('fa-volume-up');
+                        muteButton.classList.remove('mdi-volume-off');
+                        muteButton.classList.add('mdi-volume-heigh');
+                        volume_show.innerHTML = Math.round(track.volume * 100);
+                        recent_volume.value = track.volume * 100;
                     }
                 }
             </script>
