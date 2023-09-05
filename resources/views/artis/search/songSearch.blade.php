@@ -105,7 +105,29 @@
                         </div>
                     </div>
                 </div>
-                <!-- main-panel ends -->
+                <script>
+                    // Fungsi untuk menampilkan/menyembunyikan ikon pada hover
+                    function toggleIcon(event) {
+                        var icon = event.currentTarget.querySelector('.fa-play-circle');
+                        icon.style.display = event.type === 'mouseenter' ? 'inline' : 'none';
+                    }
+        
+                    // Ambil semua elemen dengan kelas 'coba'
+                    var cards = document.querySelectorAll('.coba');
+        
+                    // Loop melalui setiap elemen dan tambahkan event listener
+                    cards.forEach(function (card) {
+                        card.addEventListener('mouseenter', toggleIcon);
+                        card.addEventListener('mouseleave', toggleIcon);
+                    });
+        
+        
+                    function myFunction(x) {
+                        x.classList.toggle("far"); // Menghapus kelas "fa fa-heart"
+                        x.classList.toggle("fas"); // Menambahkan kelas "fas fa-heart"
+                        x.classList.toggle("warna-kostum-like"); // Menambahkan kelas warna merah
+                    }
+                </script>
             </div>
             <!-- page-body-wrapper ends -->
         </div>

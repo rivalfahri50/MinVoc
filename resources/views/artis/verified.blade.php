@@ -40,7 +40,6 @@
                                 </div>
                                 <div class="col-7">
                                     <button type="submit" class="btn gayabtn mr-3">Kirim</button>
-                                    <a href="/" class="btn gayabtn back" type="submit">Kembali</a>
                                 </div>
                             </form>
 

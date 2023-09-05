@@ -60,7 +60,7 @@
     <div class="main-panel">
         <style>
             .table-container {
-               margin-bottom: 20px;
+                margin-bottom: 20px;
             }
 
             .table-sortable th {
@@ -76,7 +76,7 @@
                 content: "\25be";
             }
 
-            .table-sortable .th-sort-asc::after, 
+            .table-sortable .th-sort-asc::after,
             .table-sortable .th-sort-desc::after {
                 margin-left: 10px;
             }
@@ -160,10 +160,63 @@
             .card .card-body {
                 padding: 5px 20px;
             }
+
+            /* Style tombol sejajar */
+            .sejajar {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+
+            #tambahkategori {
+                width: 100%;
+                height: 100%;
+                position: fixed;
+                background: rgba(0, 0, 0, 0.7);
+                top: 0;
+                left: 0;
+                z-index: 9999;
+                visibility: hidden;
+            }
+
+            #tambahkategori .card-body {
+                padding: 10px 7% 10px 7%;
+            }
+
+            /* Memunculkan Jendela Pop Up*/
+            #tambahkategori:target {
+                visibility: visible;
+            }
+
+            .window {
+                background-color: #ffffff;
+                width: 500px;
+                border-radius: 10px;
+                position: relative;
+                margin: 7% auto;
+                padding: 10px;
+            }
+
+            .close-button {
+                display: block;
+                color: #957dad;
+                position: absolute;
+                top: 10px;
+                right: 10px;
+            }
         </style>
         <div class="content-wrapper">
-            <div class="row ">
+            <div class="row">
                 <div class="col-12 grid-margin">
+                    <div class="sejajar">
+                        <h3 style="color: #957DAD">Kolaborasi</h3>
+                        <div class="text-lg-end mb-3">
+                            <a href="#tambahkategori" class="btn full-width-btn" type="button">
+                                <i class="fas fa-plus"></i>
+                                Tambah kolaborasi
+                            </a>
+                        </div>
+                    </div>
                     <div class="card rounded-4">
                         <div class="card-body">
                             <div class="table-container">
@@ -178,7 +231,7 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($datas as $item)
-                                            @if (!$item->is_reject && $item->judul == "none" && $item->lirik == "none")
+                                            @if (!$item->is_reject && $item->judul == 'none' && $item->lirik == 'none')
                                                 <tr class="table-row">
                                                     <td class="table-cell">
                                                         <span class="pl-2">{{ $item->name }}</span>
@@ -186,7 +239,7 @@
                                                     <td class="table-cell">
                                                         <div>Rp {{ $item->harga }}</div>
                                                     </td>
-                                                    <td  class="table-cell">{{ $item->created_at->toDateString() }}</td>
+                                                    <td class="table-cell">{{ $item->created_at->toDateString() }}</td>
                                                     <td class="d-flex align-items-center bg-warning">
                                                         <button type="button" class="btn-unstyled" data-bs-toggle="modal"
                                                             data-bs-target="#staticBackdrop-{{ $item->code }}">
@@ -224,7 +277,7 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($datas as $item)
-                                            @if (!$item->is_reject && $item->judul == "none" && $item->lirik == "none")
+                                            @if (!$item->is_reject && $item->judul == 'none' && $item->lirik == 'none')
                                                 <tr>
                                                     <td>
                                                         <span class="pl-2">{{ $item->name }}</span>
@@ -260,8 +313,64 @@
                         </div>
                     </div>
                 </div>
+                <div id="tambahkategori">
+                    <div class="card window">
+                        <div class="card-body">
+                            <a href="" class="close-button far fa-times-circle"></a>
+                            <h3 class="judul p-0 mb-3">Detail Kolaborasi</h3>
+                            <form class="row" action="{{ route('buat.genre') }}" method="POST"
+                                enctype="multipart/form-data">
+                                @csrf
+                                <div class="col-md-12" style="font-size: 13px">
+                                    <div class="mb-3">
+                                        <label for="namakategori" class="form-label judulnottebal">Nama
+                                            Proyek</label>
+                                        <input type="text" name="name" class="form-control form-i" id="namaproyek"
+                                            required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="harga" class="form-label judulnottebal">Harga</label>
+                                        <input type="text" class="form-control form-i" id="harga" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="konsep" class="form-label judulnottebal">Deskripsi</label>
+                                        <textarea id="konsep" class="form-control" maxlength="500" rows="4"
+                                            required></textarea>
+                                    </div>
+                                </div>
+                                <div class="text-md-right">
+                                    <button type="submit" href="#" class="btn" type="submit">Tambah</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
+        <script>
+            /* ============Dengan Rupiah=========== */
+            var harga = document.getElementById('harga');
+            harga.addEventListener('keyup', function(e) {
+                harga.value = formatRupiah(this.value, 'Rp. ');
+            });
+
+            /* Fungsi */
+            function formatRupiah(angka, prefix) {
+                var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                    split = number_string.split(','),
+                    sisa = split[0].length % 3,
+                    rupiah = split[0].substr(0, sisa),
+                    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+                if (ribuan) {
+                    separator = sisa ? '.' : '';
+                    rupiah += separator + ribuan.join('.');
+                }
+
+                rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+                return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+            }
+        </script>
     </div>
 @endsection
