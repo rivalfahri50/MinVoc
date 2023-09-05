@@ -92,6 +92,19 @@ class AdminController extends Controller
 
     protected function buatBillboard(Request $request)
     {
+        $validator = Validator::make(
+            $request->only('artis_id'),
+            [
+                'artis_id' => 'required',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $title = "MusiCave";
         $artist = artist::where('is_verified', 1)->get();
         try {

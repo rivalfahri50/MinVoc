@@ -71,7 +71,7 @@
                     <div class="modal-content" style="background-color: whitesmoke">
                         <div class="card-body">
                             <h3 class="judul">Persetujuan Unggah Lagu</h3>
-                            <a href="#" class="close-button far fa-times-circle"></a>
+                            <a href="" class="close-button far fa-times-circle"></a>
                             <div class="row mt-4">
                                 <div class="col-md-12">
                                     <h5 class="judul">Tanggal Pengajuan</h5>

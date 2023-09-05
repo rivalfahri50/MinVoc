@@ -25,7 +25,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <input type="text" class="form-control rounded-4" name="name" id="name"
-                                            value="{{ auth()->user()->name }}" readonly>
+                                            value="{{ auth()->user()->name }}"  style="border: 1px solid #957DAD; color: #6c6c6c;" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-12">

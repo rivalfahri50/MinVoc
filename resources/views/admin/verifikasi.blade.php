@@ -8,7 +8,7 @@
                 @csrf
                 <div class="modal-content" style="background-color: whitesmoke">
                     <div class="card-body">
-                        <a href="#" class="close-button far fa-times-circle"></a>
+                        <a href="" class="close-button far fa-times-circle"></a>
                         <h3 class="judul">Detail Pengajuan Verifikasi Akun</h3>
                         <div class="row mt-4">
                             <div class="col-md-12 mb-4">
@@ -185,13 +185,14 @@
                                                             data-bs-target="#staticBackdrop-{{ $item->code }}">
                                                             <i class="far fa-eye text-info"></i>
                                                         </button>
-                                                        <form action="{{ route('hapus.verified', $item->code) }}" method="get">
-                                                            @csrf
-                                                            <button type="submit" class="btn btnicon mt-1">
-                                                                <i class="far fa-times-circle text-danger"></i>
-                                                            </button>
-                                                        </form>
+                                                        <button form="hapus" type="submit" class="btn btnicon mt-1">
+                                                            <i class="far fa-times-circle text-danger"></i>
+                                                        </button>
                                                     </td>
+                                                    <form id="hapus"
+                                                        action="{{ route('hapus.verified', $item->code) }}" method="get">
+                                                        @csrf
+                                                    </form>
                                                 </tr>
                                             @endif
                                         @endforeach

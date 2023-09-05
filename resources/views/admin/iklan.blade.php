@@ -118,7 +118,7 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="namaartis" class="form-label judulnottebal">Nama artis</label>
-                                            <select required name="artis_id" class="form-select" id="namaartis">
+                                            <select required name="artis_id" required class="form-select" id="namaartis">
                                                 <option disabled selected>artis</option>
                                                 @foreach ($artist as $item)
                                                     <option value="{{ $item->id }}">{{ $item->user->name }}</option>
