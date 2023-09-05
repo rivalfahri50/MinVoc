@@ -266,7 +266,7 @@
                                     <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ auth()->user()->name }}
                                     </p>
                                 </div>
-                                <a href="/artis/profile" class="dropdown-item preview-item">
+                                <a href="/artis-verified/profile" class="dropdown-item preview-item">
                                     <div class="preview-thumbnail">
                                         <div class="preview-icon">
                                             <i class="mdi mdi-account-circle-outline"></i>
@@ -303,7 +303,7 @@
                     <div class="card-body">
                         <a href="" class="close-button far fa-times-circle"></a>
                         <h2 class="judul">Buat Album</h2>
-                        <form class="row" action="{{ route('tambah.album.artis', auth()->user()->code) }}"
+                        <form class="row" action="{{ route('tambah.album.artisVerified', auth()->user()->code) }}"
                             method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="col-md-12">

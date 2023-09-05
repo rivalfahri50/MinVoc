@@ -30,7 +30,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="table-cell">{{ $item->created_at->toDateString() }}</td>
+                                        <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
                                         <td class="table-cell text-warning">Pending</td>
                                         <td class="table-cell">
                                             <button type="button" class="btn btnicon" data-bs-toggle="modal"

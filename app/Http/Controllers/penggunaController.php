@@ -233,7 +233,7 @@ class penggunaController extends Controller
                 'name' => 'required|string|max:255',
                 'avatar' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
                 'email' => 'required|string|email|max:255',
-                'deskripsi' =>  'max:255',
+                'deskripsi' =>  'max:500',
             ],
             [
                 'name' => [

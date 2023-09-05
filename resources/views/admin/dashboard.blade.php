@@ -59,20 +59,23 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($songs as $item)
-                                            <tr class="table-row">
-                                                <td class="table-cell">
-                                                    <div class="cell-content">
-                                                        <img src="{{ asset('storage/' . $item->images) }}" alt="Face"
-                                                            class="avatar">
-                                                        <div>
-                                                            <h6>{{ $item->judul }}</h6>
-                                                            <p class="text-muted m-0">{{ $item->artist->user->name }}</p>
+                                            @if ($item->is_approved)
+                                                <tr class="table-row">
+                                                    <td class="table-cell">
+                                                        <div class="cell-content">
+                                                            <img src="{{ asset('storage/' . $item->image) }}" alt="Face"
+                                                                class="avatar">
+                                                            <div>
+                                                                <h6>{{ $item->judul }}</h6>
+                                                                <p class="text-muted m-0">{{ $item->artist->user->name }}
+                                                                </p>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                                <td class="table-cell">{{ $item->genre }}</td>
-                                                <td class="table-cell">{{ $item->created_at->toDateString() }}</td>
-                                            </tr>
+                                                    </td>
+                                                    <td class="table-cell">{{ $item->genre->name }}</td>
+                                                    <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
+                                                </tr>
+                                            @endif
                                         @endforeach
                                     </tbody>
                             </div>

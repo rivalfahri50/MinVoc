@@ -46,7 +46,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-info rounded-3">
-                        <a href="{{ route('lirikAndChat', $item->code) }}" class="btn-link"
+                        <a href="{{ route('lirikAndChat.artisVerified', $item->code) }}" class="btn-link"
                             style="color: inherit; text-decoration: none;">Buat
                             Proyek</a></button>
                 </div>
@@ -76,7 +76,7 @@
                 content: "\25be";
             }
 
-            .table-sortable .th-sort-asc::after, 
+            .table-sortable .th-sort-asc::after,
             .table-sortable .th-sort-desc::after {
                 margin-left: 10px;
             }
@@ -160,10 +160,63 @@
             .card .card-body {
                 padding: 5px 20px;
             }
+
+            /* Style tombol sejajar */
+            .sejajar {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+
+            #tambahkategori {
+                width: 100%;
+                height: 100%;
+                position: fixed;
+                background: rgba(0, 0, 0, 0.7);
+                top: 0;
+                left: 0;
+                z-index: 9999;
+                visibility: hidden;
+            }
+
+            #tambahkategori .card-body {
+                padding: 10px 7% 10px 7%;
+            }
+
+            /* Memunculkan Jendela Pop Up*/
+            #tambahkategori:target {
+                visibility: visible;
+            }
+
+            .window {
+                background-color: #ffffff;
+                width: 500px;
+                border-radius: 10px;
+                position: relative;
+                margin: 7% auto;
+                padding: 10px;
+            }
+
+            .close-button {
+                display: block;
+                color: #957dad;
+                position: absolute;
+                top: 10px;
+                right: 10px;
+            }
         </style>
         <div class="content-wrapper">
             <div class="row ">
                 <div class="col-12 grid-margin">
+                    <div class="sejajar">
+                        <h3 style="color: #957DAD">Kolaborasi</h3>
+                        <div class="text-lg-end mb-3">
+                            <a href="#tambahkategori" class="btn full-width-btn" type="button">
+                                <i class="fas fa-plus"></i>
+                                Tambah kolaborasi
+                            </a>
+                        </div>
+                    </div>
                     <div class="card rounded-4">
                         <div class="card-body">
                             <div class="table-container">
@@ -178,7 +231,7 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($datas as $item)
-                                            @if (!$item->is_reject && $item->judul == "none" && $item->lirik == "none")
+                                            @if (!$item->is_reject && $item->judul == 'none' && $item->lirik == 'none')
                                                 <tr class="table-row">
                                                     <td class="table-cell">
                                                         <span class="pl-2">{{ $item->name }}</span>
@@ -186,23 +239,22 @@
                                                     <td class="table-cell">
                                                         <div>Rp {{ $item->harga }}</div>
                                                     </td>
-                                                    <td  class="table-cell">{{ $item->created_at->toDateString() }}</td>
-                                                    <td class="d-flex align-items-center bg-warning">
-                                                        <button type="button" class="btn-unstyled" data-bs-toggle="modal"
+                                                    <td class="table-cell">{{ $item->created_at->toDateString() }}</td>
+                                                    <td class="d-flex align-items-center">
+                                                        <a href="" class="btn-unstyled" data-bs-toggle="modal"
                                                             data-bs-target="#staticBackdrop-{{ $item->code }}">
-                                                            <i class="mdi mdi-eye btn-icon text-primary"></i>
+                                                            <i class="mdi mdi-eye btn-icon text-primary" style="font-size: 20px; margin-right: 2px;"></i>
+                                                        </a>
+                                                        <form id="reject" action="{{ route('reject.project.artisVerified') }}" method="post"
+                                                        class="">
+                                                        @csrf
+                                                        <button href="" type="submit">
+                                                            <input type="hidden" name="code"
+                                                                value="{{ $item->code }}">
+                                                            <input type="hidden" name="is_reject" value="true">
+                                                            <i
+                                                                class="mdi mdi-close-circle-outline btn-icon text-danger" style="font-size: 20px"></i>
                                                         </button>
-
-                                                        <form action="{{ route('reject.project') }}" method="post"
-                                                            class="">
-                                                            @csrf
-                                                            <button class="btn-unstyled d-block" type="submit">
-                                                                <input type="hidden" name="code"
-                                                                    value="{{ $item->code }}">
-                                                                <input type="hidden" name="is_reject" value="true">
-                                                                <i
-                                                                    class="mdi mdi-close-circle-outline btn-icon text-danger"></i>
-                                                            </button>
                                                         </form>
                                                     </td>
                                                 </tr>
@@ -224,7 +276,7 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($datas as $item)
-                                            @if (!$item->is_reject && $item->judul == "none" && $item->lirik == "none")
+                                            @if (!$item->is_reject && $item->judul == 'none' && $item->lirik == 'none')
                                                 <tr>
                                                     <td>
                                                         <span class="pl-2">{{ $item->name }}</span>
@@ -263,5 +315,34 @@
             </div>
         </div>
 
+            <div id="tambahkategori">
+                <div class="card window">
+                    <div class="card-body">
+                        <a href="" class="close-button far fa-times-circle"></a>
+                        <h3 class="judul p-0 mb-3">Tambah Kolaborasi</h3>
+                        <form class="row" action="{{ route('createProject.artisVerified') }}" method="POST"
+                            enctype="multipart/form-data">
+                            @csrf
+                            <div class="col-md-12" style="font-size: 13px">
+                                <div class="mb-3">
+                                    <label for="namakategori" class="form-label judulnottebal">Nama
+                                        Proyek</label>
+                                    <input type="text" name="name" class="form-control form-i"
+                                        id="namaproyek" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="konsep"
+                                        class="form-label judulnottebal">Deskripsi</label>
+                                    <textarea id="konsep" name="konsep" class="form-control" maxlength="500" rows="4" required></textarea>
+                                </div>
+                            </div>
+                            <div class="text-md-right">
+                                <button type="submit" href="#" class="btn"
+                                    type="submit">Tambah</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
     </div>
 @endsection

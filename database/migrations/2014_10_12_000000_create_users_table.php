@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Str;
 use Illuminate\Database\Schema\Blueprint;
@@ -17,13 +18,23 @@ return new class extends Migration
             $table->id();
             $table->string('code', 100);
             $table->string('avatar')->default("images/default.png");
-            $table->string('deskripsi')->default("none");
+            $table->text('deskripsi');
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
         });
+
+
+        User::create([
+            'code' => Str::uuid(),
+            'avatar' => 'images/default.png',
+            'deskripsi' => 'none',
+            'name' => 'admin',
+            'email' => 'untukprojects123@gmail.com',
+            'password' => '$2y$10$eSfmaLKIg86V0xg2R1pVP.BKIusL1PRv48mxqFq5LZeImpgpul30i',
+        ]);
     }
 
     /**

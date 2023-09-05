@@ -104,8 +104,8 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="table-cell">-</td>
-                                        <td class="table-cell">{{ $item->created_at->toDateString() }}</td>
+                                        <td class="table-cell">{{$item->genre->name}}</td>
+                                        <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
                                         <td class="table-cell text-warning" style="font-weight: 600">
                                             {{ $item->is_approved == 0 ? 'Pending' : 'Publish' }}</td>
                                     </tr>

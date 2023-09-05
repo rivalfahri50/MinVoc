@@ -204,7 +204,7 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class="table-cell mt-1">{{ $item->pengajuan_verified_at }}</td>
+                                                    <td class="table-cell mt-1">{{ $item->pengajuan_verified_at->format('d F Y') }}</td>
                                                     <td class="table-cell text-warning mt-1">
                                                         {{ $item->verification_status }}
                                                     </td>

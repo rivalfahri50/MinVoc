@@ -192,15 +192,6 @@
         <div class="content-wrapper">
             <div class="row">
                 <div class="col-12 grid-margin">
-                    <div class="sejajar">
-                        <h3 style="color: #957DAD">Kolaborasi</h3>
-                        <div class="text-lg-end mb-3">
-                            <a href="#tambahkategori" class="btn full-width-btn" type="button">
-                                <i class="fas fa-plus"></i>
-                                Tambah kolaborasi
-                            </a>
-                        </div>
-                    </div>
                     <div class="card rounded-4">
                         <div class="card-body">
                             <div class="table-container">
@@ -227,16 +218,16 @@
                                                     <td class="d-flex align-items-center">
                                                         <a href="" class="btn-unstyled" data-bs-toggle="modal"
                                                             data-bs-target="#staticBackdrop-{{ $item->code }}">
-                                                            <i class="mdi mdi-eye btn-icon text-primary"></i>
+                                                            <i class="mdi mdi-eye btn-icon text-primary" style="font-size: 20px; margin-right: 2px;"></i>
                                                         </a>
                                                         <a href="" type="submit">
                                                             <input type="hidden" name="code"
                                                                 value="{{ $item->code }}">
                                                             <input type="hidden" name="is_reject" value="true">
                                                             <i
-                                                                class="mdi mdi-close-circle-outline btn-icon text-danger"></i>
+                                                                class="mdi mdi-close-circle-outline btn-icon text-danger" style="font-size: 20px"></i>
                                                         </a>
-                                                        <form id="reject" action="{{ route('reject.project') }}" method="post"
+                                                        <form id="reject" action="{{ route('reject.project.artis') }}" method="post"
                                                             class="">
                                                             @csrf
                                                         </form>
@@ -293,34 +284,6 @@
                                     </tbody>
                                 </table>
                             </div> --}}
-                        </div>
-                    </div>
-                </div>
-                <div id="tambahkategori">
-                    <div class="card window">
-                        <div class="card-body">
-                            <a href="" class="close-button far fa-times-circle"></a>
-                            <h3 class="judul p-0 mb-3">Tambah Kolaborasi</h3>
-                            <form class="row" action="{{ route('createProject.artis') }}" method="POST"
-                                enctype="multipart/form-data">
-                                @csrf
-                                <div class="col-md-12" style="font-size: 13px">
-                                    <div class="mb-3">
-                                        <label for="namakategori" class="form-label judulnottebal">Nama
-                                            Proyek</label>
-                                        <input type="text" name="name" class="form-control form-i" id="namaproyek"
-                                            required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="konsep" class="form-label judulnottebal">Deskripsi</label>
-                                        <textarea id="konsep" name="konsep" class="form-control" maxlength="500" rows="4"
-                                            required></textarea>
-                                    </div>
-                                </div>
-                                <div class="text-md-right">
-                                    <button type="submit" href="#" class="btn" type="submit">Tambah</button>
-                                </div>
-                            </form>
                         </div>
                     </div>
                 </div>

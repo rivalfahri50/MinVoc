@@ -427,7 +427,6 @@
                             headers: {
                                 'Content-Type': 'application/json',
                                 'X-CSRF-TOKEN': csrfToken
-
                             },
                             body: JSON.stringify({
                                 isLiked: iconElement.classList.contains('fas')
