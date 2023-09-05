@@ -39,7 +39,7 @@
                     <h3 class="card-title mt-2 judul" style="font-size: 20px; font-weight: 600">Kategori</h3>
                     <div class="cards">
                         @foreach ($genres as $item)
-                            <a href="/artis/kategori/{{ $item->code }}" class="card card-scroll">
+                            <a href="/artis/kategori/{{ $item->code }}" class="card cardi card-scroll rounded-4">
                                 <img src="{{ asset('storage/' . $item->images) }}" class="img-fluid rounded-4 this">
                             </a>
                         @endforeach

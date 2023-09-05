@@ -1,0 +1,131 @@
+.table-container {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-spacing: 0;
+}
+
+.table-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    background-color: #eaeaea;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table-cell {
+    flex: 1;
+    padding-left: 10%;
+    text-align: left;
+    padding: 10px;
+}
+
+.table-cell h6, .table-cell p {
+    max-width: 300px;
+    word-wrap: break-word;
+}
+
+.table-cell h6, .table-cell p {
+    white-space: normal;
+}
+
+.table-header {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #957dad;
+    color: white;
+}
+
+.avatar {
+    width: auto; /* Menghapus lebar tetap */
+    height: 40px; /* Menentukan tinggi gambar */
+    object-fit: cover; /* Memastikan gambar diisi sepenuhnya dan tidak melar */
+    margin-right: 10px;
+    border-radius: 0;
+}
+
+.table td img {
+    border-radius: 0;
+}
+
+.cell-content {
+    display: flex;
+    align-items: center;
+}
+
+.table-cell h6,
+.table-cell p {
+    margin: 0;
+    padding: 5px 0;
+}
+
+.table-container {
+    margin-bottom: 20px;
+}
+
+.table-sortable th {
+    cursor: pointer;
+}
+
+.table-sortable .th-sort-asc::after {
+    content: "\25b4";
+}
+.table-sortable .th-sort-desc::after {
+    content: "\25be";
+}
+
+.table-sortable .th-sort-asc::after,
+.table-sortable .th-sort-desc::after {
+    margin-left: 10px;
+}
+
+.cobai {
+    width: 150px;
+    height: 150px;
+    position: relative;
+    overflow: hidden;
+    border: none;
+    color: #957dad;
+}
+
+input {
+    display: none;
+}
+
+label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 0;
+    color: transparent; /* Membuat warna ikon menjadi transparan */
+    transition: color 0.3s ease; /* Efek transisi untuk perubahan warna */
+}
+
+label:hover {
+    color: #957dad; /* Mengembalikan warna ikon saat hover */
+}
+
+.upload-label i {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.form-i {
+    height: 25px;
+    border-radius: 8px;
+}
+
+.label-with-image {
+    background-image: none; /* Atur latar belakang menjadi kosong ketika gambar sudah ada */
+}

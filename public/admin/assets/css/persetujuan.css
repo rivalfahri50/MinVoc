@@ -54,7 +54,9 @@
 }
 
 .avatar {
-    width: 40px;
+    width: auto; /* Menghapus lebar tetap */
+    height: 40px; /* Menentukan tinggi gambar */
+    object-fit: cover; /* Memastikan gambar diisi sepenuhnya dan tidak melar */
     margin-right: 10px;
     border-radius: 0;
 }
