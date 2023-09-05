@@ -1,5 +1,6 @@
 @extends('artisVerified.components.artisVerifiedTemplate')
 
+
 @section('content')
     <link rel="stylesheet" href="/user/assets/css/disukaiPlaylist.css">
             <div class="main-panel">

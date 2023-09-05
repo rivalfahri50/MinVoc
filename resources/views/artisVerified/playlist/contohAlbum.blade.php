@@ -1,5 +1,6 @@
 @extends('artisVerified.components.artisVerifiedTemplate')
 
+
 @section('content')
     <link rel="stylesheet" href="/user/assets/css/contohPlaylist.css">
     <link rel="stylesheet" href="/user/assets/css/buatPlaylist.css">
@@ -10,26 +11,26 @@
                     <div class="custom-container">
                         <div class="row">
                             <div class="col-3">
-                                @if ($playlistDetail->user_id === auth()->user()->id)
+                                @if ($albumDetail->artis->user_id === auth()->user()->id)
                                     <div class="col-3">
                                         <a href="#popup" class="card coba">
-                                            <img src="{{ asset('storage/' . $playlistDetail->images) }}" alt="Gambar">
+                                            <img src="{{ asset('storage/' . $albumDetail->image) }}" alt="Gambar">
                                         </a>
                                     </div>
                                 @else
                                     <div class="col-3">
                                         <div class="card coba">
-                                            <img src="{{ asset('storage/' . $playlistDetail->images) }}" alt="Gambar">
+                                            <img src="{{ asset('storage/' . $albumDetail->image) }}" alt="Gambar">
                                         </div>
                                     </div>
                                 @endif
                             </div>
                             <div class="col-3 text-xxl-end">
                                 <div class="bottom-left-text">
-                                    <h3 class="m-0" style="font-weight: 600">{{ $playlistDetail->name }}
+                                    <h3 class="m-0" style="font-weight: 600">{{ $albumDetail->name }}
                                     </h3>
                                     <p style="font-size: 18px;">
-                                        {{ $playlistDetail->deskripsi == 'none' ? '' : "$playlistDetail->deskripsi" }}
+                                        {{ $albumDetail->deskripsi == 'none' ? '' : "$albumDetail->deskripsi" }}
                                     </p>
                                 </div>
                             </div>
@@ -42,8 +43,8 @@
             </div>
             <div class="col-md-12 grid-margin stretch-card">
                 <h3 class="card-title judul">Temukan berbagai lagu</h3>
-                <form class="col-6 mb-4 p-0 nav-link search" method="GET">
-                    <input type="text" id="search_song" class="form-control rounded-4" placeholder="Cari musik">
+                <form class="col-6 mb-4 p-0 nav-link search">
+                    <input type="text" class="form-control rounded-4" placeholder="Cari musik">
                 </form>
                 <div class="card scroll scrollbar-down thin">
                     <div class="card-body">
@@ -51,7 +52,7 @@
                             <div class="col-12">
                                 <div class="preview-list">
                                     @foreach ($songs as $item)
-                                        @if ($item->is_approved)
+                                        @if ($item->is_approved && $item->album_id == $albumDetail->id)
                                             <div class="preview-item">
                                                 <div class="preview-thumbnail">
                                                     <img src="{{ asset('storage/' . $item->image) }}" width="10%">
@@ -107,27 +108,23 @@
                 <a href="#" class="close-button mdi mdi-close-circle-outline"></a>
                 <h3 class="judul">Buat Playlist</h3>
                 <div>
-                    <form class="row" action="{{ route('ubah.playlist.artisVerified', $playlistDetail->code) }}" method="POST"
+                    <form class="row" action="{{ route('ubah.album.artisVerified', $albumDetail->code) }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
                         <div class="col-4">
                             <div class="card cobai">
                                 <label for="gambar" id="tampil_gambar">
-                                    <img src="{{ asset('storage/' . $playlistDetail->images) }}"
+                                    <img src="{{ asset('storage/' . $albumDetail->image) }}"
                                         style="background-size: cover; background-repeat: no-repeat" width="150"
                                         alt="Gambar">
                                 </label>
-                                <input type="file" id="gambar" name="images" accept="image/png,image/jpg">
+                                <input type="file" id="gambar" name="image" accept="image/png,image/jpg">
                             </div>
                         </div>
                         <div class="col-md-7 ml-4">
                             <div class="mb-3">
-                                <input type="text" class="form-control form-i" name="name" id="nama"
-                                    placeholder="{{ $playlistDetail->name }}">
-                            </div>
-                            <div class="mb-3">
-                                <textarea id="deskripsi" class="form-control" name="deskripsi" maxlength="500" rows="6"
-                                    placeholder="{{ $playlistDetail->deskripsi == 'none' ? '' : $playlistDetail->deskripsi }}"></textarea>
+                                <textarea id="deskripsi" class="form-control" name="name" maxlength="500" rows="9"
+                                    placeholder="{{ $albumDetail->name }}"></textarea>
                             </div>
                         </div>
                         <div class="text-md-right col-md-12">
@@ -136,8 +133,7 @@
                                 <button form="hapus" class="btn btn-delete" type="submit">Hapus</button>
                             </div>
                     </form>
-                    <form id="hapus" action="{{ route('hapus.playlist.artisVerified', $playlistDetail->code) }}"
-                        method="GET">
+                    <form id="hapus" action="{{ route('hapus.albums.artis', $albumDetail->code) }}" method="GET">
                         @csrf
                     </form>
                 </div>

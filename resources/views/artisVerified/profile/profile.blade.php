@@ -1,5 +1,21 @@
 @extends('artisVerified.components.artisVerifiedTemplate')
 
+<style>
+    .foto-profil {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.foto-profil img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+</style>
+
 @section('content')
     <div class="main-panel">
         <div class="content-wrapper">
@@ -12,37 +28,35 @@
                     <div class="col-md-12">
                         <div class="mb-3">
                             <h4 style="font-size: 20px; font-weight: 600; color: #957dad">Foto profil</h4>
-                            <img src="{{ asset('storage/' . auth()->user()->avatar) }}" class="rounded-circle"
-                                width="100px">
+                            <div class="foto-profil">
+                                <img  src="{{ asset('storage/' . auth()->user()->avatar) }}" class="rounded-circle" width="150" height="150">
+                            </div>
+                            {{-- <img  src="{{ asset('storage/' . auth()->user()->avatar) }}" class="rounded-circle" width="150" height="150"> --}}
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="nama" class="form-label"
-                                style="font-size: 20px; font-weight: 600; color: #957dad">{{ auth()->user()->name }}</label>
-                            <input type="text" class="form-control" id="nama" value="{{ auth()->user()->name }}"
-                                readonly disabled>
+                            <label for="nama" class="form-label" style="font-size: 20px; font-weight: 600; color: #957dad">Nama pengguna</label>
+                            <input type="text" class="form-control" id="nama" value="{{ auth()->user()->name }}" readonly disabled>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="email" class="form-label"
-                                style="font-size: 20px; font-weight: 600; color: #957dad">{{ auth()->user()->email }}</label>
-                            <input type="email" class="form-control" id="email" value="{{ auth()->user()->email }}"
-                                readonly disabled>
+                            <label for="email" class="form-label" style="font-size: 20px; font-weight: 600; color: #957dad">Email</label>
+                            <input type="email" class="form-control" id="email" value="{{ auth()->user()->email }}" readonly
+                                disabled>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="mb-3">
-                            <label for="deskripsi" class="form-label"
-                                style="font-size: 20px; font-weight: 600; color: #957dad">Deskripsi</label>
-                            <textarea id="deskripsi" class="form-control" maxlength="500" rows="5" readonly disabled>{{ auth()->user()->deskripsi === 'none' ? '' : auth()->user()->deskripsi }}</textarea>
+                            <label for="deskripsi" class="form-label" style="font-size: 20px; font-weight: 600; color: #957dad">Deskripsi</label>
+                            <textarea id="deskripsi" class="form-control" maxlength="500" rows="5" readonly disabled>{{ (auth()->user()->deskripsi === "none") ? "" : auth()->user()->deskripsi }}</textarea>
                             <div id="counter" class="float-right"></div>
                             <div class="invalid-feedback"></div>
                         </div>
                     </div>
                     <div class="col-1">
-                        <a href="{{ route('ubah.profile.artisVerified', auth()->user()->code) }}" class="btn" type="submit">Perbarui</a>
+                        <a href="{{ route('ubah.profile.artis', auth()->user()->code) }}" class="btn" type="submit">Perbarui</a>
                     </div>
                 </form>
             </div>

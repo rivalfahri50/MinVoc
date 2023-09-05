@@ -12,12 +12,8 @@
                                 <div class="col-7">
                                     <div class="preview-list">
                                         <div class="d-flex flex-column gap-3" style="color: #6C6C6C;">
-                                            <span class="fw-bold fs-4">Agnez Monica</span>
-                                            <span class="fs-5">Agnes Monica Muljoto, yang dikenal dengan nama profesional
-                                                Agnez Mo, adalah
-                                                seorang penyanyi, penulis lagu, penari, dan aktris Indonesia. Pada awal
-                                                kariernya, dia juga
-                                                dikenal sebagai Agnes Monica.</span>
+                                            <span class="fw-bold fs-4">{{ $billboard->artis->user->name }}</span>
+                                            <span class="fs-5">{{ $billboard->deskripsi }}.</span>
                                             <div class="d-flex gap-4 align-content-center">
                                                 <span>
                                                     <button
@@ -43,7 +39,8 @@
                                     </div>
                                 </div>
                                 <div class="col-4 d-flex text-right justify-content-center">
-                                    <img src="/user/assets/images/billboard.svg" alt="" class="d-block">
+                                    <img src="{{ asset('storage/' . $billboard->image_artis) }}" alt=""
+                                        class="d-block">
                                 </div>
                             </div>
                         </div>
@@ -52,21 +49,11 @@
                 <div class="row">
                     <div class="cards d-flex justify-content-center z-3 gap-4"
                         style="margin-top: -150px; margin-left: 12px;">
-                        <a href="album.html">
-                            <img src="/user/assets/images/faces/face8.jpg" width="170" class="img-fluid rounded-4">
-                        </a>
-                        <a href="#">
-                            <img src="/user/assets/images/faces/face1.jpg" width="170" class="img-fluid rounded-4">
-                        </a>
-                        <a href="#">
-                            <img src="/user/assets/images/faces/face1.jpg" width="170" class="img-fluid rounded-4">
-                        </a>
-                        <a href="#">
-                            <img src="/user/assets/images/faces/face1.jpg" width="170" class="img-fluid rounded-4">
-                        </a>
-                        <a href="#">
-                            <img src="/user/assets/images/faces/face1.jpg" width="170" class="img-fluid rounded-4">
-                        </a>
+                        @foreach ($albums as $item)
+                            <a href="{{ route('albumBillboard', $item->code) }}">
+                                <img src="{{ asset('storage/' . $item->image) }}" width="170" class="img-fluid rounded-4">
+                            </a>
+                        @endforeach
                     </div>
                 </div>
                 <div class="col-md-12 grid-margin stretch-card">

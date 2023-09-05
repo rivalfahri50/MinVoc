@@ -12,7 +12,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
     <link rel="stylesheet" href="/user/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="/user/assets/css/style.css">
     <link rel="shortcut icon" href="/image/favicon.svg" type="image/x-icon">
@@ -22,6 +21,7 @@
         body {
             font-family: 'Poppins', sans-serif;
         }
+
 
         .search-container {
             position: relative;
@@ -71,6 +71,43 @@
             height: 100%;
             object-fit: cover;
         }
+
+        #buat-album {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            background: rgba(0, 0, 0, .7);
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            visibility: hidden;
+        }
+
+        #buat-album .card-body {
+            padding: 10px 7% 10px 7%;
+        }
+
+        /* Memunculkan Jendela Pop Up*/
+        #buat-album:target {
+            visibility: visible;
+        }
+
+        .window {
+            background-color: #ffffff;
+            width: 350px;
+            border-radius: 10px;
+            position: relative;
+            margin: 13% auto;
+            padding: 10px;
+        }
+
+        .close-button {
+            display: block;
+            color: #957DAD;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
     </style>
     <script>
         // INI SCRIPT UNTUK HASIL SEARCH TAMPIL/TIDAK
@@ -91,9 +128,10 @@
 
 <body>
     <div class="container-scroller">
+        <!-- partial:partials/_sidebar.html -->
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
             <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-                <a class="sidebar-brand brand-logo" href="/artis-verified/dashboard"><img
+                <a class="sidebar-brand brand-logo" href="/artisVerified/dashboard"><img
                         src="/user/assets/images/logo.svg" alt="logo" /></a>
             </div>
             <ul class="nav">
@@ -126,13 +164,7 @@
                                     </span>
                                     <span class="menu-title">Buat Playlist</span>
                                 </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="collapse" id="ui-basic">
-                        <ul class="nav flex-column sub-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="">
+                                <a class="nav-link" href="#buat-album">
                                     <span class="menu-icon">
                                         <i class="mdi mdi-plus-circle-outline"></i>
                                     </span>
@@ -154,20 +186,20 @@
                     <a class="nav-link" href="/artis-verified/kolaborasi">
                         @if ($title === 'kolaborasi')
                             <span class="menu-icon">
-                                <img width="30" src="/images/kolaborasi.svg" alt="" srcset="">
+                                <i class="mdi mdi-account-group-outline"></i>
                             </span>
                         @else
                             <span class="menu-icon">
-                                <img width="30" src="/images/hover/kolaborasi.svg" alt="" srcset="">
+                                <i class="mdi mdi-account-group-outline"></i>
                             </span>
                             <span class="menu-title">Kolaborasi</span>
                         @endif
                     </a>
                 </li>
                 <li class="nav-item menu-items">
-                    <a class="nav-link" href="/artis-verified/riwayat">
+                    <a class="nav-link" href="/artis-verified/penghasilan">
                         <span class="menu-icon">
-                            <img width="30" src="/images/penghasilan.svg" alt="" srcset="">
+                            <i class="mdi mdi-cash-multiple"></i>
                         </span>
                         <span class="menu-title">Penghasilan</span>
                     </a>
@@ -256,19 +288,20 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                                 <div class="navbar-profile">
-                                    <img class="img-xs rounded-circle" src="{{ asset('storage/' . auth()->user()->avatar) }}"
-                                        alt="">
+                                    <img class="img-xs rounded-circle"
+                                        src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
                                 </div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                                 aria-labelledby="profileDropdown">
                                 <div class="p-3 mb-0 gap-3"
                                     style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
-                                    <img class="img-xs rounded-circle" src="{{ asset('storage/' . auth()->user()->avatar) }}"
-                                        alt="">
-                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ auth()->user()->name }}</p>
+                                    <img class="img-xs rounded-circle"
+                                        src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
+                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ auth()->user()->name }}
+                                    </p>
                                 </div>
-                                <a href="/artis-verified/profile" class="dropdown-item preview-item">
+                                <a href="/artis/profile" class="dropdown-item preview-item">
                                     <div class="preview-thumbnail">
                                         <div class="preview-icon">
                                             <i class="mdi mdi-account-circle-outline"></i>
@@ -297,22 +330,70 @@
                     </button>
                 </div>
             </nav>
-            
 
             @yield('content')
 
+            <div id="buat-album">
+                <div class="card window">
+                    <div class="card-body">
+                        <a href="" class="close-button far fa-times-circle"></a>
+                        <h2 class="judul">Buat Album</h2>
+                        <form class="row" action="{{ route('tambah.album.artis', auth()->user()->code) }}"
+                            method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <h3 class="form-label judul">Nama Album</h3>
+                                    <input type="text" name="name" class="form-control" id="namaproyek"
+                                        placeholder="Masukkan nama kategori musik" required>
+                                </div>
+                                <div class="mb-3">
+                                    <h3 for="upload" class="form-label judul">Upload
+                                        Foto</h3>
+                                    <input type="file" name="image" class="form-control" id="namaproyek"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="text-md-right">
+                                <button class="btn" type="submit">Tambah</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
             <script>
-                function myFunction(x) {
-                    x.classList.toggle("far");
-                    x.classList.toggle("fas");
-                    x.classList.toggle("warna-kostum-like");
-                }
+                $(document).ready(function() {
+                    $('#search_song').on('keyup', function() {
+                        var query = $(this).val();
+                        $.ajax({
+                            url: '/artis/search_song/',
+                            type: 'GET',
+                            data: {
+                                query: query
+                            },
+                            dataType: 'json',
+                            success: function(response) {
+                                var results = response.results;
+                                var $searchResults = $('#search-results-song');
+                                $searchResults.empty();
+
+
+                                $.each(results, function(index, result) {
+                                    $searchResults.append('<li>' + result.judul + '</li>');
+                                });
+                            }
+                        });
+                    });
+                });
 
                 $(document).ready(function() {
                     $('#search').on('keyup', function() {
                         var query = $(this).val();
                         $.ajax({
-                            url: '/artis-verified/search/',
+                            url: '/artis/search/',
                             type: 'GET',
                             data: {
                                 query: query
@@ -330,6 +411,14 @@
                         });
                     });
                 });
+            </script>
+
+            <script>
+                function myFunction(x) {
+                    x.classList.toggle("far");
+                    x.classList.toggle("fas");
+                    x.classList.toggle("warna-kostum-like");
+                }
             </script>
 
             <script src="/user/assets/vendors/js/vendor.bundle.base.js"></script>
