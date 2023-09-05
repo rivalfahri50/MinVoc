@@ -29,7 +29,10 @@
                             </div>
                             <div class="text-md-right">
                                 <button type="submit" class="btn">Setujui</button>
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal1" class="btn">Tolak</button>
                             </div>
+
+
                         </div>
                     </div>
                 </div>
@@ -40,6 +43,32 @@
 
 
 @section('content')
+<!-- Modal -->
+<div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal bg-white">
+                <h5 class="modal-title bg-white" id="exampleModalLabel">Alasan Ditolak</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body bg-white">
+
+                <form id="hapus" action="{{ route('hapus.verified', $item->code) }}" method="post">
+                    @csrf
+                    <div class="form-group">
+                        <a href="" class="close-button far fa-times-circle"></a>
+                        <h3 class="judul">Alasan Menolak Persetujuan</h3>
+                        <textarea class="form-control mt-3 " id="alasan" name="alasan" rows="10" placeholder="Tulis alasan anda"></textarea>
+                    </div>
+                    <div class="text-md-right">
+                    <button type="submit" class="btn">Kirim</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
     <link rel="stylesheet" href="/admin/assets/css/verifikasi.css">
     <!-- partial | ISI -->
     <div class="main-panel">
@@ -185,14 +214,7 @@
                                                             data-bs-target="#staticBackdrop-{{ $item->code }}">
                                                             <i class="far fa-eye text-info"></i>
                                                         </button>
-                                                        <button form="hapus" type="submit" class="btn btnicon mt-1">
-                                                            <i class="far fa-times-circle text-danger"></i>
-                                                        </button>
                                                     </td>
-                                                    <form id="hapus"
-                                                        action="{{ route('hapus.verified', $item->code) }}" method="get">
-                                                        @csrf
-                                                    </form>
                                                 </tr>
                                             @endif
                                         @endforeach
