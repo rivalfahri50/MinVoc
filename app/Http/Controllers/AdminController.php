@@ -87,7 +87,7 @@ class AdminController extends Controller
             return response()->view('admin.persetujuan', compact('persetujuan', 'title'));
         }
         Alert::success('message', 'Lagu Berhasil Publish');
-        return response()->view('admin.persetujuan', compact('persetujuan', 'title'));
+        return back();
     }
 
     protected function buatBillboard(Request $request)

@@ -74,9 +74,9 @@ button .fa,
     font-size: 39px;
 }
 
-.vu:before {
-    content: "\f028";
+.mdi-volume-high {
     color: #957dad;
+    font-size: 20px;
 }
 
 .fh:before {

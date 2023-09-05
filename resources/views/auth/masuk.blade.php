@@ -32,7 +32,7 @@
 
 
                         <div class="mb-3">
-                            <input name="password" placeholder="Kata Kunci" type="password" class="form-control rounded-3"
+                            <input name="password" placeholder="Kata Sandi" type="password" class="form-control rounded-3"
                                 id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ old('password') }}">
                             @error('password')
                                 <div class="text-danger">{{ $message }}</div>
@@ -41,10 +41,11 @@
 
                         <div class="flex-sb-m w-full p-t-3 p-b-32">
                             <div class="contact100-form-checkbox">
-                                <input class="input-checkbox100" id="ckb1" type="checkbox" name="kebijakan_privasi" required >
-                                <label class="label-checkbox100" for="ckb1" ><button data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                <span>Kebijakan Privasi</span>
-                                </button>
+                                <input class="input-checkbox100" id="ckb1" type="checkbox" name="kebijakan_privasi">
+                                <label class="label-checkbox100" for="ckb1"><a data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop">
+                                        <span>Kebijakan Privasi</span>
+                                </a>
 
                                 </label>
 

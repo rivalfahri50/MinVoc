@@ -22,8 +22,6 @@
                         </div>
 
                         <div class="d-flex gap-4 mb-4 flex-column" style="width: 80%">
-                            <div>
-                            </div>
                             <div class="d-flex flex-row flex-wrap gap-3">
                                 <div class="container-login100-form-btn" style="width: 40%">
                                     <button id="user_pengguna" class="selected login100-form-btn rounded-4"

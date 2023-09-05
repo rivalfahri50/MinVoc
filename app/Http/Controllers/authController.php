@@ -103,10 +103,12 @@ class authController extends Controller
     {
         $credentials = $request->only('name', 'password');
 
-        $validator = Validator::make($credentials, [
+        $validator = Validator::make($request->only('name', 'password', 'kebijakan_privasi'), [
             'name' => 'required|string|max:50|exists:users,name',
             'password' => 'required|string|min:6',
+            'kebijakan_privasi' => 'required',
         ], [
+            'kebijakan_privasi.required' => 'Kebijakan Privasi wajib diisi Check.',
             'name.required' => 'Kolom nama wajib diisi.',
             'name.string' => 'Kolom nama harus berupa teks.',
             'name.max' => 'Panjang nama tidak boleh lebih dari :max karakter.',
