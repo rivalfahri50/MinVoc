@@ -3,7 +3,7 @@
 @section('content')
     <div class="main-panel">
         <div class="content-wrapper">
-            <form class="row" action="{{ route('unggah') }}" method="POST" enctype="multipart/form-data">
+            <form class="row" action="{{ route('unggah.artisVerified') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="col d-flex flex-row gap-4">
                     <label for="tamel" style="cursor: pointer"
@@ -89,6 +89,7 @@
                             <table class=" w-100">
                                 <ul class="list-group">
                                     @foreach ($datas as $item)
+                                    {{-- @dd($item) --}}
                                         <li class="list-group-item text-white mb-2 d-flex flex-row justify-content-between"
                                             style="background-color: #EAEAEA; font-weight: bolder; border-radius: 20px;">
                                             <span class="d-flex flex-row">

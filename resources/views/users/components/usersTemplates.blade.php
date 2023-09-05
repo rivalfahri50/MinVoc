@@ -362,8 +362,6 @@
                     });
                 });
 
-
-
                 $(document).ready(function() {
                     $('#search').on('keyup', function() {
                         var query = $(this).val();

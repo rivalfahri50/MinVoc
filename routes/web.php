@@ -95,10 +95,7 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
     Route::get('/hapus-playlist/{code}', 'hapusPlaylist')->name('hapus.playlist.artis');
     Route::get('/hapus-album/{code}', 'hapusAlbum')->name('hapus.albums.artis');
     Route::get('/search_song', 'search_song')->name('search.song.artis');
-    Route::get('/peraturan', function () {
-        return view('artis.peraturan', ['title' => 'MusiCave']);
-    })->name('peraturan');
-    
+
     Route::post('/tambah_playlist/{code}', 'tambah_playlist')->name('tambah.playlist.artis');
     Route::POST('/buat-album/{code}', 'buatAlbum')->name('tambah.album.artis');
     Route::POST('/verified/{code}', 'verifiedAccount')->name('verified');
@@ -115,16 +112,24 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
 
 Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->controller(ArtistVerifiedController::class)->group(function () {
     // Route::get('/dashboard', 'viewDashboard');
+    Route::get('/kolaborasi', 'viewKolaborasi')->name('artist-verified.kolaborasi');
+    Route::get('/lirik-chat/{code}', 'viewLirikAndChat')->name('lirikAndChat.artisVerified');
+    Route::get('/show/{code}', 'showData')->name('project.show.artisVerified');
+    Route::get('/logout', 'logout')->name('logout.artisVerified');
+
     Route::get('/dashboard', 'index')->name('artist-verified.dashboard');
     Route::get('/detail-playlist/{code}', 'detailPlaylist')->name('detailPlaylistArtisVerified');
+    Route::get('/detail-album/{code}', 'detailAlbum')->name('detailAlbumArtisVerified');
     Route::get('/unggahAudio', 'viewUnggahAudio');
     Route::get('/kategori/{code}', 'kategori');
     Route::get('/playlist', 'playlist');
+    Route::get('/penghasilan', 'penghasilan');
     Route::get('/riwayat', 'riwayat');
     Route::get('/profile', 'profile');
     Route::get('/profile-ubah/{code}', 'profile_ubah')->name('ubah.profile.artisVerified');
-    Route::get('/billboard', 'billboard');
+    Route::get('/billboard/{code}', 'billboard')->name('detail.billboard.artisVerified');
     Route::get('/album', 'album');
+    Route::get('/album-billboard/{code}', 'albumBillboard')->name('albumBillboard.artisVerified');
     Route::get('/kategori/{code}', 'kategori');
     Route::get('/search', 'search')->name('search.artisVerified');
     Route::get('/buat-playlist', 'buatPlaylist');
@@ -132,10 +137,17 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
     Route::get('/disukai-playlist', 'disukaiPlaylist');
     Route::get('/hapus-playlist/{code}', 'hapusPlaylist')->name('hapus.playlist.artisVerified');
 
-    Route::post('/unggahAudio', 'unggahAudio')->name('unggah');
+    Route::post('/unggahAudio', 'unggahAudio')->name('unggah.artisVerified');
+    Route::post('/buat-album/{code}', 'buatAlbum')->name('tambah.album.artisVerified');
     Route::post('/buat-playlist', 'storePlaylist')->name('buat.playlist.artisVerified');
     Route::post('/ubah-playlist/{code}', 'ubahPlaylist')->name('ubah.playlist.artisVerified');
     Route::post('/update/profile/{code}', 'updateProfile')->name('update.profile.artisVerified');
+    Route::post('/create-lirik', 'Project')->name('create.project.artisVerified');
+    Route::post('/message', 'message')->name('message.project.artisVerified');
+    Route::post('/reject-project', 'rejectProject')->name('reject.project.artisVerified');
+    Route::post('/ubah-album/{code}', 'ubahAlbum')->name('ubah.album.artisVerified');
+    Route::post('/update/profile/{code}', 'updateProfile')->name('update.profile.artisVerified');
+    Route::post('/unggahAudio', 'unggahAudio')->name('unggah.artisVerified');
 });
 
 Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(penggunaController::class)->group(function () {

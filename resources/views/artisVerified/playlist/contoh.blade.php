@@ -1,6 +1,5 @@
 @extends('artisVerified.components.artisVerifiedTemplate')
 
-
 @section('content')
     <link rel="stylesheet" href="/user/assets/css/contohPlaylist.css">
     <link rel="stylesheet" href="/user/assets/css/buatPlaylist.css">
@@ -25,17 +24,6 @@
                                     </div>
                                 @endif
                             </div>
-                            {{-- @if ($playlistDetail->user_id === auth()->user()->id)
-                            <div class="col-3">
-                                <a href="#popup" class="card coba">
-                                    <img src="{{ asset('storage/' . $playlistDetail->images) }}" alt="Gambar" width="100">
-                                </a>
-                            </div>
-                        @else
-                            <div class="col-3">
-                                <img src="{{ asset('storage/' . $playlistDetail->images) }}" alt="Gambar" width="100">
-                            </div>
-                        @endif --}}
                             <div class="col-3 text-xxl-end">
                                 <div class="bottom-left-text">
                                     <h3 class="m-0" style="font-weight: 600">{{ $playlistDetail->name }}
@@ -46,15 +34,6 @@
                                 </div>
                             </div>
                         </div>
-                        {{-- <div class="col-3 text-xxl-end">
-                        <div class="bottom-left-text">
-                            <p class="m-0" style="font-size: 18px; font-weight: 500">{{ $playlistDetail->name }}
-                            </p>
-                            <h3 style="font-size: 18px; font-weight: 600">
-                                {{ $playlistDetail->deskripsi == 'none' ? '' : "$playlistDetail->deskripsi" }}
-                            </h3>
-                        </div>
-                    </div> --}}
                     </div>
                 </div>
             </div>
@@ -63,8 +42,8 @@
             </div>
             <div class="col-md-12 grid-margin stretch-card">
                 <h3 class="card-title judul">Temukan berbagai lagu</h3>
-                <form class="col-6 mb-4 p-0 nav-link search">
-                    <input type="text" class="form-control rounded-4" placeholder="Cari musik">
+                <form class="col-6 mb-4 p-0 nav-link search" method="GET">
+                    <input type="text" id="search_song" class="form-control rounded-4" placeholder="Cari musik">
                 </form>
                 <div class="card scroll scrollbar-down thin">
                     <div class="card-body">
@@ -72,25 +51,27 @@
                             <div class="col-12">
                                 <div class="preview-list">
                                     @foreach ($songs as $item)
-                                        <div class="preview-item">
-                                            <div class="preview-thumbnail">
-                                                <img src="{{ asset('storage/' . $item->image) }}" width="10%">
-                                            </div>
-                                            <div class="preview-item-content d-sm-flex flex-grow">
-                                                <div class="flex-grow">
-                                                    <h6 class="preview-subject">{{ $item->judul }}</h6>
-                                                    <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
+                                        @if ($item->is_approved)
+                                            <div class="preview-item">
+                                                <div class="preview-thumbnail">
+                                                    <img src="{{ asset('storage/' . $item->image) }}" width="10%">
                                                 </div>
-                                                <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                    <div class="text-group">
-                                                        <i onclick="myFunction(this)" class="far fa-heart pr-2">
-                                                        </i>
-                                                        <p>{{ $item->waktu }}</p>
-                                                        <i class="fas fa-ellipsis-v"></i>
+                                                <div class="preview-item-content d-sm-flex flex-grow">
+                                                    <div class="flex-grow">
+                                                        <h6 class="preview-subject">{{ $item->judul }}</h6>
+                                                        <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
+                                                    </div>
+                                                    <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                                        <div class="text-group">
+                                                            <i onclick="myFunction(this)" class="far fa-heart pr-2">
+                                                            </i>
+                                                            <p>{{ $item->waktu }}</p>
+                                                            <i class="fas fa-ellipsis-v"></i>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        @endif
                                     @endforeach
                                 </div>
                             </div>
@@ -103,8 +84,6 @@
     </div>
     </div>
     </div>
-
-    
     <style>
         .btn-delete {
             background-color: rgb(215, 0, 0);
@@ -114,6 +93,11 @@
             color: red;
             background-color: white;
             border: 1px solid red;
+        }
+
+        .button-container {
+            display: inline-block;
+            margin-right: 13px;
         }
     </style>
 
@@ -142,22 +126,25 @@
                                     placeholder="{{ $playlistDetail->name }}">
                             </div>
                             <div class="mb-3">
-                                <textarea id="deskripsi" class="form-control" name="deskripsi" maxlength="500" rows="6" placeholder="{{ $playlistDetail->deskripsi == 'none' ? '' : $playlistDetail->deskripsi }}"></textarea>
+                                <textarea id="deskripsi" class="form-control" name="deskripsi" maxlength="500" rows="6"
+                                    placeholder="{{ $playlistDetail->deskripsi == 'none' ? '' : $playlistDetail->deskripsi }}"></textarea>
                             </div>
                         </div>
                         <div class="text-md-right col-md-12">
-                            <button class="btn btn-primary" type="submit">Ubah</button>
+                            <div class="button-container">
+                                <button class="btn btn-primary" type="submit">Ubah</button>
+                                <button form="hapus" class="btn btn-delete" type="submit">Hapus</button>
+                            </div>
                     </form>
-                    <form action="{{ route('hapus.playlist.artisVerified', $playlistDetail->code) }}" method="GET">
+                    <form id="hapus" action="{{ route('hapus.playlist.artisVerified', $playlistDetail->code) }}"
+                        method="GET">
                         @csrf
-                        <button class="btn btn-delete" type="submit">Hapus</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
     </div>
-
 
     <script>
         function myFunction(x) {
@@ -181,4 +168,5 @@
 
             reader.readAsDataURL(this.files[0]);
         });
-    @endsection
+    </script>
+@endsection

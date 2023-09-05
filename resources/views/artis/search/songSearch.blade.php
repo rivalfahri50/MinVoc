@@ -1,7 +1,9 @@
 @extends('artis.components.artisTemplate')
 
 @section('content')
-@foreach ($songs as $item)
+    <link rel="stylesheet" href="/user/assets/css/songSearch.css">
+
+    @foreach ($songAll as $item)
         <div id="staticBackdrop-{{ $item->code }}" class="modal" data-bs-backdrop="static" data-bs-keyboard="false"
             tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="card window">
@@ -10,7 +12,7 @@
                     <a href="#" class="close-button far fa-times-circle"></a>
                     <form class="row" action="{{ route('tambah.playlist', $item->code) }}" method="POST">
                         @csrf
-                        <div class="col-m`d-12">
+                        <div class="col-md-12">
                             <div class="mb-4">
                                 <label for="namaartis" class="form-label judulnottebal">Nama Playlist</label>
                                 <select name="playlist_id" class="form-select" id="namaartis">
@@ -29,22 +31,28 @@
         </div>
     @endforeach
 
-    <link rel="stylesheet" href="/user/assets/css/kategori.css">
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="row">
-                <div class="col-md-12 stretch-card">
-                    <div class="custom-container">
-                        <div class="row">
-                            <div class="col-3">
-                                <div class="card coba">
-                                    <img src="{{ asset('storage/' . $genre->images) }}" alt="Gambar">
-                                </div>
-                            </div>
-                            <div class="col-3 text-xxl-end">
-                                <div class="bottom-left-text d-flex flex-column gap-2">
-                                    <p class="m-0" style="font-size: 20px; font-weight: 500">Kategori</p>
-                                    <h3 style="font-size: 24px; font-weight: 700">Musik {{ $genre->name }}</h3>
+                <div class="col-md-12 mb-4">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="card coba" style="display: flex;">
+                                <div class="card-body" style="display: flex;">
+                                    <div class="cell-content">
+                                        <img src="{{ asset('storage/' . $song->image) }}" alt="Face" class="avatar">
+                                    </div>
+                                    <div style="margin-left: 10px;">
+                                        <h4 class="judul mt-4">{{ $song->judul }}</h4>
+                                        <div class="d-flex flex-row align-content-center">
+                                            <p class="text-muted m-1">{{ $song->artist->user->name }}</p>
+                                            <a href="#" class="d-flex align-items-center d-block"
+                                                style="height: 28px;">
+                                                <i class="far fa-play-circle fa-2xl pl-2"
+                                                    style="font-size: 20px; display: none; color: #957DAD;"></i>
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -54,17 +62,16 @@
                     <hr class="divider"> <!-- Divider -->
                 </div>
                 <div class="col-md-12 grid-margin stretch-card">
-                    <h3 class="card-title mb-4" style="font-size: 18px; font-weight: 600">Temukan berbagai lagu bergenre
-                        {{ $genre->name }}</h3>
+                    <h3 class="card-title judul">Lagu-lagu</h3>
                     <div class="card scroll scrollbar-down thin">
                         <div class="card-body">
                             <div class="row" style="margin-top: -20px">
                                 <div class="col-12">
                                     <div class="preview-list">
-                                        @foreach ($songs as $item)
+                                        @foreach ($songAll as $item)
                                             <div class="preview-item">
                                                 <div class="preview-thumbnail">
-                                                    <img src="{{ asset('storage/' . $item->image) }}" width="10%">
+                                                    <img src="{{ asset('storage/' . $song->image) }}" width="10%">
                                                 </div>
                                                 <div class="preview-item-content d-sm-flex flex-grow">
                                                     <div class="flex-grow">
@@ -98,18 +105,9 @@
                         </div>
                     </div>
                 </div>
+                <!-- main-panel ends -->
             </div>
+            <!-- page-body-wrapper ends -->
         </div>
     </div>
-    </div>
-    </div>
-
-
-<script>
-    function myFunction(x) {
-        x.classList.toggle("far"); // Menghapus kelas "fa fa-heart"
-        x.classList.toggle("fas"); // Menambahkan kelas "fas fa-heart"
-        x.classList.toggle("warna-kostum-like"); // Menambahkan kelas warna merah
-    }
-</script>
-@endsection
+@endSection

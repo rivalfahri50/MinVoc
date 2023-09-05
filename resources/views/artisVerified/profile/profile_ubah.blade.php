@@ -47,7 +47,7 @@
                     <h4 style="font-size: 20px; font-weight: 600; color: #957dad">Profil</h4>
                     <p>Atur akun anda, Semua perubahan akan di aplikasikan ke semua halaman</p>
                 </div>
-                <form class="row" action="{{ route('update.profile.artisVerified', $user[0]->code) }}" method="POST"
+                <form class="row" action="{{ route('update.profile.artis', $user[0]->code) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     <div class="col-md-2">
@@ -104,7 +104,7 @@
                         <button class="btn" type="submit">Simpan</button>
                     </div>
                     <div class="col-1">
-                        <a href="/artis-verified/profile" class="btn btn-danger" type="submit">Kembali</a>
+                        <a href="/artis/profile" class="btn btn-danger" type="submit">Kembali</a>
                     </div>
                 </form>
             </div>
