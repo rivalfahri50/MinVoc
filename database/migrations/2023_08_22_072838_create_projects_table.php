@@ -15,11 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('code', 100);
             $table->string('name');
-            $table->string('genre');
             $table->text('konsep');
             $table->string('judul')->default("none");
             $table->string('lirik')->default("none");
-            $table->string('harga');
+            $table->string('harga')->default('2.000.000');
             $table->integer('artist_id')->default(0);
             $table->boolean('is_approved')->default(false);
             $table->boolean('is_reject')->default(false);

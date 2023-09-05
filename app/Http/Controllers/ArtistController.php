@@ -588,17 +588,19 @@ class ArtistController extends Controller
     protected function detailPlaylist(string $code): Response
     {
         $playlistDetail = playlist::where('code', $code)->first();
-        $songs = song::all();
+        $songs = song::where('playlist_id', $playlistDetail->id)->get();
+        $playlists = playlist::all();
         $title = "MusiCave";
-        return response()->view('artis.playlist.contoh', compact('title', 'playlistDetail', 'songs'));
+        return response()->view('artis.playlist.contoh', compact('title', 'playlistDetail', 'songs', 'playlists'));
     }
 
     protected function detailAlbum(string $code): Response
     {
         $albumDetail = album::where('code', $code)->first();
         $songs = song::all();
+        $playlists = playlist::all();
         $title = "MusiCave";
-        return response()->view('artis.playlist.contohAlbum', compact('title', 'albumDetail', 'songs'));
+        return response()->view('artis.playlist.contohAlbum', compact('title', 'albumDetail', 'songs', 'playlists'));
     }
 
     protected function contohPlaylist(): Response
@@ -735,5 +737,52 @@ class ArtistController extends Controller
             return redirect()->back();
         }
         return redirect()->back();
+    }
+
+    protected function createProject(Request $request)
+    {
+        $validate = Validator::make(
+            $request->only('name', 'konsep'),
+            [
+                'name' => 'required|string|max:255|min:1',
+                'konsep' => 'required|string|max:500|min:1',
+            ],
+            [
+                'required' => 'Kolom :attribute harus diisi.',
+                'string' => 'Kolom :attribute harus berupa teks.',
+                'max' => [
+                    'string' => 'Kolom :attribute tidak boleh lebih dari :max karakter.',
+                ],
+                'numeric' => 'Kolom :attribute harus berupa angka.',
+                'min' => [
+                    'numeric' => 'Kolom :attribute harus lebih besar atau sama dengan :min.',
+                ],
+            ]
+        );
+
+        if ($validate->fails()) {
+            return redirect()->back()
+                ->withErrors($validate)
+                ->withInput();
+        }
+
+        try {
+            $code = Str::uuid();
+            projects::create(
+                [
+                    'code' => $code,
+                    'name' => $request->input('name'),
+                    'konsep' => $request->input('konsep'),
+                    'judul' => "none",
+                    'lirik' => "none",
+                    'artist_id' => 0,
+                    'is_approved' => false,
+                    'is_reject' => false,
+                ]
+            );
+        } catch (Throwable $e) {
+            return response()->redirectTo('/artis/kolaborasi')->with('message', "Gagal untuk register!!");
+        }
+        return response()->redirectTo('/artis/kolaborasi')->with('message', 'User created successfully.');
     }
 }

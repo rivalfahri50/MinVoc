@@ -131,7 +131,7 @@
         <!-- partial:partials/_sidebar.html -->
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
             <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-                <a class="sidebar-brand brand-logo" href="/artisVerified/dashboard"><img
+                <a class="sidebar-brand brand-logo" href="/artis-verified/dashboard"><img
                         src="/user/assets/images/logo.svg" alt="logo" /></a>
             </div>
             <ul class="nav">
@@ -212,6 +212,14 @@
                         <span class="menu-title">Riwayat</span>
                     </a>
                 </li>
+                <li class="nav-item menu-items">
+                    <a class="nav-link" href="{{ route('peraturan.artisVerified') }}">
+                        <span class="menu-icon">
+                            <i class="mdi mdi-clock-outline"></i>
+                        </span>
+                        <span class="menu-title">Peraturan</span>
+                    </a>
+                </li>
             </ul>
         </nav>
         <!-- partial -->
@@ -242,12 +250,6 @@
 
                     </ul>
                     <ul class="navbar-nav navbar-nav-right">
-                        <li class="nav-item">
-                            <a class="nav-link" id="info"
-                                href="{{ route('peraturan') }}">
-                                <i class="mdi mdi-information-outline" style="font-size: 20px"></i>
-                            </a>
-                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                                 <div class="navbar-profile">

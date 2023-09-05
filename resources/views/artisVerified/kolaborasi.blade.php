@@ -60,7 +60,7 @@
     <div class="main-panel">
         <style>
             .table-container {
-               margin-bottom: 20px;
+                margin-bottom: 20px;
             }
 
             .table-sortable th {

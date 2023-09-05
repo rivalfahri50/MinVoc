@@ -650,4 +650,55 @@ class ArtistVerifiedController extends Controller
         }
         return redirect()->back();
     }
+
+    protected function createProject(Request $request)
+    {
+        $validate = Validator::make(
+            $request->only('judul', 'genre', 'konsep', 'harga'),
+            [
+                'judul' => 'required|string|max:255',
+                'genre' => 'required|string|max:255',
+                'konsep' => 'required|string|max:500',
+                'harga' => 'required|numeric|min:0',
+            ],
+            [
+                'required' => 'Kolom :attribute harus diisi.',
+                'string' => 'Kolom :attribute harus berupa teks.',
+                'max' => [
+                    'string' => 'Kolom :attribute tidak boleh lebih dari :max karakter.',
+                ],
+                'numeric' => 'Kolom :attribute harus berupa angka.',
+                'min' => [
+                    'numeric' => 'Kolom :attribute harus lebih besar atau sama dengan :min.',
+                ],
+            ]
+        );
+
+        if ($validate->fails()) {
+            return redirect()->back()
+                ->withErrors($validate)
+                ->withInput();
+        }
+
+        $code = Str::uuid();
+        try {
+            projects::create(
+                [
+                    'code' => $code,
+                    'name' => $request->input('judul'),
+                    'genre' => $request->input('genre'),
+                    'judul' => "none",
+                    'lirik' => "none",
+                    'konsep' => $request->input('konsep'),
+                    'harga' => $request->input('harga'),
+                    'artist_id' => 0,
+                    'is_approved' => false,
+                    'is_reject' => false,
+                ]
+            );
+        } catch (Throwable $e) {
+            return response()->redirectTo('/admin/dashboard')->with('message', "Gagal untuk register!!");
+        }
+        return response()->redirectTo('/admin/dashboard')->with('message', 'User created successfully.');
+    }
 }

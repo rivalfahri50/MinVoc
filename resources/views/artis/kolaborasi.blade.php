@@ -4,7 +4,7 @@
     <div class="modal fade" id="staticBackdrop-{{ $item->code }}" data-bs-backdrop="static" data-bs-keyboard="false"
         tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content" style="background-color: white">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Detail Kolaborasi</h1>
                     <button type="button" class="btn-unstyled" data-bs-dismiss="modal" aria-label="Close">
@@ -13,33 +13,17 @@
                 </div>
                 <div class="modal-body ">
 
-                    <div class="mb-3 row">
-                        <label class="col-sm-4 col-form-label"><b>Judul Lagu </b><strong class="">:</strong>
-                        </label>
-                        <div class="col-sm-8">
-                            <input type="text" readonly class="form-control-plaintext" value="{{ $item->name }}">
+                    <div class="col-md-12" style="font-size: 13px">
+                        <div class="mb-3">
+                            <label for="namakategori" class="form-label judulnottebal">Nama
+                                Proyek</label>
+                            <input type="text" name="name" class="form-control form-i" id="namaproyek"
+                                required readonly value="{{ $item->name }}">
                         </div>
-                    </div>
-
-                    <div class="mb-3 row">
-                        <label class="col-sm-4 col-form-label"><b>Kategori </b><strong class="">:</strong></label>
-                        <div class="col-sm-5">
-                            <input type="text" readonly class="form-control-plaintext" value="{{ $item->genre }}">
-                        </div>
-                    </div>
-
-                    <div class="mb-3 row">
-                        <label class="col-sm-4 col-form-label"><b>Deskripsi </b><strong
-                                class="">:</strong></label>
-                        <div class="col-sm-5">
-                            <p class="judul-lagu text-dark">{{ $item->konsep }}</p>
-                        </div>
-                    </div>
-
-                    <div class="mb-3 row">
-                        <label class="col-sm-4 col-form-label"><b>Harga </b><strong class="">:</strong></label>
-                        <div class="col-sm-5">
-                            <input type="text" readonly class="form-control-plaintext" value="{{ $item->harga }}">
+                        <div class="mb-3">
+                            <label for="konsep" class="form-label judulnottebal">Deskripsi</label>
+                            <textarea id="konsep" readonly name="konsep" class="form-control" maxlength="500" rows="4"
+                                required>{{ $item->konsep }}</textarea>
                         </div>
                     </div>
 
@@ -317,8 +301,8 @@
                     <div class="card window">
                         <div class="card-body">
                             <a href="" class="close-button far fa-times-circle"></a>
-                            <h3 class="judul p-0 mb-3">Detail Kolaborasi</h3>
-                            <form class="row" action="{{ route('buat.genre') }}" method="POST"
+                            <h3 class="judul p-0 mb-3">Tambah Kolaborasi</h3>
+                            <form class="row" action="{{ route('createProject.artis') }}" method="POST"
                                 enctype="multipart/form-data">
                                 @csrf
                                 <div class="col-md-12" style="font-size: 13px">
@@ -329,12 +313,8 @@
                                             required>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="harga" class="form-label judulnottebal">Harga</label>
-                                        <input type="text" class="form-control form-i" id="harga" required>
-                                    </div>
-                                    <div class="mb-3">
                                         <label for="konsep" class="form-label judulnottebal">Deskripsi</label>
-                                        <textarea id="konsep" class="form-control" maxlength="500" rows="4"
+                                        <textarea id="konsep" name="konsep" class="form-control" maxlength="500" rows="4"
                                             required></textarea>
                                     </div>
                                 </div>

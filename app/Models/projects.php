@@ -12,10 +12,9 @@ class projects extends Model
     protected $fillable = [
         'code',
         'name',
-        'genre',
         'konsep',
-        'lirik',
         'judul',
+        'lirik',
         'harga',
         'artist_id',
         'is_approved',
