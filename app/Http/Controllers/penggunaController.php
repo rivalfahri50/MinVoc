@@ -76,7 +76,9 @@ class penggunaController extends Controller
     {
         $title = "MusiCave";
         $genre = genre::where('code', $code)->first();
-        return response()->view('users.kategori.kategori', compact('title', 'genre'));
+        $playlists = playlist::all();
+        $songs = song::where('genre_id', $genre->id)->get();
+        return response()->view('users.kategori.kategori', compact('title', 'genre', 'songs', 'playlists'));
     }
 
     protected function buatPlaylist(): Response

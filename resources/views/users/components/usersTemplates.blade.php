@@ -16,7 +16,8 @@
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="/user/assets/vendors/mdi/css/materialdesignicons.min.css">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ asset('style.css') }}">
@@ -113,11 +114,11 @@
                                 <p id="artist">Masaru Yokoyama</p>
                             </div>
                         </div>
-                        <div class="icons">
+                        {{-- <div class="icons">
                             <i id="audio-player-like-icon like"
                                 class="shared-icon-like {{ $currentSongLiked ? 'fas' : 'far' }} fa-heart fr fh"
                                 data-id="{{ $currentSongId }}" onclick="toggleLike(this, {{ $currentSongId }})"></i>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="progress-controller">
                         <div class="control-buttons">
@@ -134,9 +135,8 @@
                             <span id="current-time" class="durasi">00:00</span>
                             <div class="progress-bar">
                                 <div class="duration">
-                                    <input type="range" class="progress" min="0" step="1"
-                                        max="100" value="0" id="duration_slider"
-                                        onchange="change_duration()">
+                                    <input type="range" class="progress" min="0" step="1" max="100"
+                                        value="0" id="duration_slider" onchange="change_duration()">
                                 </div>
                             </div>
                             <span id="duration" class="durasi">00:00</span>
@@ -305,8 +305,22 @@
                                         result.artist.user.name +
                                         '</p></div><div class="mr-auto text-sm-right pt-2 pt-sm-0"><div class="text-group"><i onclick="myFunction(this)" class="far fa-heart pr-2"></i><p>' +
                                         result.waktu +
-                                        '</p><i class="fas fa-ellipsis-v"></i></div></div></div>'
-                                        );
+                                        `</p>
+                                        
+                                        <a data-bs-toggle="modal"
+                                                            data-bs-target="#staticBackdrop-${result.code}"
+                                                            style="color: #957dad">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" x="0px"
+                                                                y="0px" width="20" height="20"
+                                                                viewBox="0 2 24 24">
+                                                                <path fill="#957DAD"
+                                                                    d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 11 L 7 11 L 7 13 L 11 13 L 11 17 L 13 17 L 13 13 L 17 13 L 17 11 L 13 11 L 13 7 L 11 7 z">
+                                                                </path>
+                                                            </svg>
+                                                        </a>
+                                        
+                                        </div></div></div>`
+                                    );
 
                                     $previewList.append($previewItem);
                                 });
@@ -332,11 +346,15 @@
                                 var $searchResults = $('#search-results');
                                 $searchResults.empty();
                                 $.each(results.songs, function(index, result) {
-                                    $searchResults.append(`<li><a href='/pengguna/search/${result.code}'>${result.judul}</a></li>`);
+                                    $searchResults.append(
+                                        `<li><a href='/pengguna/search/${result.code}'>${result.judul}</a></li>`
+                                        );
                                 });
                                 $.each(results.artists, function(index, result) {
                                     console.log(result.code);
-                                    $searchResults.append(`<li><a href='/pengguna/search/${result.code}'>${result.name}</a></li>`);
+                                    $searchResults.append(
+                                        `<li><a href='/pengguna/search/${result.code}'>${result.name}</a></li>`
+                                        );
                                 });
                             }
                         });
@@ -400,7 +418,7 @@
                         });
                 }
             </script>
-             <script>
+            <script>
                 let previous = document.querySelector('#pre');
                 let play = document.querySelector('#play');
                 let next = document.querySelector('#next');
@@ -552,7 +570,7 @@
 
                 function putar(id) {
                     console.log('ID yang dikirim:', id);
-                    id =id -1;
+                    id = id - 1;
                     const lagu = All_song[id];
                     // alert(All_song.length - 1 + " " + id);
                     if (lagu) {

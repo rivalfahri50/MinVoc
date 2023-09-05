@@ -32,8 +32,9 @@ class ArtistController extends Controller
         $songs = song::all();
         $genres = genre::all();
         $artist = artist::with('user')->get();
+        $playlists = playlist::all();
         $billboards = billboard::all();
-        return response()->view('artis.dashboard', compact('title', 'songs', 'genres', 'artist', 'billboards'));
+        return response()->view('artis.dashboard', compact('title', 'songs', 'genres', 'artist', 'billboards', 'playlists'));
     }
 
     protected function playlist(): Response
@@ -71,6 +72,18 @@ class ArtistController extends Controller
         $title = "MusiCave";
         $user = User::where('code', $code)->get();
         return response()->view('artis.profile.profile_ubah', compact('title', 'user'));
+    }
+
+    protected function tambah_playlist(string $code, Request $request)
+    {
+        $song = song::where('code', $code)->first();
+        try {
+            $song->playlist_id = $request->input('playlist_id');
+            $song->update();
+        } catch (\Throwable $th) {
+            return back();
+        }
+        return back();
     }
 
     protected function buatAlbum(Request $request, string $code)

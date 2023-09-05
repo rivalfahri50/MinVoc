@@ -95,7 +95,8 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
     Route::get('/hapus-playlist/{code}', 'hapusPlaylist')->name('hapus.playlist.artis');
     Route::get('/hapus-album/{code}', 'hapusAlbum')->name('hapus.albums.artis');
     Route::get('/search_song', 'search_song')->name('search.song.artis');
-
+    
+    Route::post('/tambah_playlist/{code}', 'tambah_playlist')->name('tambah.playlist.artis');
     Route::POST('/buat-album/{code}', 'buatAlbum')->name('tambah.album.artis');
     Route::POST('/verified/{code}', 'verifiedAccount')->name('verified');
     Route::post('/create-lirik', 'Project')->name('create.project');
