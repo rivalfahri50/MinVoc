@@ -15,6 +15,53 @@
     <link rel="shortcut icon" href="/image/favicon.svg" />
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* Style dropdown sidebar--Mengatur tampilan menu dropdown */
+        .menu-items .nav-link {
+            position: relative;
+        }
+
+        .menu-arrow {
+            color: inherit;
+            position: absolute;
+            left: 185px;
+            top: 185px;
+            transform: translateY(-50%);
+        }
+
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            width: 100%;
+            max-width: 400px;
+            /* Set the maximum width as needed */
+        }
+
+        /* Style Untuk search input */
+        .search-input {
+            border-radius: 15px;
+            border: 1px solid #eaeaea;
+            padding: 5px 10px;
+            width: 100%;
+        }
+
+        /* Style Untuk search results */
+        #search-results {
+            list-style: none;
+            position: absolute;
+            top: 60px;
+            left: 30px;
+            width: 52%;
+            background-color: white;
+            border: 1.5px solid #eaeaea;
+            padding: 10px;
+            display: none;
+            border-radius: 10px;
+            font-size: 15px
+        }
+    </style>
 
     <script>
         function confirmDelete(message, callback) {

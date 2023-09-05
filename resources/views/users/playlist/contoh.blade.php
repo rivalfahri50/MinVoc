@@ -4,15 +4,15 @@
     @foreach ($songs as $item)
         <div id="staticBackdrop-{{ $item->code }}" class="modal" data-bs-backdrop="static" data-bs-keyboard="false"
             tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="card window">
+            <div class="card windowi">
                 <div class="card-body">
                     <h3 class="judul p-0 mb-4">Tambah Ke Playlist</h3>
-                    <a href="#" class="close-button far fa-times-circle"></a>
+                    <a href="" class="close-button far fa-times-circle"></a>
                     <form class="row" action="{{ route('tambah.playlist', $item->code) }}" method="POST">
                         @csrf
                         <div class="col-md-12">
                             <div class="mb-4">
-                                <label for="namaartis" class="form-label judulnottebal">Nama Playlist</label>
+                                <h6 class="form-label judulnottebal mb-3">Nama Playlist</h6>
                                 <select name="playlist_id" class="form-select" id="namaartis">
                                     @foreach ($playlists as $item)
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -29,7 +29,156 @@
         </div>
     @endforeach
 
-    <link rel="stylesheet" href="/user/assets/css/buatPlaylist.css">
+    <link rel="stylesheet" href="/user/assets/css/contohPlaylist.css">
+    <style>
+        .coba {
+            width: 200px;
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            margin-right: 5px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border-radius: 10px;
+            margin: 0;
+            color: #957dad;
+        }
+
+        .coba:hover {
+            background-color: #8452b5;
+            color: #ffffff;
+        }
+
+        .cobai {
+            width: 150px;
+            height: 150px;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            color: #957dad;
+        }
+
+        .cobai:hover {
+            background-color: #69547d;
+            color: #eaeaea;
+        }
+
+        .coba img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .custom-container {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            height: 100%;
+        }
+
+        .bottom-left-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            margin: 10px;
+        }
+
+        .img-and-text {
+            display: flex;
+            align-items: center;
+        }
+
+        .img-and-text img {
+            margin-right: 10px;
+        }
+
+        .judulnottebal {
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .divider {
+            border: none;
+            border-top: 2px solid #6d6d6d;
+            margin: 20px 0;
+        }
+
+        .scroll {
+            position: relative;
+            overflow-y: scroll;
+            height: 50vh;
+        }
+
+        .scrollbar-down::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 10px;
+        }
+
+        .scrollbar-down::-webkit-scrollbar {
+            width: 12px;
+            background-color: #f5f5f5;
+        }
+
+        .scrollbar-down::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+            background-color: #957dad;
+        }
+
+        .thin::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #tambahkeplaylist {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            background: rgba(0, 0, 0, 0.7);
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            visibility: hidden;
+        }
+
+        #tambahkeplaylist .card-body {
+            padding: 10px 7% 10px 7%;
+        }
+
+        /* Memunculkan Jendela Pop Up Detail*/
+        #tambahkeplaylist:target {
+            visibility: visible;
+        }
+
+        .windowi {
+            background-color: #ffffff;
+            width: 300px;
+            border-radius: 10px;
+            position: relative;
+            margin: 15% auto;
+            padding: 10px;
+        }
+
+        .close-button {
+            display: block;
+            color: #957dad;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .judul {
+            font-size: 20px;
+        }
+    </style>
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="row">

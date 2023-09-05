@@ -3,20 +3,6 @@
     <link rel="stylesheet" href="/admin/assets/css/dashboard.css">
     <!-- partial | ISI -->
     <div class="main-panel">
-        <style>
-            /* Style dropdown sidebar--Mengatur tampilan menu dropdown */
-            .menu-items .nav-link {
-                position: relative;
-            }
-
-            .menu-arrow {
-                color: inherit;
-                position: absolute;
-                left: 185px;
-                top: 185px;
-                transform: translateY(-50%);
-            }
-        </style>
         <div class="content-wrapper">
             <div class="row">
                 <div class="col-md-12 mb-3">

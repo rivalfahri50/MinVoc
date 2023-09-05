@@ -7,7 +7,7 @@
             <div class="card window">
                 <div class="card-body">
                     <h3 class="judul p-0 mb-4">Tambah Ke Playlist</h3>
-                    <a href="#" class="close-button far fa-times-circle"></a>
+                    <a href="" class="close-button far fa-times-circle"></a>
                     <form class="row" action="{{ route('tambah.playlist', $item->code) }}" method="POST">
                         @csrf
                         <div class="col-m`d-12">
