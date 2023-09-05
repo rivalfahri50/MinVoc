@@ -224,22 +224,21 @@
                                                         <div>Rp {{ $item->harga }}</div>
                                                     </td>
                                                     <td class="table-cell">{{ $item->created_at->toDateString() }}</td>
-                                                    <td class="d-flex align-items-center bg-warning">
-                                                        <button type="button" class="btn-unstyled" data-bs-toggle="modal"
+                                                    <td class="d-flex align-items-center">
+                                                        <a href="" class="btn-unstyled" data-bs-toggle="modal"
                                                             data-bs-target="#staticBackdrop-{{ $item->code }}">
                                                             <i class="mdi mdi-eye btn-icon text-primary"></i>
-                                                        </button>
-
-                                                        <form action="{{ route('reject.project') }}" method="post"
+                                                        </a>
+                                                        <a href="" type="submit">
+                                                            <input type="hidden" name="code"
+                                                                value="{{ $item->code }}">
+                                                            <input type="hidden" name="is_reject" value="true">
+                                                            <i
+                                                                class="mdi mdi-close-circle-outline btn-icon text-danger"></i>
+                                                        </a>
+                                                        <form id="reject" action="{{ route('reject.project') }}" method="post"
                                                             class="">
                                                             @csrf
-                                                            <button class="btn-unstyled d-block" type="submit">
-                                                                <input type="hidden" name="code"
-                                                                    value="{{ $item->code }}">
-                                                                <input type="hidden" name="is_reject" value="true">
-                                                                <i
-                                                                    class="mdi mdi-close-circle-outline btn-icon text-danger"></i>
-                                                            </button>
                                                         </form>
                                                     </td>
                                                 </tr>

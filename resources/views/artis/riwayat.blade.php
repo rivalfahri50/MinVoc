@@ -79,40 +79,65 @@
     <script>
         $(document).ready(function() {
             var itemsPerPage = 5;
-
-            $(".table-row").hide();
-
-            $(".table-row").slice(0, itemsPerPage).show();
-
-            var numPages = Math.ceil($(".table-row").length / itemsPerPage);
-
-            for (var i = 1; i <= numPages; i++) {
-                $(".pagination").append("<li class='page-item'><a class='page-link' href='#'>" + i + "</a></li>");
+            var currentPage = 1;
+    
+            function setURLParameter(page) {
+                var newURL = window.location.href.split('?')[0] + '?page=' + page;
+                window.history.replaceState({}, document.title, newURL);
             }
-
-            if (numPages <= 1) {
-                $(".pagination").hide();
+    
+            function getURLParameter() {
+                var urlParams = new URLSearchParams(window.location.search);
+                return parseInt(urlParams.get('page')) || 1;
             }
-
-            $(".pagination a").click(function(e) {
-                e.preventDefault();
-                var page = $(this).text();
-                var start = (page - 1) * itemsPerPage;
+    
+            currentPage = getURLParameter();
+    
+            function showTableRows() {
+                var start = (currentPage - 1) * itemsPerPage;
                 var end = start + itemsPerPage;
                 $(".table-row").hide();
                 $(".table-row").slice(start, end).show();
-                $(".pagination a").removeClass("active");
-                $(this).addClass("active");
-            });
-
-            $(".pagination .prev").click(function(e) {
-                e.preventDefault();
-                var activePage = $(".pagination .active").text();
-                var prevPage = parseInt(activePage) - 1;
-                if (prevPage >= 1) {
-                    $(".pagination a").eq(prevPage - 1).click();
+            }
+    
+            function updatePagination() {
+                $(".pagination").empty();
+                var numPages = Math.ceil($(".table-row").length / itemsPerPage);
+    
+                for (var i = 1; i <= numPages; i++) {
+                    var activeClass = i === currentPage ? "active" : "";
+                    var buttonText = i.toString();
+                    var buttonClass = "page-link";
+                    if (i === currentPage) {
+                        buttonClass += " active";
+                    }
+    
+                    var button = $("<button>")
+                        .addClass("page-item " + activeClass)
+                        .addClass(buttonClass)
+                        .text(buttonText);
+    
+                    button.click(function() {
+                        var page = parseInt($(this).text());
+                        currentPage = page;
+                        setURLParameter(currentPage);
+                        showTableRows();
+                        updatePagination();
+                    });
+    
+                    $(".pagination").append($("<li>").append(button));
                 }
-            });
+    
+                if (numPages <= 1) {
+                    $(".pagination").hide();
+                }
+            }
+    
+            showTableRows();
+            updatePagination();
+    
+            setURLParameter(currentPage);
         });
     </script>
+    
 @endsection
