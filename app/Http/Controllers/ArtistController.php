@@ -404,7 +404,8 @@ class ArtistController extends Controller
         $title = "MusiCave";
         $billboard = billboard::where('code', $code)->first();
         $albums = album::where('artis_id', $billboard->artis_id)->get();
-        return response()->view('artis.billboard.billboard', compact('title', 'billboard', 'albums'));
+        $songs = song::all();
+        return response()->view('artis.billboard.billboard', compact('title', 'billboard', 'albums', 'songs'));
     }
 
     protected function albumBillboard(string $code): Response
@@ -424,7 +425,9 @@ class ArtistController extends Controller
     {
         $title = "MusiCave";
         $genre = genre::where('code', $code)->first();
-        return response()->view('artis.kategori.kategori', compact('title', 'genre'));
+        $playlists = playlist::all();
+        $songs = song::where('genre_id', $genre->id)->get();
+        return response()->view('artis.kategori.kategori', compact('title', 'genre', 'songs', 'playlists'));
     }
 
     protected function buatPlaylist(): Response
@@ -437,16 +440,42 @@ class ArtistController extends Controller
     public function search(Request $request)
     {
         $query = $request->input('query');
-        $results = User::where('name', 'LIKE', '%' . $query . '%')->get();
+        $songs = Song::where('judul', 'LIKE', '%' . $query . '%')->get();
+
+        $artists = User::where('name', 'LIKE', '%' . $query . '%')->get();
+
+        $results = [
+            'songs' => $songs,
+            'artists' => $artists,
+        ];
+        // $results = User::where('name', 'LIKE', '%' . $query . '%')->get();
         return response()->json(['results' => $results]);
     }
 
     public function search_song(Request $request)
     {
         $query = $request->input('query');
-        $results = song::where('judul', 'like', '%' . $query . '%')->get();
+        $results = song::with('artist.user')->where('judul', 'like', '%' . $query . '%')->get();
 
         return response()->json(['results' => $results]);
+    }
+
+    public function search_result(Request $request, string $code)
+    {
+        $title = "MusiCave";
+        $song = song::where('code', $code)->first();
+        $user = user::where('code', $code)->first();
+        $playlists = playlist::all();
+        $songAll = song::all();
+        
+        if ($song)
+        {
+            return view('artis.search.songSearch', compact('song', 'title', 'songAll', 'playlists'));
+        } else if ($user)
+        {
+            $songUser = song::where('artis_id', $user->id)->get();
+            return view('artis.search.artisSearch', compact('user', 'title', 'songUser', 'playlists'));
+        }
     }
 
     public function verified(Request $request)

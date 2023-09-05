@@ -95,6 +95,9 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
     Route::get('/hapus-playlist/{code}', 'hapusPlaylist')->name('hapus.playlist.artis');
     Route::get('/hapus-album/{code}', 'hapusAlbum')->name('hapus.albums.artis');
     Route::get('/search_song', 'search_song')->name('search.song.artis');
+    Route::get('/search/{code}', 'search_result');
+
+
     Route::get('/peraturan', function () {
         return view('artis.peraturan', ['title' => 'MusiCave']);
     })->name('peraturan');
