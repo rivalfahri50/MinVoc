@@ -25598,6 +25598,7 @@ div.tagsinput {
   align-items: center;
   -webkit-justify-content: center;
   justify-content: center;
+  object-fit: cover;
 }
 
 .preview-list .preview-item .preview-thumbnail img i,

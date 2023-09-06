@@ -12,21 +12,21 @@
                     <div class="cards">
                         @foreach ($genres as $item)
                             <a href="/pengguna/kategori/{{ $item->code }}" class="card cardi card-scroll rounded-4">
-                                <img src="{{ asset('storage/' . $item->images) }}" class="img-fluid rounded-4 this" width="100%" height="100%">
+                                <img src="{{ asset('storage/' . $item->images) }}" class="img-fluid rounded-4 fit" width="100%" height="100%">
                             </a>
                         @endforeach
                     </div>
                 </div>
                 <div class="col-md-7">
                     <div class="card border-0 bg-dark coba">
-                        <div id="carouselExampleAutoplaying" class="carousel slide carousel-fade" data-bs-ride="carousel">
+                        <div id="carouselExampleAutoplaying" class="carousel slide carousel-fade" data-bs-ride="carousel" data-interval="2000">
                             <div class="carousel-inner">
-                                @foreach ($billboards as $item)
-                                    <div class="carousel-item active" data-bs-interval="2000">
-                                        <a href="{{ route('detail.billboard.pengguna', $item->code) }}"
-                                            class="image-container">
-                                            <img src="{{ asset('storage/' . $item->image_background) }}" class="d-block try"
-                                                alt="...">
+                                @foreach ($billboards as $index => $item)
+                                    <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                                        <a href="{{ route('detail.billboard.pengguna', $item->code) }}" class="image-container">
+                                            <img src="{{ asset('storage/' . $item->image_background) }}"
+                                                 class="d-block billboard"
+                                                 alt="...">
                                             <div class="bottom-left">
                                                 <h3 class="text-light">{{ $item->name }}</h3>
                                             </div>
@@ -34,17 +34,15 @@
                                     </div>
                                 @endforeach
                             </div>
-                            <button class="carousel-control-prev" type="button"
-                                data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Previous</span>
                             </button>
-                            <button class="carousel-control-next" type="button"
-                                data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Next</span>
                             </button>
-                        </div>
+                        </div> 
                     </div>
                     <h3 class="card-title mt-2 judul" style="font-size: 20px; font-weight: 600">Lagu Yang Disarankan</h3>
                     <div class="card datakanan scrollbar-down thin">

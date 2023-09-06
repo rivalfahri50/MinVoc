@@ -3,33 +3,6 @@
 @section('content')
     <link rel="stylesheet" href="/user/assets/css/dashboard.css">
 
-    @foreach ($songs as $item)
-        <div id="staticBackdrop-{{ $item->code }}" class="modal" data-bs-backdrop="static" data-bs-keyboard="false"
-            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="card window">
-                <div class="card-body">
-                    <h3 class="judul p-0 mb-4">Tambah Ke Playlist</h3>
-                    <a href="" class="close-button far fa-times-circle"></a>
-                    <form class="row" action="{{ route('tambah.playlist.artis', $item->code) }}" method="POST">
-                        @csrf
-                        <div class="col-m`d-12">
-                            <div class="mb-4">
-                                <label for="namaartis" class="form-label judulnottebal">Nama Playlist</label>
-                                <select name="playlist_id" class="form-select" id="namaartis">
-                                    @foreach ($playlists as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="text-md-right">
-                            <button class="btn" type="submit">Tambah</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    @endforeach
     @include('partials.tambahkeplaylist')
 
 
@@ -41,20 +14,21 @@
                     <div class="cards">
                         @foreach ($genres as $item)
                             <a href="/artis/kategori/{{ $item->code }}" class="card cardi card-scroll rounded-4">
-                                <img src="{{ asset('storage/' . $item->images) }}" class="img-fluid rounded-4 this">
+                                <img src="{{ asset('storage/' . $item->images) }}" class="img-fluid rounded-4 fit">
                             </a>
                         @endforeach
                     </div>
                 </div>
                 <div class="col-md-7">
                     <div class="card border-0 bg-dark coba">
-                        <div id="carouselExampleAutoplaying" class="carousel slide carousel-fade" data-bs-ride="carousel">
+                        <div id="carouselExampleAutoplaying" class="carousel slide carousel-fade" data-bs-ride="carousel" data-interval="2000">
                             <div class="carousel-inner">
-                                @foreach ($billboards as $item)
-                                    <div class="carousel-item active" data-bs-interval="2000">
+                                @foreach ($billboards as $index => $item)
+                                    <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
                                         <a href="{{ route('detail.billboard', $item->code) }}" class="image-container">
-                                            <img src="{{ asset('storage/' . $item->image_background) }}" class="d-block try"
-                                                alt="...">
+                                            <img src="{{ asset('storage/' . $item->image_background) }}"
+                                                 class="d-block billboard"
+                                                 alt="...">
                                             <div class="bottom-left">
                                                 <h3 class="text-light">{{ $item->name }}</h3>
                                             </div>
@@ -62,17 +36,15 @@
                                     </div>
                                 @endforeach
                             </div>
-                            <button class="carousel-control-prev" type="button"
-                                data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Previous</span>
                             </button>
-                            <button class="carousel-control-next" type="button"
-                                data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Next</span>
                             </button>
-                        </div>
+                        </div>                        
                     </div>
                     <h3 class="card-title mt-2 judul" style="font-size: 20px; font-weight: 600">Lagu Yang Disarankan</h3>
                     <div class="card datakanan scrollbar-down thin">
@@ -134,7 +106,7 @@
                                             @if ($item)
                                                 <div class="preview-item">
                                                     <div class="preview-thumbnail">
-                                                        <img src="/user/assets/images/faces/face1.jpg" width="10%">
+                                                        <img src="/user/assets/images/faces/face1.jpg" width="10%" class="fit">
                                                     </div>
                                                     <div class="preview-item-content d-sm-flex flex-grow">
                                                         <div class="flex-grow">

@@ -40,7 +40,7 @@
                                 </div>
                                 <div class="col-4 d-flex text-right justify-content-center">
                                     <img src="{{ asset('storage/' . $billboard->image_artis) }}" alt=""
-                                        class="d-block">
+                                        class="d-block" style="width: 200px; height: 350px; object-fit: cover;">
                                 </div>
                             </div>
                         </div>
