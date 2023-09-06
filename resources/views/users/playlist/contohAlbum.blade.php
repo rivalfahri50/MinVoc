@@ -87,10 +87,11 @@
                                                     <img src="{{ asset('storage/' . $item->image) }}" width="10%">
                                                 </div>
                                                 <div class="preview-item-content d-sm-flex flex-grow">
-                                                    <div class="flex-grow">
+                                                    <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
+                                                        onclick="putar({{ $item->id }})">
                                                         <h6 class="preview-subject">{{ $item->judul }}</h6>
                                                         <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
-                                                    </div>
+                                                    </a>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group">
                                                             <i onclick="myFunction(this)" class="far fa-heart pr-2">

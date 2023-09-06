@@ -64,30 +64,6 @@
                                     <td class="table-cell">Dangdut</td>
                                     <td class="table-cell">04/09/2023</td>
                                 </tr>
-                                <tr class="table-row">
-                                    <td class="table-cell">
-                                        <h6>Bagus</h6>
-                                        <p class="text-muted m-0">Dtulus</p>
-                                    </td>
-                                    <td class="table-cell">Apa</td>
-                                    <td class="table-cell">01/09/2023</td>
-                                </tr>
-                                <tr class="table-row">
-                                    <td class="table-cell">
-                                        <h6>Agus</h6>
-                                        <p class="text-muted m-0">Btulus</p>
-                                    </td>
-                                    <td class="table-cell">Ciee</td>
-                                    <td class="table-cell">02/09/2023</td>
-                                </tr>
-                                <tr class="table-row">
-                                    <td class="table-cell">
-                                        <h6>Denis</h6>
-                                        <p class="text-muted m-0">Ctulus</p>
-                                    </td>
-                                    <td class="table-cell">Bajigur</td>
-                                    <td class="table-cell">10/10/2023</td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>

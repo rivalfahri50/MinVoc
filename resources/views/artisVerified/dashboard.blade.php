@@ -75,15 +75,16 @@
                                             </div>
                                             <div class="preview-item-content d-sm-flex flex-grow">
                                                 <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
-                                                    onclick="putar({{ $i++ }})">
+                                                    onclick="putar({{ $item->id }})">
                                                     <h6 class="preview-subject">{{ $item->judul }}</h6>
                                                     <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
                                                 </a>
                                             </div>
                                             <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                 <div class="text-group align-items-center">
-                                                    <i onclick="toggleLike({{ $item->id }},this)"
-                                                        class="far fa-heart pr-2"></i>
+                                                    <i id="like{{$item->id}}" data-id="{{ $item->id }}"
+                                                        onclick="toggleLike(this, {{ $item->id }})"
+                                                        class="shared-icon-like {{ $item->likes > 0 ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                     <p style="pointer-events: none;">{{ $item->waktu }}</p>
                                                     <p style="pointer-events: none;" style="color: #957dad"><svg
                                                             width="22" height="6" viewBox="0 0 22 6"

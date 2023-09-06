@@ -16,7 +16,8 @@
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="/user/assets/vendors/mdi/css/materialdesignicons.min.css">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ asset('style.css') }}">
@@ -113,11 +114,11 @@
                                 <p id="artist">Masaru Yokoyama</p>
                             </div>
                         </div>
-                        <div class="icons">
+                        {{-- <div class="icons">
                             <i id="audio-player-like-icon like"
-                                class="shared-icon-like {{ $currentSongLiked ? 'fas' : 'far' }} fa-heart fr fh"
-                                data-id="{{ $currentSongId }}" onclick="toggleLike(this, {{ $currentSongId }})"></i>
-                        </div>
+                                class="shared-icon-like fas fa-heart fr fh"
+                                data-id="" onclick="toggleLike(this)"></i>
+                        </div> --}}
                     </div>
                     <div class="progress-controller">
                         <div class="control-buttons">
@@ -134,9 +135,8 @@
                             <span id="current-time" class="durasi">00:00</span>
                             <div class="progress-bar">
                                 <div class="duration">
-                                    <input type="range" class="progress" min="0" step="1"
-                                        max="100" value="0" id="duration_slider"
-                                        onchange="change_duration()">
+                                    <input type="range" class="progress" min="0" step="1" max="100"
+                                        value="0" id="duration_slider" onchange="change_duration()">
                                 </div>
                             </div>
                             <span id="duration" class="durasi">00:00</span>
@@ -306,7 +306,7 @@
                                         '</p></div><div class="mr-auto text-sm-right pt-2 pt-sm-0"><div class="text-group"><i onclick="myFunction(this)" class="far fa-heart pr-2"></i><p>' +
                                         result.waktu +
                                         '</p><i class="fas fa-ellipsis-v"></i></div></div></div>'
-                                        );
+                                    );
 
                                     $previewList.append($previewItem);
                                 });
@@ -332,33 +332,44 @@
                                 var $searchResults = $('#search-results');
                                 $searchResults.empty();
                                 $.each(results.songs, function(index, result) {
-                                    $searchResults.append(`<li><a href='/pengguna/search/${result.code}'>${result.judul}</a></li>`);
+                                    $searchResults.append(
+                                        `<li><a href='/pengguna/search/${result.code}'>${result.judul}</a></li>`
+                                    );
                                 });
                                 $.each(results.artists, function(index, result) {
                                     console.log(result.code);
-                                    $searchResults.append(`<li><a href='/pengguna/search/${result.code}'>${result.name}</a></li>`);
+                                    $searchResults.append(
+                                        `<li><a href='/pengguna/search/${result.code}'>${result.name}</a></li>`
+                                    );
                                 });
                             }
                         });
                     });
                 });
-            </script>
-
-            <script>
                 $(document).ready(function() {
                     $('.menu-arrow').click(function() {
                         $(this).find('i').toggleClass('mdi-chevron-right mdi-chevron-down');
                     });
-                });
-                var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-                function updateSongLikeStatus(songId, isLiked) {
-                    const likeIcons = document.querySelectorAll(`.shared-icon-like[data-song-id="${songId}"]`);
-                    likeIcons.forEach(likeIcon => {
-                        likeIcon.classList.toggle('fas', isLiked);
-                        likeIcon.classList.toggle('far', !isLiked);
+                });
+            </script>
+
+            <script>
+                $(document).ready(function() {
+                    $.ajax({
+                        url: `/song/check`,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(response) {
+                            console.log(response);
+                            response.forEach(function(item) {
+                                const songId = item.song_id;
+                                const like = document.getElementById(`like${item.song_id}`);
+                                like.classList.toggle('fas');
+                            })
+                        }
                     });
-                }
+                });
 
                 function toggleLike(iconElement, songId) {
                     iconElement.classList.toggle('fas');
@@ -388,19 +399,29 @@
                         .then(data => {
                             // updateSongLikeStatus(songId, isLiked);
 
-                            const audioPlayerLikeIcon = document.getElementById('audio-player-like-icon');
-                            if (audioPlayerLikeIcon) {
-                                audioPlayerLikeIcon.classList.toggle('fas', isLiked);
-                                audioPlayerLikeIcon.classList.toggle('far', !isLiked);
-                            }
+                            // const audioPlayerLikeIcon = document.getElementById('audio-player-like-icon');
+                            // if (audioPlayerLikeIcon) {
+                            //     audioPlayerLikeIcon.classList.toggle('fas', isLiked);
+                            //     audioPlayerLikeIcon.classList.toggle('far', !isLiked);
+                            // }
 
                         })
                         .catch(error => {
-                            console.error('Error:', error);
+                            // console.error('Error:', error);
                         });
                 }
+                var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+                function updateSongLikeStatus(songId, isLiked) {
+                    const likeIcons = document.querySelectorAll(`.shared-icon-like[data-id="${songId}"]`);
+                    likeIcons.forEach(likeIcon => {
+                        likeIcon.classList.toggle('fas', isLiked);
+                        likeIcon.classList.toggle('far', !isLiked);
+                    });
+                }
             </script>
-             <script>
+            <script>
+                // alert("astagfirullah");
                 let previous = document.querySelector('#pre');
                 let play = document.querySelector('#play');
                 let next = document.querySelector('#next');
@@ -414,6 +435,7 @@
                 let slider = document.querySelector('#duration_slider');
                 let show_duration = document.querySelector('#show_duration');
                 let track_image = document.querySelector('#track_image');
+                // let currentTime = document.querySelector('#current-time');
 
                 let auto_play = document.querySelector('#auto');
                 // let present = document.querySelector('#present');
@@ -421,9 +443,10 @@
                 // let audio = document.querySelector('audio');
 
                 let timer;
-                let autoplay = 0;
+                let autoplay = 1;
                 let playCount = 0;
                 let prevVolume;
+                let currentTime = 1;
 
                 let index_no = 0;
                 let Playing_song = false;
@@ -434,8 +457,17 @@
 
                 let All_song = [];
 
-                function ambilDataLagu() {
-                    fetch('/ambil-lagu')
+                function change_duration() {
+                    if (!isNaN(track.duration) && isFinite(slider_value)) {
+                        let slider_value = parseInt(slider.value);
+                        track.currentTime = track.duration * (slider_value / 100);
+                        console.log(track.duration * (slider_value / 100), slider_value, track.currentTime)
+
+                    }
+                }
+
+                async function ambilDataLagu() {
+                    await fetch('/ambil-lagu')
                         .then(response => response.json())
                         .then(data => {
                             All_song = data.map(lagu => {
@@ -448,7 +480,12 @@
                                 };
                             });
                             console.log(All_song);
-                            load_track(index_no);
+                            if (All_song.length > 0) {
+                                // Memanggil load_track dengan indeks 0 sebagai lagu pertama
+                                load_track(0);
+                            } else {
+                                console.error("Data lagu kosong.");
+                            }
                         })
                         .catch(error => {
                             console.error('Error fetching data:', error);
@@ -460,20 +497,22 @@
 
                 // function load the track
                 function load_track(index_no) {
-                    clearInterval(timer)
-                    reset_slider();
-                    track.src = '{{ asset('storage') }}' + '/' + All_song[index_no].audio;
-                    title.innerHTML = All_song[index_no].judul;
-                    artist.innerHTML = All_song[index_no].artistId;
-                    track_image.src = '{{ asset('storage') }}' + '/' + All_song[index_no].image;
-                    track.load();
+                    if (index_no >= 0 && index_no < All_song.length) {
+                        console.log("tester " + All_song[index_no].audio);
+                        track.src = '{{ asset('storage') }}' + '/' + All_song[index_no].audio;
+                        title.innerHTML = All_song[index_no].judul;
+                        artist.innerHTML = All_song[index_no].artistId;
+                        track_image.src = '{{ asset('storage') }}' + '/' + All_song[index_no].image;
+                        track.load();
 
-                    timer = setInterval(range_slider, 1000);
-                    // total.innerHTML = All_song.length;
-                    // present.innerHTML = index_no + 1;
+                        timer = setInterval(range_slider, 1000);
+                        // total.innerHTML = All_song.length;
+                        // present.innerHTML = index_no + 1;
+                    } else {
+                        console.error("Index_no tidak valid.");
+                    }
                 }
-
-                load_track(index_no);
+                load_track(0);
 
                 // fungsi mute sound
                 function mute_sound() {
@@ -499,7 +538,7 @@
 
                 // reset song slider
                 function reset_slider() {
-                    slider.value = 0;
+                    slider.value = 100;
                 }
 
                 // play song
@@ -522,16 +561,19 @@
                         updatePlayCount(songId);
                     }
                     track.addEventListener('timeupdate', updateDuration);
+                     savePlayHistory(All_song[index_no].id);
                     playCount++;
                 }
 
-                function updatePlayCount(songId) {
-                    const headers = new Headers();
-                    headers.append('X-CSRF-TOKEN', csrfToken);
+                var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
+                function updatePlayCount(songId) {
                     fetch(`/update-play-count/${songId}`, {
                             method: 'POST',
-                            headers: headers,
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': csrfToken
+                            },
                         })
                         .then(response => response.json())
                         .then(data => {
@@ -540,6 +582,33 @@
                         .catch(error => {
                             // Tangani error jika diperlukan
                             console.error('Error updating play count:', error);
+                        });
+                }
+
+                function savePlayHistory(songId) {
+                    const userId = 1; // Gantilah dengan cara yang sesuai untuk mendapatkan user ID
+                    const playDate = new Date().toISOString(); // Mendapatkan tanggal dan waktu saat ini
+
+                    // Data yang akan dikirimkan ke server
+                    const data = {
+                        user_id: userId,
+                        song_id: songId,
+                        play_date: playDate
+                    };
+                    fetch('/simpan-riwayat', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': csrfToken // Gantilah dengan cara yang sesuai untuk mendapatkan CSRF token
+                            },
+                            body: JSON.stringify(data)
+                        })
+                        .then(response => response.json())
+                        .then(result => {
+                            console.log('Riwayat lagu disimpan:', result.message);
+                        })
+                        .catch(error => {
+                            console.error('Error saat menyimpan riwayat:', error);
                         });
                 }
 
@@ -552,7 +621,7 @@
 
                 function putar(id) {
                     console.log('ID yang dikirim:', id);
-                    id =id -1;
+                    id = id - 1;
                     const lagu = All_song[id];
                     // alert(All_song.length - 1 + " " + id);
                     if (lagu) {
@@ -572,6 +641,11 @@
 
                 }
 
+                track.addEventListener('ended', function() {
+                    // Panggil fungsi untuk memutar lagu selanjutnya
+                    next_song();
+                });
+
                 // fungsi untuk memutar lagu sesudahnya
                 function next_song() {
                     if (index_no < All_song.length - 1) {
@@ -581,6 +655,12 @@
                     }
                     load_track(index_no);
                     playsong();
+                    if (autoplay == 1) {
+                        // Set interval sebelum memulai lagu selanjutnya
+                        setTimeout(function() {
+                            track.play();
+                        }, 1000); // Delay 1 detik sebelum memulai lagu selanjutnya
+                    }
                 }
 
                 // fungsi untuk memutar lagu sebelumnya
@@ -594,22 +674,18 @@
                     playsong();
                 }
 
-                // ubah posisi slider
-                function change_duration() {
-                    let slider_position = track.duration * (slider.value / 100);
-                    track.currentTime = slider_position;
-                }
-
                 // ubah volume
                 function volume_change() {
                     volume_show.innerHTML = recent_volume.value;
                     track.volume = recent_volume.value / 100;
                 }
 
+                // ubah posisi slider
+                // Fungsi untuk mengubah posisi slider
+
                 slider.addEventListener('input', function() {
                     change_duration();
                     clearInterval(timer);
-                    track.currentTime = track.duration * (slider.value / 100);
                     Playing_song = true;
                     play.innerHTML = '<i class="far fa-pause-circle fr" aria-hidden="true"></i>';
                     track.addEventListener('timeupdate', updateDuration)
@@ -625,14 +701,12 @@
                         slider.value = position;
                         // console.log(track.duration);
                     }
-
                     if (track.ended) {
                         play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>';
                         if (autoplay == 1) {
                             index_no += 1;
                             load_track(index_no);
                             playsong();
-                            console.log(track.ended);
                         }
                     }
 
@@ -644,7 +718,7 @@
                     durationElement.textContent = formattedDuration;
                 }
 
-                // console.log(range_slider());
+                track.addEventListener('timeupdate', range_slider);
 
                 // fungsi ini akan dijalankan ketika lagu selesai (mengubah icon play menjadi pause)
                 if (track.ended) {
@@ -661,10 +735,9 @@
                     // Menghitung durasi waktu yang telah berlalu
                     const currentMinutes = Math.floor(track.currentTime / 60);
                     const currentSeconds = Math.floor(track.currentTime % 60);
-
                     // Memformat durasi waktu yang akan ditampilkan
                     const formattedCurrentTime = `${currentMinutes}:${currentSeconds < 10 ? '0' : ''}${currentSeconds}`;
-
+                    console.log(formattedCurrentTime);
                     // Menampilkan durasi waktu pada elemen yang sesuai
                     const currentTimeElement = document.getElementById('current-time');
                     currentTimeElement.textContent = formattedCurrentTime;

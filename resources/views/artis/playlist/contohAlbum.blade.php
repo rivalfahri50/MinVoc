@@ -44,7 +44,7 @@
             <div class="col-md-12 grid-margin stretch-card">
                 <h3 class="card-title judul">Temukan berbagai lagu</h3>
                 <form class="col-6 mb-4 p-0 nav-link search">
-                    <input type="text" class="form-control rounded-4" placeholder="Cari musik">
+                    <input type="text" class="form-control rounded-4 noob" placeholder="Cari musik">
                 </form>
                 <div class="card scroll scrollbar-down thin">
                     <div class="card-body">
@@ -58,10 +58,11 @@
                                                     <img src="{{ asset('storage/' . $item->image) }}" width="10%">
                                                 </div>
                                                 <div class="preview-item-content d-sm-flex flex-grow">
-                                                    <div class="flex-grow">
+                                                    <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
+                                                        onclick="putar({{ $item->id }})">
                                                         <h6 class="preview-subject">{{ $item->judul }}</h6>
                                                         <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
-                                                    </div>
+                                                    </a>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group">
                                                             <i onclick="myFunction(this)" class="far fa-heart pr-2">

@@ -77,10 +77,11 @@
                                                 <img src="{{ asset('storage/' . $item->image) }}" width="10%">
                                             </div>
                                             <div class="preview-item-content d-sm-flex flex-grow">
-                                                <div class="flex-grow">
+                                                <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
+                                                    onclick="putar({{ $item->id }})">
                                                     <h6 class="preview-subject">{{ $item->judul }}</h6>
                                                     <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
-                                                </div>
+                                                </a>
                                                 <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                     <div class="text-group">
                                                         <i onclick="myFunction(this)" class="far fa-heart pr-2">
@@ -104,7 +105,7 @@
     </div>
     </div>
 
-    
+
     <style>
         .btn-delete {
             background-color: rgb(215, 0, 0);
@@ -123,8 +124,8 @@
                 <a href="#" class="close-button mdi mdi-close-circle-outline"></a>
                 <h3 class="judul">Buat Playlist</h3>
                 <div>
-                    <form class="row" action="{{ route('ubah.playlist.artisVerified', $playlistDetail->code) }}" method="POST"
-                        enctype="multipart/form-data">
+                    <form class="row" action="{{ route('ubah.playlist.artisVerified', $playlistDetail->code) }}"
+                        method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="col-4">
                             <div class="card cobai">
@@ -142,7 +143,8 @@
                                     placeholder="{{ $playlistDetail->name }}">
                             </div>
                             <div class="mb-3">
-                                <textarea id="deskripsi" class="form-control" name="deskripsi" maxlength="500" rows="6" placeholder="{{ $playlistDetail->deskripsi == 'none' ? '' : $playlistDetail->deskripsi }}"></textarea>
+                                <textarea id="deskripsi" class="form-control" name="deskripsi" maxlength="500" rows="6"
+                                    placeholder="{{ $playlistDetail->deskripsi == 'none' ? '' : $playlistDetail->deskripsi }}"></textarea>
                             </div>
                         </div>
                         <div class="text-md-right col-md-12">

@@ -33,4 +33,13 @@ class song extends Model
     {
         return $this->hasOne(genre::class, 'id', 'genre_id');
     }
+
+    public function likedByUsers()
+    {
+        return $this->belongsToMany(User::class, 'likes', 'song_id', 'user_id')->withTimestamps();
+    }
+
+    public function riwayat() {
+        return $this->hasMany(Riwayat::class)->withTimestamps();
+    }
 }

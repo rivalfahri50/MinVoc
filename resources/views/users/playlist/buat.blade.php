@@ -19,8 +19,8 @@
                                         <h3 style="font-size: 18px; font-weight: 500">Buat Playlist</h3>
                                     </a>
                                     <div class="img-and-text">
-                                        <img class="img-ss rounded-circle" src="{{ asset('storage/' . auth()->user()->avatar) }}"
-                                            alt="">
+                                        <img class="img-ss rounded-circle"
+                                            src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
                                         <p class="judulnottebal fw-bold">Henry Klein</p>
                                     </div>
                                 </div>
@@ -47,14 +47,16 @@
                                                     <img src="{{ asset('storage/' . $item->image) }}" width="10%">
                                                 </div>
                                                 <div class="preview-item-content d-sm-flex flex-grow">
-                                                    <div class="flex-grow">
+                                                    <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
+                                                        onclick="putar({{ $item->id }})">
                                                         <h6 class="preview-subject">{{ $item->judul }}</h6>
                                                         <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
-                                                    </div>
+                                                    </a>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group">
-                                                            <i onclick="myFunction(this)" class="far fa-heart pr-2">
-                                                            </i>
+                                                            <i id="audio-player-like-icon like" data-id="{{ $item->id }}"
+                                                                onclick="toggleLike(this, {{ $item->id }})"
+                                                                class="shared-icon-like {{ $item->likes > 0 ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                             <p>{{ $item->waktu }}</p>
                                                             <i class="fas fa-ellipsis-v"></i>
                                                         </div>
@@ -109,7 +111,6 @@
 
 
     <script>
-        
         function myFunction(x) {
             x.classList.toggle("far"); // Menghapus kelas "fa fa-heart"
             x.classList.toggle("fas"); // Menambahkan kelas "fas fa-heart"

@@ -12226,7 +12226,7 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper a.swal2-styled,
 .swal2-modal .swal2-buttonswrapper fieldset:disabled a.swal2-styled,
 fieldset:disabled .wizard>.actions a,
 .wizard>.actions fieldset:disabled a {
-  pointer-events: none;
+  /* pointer-events: none; */
 }
 
 .btn-primary,
@@ -12913,7 +12913,7 @@ fieldset:disabled .wizard>.actions a,
 .btn-link:disabled,
 .btn-link.disabled {
   color: #6c757d;
-  pointer-events: none;
+  /* pointer-events: none; */
 }
 
 .btn-lg,
@@ -13224,7 +13224,7 @@ input[type="button"].btn-block {
 .dropdown-item.disabled,
 .dropdown-item:disabled {
   color: #6c757d;
-  pointer-events: none;
+  /* pointer-events: none; */
   background-color: transparent;
 }
 
@@ -13643,7 +13643,7 @@ input[type="button"].btn-block {
 .wizard>.actions .fc .btn-group-toggle>.fc-button-group>a input[type="checkbox"] {
   position: absolute;
   clip: rect(0, 0, 0, 0);
-  pointer-events: none;
+  /* pointer-events: none; */
 }
 
 .input-group,
@@ -14716,7 +14716,7 @@ input[type="button"].btn-block {
   display: block;
   width: 1rem;
   height: 1rem;
-  pointer-events: none;
+  /* pointer-events: none; */
   content: "";
   background-color: #fff;
   border: #adb5bd solid 1px;
@@ -15126,7 +15126,7 @@ input[type="button"].btn-block {
 
 .nav-link.disabled {
   color: #6c757d;
-  pointer-events: none;
+  /* pointer-events: none; */
   cursor: default;
 }
 
@@ -16018,7 +16018,7 @@ input[type="button"].btn-block {
 .jsgrid .jsgrid-pager .jsgrid-pager-page .page-item.disabled a,
 .jsgrid .jsgrid-pager .disabled.jsgrid-pager-page a {
   color: #6c757d;
-  pointer-events: none;
+  /* pointer-events: none; */
   cursor: auto;
   background-color: #fff;
   border-color: #dee2e6;
@@ -16576,7 +16576,7 @@ a.badge-dark.focus {
 .list-group-item.disabled,
 .list-group-item:disabled {
   color: #6c757d;
-  pointer-events: none;
+  /* pointer-events: none; */
   background-color: #fff;
 }
 
@@ -16919,7 +16919,7 @@ button.close {
 }
 
 a.close.disabled {
-  pointer-events: none;
+  /* pointer-events: none; */
 }
 
 .toast {
@@ -16992,7 +16992,7 @@ a.close.disabled {
   position: relative;
   width: auto;
   margin: 10px;
-  pointer-events: none;
+  /* pointer-events: none; */
 }
 
 .modal.fade .modal-dialog {
