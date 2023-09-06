@@ -143,6 +143,7 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
         return view('artisVerified.peraturan', ['title' => 'MusiCave']);
     })->name('peraturan.artisVerified');
     
+    Route::post('/tambah_playlist/{code}', 'tambah_playlist')->name('tambah.playlist.artisVerified');
     Route::post('/project', 'createProject')->name('createProject.artisVerified');
     Route::post('/unggahAudio', 'unggahAudio')->name('unggah.artisVerified');
     Route::post('/buat-album/{code}', 'buatAlbum')->name('tambah.album.artisVerified');
