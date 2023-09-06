@@ -30,8 +30,7 @@
                 <div class="modal-footer border-0">
                     <button type="button" class="btn rounded-3">
                         <a href="{{ route('lirikAndChat', $item->code) }}" class="btn-link"
-                            style="color: inherit; text-decoration: none;">Buat
-                            Proyek</a></button>
+                            style="color: inherit; text-decoration: none;">Terima Project</a></button>
                 </div>
             </div>
         </div>
@@ -222,7 +221,7 @@
                                                             data-bs-target="#staticBackdrop-{{ $item->code }}">
                                                             <i class="mdi mdi-eye btn-icon fa-lg text-primary" style="font-size: 20px; margin-right: 2px;"></i>
                                                         </button>
-                                                        <form action="{{ route('reject.project') }}" method="post"
+                                                        <form action="{{ route('reject.project.artis') }}" method="post"
                                                             class="m-0">
                                                             @csrf
                                                             <button type="submit">
@@ -248,7 +247,7 @@
                         <div class="card-body">
                             <a href="" class="close-button far fa-times-circle"></a>
                             <h3 class="judul p-0 mb-3">Tambah Kolaborasi</h3>
-                            <form class="row" action="{{ route('createProject.artis') }}" method="POST"
+                            <form class="row" action="{{ route('reject.project.artis') }}" method="POST"
                                 enctype="multipart/form-data">
                                 @csrf
                                 <div class="col-md-12" style="font-size: 13px">

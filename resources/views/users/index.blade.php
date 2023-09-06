@@ -74,9 +74,9 @@
                                                 @endif
                                                 <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                     <div class="text-group align-items-center">
-                                                        <i id="audio-player-like-icon like" data-id="{{ $item->id }}"
+                                                        <i id="like{{$item->id}}" data-id="{{ $item->id }}"
                                                             onclick="toggleLike(this, {{ $item->id }})"
-                                                            class="shared-icon-like {{ $item->likes > 0 ? 'fas' : 'far' }} fa-heart pr-2"></i>
+                                                            class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                         <p style="pointer-events: none;">{{ $item->waktu }}</p>
                                                         <a data-bs-toggle="modal"
                                                             data-bs-target="#staticBackdrop-{{ $item->code }}"

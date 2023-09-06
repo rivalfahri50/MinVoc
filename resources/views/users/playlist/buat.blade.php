@@ -19,8 +19,8 @@
                                         <h3 style="font-size: 18px; font-weight: 500">Buat Playlist</h3>
                                     </a>
                                     <div class="img-and-text">
-                                        <img class="img-ss rounded-circle" src="{{ asset('storage/' . auth()->user()->avatar) }}"
-                                            alt="">
+                                        <img class="img-ss rounded-circle"
+                                            src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
                                         <p class="judulnottebal fw-bold">Henry Klein</p>
                                     </div>
                                 </div>
@@ -132,7 +132,6 @@
 
 
     <script>
-        
         function myFunction(x) {
             x.classList.toggle("far"); // Menghapus kelas "fa fa-heart"
             x.classList.toggle("fas"); // Menambahkan kelas "fas fa-heart"

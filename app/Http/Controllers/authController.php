@@ -63,16 +63,19 @@ class authController extends Controller
     protected function resetPassword(Request $request)
     {
         $request->validate([
-            'email' => 'required|email|exists:users,email',
+            'email' => 'required|email|unique:users,email',
+        ], [
+            'email.unique' => 'Alamat email ini sudah terdaftar di sistem kami.',
         ]);
-
+        
         $status = Password::sendResetLink(
             $request->only('email')
         );
-
+        
         return $status === Password::RESET_LINK_SENT
             ? back()->with(['status' => __($status), 'title' => 'musiCave'])
             : back()->withErrors(['email' => __($status)]);
+        
     }
 
     protected function ubahPassword(Request $request)
@@ -101,26 +104,23 @@ class authController extends Controller
 
     protected function storeSignIn(Request $request)
     {
-        $credentials = $request->only('name', 'password');
+        $credentials = $request->only('email', 'password');
 
-        $validator = Validator::make($request->only('name', 'password', 'kebijakan_privasi'), [
-            'name' => 'required|string|max:50|exists:users,name',
+        $validator = Validator::make($request->only('email', 'password', 'kebijakan_privasi'), [
+            'email' => 'required|string|max:50|email|exists:users,email',
             'password' => 'required|string|min:6',
             'kebijakan_privasi' => 'required',
         ], [
-            'kebijakan_privasi.required' => 'Kebijakan Privasi wajib diisi Check.',
-            'name.required' => 'Kolom nama wajib diisi.',
-            'name.string' => 'Kolom nama harus berupa teks.',
-            'name.max' => 'Panjang nama tidak boleh lebih dari :max karakter.',
-            'name.exists' => 'Nama yang dimasukkan tidak valid.',
+            'kebijakan_privasi.required' => 'Kebijakan Privasi wajib diisi.',
+            'email.required' => 'Kolom email wajib diisi.',
+            'email.string' => 'Kolom email harus berupa teks.',
+            'email.max' => 'Panjang email tidak boleh lebih dari :max karakter.',
+            'email.email' => 'Format email tidak valid.',
+            'email.exists' => 'Email yang dimasukkan tidak terdaftar.',
             'password.required' => 'Kolom password wajib diisi.',
             'password.string' => 'Kolom password harus berupa teks.',
             'password.min' => 'Panjang password minimal :min karakter.',
         ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
 
         if (Auth::attempt($credentials)) {
             $user = auth()->user();
@@ -139,12 +139,11 @@ class authController extends Controller
             }
         }
 
-        return back()->withErrors(['password' => 'Invalid credentials.']);
+        return back()->withErrors(['password' => 'Kredensial tidak valid..']);
     }
 
     protected function storeSignUp(Request $request)
     {
-
         $validate = Validator::make(
             $request->all(),
             [
@@ -155,7 +154,7 @@ class authController extends Controller
             ],
             [
                 'role.required' => 'Peran harus diisi.',
-                'role.in' => 'Peran harus salah satu dari: pengguna, artis.',
+                'role.in' => 'Peran harus salah satu dari: pengguna, artis, admin.',
                 'name.required' => 'Nama harus diisi.',
                 'name.string' => 'Nama harus berupa teks.',
                 'name.max' => 'Nama tidak boleh lebih dari :max karakter.',
@@ -169,6 +168,7 @@ class authController extends Controller
                 'password.confirmed' => 'Konfirmasi kata sandi tidak cocok.'
             ]
         );
+
 
         if ($validate->fails()) {
             return redirect()->back()
@@ -208,6 +208,6 @@ class authController extends Controller
         } catch (Throwable $e) {
             return response()->redirectTo('/buat-akun')->with('failed', "Gagal untuk register!!");
         }
-        return response()->redirectTo('/masuk')->with('success', 'User created successfully.');
+        return response()->redirectTo('/masuk')->with('success', 'User berhasil register.');
     }
 }

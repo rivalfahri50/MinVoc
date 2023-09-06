@@ -54,7 +54,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="preview-list">
-                                        <form action="{{ route('create.project') }}" method="POST">
+                                        <form action="{{ route('create.project.artis') }}" method="POST">
                                             @csrf
                                             <input type="hidden" name="code" value="{{ $project->code }}">
                                             <div class="preview-item">
@@ -95,6 +95,52 @@
                         </div>
                     </div>
                 </div>
+                <style>
+                    /* CSS untuk chat box */
+                    .chat-box {
+                        overflow-y: scroll;
+                        height: 70vh;
+                        background-color: white;
+                        border-radius: 10px;
+                        border: 1px solid rgba(0, 0, 0, 0.2);
+                        padding: 10px;
+                    }
+
+                    /* CSS untuk pesan chat */
+                    .chat-message {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-start;
+                        margin-bottom: 10px;
+                    }
+
+                    .chat-name {
+                        font-size: 12px;
+                        color: rgb(171, 171, 171);
+                        text-align: right;
+                    }
+
+                    .chat-text {
+                        font-size: 14px;
+                        color: rgb(52, 52, 52);
+                        background-color: whitesmoke;
+                        max-width: 50%;
+                        border-radius: 15px;
+                        padding: 8px 15px;
+                    }
+
+                    /* CSS untuk input chat */
+                    .chat-input {
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        right: 10px;
+                        padding: 10px;
+                        display: flex;
+                        align-items: center;
+                        background-color: white;
+                    }
+                </style>
                 <div class="col-md-5">
                     <div class="card kanan scrollbar-dusty-grass square thin rounded-4">
                         <div class="card-body">
@@ -111,36 +157,27 @@
                                             <form action="{{ route('message.project') }}" method="post">
                                                 @csrf
                                                 <input type="hidden" name="id_project" value="{{ $project->id }}">
-                                                <div class="card ">
+                                                <div class="card">
                                                     <div style="height: 415px">
-                                                        <div class="card-body"
-                                                            style="overflow-y: scroll; height: 70vh; background-color: white; border-radius: 10px; border: 1px solid rgba(0,0,0,.2);">
-                                                            <div style="display: flex; flex-direction: column;">
-                                                                {{-- <span
-                                                                    style="font-size: 12px; margin-bottom: 3px; color: rgb(171, 171, 171)">ghhhh</span>
-                                                                <span class="mb-2"
-                                                                    style="font-size: 14px; color: rgb(52, 52, 52); background-color: whitesmoke; max-width: 50%; border-radius: 15px; text-align: left; padding: 3px 10px">ewfawe
-                                                                </span> --}}
-                                                                @foreach ($datas as $key => $item)
-                                                                @dd($item)
+                                                        <div class="card-body chat-box">
+                                                            @foreach ($datas as $key => $item)
+                                                                <div class="chat-message">
                                                                     @if ($key == 0 || $item->messages->name != $datas[$key - 1]->messages->name)
-                                                                        <span
-                                                                            style="font-size: 12px; margin-bottom: 3px; color: rgb(171, 171, 171)">ghhhh</span>
+                                                                        <div class="chat-name">{{ $item->messages->name }}</div>
                                                                     @endif
-                                                                    <span class="mb-2"
-                                                                        style="font-size: 14px; color: rgb(52, 52, 52); background-color: whitesmoke; max-width: 50%; border-radius: 15px; text-align: left; padding: 3px 10px">{{ $item->message }}</span>
-                                                                @endforeach
-                                                            </div>
-                                                            <div class="input-with-icon"
-                                                                style="position: absolute; bottom: 0; left: 0; right: 10px; padding: 10px;">
-                                                                <input type="text" class="form-control rounded-4"
-                                                                    placeholder="ketik di sini untuk admin" name="message">
-                                                                <button type="submit" class="send-button ml-2 mr-1">
-                                                                    <i class="fas fa-paper-plane"></i>
-                                                                </button>
-                                                            </div>
+                                                                    <div class="chat-text">{{ $item->message }}</div>
+                                                                </div>
+                                                            @endforeach
+                                                        </div>
+                                                        <div class="input-with-icon chat-input">
+                                                            <input type="text" class="form-control rounded-4" placeholder="Ketik di sini untuk admin" name="message">
+                                                            <button type="submit" class="send-button ml-2 mr-1">
+                                                                <i class="fas fa-paper-plane"></i>
+                                                            </button>
                                                         </div>
                                                     </div>
+                                                </div>
+                                                
                                             </form>
                                         </div>
                                     </div>

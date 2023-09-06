@@ -33547,3 +33547,15 @@ div.tagsinput span.tag a {
 
 /*# sourceMappingURL=maps/style.css.map */
 
+
+#lagu-diputar {
+    position: fixed;
+    bottom: 0;
+    z-index: 14;
+    visibility: hidden;
+}
+
+
+#lagu-diputar:target {
+    visibility: visible;
+}

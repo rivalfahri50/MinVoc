@@ -83,19 +83,12 @@
                         </div>
 
                         <div class="mb-3">
-                            <input placeholder="Kata Sandi" name="password" type="password" class="form-control rounded-3"
-                                id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ old('password') }}">
-                            @error('password')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
+                            <input placeholder="Kata Sandi" name="password" type="password" class="form-control rounded-3" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ old('password') }}">
                         </div>
-
-
+                        
                         <div class="mb-3">
-                            <input placeholder="Konfirmasi Kata Sandi" name="password_confirmation" type="password"
-                                class="form-control rounded-3" id="exampleInputEmail1" aria-describedby="emailHelp"
-                                value="{{ old('password_confirmation') }}">
-                            @error('password_confirmation')
+                            <input placeholder="Konfirmasi Kata Sandi" name="password_confirmation" type="password" class="form-control rounded-3" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ old('password_confirmation') }}">
+                            @error('password')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
