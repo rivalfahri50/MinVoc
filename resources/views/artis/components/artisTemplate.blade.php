@@ -59,10 +59,17 @@
         }
 
 
-        /* Style Untuk Ukuran foto profil */
+        .profile-box {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+
         .profile-picture {
-            width: 40px;
-            height: 40px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             overflow: hidden;
             margin-right: 10px;
@@ -72,6 +79,12 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+
+        .profile-name {
+            margin: 0;
+            font-weight: bold;
+            font-size: 14px;
         }
 
         #buat-album {
@@ -222,6 +235,14 @@
                         <span class="menu-title">Riwayat</span>
                     </a>
                 </li>
+                <li class="nav-item menu-items">
+                    <a class="nav-link" href="{{ route('peraturan.artis') }}">
+                        <span class="menu-icon">
+                            <i class="mdi mdi-information-outline"></i>
+                        </span>
+                        <span class="menu-title">Informasi</span>
+                    </a>
+                </li>
             </ul>
             <footer
                 style="background-color: #6c6c6c; color: #957DAD; width: 100%; position: fixed; bottom: 0; height: 85px;"
@@ -291,7 +312,7 @@
                         <ul class="navbar-nav w-75">
                             <li class="nav-item w-75">
                                 <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
-                                    <div class="input-group mb-3">
+                                    <div class="input-group">
                                         <span class="input-group-text"
                                             style="border-radius: 15px 0px 0px 15px; border: 1px solid #eaeaea">
                                             <svg width="19" height="19" viewBox="0 0 19 19" fill="none"
@@ -356,7 +377,7 @@
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
-                                <div class="navbar-profile">
+                                <div class="navbar-profile profile-picture">
                                     <img class="img-xs rounded-circle"
                                         src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
                                 </div>
@@ -445,13 +466,45 @@
                             },
                             dataType: 'json',
                             success: function(response) {
+                                console.log(results);
                                 var results = response.results;
                                 var $searchResults = $('#search-results-song');
                                 $searchResults.empty();
 
 
                                 $.each(results, function(index, result) {
-                                    $searchResults.append('<li>' + result.judul + '</li>');
+
+                                    var $previewItem = $(
+                                        '<div class="preview-item" data-song-id="' + result
+                                        .id + '">');
+
+                                    $previewItem.append(
+                                        '<div class="preview-thumbnail"><img src="http://127.0.0.1:8000/storage/' +
+                                        result.image + '" width="10%"></div>');
+                                    $previewItem.append(
+                                        '<div class="preview-item-content d-sm-flex flex-grow"><div class="flex-grow"><h6 class="preview-subject">' +
+                                        result.judul + '</h6><p class="text-muted mb-0">' +
+                                        result.artist.user.name +
+                                        '</p></div><div class="mr-auto text-sm-right pt-2 pt-sm-0"><div class="text-group"><i onclick="myFunction(this)" class="far fa-heart pr-2"></i><p>' +
+                                        result.waktu +
+                                        `</p>
+
+                                        <a data-bs-toggle="modal"
+                                                            data-bs-target="#staticBackdrop-${result.code}"
+                                                            style="color: #957dad">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" x="0px"
+                                                                y="0px" width="20" height="20"
+                                                                viewBox="0 2 24 24">
+                                                                <path fill="#957DAD"
+                                                                    d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 11 L 7 11 L 7 13 L 11 13 L 11 17 L 13 17 L 13 13 L 17 13 L 17 11 L 13 11 L 13 7 L 11 7 z">
+                                                                </path>
+                                                            </svg>
+                                                        </a>
+
+                                        </div></div></div>`
+                                    );
+
+                                    $previewList.append($previewItem);
                                 });
                             }
                         });
@@ -469,12 +522,20 @@
                             },
                             dataType: 'json',
                             success: function(response) {
+                                // console.log(data);
                                 var results = response.results;
                                 var $searchResults = $('#search-results');
                                 $searchResults.empty();
-
-                                $.each(results, function(index, result) {
-                                    $searchResults.append('<li>' + result.name + '</li>');
+                                $.each(results.songs, function(index, result) {
+                                    $searchResults.append(
+                                        `<li><a href='/artis/search/${result.code}'>${result.judul}</a></li>`
+                                    );
+                                });
+                                $.each(results.artists, function(index, result) {
+                                    console.log(result.code);
+                                    $searchResults.append(
+                                        `<li><a href='/artis/search/${result.code}'>${result.name}</a></li>`
+                                    );
                                 });
                             }
                         });

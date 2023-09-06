@@ -18,25 +18,32 @@ function sortTableByColumn(table, column, asc = true) {
 
     sortedRows.forEach(row => tBody.appendChild(row));
 
-    table.querySelectorAll("th").forEach(th => th.classList.remove("th-sort-asc", "th-sort-desc"));
     table.querySelector(`th:nth-child(${column + 1})`).classList.toggle("th-sort-asc", asc);
     table.querySelector(`th:nth-child(${column + 1})`).classList.toggle("th-sort-desc", !asc);
 }
 
-document.querySelectorAll(".table-sortable th").forEach(headerCell => {
-    let sortAscending = true;
+function toggleSortOrder(icon) {
+    if (icon.getAttribute("data-order") === "asc") {
+        icon.setAttribute("data-order", "desc");
+        icon.classList.remove("fa-sort");
+        icon.classList.add("fa-sort-up");
+    } else {
+        icon.setAttribute("data-order", "asc");
+        icon.classList.remove("fa-sort-up");
+        icon.classList.add("fa-sort-down");
+    }
+}
 
+document.querySelectorAll(".table-sortable th").forEach(headerCell => {
     headerCell.addEventListener("click", () => {
         const tableElement = headerCell.closest("table");
         const headerIndex = Array.from(headerCell.parentElement.children).indexOf(headerCell);
+        const sortIcon = headerCell.querySelector("i");
 
-        sortTableByColumn(tableElement, headerIndex, sortAscending);
-
-        // Toggle antara urutan ascending dan descending saat header di klik
-        sortAscending = !sortAscending;
+        toggleSortOrder(sortIcon);
+        sortTableByColumn(tableElement, headerIndex, sortIcon.getAttribute("data-order") === "asc");
     });
 });
-
 
 // /**
 //  * Menyortir Tabel HTML

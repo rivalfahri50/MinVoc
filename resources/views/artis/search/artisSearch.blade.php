@@ -1,4 +1,4 @@
-@extends('users.components.usersTemplates')
+@extends('artis.components.artisTemplate')
 
 @section('content')
     <link rel="stylesheet" href="/user/assets/css/userSearch.css">
@@ -30,6 +30,7 @@
         </div>
     </div>
 @endforeach
+
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="row">

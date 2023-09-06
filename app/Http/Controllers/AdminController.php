@@ -73,7 +73,7 @@ class AdminController extends Controller
         return response()->view('admin.verifikasi', compact('title', 'artist'));
     }
 
-    protected function setujuMusic(string $code): Response
+    protected function setujuMusic(string $code)
     {
         $title = "MusiCave";
         $song = song::where('code', $code)->first();
@@ -92,8 +92,22 @@ class AdminController extends Controller
 
     protected function buatBillboard(Request $request)
     {
+        $validator = Validator::make(
+            $request->only('artis_id'),
+            [
+                'artis_id' => 'required',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $title = "MusiCave";
         $artist = artist::where('is_verified', 1)->get();
+        $billboards = billboard::all();
         try {
             if ($request->hasFile('image_background') && $request->hasFile('image_artis')) {
                 $backgroundBillboard = $request->file('image_background')->store('backgorund_billboard', 'public');
@@ -112,7 +126,7 @@ class AdminController extends Controller
             return response()->view('admin.iklan', compact('artist', 'title'));
         }
         Alert::success('message', 'Berhasil Untuk Menambah Billboard');
-        return response()->view('admin.iklan', compact('artist', 'title'));
+        return response()->view('admin.iklan', compact('artist', 'title', 'billboards'));
     }
 
     protected function buatGenre(Request $request)

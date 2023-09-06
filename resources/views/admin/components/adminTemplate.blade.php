@@ -15,6 +15,57 @@
     <link rel="shortcut icon" href="/image/favicon.svg" />
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* Style dropdown sidebar--Mengatur tampilan menu dropdown */
+        .menu-items .nav-link {
+            position: relative;
+        }
+
+        .menu-arrow {
+            color: inherit;
+            position: absolute;
+            left: 185px;
+            top: 185px;
+            transform: translateY(-50%);
+        }
+
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            width: 100%;
+            max-width: 400px;
+            /* Set the maximum width as needed */
+        }
+
+        /* Style Untuk search input */
+        .search-input {
+            border-radius: 15px;
+            border: 1px solid #eaeaea;
+            padding: 5px 10px;
+            width: 100%;
+        }
+
+        /* Style Untuk search results */
+        #search-results {
+            list-style: none;
+            position: absolute;
+            top: 60px;
+            left: 30px;
+            width: 52%;
+            background-color: white;
+            border: 1.5px solid #eaeaea;
+            padding: 10px;
+            display: none;
+            border-radius: 10px;
+            font-size: 15px
+        }
+
+        .sidebar .nav.sub-menu .nav-item .nav-link:hover {
+            color: #7c6890;
+        }
+    </style>
 
     <script>
         function confirmDelete(message, callback) {
@@ -163,17 +214,17 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                                 <div class="navbar-profile">
-                                    <img class="img-xs rounded-circle" src="assets/images/faces/face15.jpg"
+                                    <img class="img-xs rounded-circle" src="https://cdn.pnghd.pics/data/815/profil-wa-kosong-28.jpg"
                                         alt="">
                                 </div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                                 aria-labelledby="profileDropdown">
                                 <div class="p-3 mb-0 gap-3"
-                                    style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
-                                    <img class="img-xs rounded-circle" src="assets/images/faces/face15.jpg"
+                                    style="display: flex; flex-direction: row; align-items: center;">
+                                    <img class="img-xs rounded-circle" src="https://cdn.pnghd.pics/data/815/profil-wa-kosong-28.jpg"
                                         alt="">
-                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">Henry Klein</p>
+                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">Admin</p>
                                 </div>
                                 <a class="dropdown-item preview-item" href="{{ route('logout.users') }}">
                                     <div class="preview-thumbnail">
@@ -199,6 +250,7 @@
             @yield('content')
 
             <script src="assets/js/liked.js"></script>
+            <script src="/user/assets/js/closepopup.js"></script>
             <!-- plugins:js -->
             <script src="assets/vendors/js/vendor.bundle.base.js"></script>
             <!-- endinject -->

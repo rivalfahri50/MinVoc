@@ -76,7 +76,9 @@ class penggunaController extends Controller
     {
         $title = "MusiCave";
         $genre = genre::where('code', $code)->first();
-        return response()->view('users.kategori.kategori', compact('title', 'genre'));
+        $playlists = playlist::all();
+        $songs = song::where('genre_id', $genre->id)->get();
+        return response()->view('users.kategori.kategori', compact('title', 'genre', 'songs', 'playlists'));
     }
 
     protected function buatPlaylist(): Response
@@ -231,7 +233,7 @@ class penggunaController extends Controller
                 'name' => 'required|string|max:255',
                 'avatar' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
                 'email' => 'required|string|email|max:255',
-                'deskripsi' =>  'max:255',
+                'deskripsi' =>  'max:500',
             ],
             [
                 'name' => [

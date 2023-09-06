@@ -89,25 +89,49 @@
     padding: 5px 0;
 }
 
+/* CSS untuk mengunci header tabel */
 .table-container {
-    margin-bottom: 20px;
+    position: relative;
+    max-width: 100%;
+    overflow-x: auto;
 }
+
+.table-header {
+    position: sticky;
+    top: 0;
+    background-color: #957dad;
+    color: white;
+    z-index: 1;
+}
+
 
 .table-sortable th {
     cursor: pointer;
     border-radius: 10px;
+    position: relative;
+}
+
+.table-sortable th::after {
+    content: "";
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.table-sortable th::after {
+    content: "\25b4"; /* Panah naik secara default */
+    opacity: 0.4;
 }
 
 .table-sortable .th-sort-asc::after {
-    content: "\25b4";
-}
-.table-sortable .th-sort-desc::after {
-    content: "\25be";
+    content: "\25b4"; /* Panah naik untuk urutan naik */
+    opacity: 1;
 }
 
-.table-sortable .th-sort-asc::after,
 .table-sortable .th-sort-desc::after {
-    margin-left: 10px;
+    content: "\25be"; /* Panah turun untuk urutan turun */
+    opacity: 1;
 }
 
 /*---- style untuk button icon ----*/
@@ -159,3 +183,41 @@
     transform: translateY(-50%);
 }
 
+/* CSS untuk styling pagination */
+.pagination {
+    margin-top: 20px;
+}
+
+.page-item:first-child .page-link {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-radius: 10px;
+}
+
+.page-item:last-child .page-link {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-radius: 10px;
+}
+
+.pagination li {
+    display: inline;
+    margin-right: 5px;
+}
+
+.pagination li a {
+    text-decoration: none;
+}
+
+.page-link.active {
+    background-color: #957DAD;
+    border: 1px solid #957DAD;
+}
+
+.pagination li.active a {
+    color: #fff;
+}
+
+.pagination li:hover {
+    background-color: #ddd;
+}

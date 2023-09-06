@@ -1,33 +1,7 @@
 @extends('users.components.usersTemplates')
 
 @section('content')
-    @foreach ($songs as $item)
-        <div id="staticBackdrop-{{ $item->code }}" class="modal" data-bs-backdrop="static" data-bs-keyboard="false"
-            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="card window">
-                <div class="card-body">
-                    <h3 class="judul p-0 mb-4">Tambah Ke Playlist</h3>
-                    <a href="#" class="close-button far fa-times-circle"></a>
-                    <form class="row" action="{{ route('tambah.playlist', $item->code) }}" method="POST">
-                        @csrf
-                        <div class="col-m`d-12">
-                            <div class="mb-4">
-                            <label for="namaartis" class="form-label judulnottebal">Nama Playlist</label>
-                                <select name="playlist_id" class="form-select" id="namaartis">
-                                    @foreach ($playlists as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="text-md-right">
-                            <button class="btn" type="submit">Tambah</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    @endforeach
+    @include('partials.tambahkeplaylist')
 
     <link rel="stylesheet" href="/user/assets/css/dashboard.css">
     <div class="main-panel">
@@ -37,12 +11,11 @@
                     <h3 class="card-title mt-2 judul" style="font-size: 20px; font-weight: 600">Kategori</h3>
                     <div class="cards">
                         @foreach ($genres as $item)
-                            <a href="/pengguna/kategori/{{ $item->code }}" class="card card-scroll">
-                                <img src="{{ asset('storage/' . $item->images) }}" class="img-fluid rounded-4 this">
+                            <a href="/pengguna/kategori/{{ $item->code }}" class="card cardi card-scroll rounded-4">
+                                <img src="{{ asset('storage/' . $item->images) }}" class="img-fluid rounded-4 this" width="100%" height="100%">
                             </a>
                         @endforeach
                     </div>
-
                 </div>
                 <div class="col-md-7">
                     <div class="card border-0 bg-dark coba">
@@ -159,6 +132,15 @@
                         </div>
                     </div>
                 </div>
+                <script>
+                    // Fungsi untuk menutup tanpa mereset tautan
+    document.getElementById('closeButton').addEventListener('click', function (e) {
+            e.preventDefault(); // Menghentikan tindakan default dari link
+            // Tambahkan tindakan penutupan di sini
+            // Misalnya, mengubah tampilan elemen yang ingin ditutup
+            document.getElementById('elementToClose').style.display = 'none';
+        });
+                </script>
             </div>
         </div>
     </div>

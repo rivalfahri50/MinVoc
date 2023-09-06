@@ -20,8 +20,9 @@
                                         <h3 style="font-size: 18px; font-weight: 500">Buat Playlist</h3>
                                     </a>
                                     <div class="img-and-text">
-                                        <img class="img-ss rounded-circle"
-                                            src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
+                                        <div class="profile-image">
+                                            <img class="img-ss rounded-circle" src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
+                                        </div>
                                         <p class="judulnottebal fw-bold">Henry Klein</p>
                                     </div>
                                 </div>
@@ -35,7 +36,8 @@
                 <div class="col-md-12 grid-margin stretch-card">
                     <h3 class="card-title judul">Mari temukan lagu untuk playlist anda</h3>
                     <form class="col-6 mb-4 p-0 nav-link search">
-                        <input type="text" class="form-control rounded-4" placeholder="Cari musik">
+                        <input type="text" id="search_song" class="form-control rounded-4" placeholder="Cari musik">
+                        <ul id="search-results-song"></ul>
                     </form>
                     <div class="card scroll scrollbar-down thin">
                         <div class="card-body">
@@ -43,27 +45,25 @@
                                 <div class="col-12">
                                     <div class="preview-list">
                                         @foreach ($songs as $item)
-                                            @if ($item->is_approved)
-                                                <div class="preview-item">
-                                                    <div class="preview-thumbnail">
-                                                        <img src="{{ asset('storage/' . $item->image) }}" width="10%">
+                                            <div class="preview-item">
+                                                <div class="preview-thumbnail">
+                                                    <img src="{{ asset('storage/' . $item->image) }}" class="avatar">
+                                                </div>
+                                                <div class="preview-item-content d-sm-flex flex-grow">
+                                                    <div class="flex-grow">
+                                                        <h6 class="preview-subject">{{ $item->judul }}</h6>
+                                                        <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
                                                     </div>
-                                                    <div class="preview-item-content d-sm-flex flex-grow">
-                                                        <div class="flex-grow">
-                                                            <h6 class="preview-subject">{{ $item->judul }}</h6>
-                                                            <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
-                                                        </div>
-                                                        <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                            <div class="text-group">
-                                                                <i onclick="myFunction(this)" class="far fa-heart pr-2">
-                                                                </i>
-                                                                <p>{{ $item->waktu }}</p>
-                                                                <i class="fas fa-ellipsis-v"></i>
-                                                            </div>
+                                                    <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                                        <div class="text-group">
+                                                            <i onclick="myFunction(this)" class="far fa-heart pr-2">
+                                                            </i>
+                                                            <p>{{ $item->waktu }}</p>
+                                                            <i class="fas fa-ellipsis-v"></i>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            @endif
+                                            </div>
                                         @endforeach
                                     </div>
                                 </div>

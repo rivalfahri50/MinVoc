@@ -30,7 +30,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="table-cell">{{ $item->created_at->toDateString() }}</td>
+                                        <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
                                         <td class="table-cell text-warning">Pending</td>
                                         <td class="table-cell">
                                             <button type="button" class="btn btnicon" data-bs-toggle="modal"
@@ -71,7 +71,7 @@
                     <div class="modal-content" style="background-color: whitesmoke">
                         <div class="card-body">
                             <h3 class="judul">Persetujuan Unggah Lagu</h3>
-                            <a href="#" class="close-button far fa-times-circle"></a>
+                            <a href="" class="close-button far fa-times-circle"></a>
                             <div class="row mt-4">
                                 <div class="col-md-12">
                                     <h5 class="judul">Tanggal Pengajuan</h5>
@@ -80,7 +80,7 @@
                                 <div class="col-md-12 mb-4">
                                     <h5 class="judul">Judul Lagu</h5>
                                     <div class="cell-content">
-                                        <img src="{{ asset('storage/' . $item->image) }}" alt="Face" class="avatar">
+                                        <img src="{{ asset('storage/' . $item->image) }}" alt="Face" class="avatar" style="width: 40px">
                                         <div>
                                             <h6>{{ $item->judul }}</h6>
                                             <p class="text-muted m-0">{{ $item->artist->user->name }}</p>
@@ -107,6 +107,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+
         $(document).ready(function() {
 
             $('.view-button').click(function() {
@@ -132,37 +133,6 @@
             $('#popup .close-button').click(function() {
                 $('#popup').hide();
             });
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            // Isi menu dropdown dengan opsi secara dinamis
-            function populateDropdown(id, options) {
-                var dropdown = $("#" + id + " + .dropdown-menu");
-                options.forEach(function(option) {
-                    dropdown.append("<a class='dropdown-item' href='#'>" + option + "</a>");
-                });
-            }
-
-            // Isi dropdown tanggal
-            var tanggalOptions = Array.from({
-                length: 31
-            }, (_, i) => (i + 1).toString());
-            populateDropdown("tanggalDropdown", tanggalOptions);
-
-            // Isi dropdown bulan
-            var bulanOptions = [
-                "Januari", "Februari", "Maret", "April", "Mei", "Juni",
-                "Juli", "Agustus", "September", "Oktober", "November", "Desember"
-            ];
-            populateDropdown("bulanDropdown", bulanOptions);
-
-            // Isi dropdown tahun (dari tahun 2000 hingga tahun sekarang)
-            var tahunSekarang = new Date().getFullYear();
-            var tahunOptions = Array.from({
-                length: tahunSekarang - 1999
-            }, (_, i) => (2000 + i).toString());
-            populateDropdown("tahunDropdown", tahunOptions);
         });
 
         /*===================================*/

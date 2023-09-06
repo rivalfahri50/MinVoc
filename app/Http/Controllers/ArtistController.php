@@ -32,8 +32,9 @@ class ArtistController extends Controller
         $songs = song::all();
         $genres = genre::all();
         $artist = artist::with('user')->get();
+        $playlists = playlist::all();
         $billboards = billboard::all();
-        return response()->view('artis.dashboard', compact('title', 'songs', 'genres', 'artist', 'billboards'));
+        return response()->view('artis.dashboard', compact('title', 'songs', 'genres', 'artist', 'billboards', 'playlists'));
     }
 
     protected function playlist(): Response
@@ -71,6 +72,18 @@ class ArtistController extends Controller
         $title = "MusiCave";
         $user = User::where('code', $code)->get();
         return response()->view('artis.profile.profile_ubah', compact('title', 'user'));
+    }
+
+    protected function tambah_playlist(string $code, Request $request)
+    {
+        $song = song::where('code', $code)->first();
+        try {
+            $song->playlist_id = $request->input('playlist_id');
+            $song->update();
+        } catch (\Throwable $th) {
+            return back();
+        }
+        return back();
     }
 
     protected function buatAlbum(Request $request, string $code)
@@ -113,10 +126,13 @@ class ArtistController extends Controller
                 'name' => $request->input('name'),
                 'image' => $imagePath,
             ]);
+            $title = "MusiCave";
+            $playlists = playlist::all();
+            $albums = album::all();
         } catch (\Throwable $th) {
-            return response()->redirectTo('/artis/playlist')->with('failed', "failed");
+            return response()->view('artis.playlist', compact('title', 'playlists', 'albums'));
         }
-        return response()->redirectTo('/artis/playlist')->with('message', "success");
+        return response()->view('artis.playlist', compact('title', 'playlists', 'albums'));
     }
 
     protected function verifiedAccount(string $code, Request $request)
@@ -166,7 +182,7 @@ class ArtistController extends Controller
                 'name' => 'required|string|max:255',
                 'avatar' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
                 'email' => 'required|string|email|max:255',
-                'deskripsi' =>  'max:255',
+                'deskripsi' =>  'max:500',
             ],
             [
                 'name' => [
@@ -191,13 +207,11 @@ class ArtistController extends Controller
             ]
         );
 
-
         if ($validate->fails()) {
             return redirect()->back()
                 ->withErrors($validate)
                 ->withInput();
         }
-
 
         $user = User::where('code', $code)->first();
         $existingPhotoPath = $user->avatar;
@@ -209,7 +223,13 @@ class ArtistController extends Controller
                     ->withInput();
             }
 
-            $newImage = $request->file('avatar')->store('images', 'public');
+
+            if (Storage::disk('public')->exists($existingPhotoPath) == "images/default.png") {
+                $newImage = $request->file('avatar')->store('images', 'public');
+            } else if (Storage::disk('public')->exists($existingPhotoPath)) {
+                Storage::disk('public')->delete($existingPhotoPath);
+                $newImage = $request->file('avatar')->store('images', 'public');
+            }
 
             if ($request->input('deskripsi') === "none" || $request->input('deskripsi') === null) {
                 $value = [
@@ -231,9 +251,6 @@ class ArtistController extends Controller
                     'password' => $user->password,
                     'role_id' => $user->role_id,
                 ];
-            }
-            if (Storage::disk('public')->exists($existingPhotoPath)) {
-                Storage::disk('public')->delete($existingPhotoPath);
             }
         } else {
             if ($request->input('deskripsi') === "none" || $request->input('deskripsi') === null) {
@@ -391,7 +408,8 @@ class ArtistController extends Controller
         $title = "MusiCave";
         $billboard = billboard::where('code', $code)->first();
         $albums = album::where('artis_id', $billboard->artis_id)->get();
-        return response()->view('artis.billboard.billboard', compact('title', 'billboard', 'albums'));
+        $songs = song::all();
+        return response()->view('artis.billboard.billboard', compact('title', 'billboard', 'albums', 'songs'));
     }
 
     protected function albumBillboard(string $code): Response
@@ -411,7 +429,9 @@ class ArtistController extends Controller
     {
         $title = "MusiCave";
         $genre = genre::where('code', $code)->first();
-        return response()->view('artis.kategori.kategori', compact('title', 'genre'));
+        $playlists = playlist::all();
+        $songs = song::where('genre_id', $genre->id)->get();
+        return response()->view('artis.kategori.kategori', compact('title', 'genre', 'songs', 'playlists'));
     }
 
     protected function buatPlaylist(): Response
@@ -424,16 +444,40 @@ class ArtistController extends Controller
     public function search(Request $request)
     {
         $query = $request->input('query');
-        $results = User::where('name', 'LIKE', '%' . $query . '%')->get();
+        $songs = Song::where('judul', 'LIKE', '%' . $query . '%')->get();
+
+        $artists = User::where('name', 'LIKE', '%' . $query . '%')->get();
+
+        $results = [
+            'songs' => $songs,
+            'artists' => $artists,
+        ];
+        // $results = User::where('name', 'LIKE', '%' . $query . '%')->get();
         return response()->json(['results' => $results]);
     }
 
     public function search_song(Request $request)
     {
         $query = $request->input('query');
-        $results = song::where('judul', 'like', '%' . $query . '%')->get();
+        $results = song::with('artist.user')->where('judul', 'like', '%' . $query . '%')->get();
 
         return response()->json(['results' => $results]);
+    }
+
+    public function search_result(Request $request, string $code)
+    {
+        $title = "MusiCave";
+        $song = song::where('code', $code)->first();
+        $user = user::where('code', $code)->first();
+        $playlists = playlist::all();
+        $songAll = song::all();
+
+        if ($song) {
+            return view('artis.search.songSearch', compact('song', 'title', 'songAll', 'playlists'));
+        } else if ($user) {
+            $songUser = song::where('artis_id', $user->id)->get();
+            return view('artis.search.artisSearch', compact('user', 'title', 'songUser', 'playlists'));
+        }
     }
 
     public function verified(Request $request)
@@ -546,17 +590,19 @@ class ArtistController extends Controller
     protected function detailPlaylist(string $code): Response
     {
         $playlistDetail = playlist::where('code', $code)->first();
-        $songs = song::all();
+        $songs = song::where('playlist_id', $playlistDetail->id)->get();
+        $playlists = playlist::all();
         $title = "MusiCave";
-        return response()->view('artis.playlist.contoh', compact('title', 'playlistDetail', 'songs'));
+        return response()->view('artis.playlist.contoh', compact('title', 'playlistDetail', 'songs', 'playlists'));
     }
 
     protected function detailAlbum(string $code): Response
     {
         $albumDetail = album::where('code', $code)->first();
         $songs = song::all();
+        $playlists = playlist::all();
         $title = "MusiCave";
-        return response()->view('artis.playlist.contohAlbum', compact('title', 'albumDetail', 'songs'));
+        return response()->view('artis.playlist.contohAlbum', compact('title', 'albumDetail', 'songs', 'playlists'));
     }
 
     protected function contohPlaylist(): Response
@@ -581,8 +627,14 @@ class ArtistController extends Controller
     protected function viewLirikAndChat(Request $request, string $code)
     {
         $title = "Kolaborasi";
-        $project = DB::table('projects')->where('code', $code)->get();
+        $project = DB::table('projects')->where('code', $code)->first();
+        $artis = artist::where('user_id', auth()->user()->id)->first();
         $datas = messages::with('messages')->get();
+        try {
+            projects::where('code', $project->code)->update(['penerima_project' => $artis->id]);
+        } catch (\Throwable $th) {
+            return response()->view('artis.lirikAndChat', compact('title', 'project', 'datas'));
+        }
         return response()->view('artis.lirikAndChat', compact('title', 'project', 'datas'));
     }
 
@@ -631,7 +683,6 @@ class ArtistController extends Controller
         $data = [
             'code' => $project->code,
             'name' => $project->name,
-            'genre' => $project->genre,
             'judul' => $request->input('judul'),
             'lirik' => $request->input('lirik'),
             'konsep' => $project->konsep,
@@ -644,23 +695,24 @@ class ArtistController extends Controller
         try {
             $project->update($data);
         } catch (Throwable $e) {
-            return response()->redirectTo('/admin/dashboard')->with('message', "Gagal untuk register!!");
+            return response()->redirectTo('/artis/kolaborasi')->with('message', "Gagal untuk register!!");
         }
-        return response()->redirectTo('/admin/dashboard')->with('message', 'User created successfully.');
+        return response()->redirectTo('/artis/kolaborasi')->with('message', 'User created successfully.');
     }
 
     protected function message(Request $request)
     {
+        $project = projects::where('id', $request->input('id_project'))->first();
+        $user = artist::where('id', auth()->user()->id)->first();
+        $message = messages::create([
+            'code' => Str::uuid(),
+            'sender_id' => $project->pembuat_project,
+            'receiver_id' => $project->penerima_project,
+            'project_id' => $project->id,
+            'message' => $request->input('message')
+        ]);
+        $data = messages::with('messages')->get();
         try {
-            $message = messages::create([
-                'code' => Str::uuid(),
-                'sender_id' => Auth::user()->id,
-                'receiver_id' => 1,
-                'project_id' => $request->input('id_project'),
-                'message' => $request->input('message')
-            ]);
-            $data = messages::with('messages')->get();
-            // dd($message);
         } catch (\Throwable $th) {
             return redirect()->back();
         }
@@ -693,5 +745,52 @@ class ArtistController extends Controller
             return redirect()->back();
         }
         return redirect()->back();
+    }
+
+    protected function createProject(Request $request)
+    {
+        $validate = Validator::make(
+            $request->only('name', 'konsep'),
+            [
+                'name' => 'required|string|max:255|min:1',
+                'konsep' => 'required|string|max:500|min:1',
+            ],
+            [
+                'required' => 'Kolom :attribute harus diisi.',
+                'string' => 'Kolom :attribute harus berupa teks.',
+                'max' => [
+                    'string' => 'Kolom :attribute tidak boleh lebih dari :max karakter.',
+                ],
+                'numeric' => 'Kolom :attribute harus berupa angka.',
+                'min' => [
+                    'numeric' => 'Kolom :attribute harus lebih besar atau sama dengan :min.',
+                ],
+            ]
+        );
+
+        if ($validate->fails()) {
+            return redirect()->back()
+                ->withErrors($validate)
+                ->withInput();
+        }
+
+        try {
+            $code = Str::uuid();
+            projects::create(
+                [
+                    'code' => $code,
+                    'name' => $request->input('name'),
+                    'konsep' => $request->input('konsep'),
+                    'judul' => "none",
+                    'lirik' => "none",
+                    'artist_id' => 0,
+                    'is_approved' => false,
+                    'is_reject' => false,
+                ]
+            );
+        } catch (Throwable $e) {
+            return response()->redirectTo('/artis/kolaborasi')->with('message', "Gagal untuk register!!");
+        }
+        return response()->redirectTo('/artis/kolaborasi')->with('message', 'User created successfully.');
     }
 }

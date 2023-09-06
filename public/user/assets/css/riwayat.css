@@ -27,13 +27,24 @@
     flex: 1;
     padding-left: 60px;
     text-align: left;
+    word-wrap: break-word;
 }
+
 
 .table-header {
     padding-top: 10px;
     padding-bottom: 10px;
     background-color: #957dad;
     color: white;
+}
+
+.table-cell h6, .table-cell p {
+    max-width: 300px;
+    word-wrap: break-word;
+}
+
+.table-cell h6, .table-cell p {
+    white-space: normal;
 }
 
 .table-cell h6,
@@ -54,14 +65,41 @@
     border-radius: 10px;
 }
 
-.table-sortable .th-sort-asc::after {
-    content: "\25b4";
-}
-.table-sortable .th-sort-desc::after {
-    content: "\25be";
+/* CSS untuk styling pagination */
+.pagination {
+    margin-top: 20px;
 }
 
-.table-sortable .th-sort-asc::after, 
-.table-sortable .th-sort-desc::after {
-    margin-left: 10px;
+.page-item:first-child .page-link {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-radius: 10px;
+}
+
+.page-item:last-child .page-link {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-radius: 10px;
+}
+
+.pagination li {
+    display: inline;
+    margin-right: 5px;
+}
+
+.pagination li a {
+    text-decoration: none;
+}
+
+.page-link.active {
+    background-color: #957DAD;
+    border: 1px solid #957DAD;
+}
+
+.pagination li.active a {
+    color: #fff;
+}
+
+.pagination li:hover {
+    background-color: #ddd;
 }

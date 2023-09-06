@@ -40,6 +40,16 @@
                 object-fit: cover;
                 /* Mengisi kotak gambar tanpa mempertahankan aspek asli */
             }
+
+            .table-cell {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                /* Menampilkan "..." jika teks terlalu panjang */
+                white-space: nowrap;
+                /* Mencegah teks untuk melipat (wrap) */
+                max-width: 150px;
+                /* Sesuaikan dengan lebar maksimum yang Anda inginkan */
+            }
         </style>
         <div class="content-wrapper">
             <div class="row">
@@ -83,7 +93,8 @@
                                                                 data-bs-target="#staticBackdrop-{{ $item->code }}">
                                                                 <i class="far fa-eye text-info"></i>
                                                             </button>
-                                                            <button class="btn btnicon" onclick="deleteBillboard('{{ $item->code }}')">
+                                                            <button class="btn btnicon"
+                                                                onclick="deleteBillboard('{{ $item->code }}')">
                                                                 <i class="far fa-times-circle text-danger"></i>
                                                             </button>
                                                         </td>
@@ -118,7 +129,7 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="namaartis" class="form-label judulnottebal">Nama artis</label>
-                                            <select required name="artis_id" class="form-select" id="namaartis">
+                                            <select required name="artis_id" required class="form-select" id="namaartis">
                                                 <option disabled selected>artis</option>
                                                 @foreach ($artist as $item)
                                                     <option value="{{ $item->id }}">{{ $item->user->name }}</option>
@@ -155,7 +166,7 @@
                         <div id="staticBackdrop-{{ $item->code }}" class="modal">
                             <div class="card window">
                                 <div class="card-body">
-                                    <a href="#" class="close-button far fa-times-circle"></a>
+                                    <a href="" class="close-button far fa-times-circle"></a>
                                     <h3 class="judul">Detail Papan Iklan</h3>
                                     <form class="row" action="">
                                         <div class="col-md-12">
@@ -174,16 +185,16 @@
                                                     background
                                                     iklan</label>
                                                 <div class="cell-content gambar-container">
-                                                    <img src="{{ asset('storage/' . $item->image_background) }}" alt="Face"
-                                                        class="gambarbg">
+                                                    <img src="{{ asset('storage/' . $item->image_background) }}"
+                                                        alt="Face" class="gambarbg">
                                                 </div>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="namakategori" class="form-label judulnottebal">Gambar
                                                     artis</label>
                                                 <div class="cell-content gambar-container">
-                                                    <img src="{{ asset('storage/' . $item->image_artis) }}" alt="Face"
-                                                        class="avatar">
+                                                    <img src="{{ asset('storage/' . $item->image_artis) }}"
+                                                        alt="Face" class="avatar">
                                                 </div>
                                             </div>
                                         </div>

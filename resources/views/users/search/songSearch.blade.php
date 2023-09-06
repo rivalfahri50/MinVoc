@@ -9,7 +9,7 @@
             <div class="card window">
                 <div class="card-body">
                     <h3 class="judul p-0 mb-4">Tambah Ke Playlist</h3>
-                    <a href="#" class="close-button far fa-times-circle"></a>
+                    <a href="" class="close-button far fa-times-circle"></a>
                     <form class="row" action="{{ route('tambah.playlist', $item->code) }}" method="POST">
                         @csrf
                         <div class="col-md-12">
@@ -37,19 +37,17 @@
                 <div class="col-md-12 mb-4">
                     <div class="row">
                         <div class="col-4">
-                            <div class="card coba" style="display: flex;">
+                            <div class="card coba" style="display: flex; width: 400px; height: 200px;">
                                 <div class="card-body" style="display: flex;">
-                                    <div class="cell-content">
+                                    <div class="image-container">
                                         <img src="{{ asset('storage/' . $song->image) }}" alt="Face" class="avatar">
                                     </div>
                                     <div style="margin-left: 10px;">
-                                        <h4 class="judul mt-4">{{ $song->judul }}</h4>
+                                        <h4 class="judul mt-4 clamp-text">{{ $song->judul }}</h4>
                                         <div class="d-flex flex-row align-content-center">
-                                            <p class="text-muted m-1">{{ $song->artist->user->name }}</p>
-                                            <a href="#" class="d-flex align-items-center d-block"
-                                                style="height: 28px;">
-                                                <i class="far fa-play-circle fa-2xl pl-2"
-                                                    style="font-size: 20px; display: none; color: #957DAD;"></i>
+                                            <p class="text-muted m-1 clamp-text">{{ $song->artist->user->name }}</p>
+                                            <a href="#" class="d-flex align-items-center d-block" style="height: 28px;">
+                                                <i class="far fa-play-circle fa-2x pl-2" style="width: 10px; display: none; color: #957DAD;"></i>
                                             </a>
                                         </div>
                                     </div>
@@ -57,7 +55,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>                
                 <div class="col-md-12">
                     <hr class="divider"> <!-- Divider -->
                 </div>
@@ -71,7 +69,7 @@
                                         @foreach ($songAll as $item)
                                             <div class="preview-item">
                                                 <div class="preview-thumbnail">
-                                                    <img src="../assets/images/faces/face1.jpg" width="10%">
+                                                    <img src="{{ asset('storage/' . $song->image) }}" width="10%">
                                                 </div>
                                                 <div class="preview-item-content d-sm-flex flex-grow">
                                                     <div class="flex-grow">
@@ -109,5 +107,28 @@
             </div>
             <!-- page-body-wrapper ends -->
         </div>
+        <script>
+            // Fungsi untuk menampilkan/menyembunyikan ikon pada hover
+            function toggleIcon(event) {
+                var icon = event.currentTarget.querySelector('.fa-play-circle');
+                icon.style.display = event.type === 'mouseenter' ? 'inline' : 'none';
+            }
+
+            // Ambil semua elemen dengan kelas 'coba'
+            var cards = document.querySelectorAll('.coba');
+
+            // Loop melalui setiap elemen dan tambahkan event listener
+            cards.forEach(function (card) {
+                card.addEventListener('mouseenter', toggleIcon);
+                card.addEventListener('mouseleave', toggleIcon);
+            });
+
+
+            function myFunction(x) {
+                x.classList.toggle("far"); // Menghapus kelas "fa fa-heart"
+                x.classList.toggle("fas"); // Menambahkan kelas "fas fa-heart"
+                x.classList.toggle("warna-kostum-like"); // Menambahkan kelas warna merah
+            }
+        </script>
     </div>
 @endSection

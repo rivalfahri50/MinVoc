@@ -3,6 +3,18 @@
     <link rel="stylesheet" href="/admin/assets/css/dashboard.css">
     <!-- partial | ISI -->
     <div class="main-panel">
+        <style>
+            .avatar {
+                width: auto;
+                /* Menghapus lebar tetap */
+                height: 40px;
+                /* Menentukan tinggi gambar */
+                object-fit: cover;
+                /* Memastikan gambar diisi sepenuhnya dan tidak melar */
+                margin-right: 10px;
+                border-radius: 0;
+            }
+        </style>
         <div class="content-wrapper">
             <div class="row">
                 <div class="col-md-12 mb-3">
@@ -31,7 +43,7 @@
                         </div>
                         <div class="col-6 row no-gutters">
                             <div class="card coba">
-                                <img src="assets/images/logo.svg" width="80%" height="100%" alt="logo"
+                                <img src="/assets/images/logo.svg" width="80%" height="100%" alt="logo"
                                     class="ml-5 md-3" />
                             </div>
                         </div>
@@ -59,22 +71,26 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($songs as $item)
-                                            <tr class="table-row">
-                                                <td class="table-cell">
-                                                    <div class="cell-content">
-                                                        <img src="{{ asset('storage/' . $item->images) }}" alt="Face"
-                                                            class="avatar">
-                                                        <div>
-                                                            <h6>{{ $item->judul }}</h6>
-                                                            <p class="text-muted m-0">{{ $item->artist->user->name }}</p>
+                                            @if ($item->is_approved)
+                                                <tr class="table-row">
+                                                    <td class="table-cell">
+                                                        <div class="cell-content">
+                                                            <img src="{{ asset('storage/' . $item->image) }}" alt="Face"
+                                                                class="avatar">
+                                                            <div>
+                                                                <h6>{{ $item->judul }}</h6>
+                                                                <p class="text-muted m-0">{{ $item->artist->user->name }}
+                                                                </p>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                                <td class="table-cell">{{ $item->genre }}</td>
-                                                <td class="table-cell">{{ $item->created_at->toDateString() }}</td>
-                                            </tr>
+                                                    </td>
+                                                    <td class="table-cell">{{ $item->genre->name }}</td>
+                                                    <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
+                                                </tr>
+                                            @endif
                                         @endforeach
                                     </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -105,7 +121,7 @@
                 ],
                 datasets: [{
                     label: 'Pendapatan',
-                    data: [5, 3.5, 2.5, 0.5, 4.5, 1, 2, 5, 4, 2.5, 3, 1.5],
+                    data: [1, 3.5, 2.5, 0.5, 4.5, 1, 2, 5, 4, 2.5, 3, 1.5],
                     backgroundColor: [
                         'rgba(153, 102, 255, 0.2)',
                         'rgba(153, 102, 255, 0.2)',

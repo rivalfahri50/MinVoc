@@ -28,6 +28,67 @@
         body {
             font-family: 'Poppins', sans-serif;
         }
+
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            width: 100%;
+            max-width: 400px;
+            /* Set the maximum width as needed */
+        }
+
+        /* Style Untuk search input */
+        .search-input {
+            border-radius: 15px;
+            border: 1px solid #eaeaea;
+            padding: 5px 10px;
+            width: 100%;
+        }
+
+        /* Style Untuk search results */
+        #search-results {
+            list-style: none;
+            position: absolute;
+            top: 60px;
+            left: 30px;
+            width: 52%;
+            background-color: white;
+            border: 1.5px solid #eaeaea;
+            padding: 10px;
+            display: none;
+            border-radius: 10px;
+            font-size: 15px
+        }
+
+        .profile-box {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .profile-picture {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 10px;
+        }
+
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-name {
+            margin: 0;
+            font-weight: bold;
+            font-size: 14px;
+        }
     </style>
     <script>
         // INI SCRIPT UNTUK HASIL SEARCH TAMPIL/TIDAK
@@ -116,9 +177,9 @@
                         </div>
                         {{-- <div class="icons">
                             <i id="audio-player-like-icon like"
-                                class="shared-icon-like fas fa-heart fr fh"
-                                data-id="" onclick="toggleLike(this)"></i>
-                        </div> --}}
+                                class="shared-icon-like {{ $currentSongLiked ? 'fas' : 'far' }} fa-heart fr fh"
+                                data-id="{{ $currentSongId }}" onclick="toggleLike(this, {{ $currentSongId }})"></i>
+                        </div>
                     </div>
                     <div class="progress-controller">
                         <div class="control-buttons">
@@ -306,7 +367,7 @@
                                         '</p></div><div class="mr-auto text-sm-right pt-2 pt-sm-0"><div class="text-group"><i onclick="myFunction(this)" class="far fa-heart pr-2"></i><p>' +
                                         result.waktu +
                                         '</p><i class="fas fa-ellipsis-v"></i></div></div></div>'
-                                    );
+                                        );
 
                                     $previewList.append($previewItem);
                                 });
@@ -314,8 +375,6 @@
                         });
                     });
                 });
-
-
 
                 $(document).ready(function() {
                     $('#search').on('keyup', function() {
@@ -389,7 +448,6 @@
                             headers: {
                                 'Content-Type': 'application/json',
                                 'X-CSRF-TOKEN': csrfToken
-
                             },
                             body: JSON.stringify({
                                 isLiked: iconElement.classList.contains('fas')
@@ -420,8 +478,7 @@
                     });
                 }
             </script>
-            <script>
-                // alert("astagfirullah");
+             <script>
                 let previous = document.querySelector('#pre');
                 let play = document.querySelector('#play');
                 let next = document.querySelector('#next');
@@ -781,7 +838,8 @@
                     }
                 }
             </script>
-            <script src="/user/assets/js/tablesort.js"></script>
+            <script src="/assets/js/tablesort.js"></script>
+            <script src="/user/assets/js/closepopup.js"></script>
             <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
             <script src="/user/assets/vendors/js/vendor.bundle.base.js"></script>

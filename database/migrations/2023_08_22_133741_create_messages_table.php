@@ -14,11 +14,14 @@ return new class extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->string("code", 100);
-            $table->foreignId("sender_id")->constrained("users");
-            $table->foreignId("receiver_id")->constrained("admins");
+            $table->foreignId("sender_id")->constrained("artists");
+            $table->foreignId("receiver_id")->constrained("artists");
+            // $table->unsignedBigInteger('receiver_id')->nullable();
+            // $table->foreign('receiver_id')->references('id')->on('artists')->nullable();
             $table->foreignId("project_id")->constrained("projects");
             $table->string("message");
             $table->timestamps();
+
         });
     }
 

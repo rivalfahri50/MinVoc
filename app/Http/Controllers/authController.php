@@ -103,10 +103,12 @@ class authController extends Controller
     {
         $credentials = $request->only('name', 'password');
 
-        $validator = Validator::make($credentials, [
+        $validator = Validator::make($request->only('name', 'password', 'kebijakan_privasi'), [
             'name' => 'required|string|max:50|exists:users,name',
             'password' => 'required|string|min:6',
+            'kebijakan_privasi' => 'required',
         ], [
+            'kebijakan_privasi.required' => 'Kebijakan Privasi wajib diisi Check.',
             'name.required' => 'Kolom nama wajib diisi.',
             'name.string' => 'Kolom nama harus berupa teks.',
             'name.max' => 'Panjang nama tidak boleh lebih dari :max karakter.',
@@ -178,28 +180,12 @@ class authController extends Controller
         $defaultRole = role::where('name', $request->only('role'))->first();
 
         try {
-            if ($request->input('name') == "admin") {
-                $user = User::create(
-                    [
-                        'code' => $code,
-                        'role_id' => 4,
-                        'name' => $request->input('name'),
-                        'email' => $request->input('email'),
-                        'password' => $request->input('password')
-                    ]
-                );
-
-                admin::create([
-                    'user_id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'password' => $user->password,
-                ]);
-            } else {
+            if ($request->input('name')) {
                 $user = User::create(
                     [
                         'code' => $code,
                         'role_id' => $defaultRole->id,
+                        'deskripsi' => "none",
                         'name' => $request->input('name'),
                         'email' => $request->input('email'),
                         'password' => $request->input('password')
