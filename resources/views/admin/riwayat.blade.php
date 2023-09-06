@@ -10,14 +10,14 @@
                     <table class="table table-sortable">
                         <thead>
                             <tr class="table-row table-header">
-                                <th class="table-cell">Nama</th>
-                                <th class="table-cell">Tanggal </th>
-                                <th class="table-cell">Status</th>
-                                <th class="table-cell">Aksi</th>
+                                <th class="table-cell">Nama<i class="fas fa-sort" data-order="asc"></th>
+                                <th class="table-cell">Tanggal<i class="fas fa-sort" data-order="asc"></th>
+                                <th class="table-cell">Status<i class="fas fa-sort" data-order="asc"></th>
+                                <th class="table-cell">Aksi<i class="fas fa-sort" data-order="asc"></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="table-row">
+                            <tr class="table-row baris">
                                 <td class="table-cell">
                                     <div class="cell-content">
                                         <img src="../assets/images/faces/face1.jpg" alt="Face" class="avatar">
@@ -35,7 +35,7 @@
                                     </button>
                                 </td>
                             </tr>
-                            <tr class="table-row">
+                            <tr class="table-row baris">
                                 <td class="table-cell">
                                     <div class="cell-content">
                                         <img src="../assets/images/faces/face1.jpg" alt="Face" class="avatar">
@@ -53,7 +53,7 @@
                                     </button>
                                 </td>
                             </tr>
-                            <tr class="table-row">
+                            <tr class="table-row baris">
                                 <td class="table-cell">
                                     <div class="cell-content">
                                         <img src="../assets/images/faces/face1.jpg" alt="Face" class="avatar">
@@ -71,7 +71,7 @@
                                     </button>
                                 </td>
                             </tr>
-                            <tr class="table-row">
+                            <tr class="table-row baris">
                                 <td class="table-cell">
                                     <div class="cell-content">
                                         <img src="../assets/images/faces/face1.jpg" alt="Face" class="avatar">
@@ -89,7 +89,7 @@
                                     </button>
                                 </td>
                             </tr>
-                            <tr class="table-row">
+                            <tr class="table-row baris">
                                 <td class="table-cell">
                                     <div class="cell-content">
                                         <img src="../assets/images/faces/face1.jpg" alt="Face" class="avatar">
@@ -107,7 +107,7 @@
                                     </button>
                                 </td>
                             </tr>
-                            <tr class="table-row">
+                            <tr class="table-row baris">
                                 <td class="table-cell">
                                     <div class="cell-content">
                                         <img src="../assets/images/faces/face1.jpg" alt="Face" class="avatar">
@@ -125,7 +125,7 @@
                                     </button>
                                 </td>
                             </tr>
-                            <tr class="table-row">
+                            <tr class="table-row baris">
                                 <td class="table-cell">
                                     <div class="cell-content">
                                         <img src="../assets/images/faces/face1.jpg" alt="Face" class="avatar">
@@ -143,7 +143,7 @@
                                     </button>
                                 </td>
                             </tr>
-                            <tr class="table-row">
+                            <tr class="table-row baris">
                                 <td class="table-cell">
                                     <div class="cell-content">
                                         <img src="../assets/images/faces/face1.jpg" alt="Face" class="avatar">
@@ -161,7 +161,7 @@
                                     </button>
                                 </td>
                             </tr>
-                            <tr class="table-row">
+                            <tr class="table-row baris">
                                 <td class="table-cell">
                                     <div class="cell-content">
                                         <img src="../assets/images/faces/face1.jpg" alt="Face" class="avatar">
@@ -179,7 +179,7 @@
                                     </button>
                                 </td>
                             </tr>
-                            <tr class="table-row">
+                            <tr class="table-row baris">
                                 <td class="table-cell">
                                     <div class="cell-content">
                                         <img src="../assets/images/faces/face1.jpg" alt="Face" class="avatar">
@@ -224,7 +224,7 @@
         /*===================================*/
 
         $(document).ready(function() {
-            var itemsPerPage = 5;
+            var itemsPerPage = 4;
             var currentPage = 1;
     
             function setURLParameter(page) {
@@ -242,13 +242,13 @@
             function showTableRows() {
                 var start = (currentPage - 1) * itemsPerPage;
                 var end = start + itemsPerPage;
-                $(".table-row").hide();
-                $(".table-row").slice(start, end).show();
+                $(".baris").hide();
+                $(".baris").slice(start, end).show();
             }
     
             function updatePagination() {
                 $(".pagination").empty();
-                var numPages = Math.ceil($(".table-row").length / itemsPerPage);
+                var numPages = Math.ceil($(".baris").length / itemsPerPage);
     
                 for (var i = 1; i <= numPages; i++) {
                     var activeClass = i === currentPage ? "active" : "";

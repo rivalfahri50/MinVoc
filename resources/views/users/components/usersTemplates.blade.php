@@ -61,6 +61,34 @@
             border-radius: 10px;
             font-size: 15px
         }
+
+        .profile-box {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .profile-picture {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 10px;
+        }
+
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-name {
+            margin: 0;
+            font-weight: bold;
+            font-size: 14px;
+        }
     </style>
     <script>
         // INI SCRIPT UNTUK HASIL SEARCH TAMPIL/TIDAK
@@ -379,13 +407,13 @@
                                 $.each(results.songs, function(index, result) {
                                     $searchResults.append(
                                         `<li><a href='/pengguna/search/${result.code}'>${result.judul}</a></li>`
-                                        );
+                                    );
                                 });
                                 $.each(results.artists, function(index, result) {
                                     console.log(result.code);
                                     $searchResults.append(
                                         `<li><a href='/pengguna/search/${result.code}'>${result.name}</a></li>`
-                                        );
+                                    );
                                 });
                             }
                         });
@@ -756,7 +784,8 @@
                     }
                 }
             </script>
-            <script src="/user/assets/js/tablesort.js"></script>
+            <script src="/assets/js/tablesort.js"></script>
+            <script src="/user/assets/js/closepopup.js"></script>
             <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
             <script src="/user/assets/vendors/js/vendor.bundle.base.js"></script>

@@ -44,6 +44,7 @@
 
 @section('content')
 <!-- Modal -->
+@foreach ($artist as $item)
 <div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -68,6 +69,7 @@
         </div>
     </div>
 </div>
+@endforeach
 
     <link rel="stylesheet" href="/admin/assets/css/verifikasi.css">
     <!-- partial | ISI -->

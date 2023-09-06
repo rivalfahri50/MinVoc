@@ -31,6 +31,7 @@ class ArtistVerifiedController extends Controller
         $title = "MusiCave";
         $songs = song::all();
         $genres = genre::all();
+        $playlists = playlist::all();
         $artist = artist::with('user')->get();
         $playlists = playlist::all();
         $billboards = billboard::all();
@@ -641,7 +642,7 @@ class ArtistVerifiedController extends Controller
     protected function rejectProject(Request $request)
     {
         $project = projects::where('code', $request->input('code'))->first();
-        dd($project);
+        // dd($project);
         try {
             $data = [
                 'code' => $project->code,

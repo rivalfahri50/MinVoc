@@ -4,15 +4,14 @@
     <div class="modal fade" id="staticBackdrop-{{ $item->code }}" data-bs-backdrop="static" data-bs-keyboard="false"
         tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content" style="background-color: white">
-                <div class="modal-header">
+            <div class="modal-content border-0" style="background-color: white">
+                <div class="modal-header border-0">
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Detail Kolaborasi</h1>
                     <button type="button" class="btn-unstyled" data-bs-dismiss="modal" aria-label="Close">
-                        <i class="mdi mdi-close-circle-outline btn-icon text-danger"></i>
+                        <i class="mdi mdi-close-circle-outline btn-icon" style="color: #957DAD"></i>
                     </button>
                 </div>
-                <div class="modal-body ">
-
+                <div class="modal-body border-0">
                     <div class="col-md-12" style="font-size: 13px">
                         <div class="mb-3">
                             <label for="namakategori" class="form-label judulnottebal">Nama
@@ -28,8 +27,8 @@
                     </div>
 
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-info rounded-3">
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn rounded-3">
                         <a href="{{ route('lirikAndChat', $item->code) }}" class="btn-link"
                             style="color: inherit; text-decoration: none;">Buat
                             Proyek</a></button>
@@ -43,6 +42,10 @@
 @section('content')
     <div class="main-panel">
         <style>
+            button {
+                border: none;
+                background: none;
+            }
             .table-container {
                 margin-bottom: 20px;
             }
@@ -216,20 +219,20 @@
                                                     </td>
                                                     <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
                                                     <td class="d-flex align-items-center">
-                                                        <a href="" class="btn-unstyled" data-bs-toggle="modal"
+                                                        <button class="btn-unstyled mr-2" data-bs-toggle="modal"
                                                             data-bs-target="#staticBackdrop-{{ $item->code }}">
-                                                            <i class="mdi mdi-eye btn-icon text-primary" style="font-size: 20px; margin-right: 2px;"></i>
-                                                        </a>
-                                                        <a href="" type="submit">
-                                                            <input type="hidden" name="code"
-                                                                value="{{ $item->code }}">
-                                                            <input type="hidden" name="is_reject" value="true">
-                                                            <i
-                                                                class="mdi mdi-close-circle-outline btn-icon text-danger" style="font-size: 20px"></i>
-                                                        </a>
-                                                        <form id="reject" action="{{ route('reject.project.artis') }}" method="post"
-                                                            class="">
+                                                            <i class="mdi mdi-eye btn-icon fa-lg text-primary" style="font-size: 20px; margin-right: 2px;"></i>
+                                                        </button>
+                                                        <form action="{{ route('reject.project') }}" method="post"
+                                                            class="m-0">
                                                             @csrf
+                                                            <button type="submit">
+                                                                <input type="hidden" name="code"
+                                                                    value="{{ $item->code }}">
+                                                                <input type="hidden" name="is_reject" value="true">
+                                                                <i
+                                                                    class="mdi mdi-close-circle-outline fa-lg btn-icon text-danger"></i>
+                                                            </button>
                                                         </form>
                                                     </td>
                                                 </tr>
@@ -241,9 +244,38 @@
                         </div>
                     </div>
                 </div>
+                <div id="tambahkategori">
+                    <div class="card window">
+                        <div class="card-body">
+                            <a href="" class="close-button far fa-times-circle"></a>
+                            <h3 class="judul p-0 mb-3">Tambah Kolaborasi</h3>
+                            <form class="row" action="{{ route('createProject.artis') }}" method="POST"
+                                enctype="multipart/form-data">
+                                @csrf
+                                <div class="col-md-12" style="font-size: 13px">
+                                    <div class="mb-3">
+                                        <label for="namakategori" class="form-label judulnottebal">Nama
+                                            Proyek</label>
+                                        <input type="text" name="name" class="form-control form-i" id="namaproyek"
+                                            required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="konsep" class="form-label judulnottebal">Deskripsi</label>
+                                        <textarea id="konsep" name="konsep" class="form-control" maxlength="500" rows="4"
+                                            required></textarea>
+                                    </div>
+                                </div>
+                                <div class="text-md-right">
+                                    <button type="submit" href="#" class="btn" type="submit">Tambah</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
+        <script src="/assets/js/closepopup.js"></script>
         <script>
             /* ============Dengan Rupiah=========== */
             var harga = document.getElementById('harga');

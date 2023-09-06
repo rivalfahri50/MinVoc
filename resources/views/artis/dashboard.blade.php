@@ -30,6 +30,7 @@
             </div>
         </div>
     @endforeach
+    @include('partials.tambahkeplaylist')
 
 
     <div class="main-panel">
