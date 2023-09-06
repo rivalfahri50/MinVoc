@@ -65,19 +65,6 @@
     border-radius: 10px;
 }
 
-.table-sortable .th-sort-asc::after {
-    content: "\25b4";
-}
-.table-sortable .th-sort-desc::after {
-    content: "\25be";
-}
-
-.table-sortable .th-sort-asc::after, 
-.table-sortable .th-sort-desc::after {
-    margin-left: 10px;
-}
-
-
 /* CSS untuk styling pagination */
 .pagination {
     margin-top: 20px;

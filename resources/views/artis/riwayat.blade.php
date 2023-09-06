@@ -10,13 +10,13 @@
                         <table class="table table-sortable">
                             <thead>
                                 <tr class="table-row table-header">
-                                    <th class="table-cell">Artis</th>
-                                    <th class="table-cell">Kategori</th>
-                                    <th class="table-cell">Tanggal</th>
+                                    <th class="table-cell">Artis <i class="fas fa-sort" data-order="asc"></th>
+                                    <th class="table-cell">Kategori <i class="fas fa-sort" data-order="asc"></th>
+                                    <th class="table-cell">Tanggal <i class="fas fa-sort" data-order="asc"></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="table-row">
+                                <tr class="table-row baris">
                                     <td class="table-cell">
                                         <h6>Cindy</h6>
                                         <p class="text-muted m-0">Atulus</p>
@@ -24,7 +24,7 @@
                                     <td class="table-cell">Dangdut</td>
                                     <td class="table-cell">04/09/2023</td>
                                 </tr>
-                                <tr class="table-row">
+                                <tr class="table-row baris">
                                     <td class="table-cell">
                                         <h6>Bagus</h6>
                                         <p class="text-muted m-0">Dtulus</p>
@@ -32,7 +32,7 @@
                                     <td class="table-cell">Apa</td>
                                     <td class="table-cell">01/09/2023</td>
                                 </tr>
-                                <tr class="table-row">
+                                <tr class="table-row baris">
                                     <td class="table-cell">
                                         <h6>Agus</h6>
                                         <p class="text-muted m-0">Btulus</p>
@@ -40,7 +40,7 @@
                                     <td class="table-cell">Ciee</td>
                                     <td class="table-cell">02/09/2023</td>
                                 </tr>
-                                <tr class="table-row">
+                                <tr class="table-row baris">
                                     <td class="table-cell">
                                         <h6>Denis</h6>
                                         <p class="text-muted m-0">Ctulus</p>
@@ -48,7 +48,7 @@
                                     <td class="table-cell">Bajigur</td>
                                     <td class="table-cell">10/10/2023</td>
                                 </tr>
-                                <tr class="table-row">
+                                <tr class="table-row baris">
                                     <td class="table-cell">
                                         <h6>Genis</h6>
                                         <p class="text-muted m-0">Ctulus</p>
@@ -78,7 +78,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         $(document).ready(function() {
-            var itemsPerPage = 5;
+            var itemsPerPage = 4;
             var currentPage = 1;
     
             function setURLParameter(page) {
@@ -96,13 +96,13 @@
             function showTableRows() {
                 var start = (currentPage - 1) * itemsPerPage;
                 var end = start + itemsPerPage;
-                $(".table-row").hide();
-                $(".table-row").slice(start, end).show();
+                $(".baris").hide();
+                $(".baris").slice(start, end).show();
             }
     
             function updatePagination() {
                 $(".pagination").empty();
-                var numPages = Math.ceil($(".table-row").length / itemsPerPage);
+                var numPages = Math.ceil($(".baris").length / itemsPerPage);
     
                 for (var i = 1; i <= numPages; i++) {
                     var activeClass = i === currentPage ? "active" : "";

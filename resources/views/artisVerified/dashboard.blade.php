@@ -2,6 +2,9 @@
 
 @section('content')
     <link rel="stylesheet" href="/user/assets/css/dashboard.css">
+    
+    @include('partials.tambahkeplaylist')
+
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="row">

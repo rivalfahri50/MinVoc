@@ -20,8 +20,9 @@
                                         <h3 style="font-size: 18px; font-weight: 500">Buat Playlist</h3>
                                     </a>
                                     <div class="img-and-text">
-                                        <img class="img-ss rounded-circle"
-                                            src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
+                                        <div class="profile-image">
+                                            <img class="img-ss rounded-circle" src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
+                                        </div>
                                         <p class="judulnottebal fw-bold">Henry Klein</p>
                                     </div>
                                 </div>
@@ -46,7 +47,7 @@
                                         @foreach ($songs as $item)
                                             <div class="preview-item">
                                                 <div class="preview-thumbnail">
-                                                    <img src="{{ asset('storage/' . $item->image) }}" width="10%">
+                                                    <img src="{{ asset('storage/' . $item->image) }}" class="avatar">
                                                 </div>
                                                 <div class="preview-item-content d-sm-flex flex-grow">
                                                     <div class="flex-grow">

@@ -61,6 +61,10 @@
             border-radius: 10px;
             font-size: 15px
         }
+
+        .sidebar .nav.sub-menu .nav-item .nav-link:hover {
+            color: #7c6890;
+        }
     </style>
 
     <script>
@@ -246,6 +250,7 @@
             @yield('content')
 
             <script src="assets/js/liked.js"></script>
+            <script src="/user/assets/js/closepopup.js"></script>
             <!-- plugins:js -->
             <script src="assets/vendors/js/vendor.bundle.base.js"></script>
             <!-- endinject -->

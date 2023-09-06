@@ -71,7 +71,7 @@
                     <div class="modal-content" style="background-color: whitesmoke">
                         <div class="card-body">
                             <h3 class="judul">Persetujuan Unggah Lagu</h3>
-                            <a href="" class="close-button far fa-times-circle"></a>
+                            <a href="javascript:void(0);" id="closeButton" class="close-button far fa-times-circle"></a>
                             <div class="row mt-4">
                                 <div class="col-md-12">
                                     <h5 class="judul">Tanggal Pengajuan</h5>
@@ -80,7 +80,7 @@
                                 <div class="col-md-12 mb-4">
                                     <h5 class="judul">Judul Lagu</h5>
                                     <div class="cell-content">
-                                        <img src="{{ asset('storage/' . $item->image) }}" alt="Face" class="avatar">
+                                        <img src="{{ asset('storage/' . $item->image) }}" alt="Face" class="avatar" style="width: 40px">
                                         <div>
                                             <h6>{{ $item->judul }}</h6>
                                             <p class="text-muted m-0">{{ $item->artist->user->name }}</p>
@@ -107,6 +107,14 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Fungsi untuk menutup tanpa mereset tautan
+        document.getElementById('closeButton').addEventListener('click', function (e) {
+            e.preventDefault(); // Menghentikan tindakan default dari link
+            // Tambahkan tindakan penutupan di sini
+            // Misalnya, mengubah tampilan elemen yang ingin ditutup
+            // document.getElementById('elementToClose').style.display = 'none';
+        });
+
         $(document).ready(function() {
 
             $('.view-button').click(function() {
@@ -133,8 +141,7 @@
                 $('#popup').hide();
             });
         });
-    </script>
-    <script>
+
         $(document).ready(function() {
             // Isi menu dropdown dengan opsi secara dinamis
             function populateDropdown(id, options) {

@@ -57,10 +57,17 @@
         }
 
 
-        /* Style Untuk Ukuran foto profil */
+        .profile-box {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+
         .profile-picture {
-            width: 40px;
-            height: 40px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             overflow: hidden;
             margin-right: 10px;
@@ -70,6 +77,12 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+
+        .profile-name {
+            margin: 0;
+            font-weight: bold;
+            font-size: 14px;
         }
 
         #buat-album {
@@ -223,9 +236,9 @@
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="{{ route('peraturan.artis') }}">
                         <span class="menu-icon">
-                            <i class="mdi mdi-clock-outline"></i>
+                            <i class="mdi mdi-information-outline"></i>
                         </span>
-                        <span class="menu-title">Riwayat</span>
+                        <span class="menu-title">Informasi</span>
                     </a>
                 </li>
             </ul>
@@ -238,7 +251,7 @@
                         <ul class="navbar-nav w-75">
                             <li class="nav-item w-75">
                                 <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
-                                    <div class="input-group mb-3">
+                                    <div class="input-group">
                                         <span class="input-group-text"
                                             style="border-radius: 15px 0px 0px 15px; border: 1px solid #eaeaea">
                                             <svg width="19" height="19" viewBox="0 0 19 19" fill="none"
@@ -303,7 +316,7 @@
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
-                                <div class="navbar-profile">
+                                <div class="navbar-profile profile-picture">
                                     <img class="img-xs rounded-circle"
                                         src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
                                 </div>
