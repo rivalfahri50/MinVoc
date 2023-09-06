@@ -280,7 +280,6 @@
                                     <thead class="table-header">
                                         <tr class="table-row header headerlengkung">
                                             <th class="table-cell"> Nama Proyek </th>
-                                            <th class="table-cell"> Harga </th>
                                             <th class="table-cell"> Tanggal </th>
                                             <th class="table-cell"> Aksi </th>
                                         </tr>
@@ -291,9 +290,6 @@
                                                 <tr class="table-row">
                                                     <td class="table-cell">
                                                         <span class="pl-2">{{ $item->name }}</span>
-                                                    </td>
-                                                    <td class="table-cell">
-                                                        <div>Rp {{ $item->harga }}</div>
                                                     </td>
                                                     <td class="table-cell">{{ $item->created_at->toDateString() }}</td>
                                                     <td class="d-flex align-items-center">

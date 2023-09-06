@@ -76,7 +76,7 @@
                                                             <p style="pointer-events: none;">{{ $item->waktu }}</p>
                                                             <a data-bs-toggle="modal"
                                                                 data-bs-target="#staticBackdrop-{{ $item->code }}"
-                                                                style="color: #957dad">
+                                                                style="color: #957dad cursor: pointer">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" x="0px"
                                                                     y="0px" width="20" height="20"
                                                                     viewBox="0 2 24 24">
