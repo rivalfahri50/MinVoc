@@ -114,12 +114,12 @@ class ArtistVerifiedController extends Controller
                 'image' => $imagePath,
             ]);
         } catch (\Throwable $th) {
-            return response()->redirectTo('/artisVerified/playlist')->with('failed', "failed");
+            return response()->redirectTo('/artis-verified/playlist')->with('failed', "failed");
         }
-        return response()->redirectTo('/artisVerified/playlist')->with('message', "success");
+        return response()->redirectTo('/artis-verified/playlist')->with('message', "success");
     }
 
-    
+
     protected function updateProfile(string $code, Request $request)
     {
         $validate = Validator::make(
@@ -128,7 +128,7 @@ class ArtistVerifiedController extends Controller
                 'name' => 'required|string|max:255',
                 'avatar' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
                 'email' => 'required|string|email|max:255',
-                'deskripsi' =>  'max:255',
+                'deskripsi' =>  'max:500',
             ],
             [
                 'name' => [
@@ -221,9 +221,9 @@ class ArtistVerifiedController extends Controller
         try {
             User::where('code', $code)->update($value);
         } catch (Throwable $e) {
-            return response()->redirectTo('/artisVerified/profile')->with('failed', "failed");
+            return response()->redirectTo('/artis-verified/profile')->with('failed', "failed");
         }
-        return response()->redirectTo('/artisVerified/profile')->with('failed', "failed");
+        return response()->redirectTo('/artis-verified/profile')->with('failed', "failed");
     }
 
     protected function hapusPlaylist(string $code)
@@ -338,12 +338,12 @@ class ArtistVerifiedController extends Controller
             DB::commit();
 
             // Alert::success('message', 'Berhasil Mengunggah Lagu');
-            return redirect('/artisVerified/unggahAudio')->with('success', 'Song uploaded successfully.');
+            return redirect('/artis-verified/unggahAudio')->with('success', 'Song uploaded successfully.');
         } catch (\Throwable $e) {
             DB::rollBack();
             Log::error('Error uploading song: ' . $e->getMessage());
             // Alert::error('message', 'Gagal Mengunggah Lagu');
-            return redirect('/artisVerified/unggahAudio')->with('error', 'Failed to upload song. Please try again later.');
+            return redirect('/artis-verified/unggahAudio')->with('error', 'Failed to upload song. Please try again later.');
         }
     }
 
@@ -587,7 +587,6 @@ class ArtistVerifiedController extends Controller
         $data = [
             'code' => $project->code,
             'name' => $project->name,
-            'genre' => $project->genre,
             'judul' => $request->input('judul'),
             'lirik' => $request->input('lirik'),
             'konsep' => $project->konsep,
@@ -597,12 +596,14 @@ class ArtistVerifiedController extends Controller
             'is_reject' => false,
         ];
 
+        dd($data);
+
         try {
             $project->update($data);
         } catch (Throwable $e) {
-            return response()->redirectTo('/admin/dashboard')->with('message', "Gagal untuk register!!");
+            return response()->redirectTo('/artis-verified/kolaborasi')->with('message', "Gagal untuk register!!");
         }
-        return response()->redirectTo('/admin/dashboard')->with('message', 'User created successfully.');
+        return response()->redirectTo('/artis-verified/kolaborasi')->with('message', 'User created successfully.');
     }
 
     protected function message(Request $request)
@@ -630,12 +631,11 @@ class ArtistVerifiedController extends Controller
     protected function rejectProject(Request $request)
     {
         $project = projects::where('code', $request->input('code'))->first();
-        // dd($project);
+        dd($project);
         try {
             $data = [
                 'code' => $project->code,
                 'name' => $project->name,
-                'genre' => $project->genre,
                 'judul' => "none",
                 'lirik' => "none",
                 'konsep' => $project->konsep,
@@ -654,12 +654,10 @@ class ArtistVerifiedController extends Controller
     protected function createProject(Request $request)
     {
         $validate = Validator::make(
-            $request->only('judul', 'genre', 'konsep', 'harga'),
+            $request->only('name', 'konsep'),
             [
-                'judul' => 'required|string|max:255',
-                'genre' => 'required|string|max:255',
-                'konsep' => 'required|string|max:500',
-                'harga' => 'required|numeric|min:0',
+                'name' => 'required|string|max:255|min:1',
+                'konsep' => 'required|string|max:500|min:1',
             ],
             [
                 'required' => 'Kolom :attribute harus diisi.',
@@ -680,25 +678,23 @@ class ArtistVerifiedController extends Controller
                 ->withInput();
         }
 
-        $code = Str::uuid();
         try {
+            $code = Str::uuid();
             projects::create(
                 [
                     'code' => $code,
-                    'name' => $request->input('judul'),
-                    'genre' => $request->input('genre'),
+                    'name' => $request->input('name'),
+                    'konsep' => $request->input('konsep'),
                     'judul' => "none",
                     'lirik' => "none",
-                    'konsep' => $request->input('konsep'),
-                    'harga' => $request->input('harga'),
                     'artist_id' => 0,
                     'is_approved' => false,
                     'is_reject' => false,
                 ]
             );
         } catch (Throwable $e) {
-            return response()->redirectTo('/admin/dashboard')->with('message', "Gagal untuk register!!");
+            return response()->redirectTo('/artis-verified/kolaborasi')->with('message', "Gagal untuk register!!");
         }
-        return response()->redirectTo('/admin/dashboard')->with('message', 'User created successfully.');
+        return response()->redirectTo('/artis-verified/kolaborasi')->with('message', 'User created successfully.');
     }
 }

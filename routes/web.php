@@ -94,17 +94,17 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
     Route::get('/hapus-playlist/{code}', 'hapusPlaylist')->name('hapus.playlist.artis');
     Route::get('/hapus-album/{code}', 'hapusAlbum')->name('hapus.albums.artis');
     Route::get('/search_song', 'search_song')->name('search.song.artis');
+    Route::get('/search/{code}', 'search_result');
     Route::get('/peraturan', function () {
         return view('artis.peraturan', ['title' => 'MusiCave']);
     })->name('peraturan.artis');
 
-    Route::post('/project', 'createProject')->name('createProject.artis');
     Route::post('/tambah_playlist/{code}', 'tambah_playlist')->name('tambah.playlist.artis');
     Route::POST('/buat-album/{code}', 'buatAlbum')->name('tambah.album.artis');
     Route::POST('/verified/{code}', 'verifiedAccount')->name('verified');
     Route::post('/create-lirik', 'Project')->name('create.project');
     Route::post('/message', 'message')->name('message.project');
-    Route::post('/reject-project', 'rejectProject')->name('reject.project');
+    Route::post('/reject-project', 'rejectProject')->name('reject.project.artis');
     Route::post('/buat-playlist', 'storePlaylist')->name('buat.playlist.artis');
     Route::post('/ubah-playlist/{code}', 'ubahPlaylist')->name('ubah.playlist.artis');
     Route::post('/ubah-album/{code}', 'ubahAlbum')->name('ubah.album.artis');
@@ -154,7 +154,7 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
     Route::post('/reject-project', 'rejectProject')->name('reject.project.artisVerified');
     Route::post('/ubah-album/{code}', 'ubahAlbum')->name('ubah.album.artisVerified');
     Route::post('/update/profile/{code}', 'updateProfile')->name('update.profile.artisVerified');
-    Route::post('/unggahAudio', 'unggahAudio')->name('unggah.artisVerified');
+    // Route::post('/unggahAudio', 'unggahAudio')->name('unggah.artisVerified');
 });
 
 Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(penggunaController::class)->group(function () {

@@ -73,7 +73,7 @@ class AdminController extends Controller
         return response()->view('admin.verifikasi', compact('title', 'artist'));
     }
 
-    protected function setujuMusic(string $code): Response
+    protected function setujuMusic(string $code)
     {
         $title = "MusiCave";
         $song = song::where('code', $code)->first();
@@ -87,7 +87,7 @@ class AdminController extends Controller
             return response()->view('admin.persetujuan', compact('persetujuan', 'title'));
         }
         Alert::success('message', 'Lagu Berhasil Publish');
-        return back();
+        return back()->with(compact('persetujuan', 'title'));
     }
 
     protected function buatBillboard(Request $request)

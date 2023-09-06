@@ -12,7 +12,7 @@
                         @if (!empty($playlists))
                             @foreach ($playlists as $item)
                                 @if ($item->user_id !== auth()->user()->id)
-                                    <a href="{{ route('detailPlaylistArtis', $item->code) }}"
+                                    <a href="{{ route('detailPlaylistArtisVerified', $item->code) }}"
                                         class="card card-scroll coba text-decoration-none">
                                         <div class="card-content">
                                             <div class="kotaktetap">
@@ -35,7 +35,7 @@
                         @if (!empty($albums))
                             @foreach ($albums as $item)
                                 {{-- @if ($item->artis->user_id == auth()->user()->id) --}}
-                                    <a href="{{ route('detailAlbumArtis', $item->code) }}"
+                                    <a href="{{ route('detailAlbumArtisVerified', $item->code) }}"
                                         class="card card-scroll coba text-decoration-none">
                                         <div class="card-content">
                                             <div class="kotaktetap">
@@ -57,7 +57,7 @@
                         @if (!empty($playlists))
                             @foreach ($playlists as $item)
                                 @if ($item->user_id == auth()->user()->id)
-                                    <a href="{{ route('detailPlaylistArtis', $item->code) }}"
+                                    <a href="{{ route('detailPlaylistArtisVerified', $item->code) }}"
                                         class="card card-scroll coba text-decoration-none">
                                         <div class="card-content">
                                             <div class="kotaktetap">

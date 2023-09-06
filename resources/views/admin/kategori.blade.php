@@ -47,7 +47,7 @@
                                                             </div>
                                                         </td>
                                                         <td class="table-cell">{{ $item->name }}</td>
-                                                        <td class="table-cell">{{ $item->created_at->toDateString() }}</td>
+                                                        <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
                                                         <td class="table-cell">
                                                             <button class="btn btnicon"
                                                                 onclick="deleteGenre('{{ $item->code }}')">

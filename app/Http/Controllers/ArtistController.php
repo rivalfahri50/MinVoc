@@ -127,9 +127,9 @@ class ArtistController extends Controller
                 'image' => $imagePath,
             ]);
         } catch (\Throwable $th) {
-            return response()->redirectTo('/artis/playlist')->with('failed', "failed");
+            return response()->redirectTo('/artis-verified/playlist')->with('failed', "failed");
         }
-        return response()->redirectTo('/artis/playlist')->with('message', "success");
+        return response()->redirectTo('/artis-verified/playlist')->with('message', "success");
     }
 
     protected function verifiedAccount(string $code, Request $request)
@@ -179,7 +179,7 @@ class ArtistController extends Controller
                 'name' => 'required|string|max:255',
                 'avatar' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
                 'email' => 'required|string|email|max:255',
-                'deskripsi' =>  'max:255',
+                'deskripsi' =>  'max:500',
             ],
             [
                 'name' => [
@@ -688,32 +688,32 @@ class ArtistController extends Controller
         try {
             $project->update($data);
         } catch (Throwable $e) {
-            return response()->redirectTo('/admin/dashboard')->with('message', "Gagal untuk register!!");
+            return response()->redirectTo('/artis/dashboard')->with('message', "Gagal untuk register!!");
         }
-        return response()->redirectTo('/admin/dashboard')->with('message', 'User created successfully.');
+        return response()->redirectTo('/artis/dashboard')->with('message', 'User created successfully.');
     }
 
-    protected function message(Request $request)
-    {
-        try {
-            $message = messages::create([
-                'code' => Str::uuid(),
-                'sender_id' => Auth::user()->id,
-                'receiver_id' => 1,
-                'project_id' => $request->input('id_project'),
-                'message' => $request->input('message')
-            ]);
-            $data = messages::with('messages')->get();
-            // dd($message);
-        } catch (\Throwable $th) {
-            return redirect()->back();
-        }
+    // protected function message(Request $request)
+    // {
+    //     $message = messages::create([
+    //         'code' => Str::uuid(),
+    //         'sender_id' => Auth::user()->id,
+    //         'receiver_id' => ,
+    //         'project_id' => $request->input('id_project'),
+    //         'message' => $request->input('message')
+    //     ]);
+    //     $data = messages::with('messages')->get();
+    //     dd($message);
+    //     try {
+    //     } catch (\Throwable $th) {
+    //         return redirect()->back();
+    //     }
 
-        return redirect()->back()->with([
-            'message' => $message->message,
-            'datas' => $data
-        ]);
-    }
+    //     return redirect()->back()->with([
+    //         'message' => $message->message,
+    //         'datas' => $data
+    //     ]);
+    // }
 
     protected function rejectProject(Request $request)
     {
