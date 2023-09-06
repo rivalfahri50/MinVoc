@@ -4,7 +4,7 @@
     <div class="modal fade" id="staticBackdrop-{{ $item->code }}" data-bs-backdrop="static" data-bs-keyboard="false"
         tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content" style="background-color: white">
+            <div class="modal-content border-0" style="background-color: white">
                 <div class="modal-header border-0">
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Detail Kolaborasi</h1>
                     <button type="button" class="btn-unstyled" data-bs-dismiss="modal" aria-label="Close">
@@ -219,10 +219,10 @@
                                                     </td>
                                                     <td class="table-cell">{{ $item->created_at->toDateString() }}</td>
                                                     <td class="d-flex align-items-center">
-                                                        <a href="" class="btn-unstyled mr-2" data-bs-toggle="modal"
+                                                        <button class="btn-unstyled mr-2" data-bs-toggle="modal"
                                                             data-bs-target="#staticBackdrop-{{ $item->code }}">
                                                             <i class="mdi mdi-eye btn-icon fa-lg text-primary" style="font-size: 20px; margin-right: 2px;"></i>
-                                                        </a>
+                                                        </button>
                                                         <form action="{{ route('reject.project') }}" method="post"
                                                             class="m-0">
                                                             @csrf

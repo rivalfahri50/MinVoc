@@ -31,9 +31,10 @@ class ArtistVerifiedController extends Controller
         $title = "MusiCave";
         $songs = song::all();
         $genres = genre::all();
+        $playlists = playlist::all();
         $artist = artist::with('user')->get();
         $billboards = billboard::all();
-        return response()->view('artisVerified.dashboard', compact('title', 'songs', 'genres', 'artist', 'billboards'));
+        return response()->view('artisVerified.dashboard', compact('title', 'songs', 'genres', 'artist', 'billboards', 'playlists'));
     }
 
     protected function playlist(): Response
@@ -631,7 +632,7 @@ class ArtistVerifiedController extends Controller
     protected function rejectProject(Request $request)
     {
         $project = projects::where('code', $request->input('code'))->first();
-        dd($project);
+        // dd($project);
         try {
             $data = [
                 'code' => $project->code,

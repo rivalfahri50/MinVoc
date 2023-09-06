@@ -1,6 +1,6 @@
 @extends('artisVerified.components.artisVerifiedTemplate')
 
-@foreach ($datas as $item)
+{{-- @foreach ($datas as $item)
     <div class="modal fade" id="staticBackdrop-{{ $item->code }}" data-bs-backdrop="static" data-bs-keyboard="false"
         tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -53,12 +53,67 @@
             </div>
         </div>
     </div>
+@endforeach --}}
+
+@foreach ($datas as $item)
+    <div class="modal fade" id="staticBackdrop-{{ $item->code }}" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Detail Kolaborasi</h1>
+                    <button type="button" class="btn-unstyled" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="mdi mdi-close-circle-outline btn-icon" style="color: #957DAD"></i>
+                    </button>
+                </div>
+                <div class="modal-body border-0">
+                    <div class="col-md-12" style="font-size: 13px">
+                        <div class="mb-3">
+                            <label for="namakategori" class="form-label judulnottebal">Nama
+                                Proyek</label>
+                            <input type="text" name="name" class="form-control form-i" id="namaproyek" required
+                                readonly value="{{ $item->name }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="konsep" class="form-label judulnottebal">Deskripsi</label>
+                            <textarea id="konsep" readonly name="konsep" class="form-control" maxlength="500" rows="4" required>{{ $item->konsep }}</textarea>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn rounded-3">
+                        <a href="{{ route('lirikAndChat.artisVerified', $item->code) }}" class="btn-link"
+                            style="color: inherit; text-decoration: none;">Buat
+                            Proyek</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endforeach
 
 
 @section('content')
     <div class="main-panel">
         <style>
+            .modal-content {
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                pointer-events: auto;
+                background-color: white
+                background-clip: padding-box;
+                border: none;
+                border-radius: 1rem;
+                outline: 0;
+            }
+
+            button {
+                border: none;
+                background: none;
+            }
+
             .table-container {
                 margin-bottom: 20px;
             }
@@ -211,10 +266,11 @@
                     <div class="sejajar">
                         <h3 style="color: #957DAD">Kolaborasi</h3>
                         <div class="text-lg-end mb-3">
-                            <a href="#tambahkategori" class="btn full-width-btn" type="button">
+                            <button class="btn full-width-btn" type="button" data-bs-toggle="modal"
+                                data-bs-target="#tambahModal">
                                 <i class="fas fa-plus"></i>
                                 Tambah kolaborasi
-                            </a>
+                            </button>
                         </div>
                     </div>
                     <div class="card rounded-4">
@@ -243,18 +299,19 @@
                                                     <td class="d-flex align-items-center">
                                                         <a href="" class="btn-unstyled" data-bs-toggle="modal"
                                                             data-bs-target="#staticBackdrop-{{ $item->code }}">
-                                                            <i class="mdi mdi-eye btn-icon text-primary" style="font-size: 20px; margin-right: 2px;"></i>
+                                                            <i class="mdi mdi-eye btn-icon text-primary"
+                                                                style="font-size: 20px; margin-right: 2px;"></i>
                                                         </a>
-                                                        <form id="reject" action="{{ route('reject.project.artisVerified') }}" method="post"
-                                                        class="">
-                                                        @csrf
-                                                        <button href="" type="submit">
-                                                            <input type="hidden" name="code"
-                                                                value="{{ $item->code }}">
-                                                            <input type="hidden" name="is_reject" value="true">
-                                                            <i
-                                                                class="mdi mdi-close-circle-outline btn-icon text-danger" style="font-size: 20px"></i>
-                                                        </button>
+                                                        <form action="{{ route('reject.project.artisVerified') }}"
+                                                            method="post" class="m-0">
+                                                            @csrf
+                                                            <button type="submit">
+                                                                <input type="hidden" name="code"
+                                                                    value="{{ $item->code }}">
+                                                                <input type="hidden" name="is_reject" value="true">
+                                                                <i class="mdi mdi-close-circle-outline btn-icon text-danger"
+                                                                    style="font-size: 20px"></i>
+                                                            </button>
                                                         </form>
                                                     </td>
                                                 </tr>
@@ -315,34 +372,33 @@
             </div>
         </div>
 
-            <div id="tambahkategori">
-                <div class="card window">
-                    <div class="card-body">
-                        <a href="" class="close-button far fa-times-circle"></a>
-                        <h3 class="judul p-0 mb-3">Tambah Kolaborasi</h3>
-                        <form class="row" action="{{ route('createProject.artisVerified') }}" method="POST"
+        <div class="modal fade" id="tambahModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="exampleModalLabel">Tambah Kolaborasi</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ route('createProject.artisVerified') }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
-                            <div class="col-md-12" style="font-size: 13px">
-                                <div class="mb-3">
-                                    <label for="namakategori" class="form-label judulnottebal">Nama
-                                        Proyek</label>
-                                    <input type="text" name="name" class="form-control form-i"
-                                        id="namaproyek" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="konsep"
-                                        class="form-label judulnottebal">Deskripsi</label>
-                                    <textarea id="konsep" name="konsep" class="form-control" maxlength="500" rows="4" required></textarea>
-                                </div>
+                            <div class="mb-3">
+                                <label for="namakategori" class="form-label judulnottebal">Nama Proyek</label>
+                                <input type="text" name="name" class="form-control form-i" id="namaproyek"
+                                    required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="konsep" class="form-label judulnottebal">Deskripsi</label>
+                                <textarea id="konsep" name="konsep" class="form-control" maxlength="500" rows="4" required></textarea>
                             </div>
                             <div class="text-md-right">
-                                <button type="submit" href="#" class="btn"
-                                    type="submit">Tambah</button>
+                                <button type="submit" class="btn" type="submit">Tambah</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
+        </div>
     </div>
 @endsection
