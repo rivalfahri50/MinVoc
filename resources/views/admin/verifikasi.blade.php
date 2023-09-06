@@ -52,7 +52,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body bg-white">
-
+                {{-- @dd($item) --}}
                 <form id="hapus" action="{{ route('hapus.verified', $item->code) }}" method="post">
                     @csrf
                     <div class="form-group">
@@ -204,7 +204,7 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class="table-cell mt-1">{{ $item->pengajuan_verified_at->format('d F Y') }}</td>
+                                                    <td class="table-cell mt-1">{{ $item->pengajuan_verified_at }}</td>
                                                     <td class="table-cell text-warning mt-1">
                                                         {{ $item->verification_status }}
                                                     </td>

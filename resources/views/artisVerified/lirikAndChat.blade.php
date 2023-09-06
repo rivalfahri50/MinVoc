@@ -56,12 +56,12 @@
                                 <div class="preview-list">
                                     <form action="{{ route('create.project.artisVerified') }}" method="POST">
                                         @csrf
-                                        <input type="hidden" name="code" value="{{ $project[0]->code }}">
+                                        <input type="hidden" name="code" value="{{ $project->code }}">
                                         <div class="preview-item">
                                             <div class="preview-item-content d-sm-flex flex-grow">
                                                 <h3 class="fw-semibold" style="color: #957dad; margin-top: -30px;">
                                                     Project
-                                                    {{ $project[0]->name }}</h3>
+                                                    {{ $project->name }}</h3>
                                             </div>
                                         </div>
                                         <div class="mb-3">
@@ -110,7 +110,7 @@
                                     <div class="chat" style="margin-top: -20px; position: relative">
                                         <form action="{{ route('message.project.artisVerified') }}" method="post">
                                             @csrf
-                                            <input type="hidden" name="id_project" value="{{ $project[0]->id }}">
+                                            <input type="hidden" name="id_project" value="{{ $project->id }}">
                                             <div class="card ">
                                                 <div style="height: 415px">
                                                     <div class="card-body"
