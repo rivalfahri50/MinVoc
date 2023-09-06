@@ -40,7 +40,7 @@
                                 </div>
                                 <div class="col-4 d-flex text-right justify-content-center">
                                     <img src="{{ asset('storage/' . $billboard->image_artis) }}" alt=""
-                                        class="d-block">
+                                        class="d-block" style="width: 250px; height: 350px; object-fit: cover;">
                                 </div>
                             </div>
                         </div>
@@ -51,7 +51,7 @@
                         style="margin-top: -150px; margin-left: 12px;">
                         @foreach ($albums as $item)
                             <a href="{{ route('albumBillboard.artisVerified', $item->code) }}">
-                                <img src="{{ asset('storage/' . $item->image) }}" width="170" class="img-fluid rounded-4">
+                                <img src="{{ asset('storage/' . $item->image) }}" width="170" class="img-fluid rounded-4 fit">
                             </a>
                         @endforeach
                     </div>
