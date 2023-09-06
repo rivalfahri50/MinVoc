@@ -18,11 +18,10 @@
                         <div class="sejajar">
                             <h3 class="judul">Kategori</h3>
                             <div class="text-lg-end mb-3">
-                                <button class="btn full-width-btn" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#popuptambah">
+                                <a href="#popuptambah" class="btn full-width-btn" type="button">
                                     <i class="fas fa-plus"></i>
                                     Tambah kategori
-                                </button>
+                                </a>
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -52,10 +51,6 @@
                                                         <td class="table-cell">
                                                             <button class="btn btnicon"
                                                                 onclick="deleteGenre('{{ $item->code }}')">
-                                                                <i class="fas fa-edit" style="color: #5b6b89"></i>
-                                                            </button>
-                                                            <button class="btn btnicon"
-                                                                onclick="deleteGenre('{{ $item->code }}')">
                                                                 <i class="far fa-times-circle text-danger"></i>
                                                             </button>
                                                         </td>
@@ -82,33 +77,32 @@
 
                     <!-- popup -->
                     <!-- Modal -->
-                    <div class="modal fade" id="popuptambah" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h3 class="modal-title" id="exampleModalLabel">Tambah Genre</h3>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="{{ route('buat.genre') }}" method="POST" enctype="multipart/form-data">
-                                        @csrf
+                    <div id="popuptambah">
+                        <div class="card window">
+                            <div class="card-body">
+                                <a href="#" class="close-button far fa-times-circle"></a>
+                                <h3 class="judul">Tambah Genre</h3>
+                                <form class="row" action="{{ route('buat.genre') }}" method="POST"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="col-md-12">
                                         <div class="mb-3">
-                                            <label for="namakategori" class="form-label judulnottebal">Nama Kategori</label>
+                                            <label for="namakategori" class="form-label judulnottebal">Nama
+                                                Kategori</label>
                                             <input type="text" name="name" class="form-control form-i" id="namaproyek"
                                                 required>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="upload" class="form-label judulnottebal">Upload Foto</label>
-                                            <input type="file" name="images" class="form-control form-i" id="upload"
+                                            <label for="upload" class="form-label judulnottebal">Upload
+                                                Foto</label>
+                                            <input type="file" name="images" class="form-control form-i" id="namaproyek"
                                                 required>
                                         </div>
-                                        <div class="text-md-right">
-                                            <button type="submit" class="btn">Tambah</button>
-                                        </div>
-                                    </form>
-                                </div>
+                                    </div>
+                                    <div class="text-md-right">
+                                        <button type="submit" href="#" class="btn" type="submit">Tambah</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
