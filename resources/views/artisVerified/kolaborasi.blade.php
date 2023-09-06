@@ -265,7 +265,6 @@
                                     <thead class="table-header">
                                         <tr class="table-row header headerlengkung">
                                             <th class="table-cell"> Nama Proyek </th>
-                                            <th class="table-cell"> Harga </th>
                                             <th class="table-cell"> Tanggal </th>
                                             <th class="table-cell"> Aksi </th>
                                         </tr>

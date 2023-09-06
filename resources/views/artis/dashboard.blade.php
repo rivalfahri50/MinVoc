@@ -91,19 +91,19 @@
                                                     </div>
                                                     <div class="preview-item-content d-sm-flex flex-grow">
                                                         <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
-                                                            onclick="putar({{ $i++ }})">
+                                                            onclick="putar({{ $item->id }})">
                                                             <h6 class="preview-subject">{{ $item->judul }}</h6>
                                                             <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
                                                         </a>
                                                     </div>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group align-items-center">
-                                                            <i onclick="toggleLike({{ $item->id }},this)"
-                                                                class="far fa-heart pr-2"></i>
+                                                            <i onclick="toggleLike(this, {{ $item->id }}, '{{ Auth::check() == (Auth::user()->hasLikedSong($item->id) ? 'true' : 'false') }}')" class="{{ Auth::check() && Auth::user()->hasLikedSong($item->id) ? 'fas' : 'far'}} fa-heart pr-2"></i>
+
                                                             <p style="pointer-events: none;">{{ $item->waktu }}</p>
                                                             <a data-bs-toggle="modal"
                                                                 data-bs-target="#staticBackdrop-{{ $item->code }}"
-                                                                style="color: #957dad">
+                                                                style="color: #957dad cursor: pointer">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" x="0px"
                                                                     y="0px" width="20" height="20"
                                                                     viewBox="0 2 24 24">
@@ -131,7 +131,7 @@
                                 <div class="col-12">
                                     <div class="preview-list">
                                         @foreach ($artist as $item)
-                                            @if ($item)
+                                            @if (!$item)
                                                 <div class="preview-item">
                                                     <div class="preview-thumbnail">
                                                         <img src="/user/assets/images/faces/face1.jpg" width="10%">

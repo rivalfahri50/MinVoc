@@ -84,6 +84,8 @@
     </div>
     </div>
     </div>
+
+
     <style>
         .btn-delete {
             background-color: rgb(215, 0, 0);
@@ -107,8 +109,8 @@
                 <a href="#" class="close-button mdi mdi-close-circle-outline"></a>
                 <h3 class="judul">Buat Playlist</h3>
                 <div>
-                    <form class="row" action="{{ route('ubah.playlist.artisVerified', $playlistDetail->code) }}" method="POST"
-                        enctype="multipart/form-data">
+                    <form class="row" action="{{ route('ubah.playlist.artisVerified', $playlistDetail->code) }}"
+                        method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="col-4">
                             <div class="card cobai">

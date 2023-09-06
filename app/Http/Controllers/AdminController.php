@@ -87,7 +87,7 @@ class AdminController extends Controller
             return response()->view('admin.persetujuan', compact('persetujuan', 'title'));
         }
         Alert::success('message', 'Lagu Berhasil Publish');
-        return back()->with(compact('persetujuan', 'title'));
+        return response()->view('admin.persetujuan', compact('persetujuan', 'title'));
     }
 
     protected function buatBillboard(Request $request)
@@ -107,6 +107,7 @@ class AdminController extends Controller
 
         $title = "MusiCave";
         $artist = artist::where('is_verified', 1)->get();
+        $billboards = billboard::all();
         try {
             if ($request->hasFile('image_background') && $request->hasFile('image_artis')) {
                 $backgroundBillboard = $request->file('image_background')->store('backgorund_billboard', 'public');
@@ -125,7 +126,7 @@ class AdminController extends Controller
             return response()->view('admin.iklan', compact('artist', 'title'));
         }
         Alert::success('message', 'Berhasil Untuk Menambah Billboard');
-        return response()->view('admin.iklan', compact('artist', 'title'));
+        return response()->view('admin.iklan', compact('artist', 'title', 'billboards'));
     }
 
     protected function buatGenre(Request $request)

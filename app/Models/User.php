@@ -29,6 +29,15 @@ class User extends Authenticatable
         'role_id',
     ];
 
+    public function likedSongs()
+    {
+        return $this->belongsToMany(Song::class, 'likes', 'user_id', 'song_id')
+            ->withTimestamps();
+    }
+    public function hasLikedSong($songId)
+    {
+        return $this->likedSongs->contains($songId);
+    }
     /**
      * The attributes that should be hidden for serialization.
      *

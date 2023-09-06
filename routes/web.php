@@ -7,6 +7,7 @@ use App\Http\Controllers\ArtistVerifiedController;
 use App\Http\Controllers\authController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\penggunaController;
+use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\songController;
 use App\Models\admin;
 use App\Models\artist;
@@ -193,7 +194,8 @@ Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(pengguna
 
 Route::controller(SongController::class)->group(function () {
     Route::post('/song/{song}/like', 'toggleLike');
+    Route::get('/song/check', 'cekLike');
     Route::get('/ambil-lagu', 'ambillagu');
     Route::post('/update-play-count/{song_id}', 'playCount');
-    Route::get('/get-song-like-status/{song}', 'songLikeStatus');
 });
+Route::post('/simpan-riwayat', [RiwayatController::class ,'simpanRiwayat']);
