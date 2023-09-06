@@ -70,8 +70,7 @@
                 <div class="modal-footer border-0">
                     <button type="button" class="btn rounded-3">
                         <a href="{{ route('lirikAndChat.artisVerified', $item->code) }}" class="btn-link"
-                            style="color: inherit; text-decoration: none;">Buat
-                            Proyek</a></button>
+                            style="color: inherit; text-decoration: none;">Detail Project</a></button>
                 </div>
             </div>
         </div>

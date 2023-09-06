@@ -16,15 +16,20 @@
                             </span>
                         </div>
 
-                        @if (session()->has('status'))
+                        @if (session()->has('success'))
                             <div class="alert alert-success" role="alert">
-                                {{ session('status') }}
+                                {{ session('success') }}
+                            </div>
+                        @endif
+                        @if (session()->has('failed'))
+                            <div class="alert alert-danger" role="alert">
+                                {{ session('failed') }}
                             </div>
                         @endif
 
                         <div class="mb-3">
-                            <input name="name" placeholder="Nama pengguna" type="text" class="form-control rounded-3"
-                                id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ old('name') }}">
+                            <input name="email" placeholder="Nama pengguna" type="text" class="form-control rounded-3"
+                                id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ old('email') }}">
                             @error('name')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror

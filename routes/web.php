@@ -102,7 +102,7 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
     Route::post('/tambah_playlist/{code}', 'tambah_playlist')->name('tambah.playlist.artis');
     Route::POST('/buat-album/{code}', 'buatAlbum')->name('tambah.album.artis');
     Route::POST('/verified/{code}', 'verifiedAccount')->name('verified');
-    Route::post('/create-lirik', 'Project')->name('create.project');
+    Route::post('/create-lirik', 'Project')->name('create.project.artis');
     Route::post('/message', 'message')->name('message.project');
     Route::post('/reject-project', 'rejectProject')->name('reject.project.artis');
     Route::post('/buat-playlist', 'storePlaylist')->name('buat.playlist.artis');
