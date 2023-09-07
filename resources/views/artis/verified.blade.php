@@ -30,7 +30,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-6 mb-4" style="padding-left: 0;">
-                                        <h4 class="judul fw-bolder">Masukkan tanda pengenal</h4>
+                                        <h4 class="judul fw-bolder">Unggah Foto KTP :</h4>
                                         <input type="file" id="foto" name="foto" class="form-control filecolor"
                                             aria-label="Pilih tanda pengenal" required>
                                         @error('foto')

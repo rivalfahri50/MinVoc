@@ -150,7 +150,7 @@
                         <span class="menu-icon">
                             <i class="mdi mdi-music"></i>
                         </span>
-                        <span class="menu-title">Playlist</span>
+                        <span class="menu-title">Album</span>
                         <a href="#ui-basic" data-toggle="collapse" aria-expanded="false" aria-controls="ui-basic">
                             <span class="menu-arrow">
                                 <i class="mdi mdi-chevron-right"></i>
@@ -160,12 +160,12 @@
                     <div class="collapse" id="ui-basic">
                         <ul class="nav flex-column sub-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('buat.playlist.artisVerified') }}">
+                                {{-- <a class="nav-link" href="{{ route('buat.playlist.artisVerified') }}">
                                     <span class="menu-icon">
                                         <i class="mdi mdi-plus-circle-outline"></i>
                                     </span>
                                     <span class="menu-title">Buat Playlist</span>
-                                </a>
+                                </a> --}}
                                 <a class="nav-link" href="#buat-album">
                                     <span class="menu-icon">
                                         <i class="mdi mdi-plus-circle-outline"></i>
@@ -217,7 +217,7 @@
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="{{ route('peraturan.artisVerified') }}">
                         <span class="menu-icon">
-                            <i class="mdi mdi-clock-outline"></i>
+                            <i class="mdi mdi-information-outline"></i>
                         </span>
                         <span class="menu-title">Peraturan</span>
                     </a>
@@ -370,7 +370,7 @@
                                     <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ auth()->user()->name }}
                                     </p>
                                 </div>
-                                <a href="/artis-verified/profile" class="dropdown-item preview-item">
+                                <a href="{{ route('ubah.profile.artisVerified', auth()->user()->code) }}" class="dropdown-item preview-item">
                                     <div class="preview-thumbnail">
                                         <div class="preview-icon">
                                             <i class="mdi mdi-account-circle-outline"></i>

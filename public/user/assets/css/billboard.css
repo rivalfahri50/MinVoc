@@ -16,11 +16,6 @@
     position: relative;
 }
 
-.fit {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
 
 .try {
     position: absolute;
@@ -71,6 +66,23 @@
     width: 6px;
 }
 
+.cardi {
+    height: 200px;
+    /* Atur tinggi sesuai kebutuhan */
+    margin: 0;
+    /* Hapus margin */
+    padding: 0;
+    /* Hapus padding */
+    overflow: hidden;
+    /* Hindari tampilan gambar yang keluar dari batas tinggi */
+}
+
+
+.card-scroll {
+    scroll-snap-align: start;
+    transition: all 0.2s;
+}
+
 .cards {
     display: grid;
     grid-auto-columns: 100%;
@@ -78,6 +90,7 @@
     grid-auto-flow: column;
     padding: 10px 0px;
     list-style: none;
+    overflow-x: scroll;
     scroll-snap-type: x mandatory;
 }
 
@@ -91,7 +104,7 @@
 }
 
 .cards::-webkit-scrollbar-thumb {
-    background: #957dad;
+    background: #957DAD;
 }
 
 .cards::-webkit-scrollbar-track {
@@ -118,6 +131,14 @@
         grid-column-gap: 11px;
     }
 }
+
+
+.fit {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
+
 
 #tambahkeplaylist {
     width: 100%;
