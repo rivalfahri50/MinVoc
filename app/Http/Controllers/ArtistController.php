@@ -173,6 +173,17 @@ class ArtistController extends Controller
             return response()->redirectTo('/artis/verified')->with('failed', "failed");
         }
         Alert::success('message', 'Success Mengirim Request Verification Account');
+        $msg => 'Pengajuan Verifikasi',
+        $notif => $verified->name.'Akun Anda Telah di Verifikasi';
+        notifikasi::create([
+            'role'=>'artist',
+            'user_id'=>$verified->user_id,
+            'notif'=>$msg,
+            'deskripsi'=>$notif,
+            'kategori'=>'Pengajuan Verifikasi'
+
+        ]);
+        
         return response()->redirectTo('/artis/verified')->with('message', "success");
     }
 
