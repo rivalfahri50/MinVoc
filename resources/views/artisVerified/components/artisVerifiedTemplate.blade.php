@@ -15,7 +15,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="/user/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="/user/assets/css/style.css">
-    <link rel="stylesheet" href="{{ asset('style.css')}}">
+    <link rel="stylesheet" href="{{ asset('style.css') }}">
     <link rel="shortcut icon" href="/image/favicon.svg" type="image/x-icon">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,400;0,500;1,100;1,200&display=swap');
@@ -224,64 +224,64 @@
                 </li>
             </ul>
             <footer
-            style="background-color: #6c6c6c; color: #957DAD; width: 100%; position: fixed; bottom: 0; height: 85px;"
-            id="lagu-diputar">
-            <div class="music-player">
-                <div class="song-bar">
-                    <div class="song-infos">
-                        <div class="image-container1">
-                            <img src="https://d2y6mqrpjbqoe6.cloudfront.net/image/upload/f_auto,q_auto/media/library-400/216_636967437355378335Your_Lie_Small_hq.jpg"
-                                alt="" id="track_image" />
+                style="background-color: #6c6c6c; color: #957DAD; width: 100%; position: fixed; bottom: 0; height: 85px;"
+                id="lagu-diputar">
+                <div class="music-player">
+                    <div class="song-bar">
+                        <div class="song-infos">
+                            <div class="image-container1">
+                                <img src="https://d2y6mqrpjbqoe6.cloudfront.net/image/upload/f_auto,q_auto/media/library-400/216_636967437355378335Your_Lie_Small_hq.jpg"
+                                    alt="" id="track_image" />
+                            </div>
+                            <div class="song-description">
+                                <p id="title">
+                                    Watashitachi
+                                </p>
+                                <p id="artist">Masaru Yokoyama</p>
+                            </div>
                         </div>
-                        <div class="song-description">
-                            <p id="title">
-                                Watashitachi
-                            </p>
-                            <p id="artist">Masaru Yokoyama</p>
-                        </div>
-                    </div>
-                    {{-- <div class="icons">
+                        {{-- <div class="icons">
                         <i id="audio-player-like-icon like"
                             class="shared-icon-like fas fa-heart fr fh"
                             data-id="" onclick="toggleLike(this)"></i>
                     </div> --}}
-                </div>
-                <div class="progress-controller">
-                    <div class="control-buttons">
-                        <div id="controls">
-                            <button onclick="previous_song()" id="pre"><i class="fa fa-step-backward"
-                                    aria-hidden="true"></i></button>
-                            <button onclick="justplay()" id="play"><i class="far fa-play-circle fr"
-                                    aria-hidden="true"></i></button>
-                            <button onclick="next_song()" id="next"><i class="fa fa-step-forward"
-                                    aria-hidden="true"></i></button>
-                        </div>
                     </div>
-                    <div class="progress-container">
-                        <span id="current-time" class="durasi">00:00</span>
-                        <div class="progress-bar">
-                            <div class="duration">
-                                <input type="range" class="progress" min="0" step="1"
-                                    max="100" value="0" id="duration_slider"
-                                    onchange="change_duration()">
+                    <div class="progress-controller">
+                        <div class="control-buttons">
+                            <div id="controls">
+                                <button onclick="previous_song()" id="pre"><i class="fa fa-step-backward"
+                                        aria-hidden="true"></i></button>
+                                <button onclick="justplay()" id="play"><i class="far fa-play-circle fr"
+                                        aria-hidden="true"></i></button>
+                                <button onclick="next_song()" id="next"><i class="fa fa-step-forward"
+                                        aria-hidden="true"></i></button>
                             </div>
                         </div>
-                        <span id="duration" class="durasi">00:00</span>
+                        <div class="progress-container">
+                            <span id="current-time" class="durasi">00:00</span>
+                            <div class="progress-bar">
+                                <div class="duration">
+                                    <input type="range" class="progress" min="0" step="1"
+                                        max="100" value="0" id="duration_slider"
+                                        onchange="change_duration()">
+                                </div>
+                            </div>
+                            <span id="duration" class="durasi">00:00</span>
+                        </div>
+                    </div>
+
+                    <div class="other-features">
+                        <div class="volume-bar">
+                            <i class="mdi mdi-volume-high " onclick="mute_sound()" aria-hidden="true"
+                                id="volume_icon"></i>
+                            <input type="range" class="volume" min="0" max="100" step="1"
+                                value="100" onchange="volume_change()" id="volume">
+                            <p id="volume_show">100</p>
+
+                        </div>
                     </div>
                 </div>
-
-                <div class="other-features">
-                    <div class="volume-bar">
-                        <i class="mdi mdi-volume-high " onclick="mute_sound()" aria-hidden="true"
-                            id="volume_icon"></i>
-                        <input type="range" class="volume" min="0" max="100" step="1"
-                            value="100" onchange="volume_change()" id="volume">
-                        <p id="volume_show">100</p>
-
-                    </div>
-                </div>
-            </div>
-        </footer>
+            </footer>
         </nav>
         <!-- partial -->
         <div class="container-fluid page-body-wrapper">
@@ -311,6 +311,49 @@
 
                     </ul>
                     <ul class="navbar-nav navbar-nav-right">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown"
+                                href="#" data-toggle="dropdown">
+                                <i class="mdi mdi-bell"></i>
+                                <span class="count bg-danger"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+                                aria-labelledby="notificationDropdown">
+                                <a href="#" class="dropdown-item preview-item">
+                                    <div class="preview-thumbnail">
+                                        <div class="preview-icon rounded-circle">
+                                            <img src="/user/assets/images/faces/face12.jpg">
+                                        </div>
+                                    </div>
+                                    <div class="preview-item-content">
+                                        <p class="preview-subject mb-1">Gajah</p>
+                                        <p class="text-muted ellipsis mb-0"> Tulus </p>
+                                    </div>
+                                </a>
+                                <a href="#" class="dropdown-item preview-item">
+                                    <div class="preview-thumbnail">
+                                        <div class="preview-icon rounded-circle">
+                                            <img src="/user/assets/images/faces/face12.jpg">
+                                        </div>
+                                    </div>
+                                    <div class="preview-item-content">
+                                        <p class="preview-subject mb-1">Gajah</p>
+                                        <p class="text-muted ellipsis mb-0"> Tulus </p>
+                                    </div>
+                                </a>
+                                <a href="#" class="dropdown-item preview-item">
+                                    <div class="preview-thumbnail">
+                                        <div class="preview-icon rounded-circle">
+                                            <img src="/user/assets/images/faces/face12.jpg">
+                                        </div>
+                                    </div>
+                                    <div class="preview-item-content">
+                                        <p class="preview-subject mb-1">Gajah</p>
+                                        <p class="text-muted ellipsis mb-0"> Tulus </p>
+                                    </div>
+                                </a>
+                            </div>
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                                 <div class="navbar-profile">
@@ -438,15 +481,15 @@
                     });
                 });
             </script>
-             <script>
-                $(document).ready(function () {
+            <script>
+                $(document).ready(function() {
                     $.ajax({
                         url: `/song/check`,
                         type: 'GET',
-                        dataType:'json',
-                        success: function (response) {
+                        dataType: 'json',
+                        success: function(response) {
                             console.log(response);
-                            response.forEach(function (item) {
+                            response.forEach(function(item) {
                                 const songId = item.song_id;
                                 const like = document.getElementById(`like${item.song_id}`);
                                 like.classList.toggle('fas');
@@ -454,6 +497,7 @@
                         }
                     });
                 });
+
                 function toggleLike(iconElement, songId) {
                     iconElement.classList.toggle('fas');
                     iconElement.classList.toggle('far');
@@ -495,6 +539,7 @@
                 }
                 // alert("beeeeeee");
                 var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
                 function updateSongLikeStatus(songId, isLiked) {
                     const likeIcons = document.querySelectorAll(`.shared-icon-like[data-song-id="${songId}"]`);
                     likeIcons.forEach(likeIcon => {
@@ -503,7 +548,7 @@
                     });
                 }
             </script>
-             <script>
+            <script>
                 let previous = document.querySelector('#pre');
                 let play = document.querySelector('#play');
                 let next = document.querySelector('#next');
@@ -655,7 +700,7 @@
 
                 function putar(id) {
                     console.log('ID yang dikirim:', id);
-                    id =id -1;
+                    id = id - 1;
                     const lagu = All_song[id];
                     // alert(All_song.length - 1 + " " + id);
                     if (lagu) {
@@ -832,6 +877,8 @@
             <script src="/user/assets/js/settings.js"></script>
             <script src="/user/assets/js/todolist.js"></script>
             <script src="/user/assets/js/dashboard.js"></script>
+        </div>
+    </div>
 </body>
 
 </html>

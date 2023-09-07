@@ -12,8 +12,8 @@
                             <tr class="table-row table-header">
                                 <th class="table-cell">Nama<i class="fas fa-sort" data-order="asc"></th>
                                 <th class="table-cell">Tanggal<i class="fas fa-sort" data-order="asc"></th>
-                                <th class="table-cell">Status<i class="fas fa-sort" data-order="asc"></th>
-                                <th class="table-cell">Aksi<i class="fas fa-sort" data-order="asc"></th>
+                                <th class="table-cell">Status</th>
+                                <th class="table-cell">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>

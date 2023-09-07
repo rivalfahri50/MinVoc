@@ -9,11 +9,17 @@
 }
 
 /*------- billboard --------*/
-.stretch-card > .coba {
+.stretch-card>.coba {
     width: 100%;
     min-width: 100%;
     height: 50%;
     position: relative;
+}
+
+.fit {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .try {
@@ -122,34 +128,34 @@
     left: 0;
     z-index: 9999;
     visibility: hidden;
-  }
+}
 
-  #tambahkeplaylist .card-body {
+#tambahkeplaylist .card-body {
     padding: 10px 7% 10px 7%;
-  }
+}
 
-  /* Memunculkan Jendela Pop Up Detail*/
-  #tambahkeplaylist:target {
+/* Memunculkan Jendela Pop Up Detail*/
+#tambahkeplaylist:target {
     visibility: visible;
-  }
+}
 
-  .window {
+.window {
     background-color: #ffffff;
     width: 300px;
     border-radius: 10px;
     position: relative;
     margin: 15% auto;
     padding: 10px;
-  }
+}
 
-  .close-button {
+.close-button {
     display: block;
     color: #957dad;
     position: absolute;
     top: 10px;
     right: 10px;
-  }
+}
 
-  .judul {
+.judul {
     font-size: 20px;
-  }
+}

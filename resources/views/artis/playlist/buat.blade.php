@@ -88,7 +88,7 @@
                                 <label for="gambar" id="tampil_gambar">
                                     <i class="fas fa-pen fa-2x"></i>
                                 </label>
-                                <input type="file" id="gambar" name="images" accept="image/png,image/jpg">
+                                <input type="file" id="gambar" name="images" accept="image/png,image/jpg" class="noob">
                             </div>
                         </div>
                         <div class="col-md-7 ml-4">
