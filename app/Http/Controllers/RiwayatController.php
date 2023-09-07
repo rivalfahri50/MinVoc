@@ -4,26 +4,31 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Riwayat;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class RiwayatController extends Controller
 {
     public function simpanRiwayat(Request $request)
-{
-    // Validasi input yang diterima
-    $request->validate([
-        'user_id' => 'required|integer',
-        'song_id' => 'required|integer',
-        'play_date' => 'required|date',
-    ]);
+    {
 
-    // Simpan riwayat pemutaran lagu ke dalam database
-    Riwayat::create([
-        'user_id' => $request->input('user_id'),
-        'song_id' => $request->input('song_id'),
-        'play_date' => $request->input('play_date'),
-    ]);
+        // Simpan riwayat pemutaran lagu ke dalam database
+        $user_id = Auth::user()->id;
+        $song_id = $request->song_id;
+        $play_date = Carbon::now()->format('Y-m-d H:i:s');
 
-    return response()->json(['message' => 'Riwayat lagu disimpan']);
-}
+        Log::info("Mencoba menyimpan riwayat: user_id=$user_id, song_id=$song_id, play_date=$play_date");
+
+        Riwayat::create([
+            'user_id' => $user_id,
+            'song_id' => $song_id,
+            'play_date' => $play_date,
+        ]);
+
+        Log::info("Riwayat lagu disimpan");
+
+        return response()->json(['message' => 'Riwayat lagu disimpan']);
+    }
 }

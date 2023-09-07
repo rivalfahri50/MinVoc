@@ -16,14 +16,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="table-row baris">
-                                    <td class="table-cell">
-                                        <h6>Cindy</h6>
-                                        <p class="text-muted m-0">Atulus</p>
-                                    </td>
-                                    <td class="table-cell">Dangdut</td>
-                                    <td class="table-cell">04/09/2023</td>
-                                </tr>
+                                @foreach ($riwayat as $item )
+                                    <tr class="table-row baris">
+                                        <td class="table-cell">
+                                            <h6>{{ $item->song->judul}}</h6>
+                                            <p class="text-muted m-0">{{ $item->song->artist->user->name}}</p>
+                                        </td>
+                                        <td class="table-cell">{{ $item->song->genre->name}}</td>
+                                        <td class="table-cell">{{ $item->play_date}}</td>
+                                    </tr>
+
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

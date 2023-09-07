@@ -74,10 +74,11 @@
                                                     <img src="{{ asset('storage/' . $song->image) }}" width="10%">
                                                 </div>
                                                 <div class="preview-item-content d-sm-flex flex-grow">
-                                                    <div class="flex-grow">
+                                                    <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
+                                                        onclick="putar({{ $item->id }})">
                                                         <h6 class="preview-subject">{{ $item->judul }}</h6>
                                                         <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
-                                                    </div>
+                                                    </a>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group">
                                                             <i onclick="myFunction(this)" class="far fa-heart pr-2">
@@ -111,17 +112,17 @@
                         var icon = event.currentTarget.querySelector('.fa-play-circle');
                         icon.style.display = event.type === 'mouseenter' ? 'inline' : 'none';
                     }
-        
+
                     // Ambil semua elemen dengan kelas 'coba'
                     var cards = document.querySelectorAll('.coba');
-        
+
                     // Loop melalui setiap elemen dan tambahkan event listener
-                    cards.forEach(function (card) {
+                    cards.forEach(function(card) {
                         card.addEventListener('mouseenter', toggleIcon);
                         card.addEventListener('mouseleave', toggleIcon);
                     });
-        
-        
+
+
                     function myFunction(x) {
                         x.classList.toggle("far"); // Menghapus kelas "fa fa-heart"
                         x.classList.toggle("fas"); // Menambahkan kelas "fas fa-heart"

@@ -1,7 +1,7 @@
 @extends('artis.components.artisTemplate')
 
 @section('content')
-@foreach ($songs as $item)
+    @foreach ($songs as $item)
         <div id="staticBackdrop-{{ $item->code }}" class="modal" data-bs-backdrop="static" data-bs-keyboard="false"
             tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="card window">
@@ -67,10 +67,11 @@
                                                     <img src="{{ asset('storage/' . $item->image) }}" width="10%">
                                                 </div>
                                                 <div class="preview-item-content d-sm-flex flex-grow">
-                                                    <div class="flex-grow">
+                                                    <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
+                                                        onclick="putar({{ $item->id }})">
                                                         <h6 class="preview-subject">{{ $item->judul }}</h6>
                                                         <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
-                                                    </div>
+                                                    </a>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group">
                                                             <i onclick="myFunction(this)" class="far fa-heart pr-2">
@@ -105,11 +106,11 @@
     </div>
 
 
-<script>
-    function myFunction(x) {
-        x.classList.toggle("far"); // Menghapus kelas "fa fa-heart"
-        x.classList.toggle("fas"); // Menambahkan kelas "fas fa-heart"
-        x.classList.toggle("warna-kostum-like"); // Menambahkan kelas warna merah
-    }
-</script>
+    <script>
+        function myFunction(x) {
+            x.classList.toggle("far"); // Menghapus kelas "fa fa-heart"
+            x.classList.toggle("fas"); // Menambahkan kelas "fas fa-heart"
+            x.classList.toggle("warna-kostum-like"); // Menambahkan kelas warna merah
+        }
+    </script>
 @endsection

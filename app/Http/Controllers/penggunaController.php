@@ -7,6 +7,7 @@ use App\Models\artist;
 use App\Models\billboard;
 use App\Models\genre;
 use App\Models\playlist;
+use App\Models\Riwayat;
 use App\Models\song;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -50,7 +51,8 @@ class penggunaController extends Controller
     protected function riwayat(): Response
     {
         $title = "MusiCave";
-        return response()->view('users.riwayat', compact('title'));
+        $riwayat = Riwayat::all();
+        return response()->view('users.riwayat', compact('title','riwayat'));
     }
 
     protected function profile(): Response
@@ -182,7 +184,7 @@ class penggunaController extends Controller
         $user = user::where('code', $code)->first();
         $playlists = playlist::all();
         $songAll = song::all();
-        
+
         if ($song)
         {
             return view('users.search.songSearch', compact('song', 'title', 'songAll', 'playlists'));

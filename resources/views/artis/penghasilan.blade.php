@@ -159,7 +159,7 @@
                                             <tr class="table-row">
                                                 <td class="table-cell">
                                                     <div class="cell-content">
-                                                        <img src="{{ asset('storage/' . $item->images) }}" alt="Face"
+                                                        <img src="{{ asset('storage/' . $item->image) }}" alt="Face"
                                                             class="avatar">
                                                         <div>
                                                             <h6>{{ $item->judul }}</h6>
@@ -167,7 +167,7 @@
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td class="table-cell">{{ $item->genre }}</td>
+                                                <td class="table-cell">{{ $item->genre->name }}</td>
                                                 <td class="table-cell">{{ $item->created_at->toDateString() }}</td>
                                             </tr>
                                         @endforeach

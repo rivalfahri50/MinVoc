@@ -40,6 +40,8 @@
                                             <button class="btn btnicon" onclick="deleteSong('{{ $item->code }}')">
                                                 <i class="far fa-times-circle text-danger"></i>
                                             </button>
+                                            <a href="#lagu-diputar" class="flex-grow text-decoration-none link btn"
+                                            onclick="putar({{ $item->id }})">Putar Lagu</a>
                                         </td>
                                     </tr>
                                 @endif
@@ -88,7 +90,6 @@
                                     </div>
                                 </div>
                                 <div class="text-md-right">
-                                    <a href="#" class="btn" type="submit">Putar Lagu</a>
                                     <button class="btn" type="submit">Setujui</button>
                                 </div>
                             </div>

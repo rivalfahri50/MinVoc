@@ -46,16 +46,16 @@
                                         <h4 class="judul mt-4 clamp-text">{{ $song->judul }}</h4>
                                         <div class="d-flex flex-row align-content-center">
                                             <p class="text-muted m-1 clamp-text">{{ $song->artist->user->name }}</p>
-                                            <a href="#" class="d-flex align-items-center d-block" style="height: 28px;">
-                                                <i class="far fa-play-circle fa-2x pl-2" style="width: 10px; display: none; color: #957DAD;"></i>
-                                            </a>
+                                            <button onclick="justplay()" id="play" class="d-flex align-items-center d-block" style="height: 28px;">
+                                            <i class="far fa-play-circle fa-2x pl-2" style="width: 10px; display: none; color: #957DAD;"></i>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>                
+                </div>
                 <div class="col-md-12">
                     <hr class="divider"> <!-- Divider -->
                 </div>
@@ -72,10 +72,11 @@
                                                     <img src="{{ asset('storage/' . $song->image) }}" width="10%">
                                                 </div>
                                                 <div class="preview-item-content d-sm-flex flex-grow">
-                                                    <div class="flex-grow">
+                                                    <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
+                                                    onclick="putar({{ $item->id }})">
                                                         <h6 class="preview-subject">{{ $item->judul }}</h6>
                                                         <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
-                                                    </div>
+                                                </a>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group">
                                                             <i onclick="myFunction(this)" class="far fa-heart pr-2">
