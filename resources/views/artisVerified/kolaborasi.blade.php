@@ -57,8 +57,7 @@
                         <div class="mb-3">
                             <label for="namakategori" class="form-label judulnottebal">Nama
                                 Proyek</label>
-                            <input type="text" name="name" class="form-control form-i" id="namaproyek" required
-                                readonly value="{{ $item->name }}">
+                                <input type="text" name="name" class="form-control form-i" id="namaproyek" required="" readonly="" value="{{ $item->name }}" fdprocessedid="piymoo">
                         </div>
                         <div class="mb-3">
                             <label for="konsep" class="form-label judulnottebal">Deskripsi</label>
@@ -275,9 +274,6 @@
                                                 <tr class="table-row">
                                                     <td class="table-cell">
                                                         <span class="pl-2">{{ $item->name }}</span>
-                                                    </td>
-                                                    <td class="table-cell">
-                                                        <div>Rp {{ $item->harga }}</div>
                                                     </td>
                                                     <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
                                                     <td class="d-flex align-items-center">

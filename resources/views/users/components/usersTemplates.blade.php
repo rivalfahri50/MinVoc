@@ -179,7 +179,7 @@
                             <i id="audio-player-like-icon like"
                                 class="shared-icon-like {{ $currentSongLiked ? 'fas' : 'far' }} fa-heart fr fh"
                                 data-id="{{ $currentSongId }}" onclick="toggleLike(this, {{ $currentSongId }})"></i>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="progress-controller">
                         <div class="control-buttons">

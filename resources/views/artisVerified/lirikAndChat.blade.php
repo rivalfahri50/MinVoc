@@ -137,10 +137,13 @@
                                             <div class="mb-3">
                                                 <input type="text" name="judul"
                                                     class="form-control form-i input-judul pl-3" id="namaproyek"
-                                                    placeholder="Judul Lagu" style="background-color: #ffffff" required>
+                                                    placeholder="{{ $project->judul }}" style="background-color: #ffffff" readonly
+                                                    required>
                                             </div>
-                                            <textarea name="lirik" id="summernote" style="background-color: #ffffff; border: 1px solid #6d6d6d"></textarea>
-                                            <script>
+                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="20" readonly
+                                                style="background-color: #ffffff;">{{ $project->lirik }}</textarea>
+                                            {{-- <textarea name="lirik" id="summernote" style="background-color: #ffffff; border: 1px solid #6d6d6d"></textarea> --}}
+                                            {{-- <script>
                                                 $('#summernote').summernote({
                                                     placeholder: 'Teks',
                                                     tabsize: 2,
@@ -153,7 +156,7 @@
                                                         ['view', ['codeview']]
                                                     ]
                                                 });
-                                            </script>
+                                            </script> --}}
                                             <div class="mt-3">
                                                 <button class="btn pl-3 kirim rounded-3 full-width-button" type="button"
                                                     data-bs-toggle="modal" data-bs-target="#kirimkolaborasi">
@@ -234,14 +237,16 @@
                                                             @foreach ($datas as $key => $item)
                                                                 <div class="chat-message">
                                                                     @if ($key == 0 || $item->messages->name != $datas[$key - 1]->messages->name)
-                                                                        <div class="chat-name">{{ $item->messages->name }}</div>
+                                                                        <div class="chat-name">{{ $item->messages->name }}
+                                                                        </div>
                                                                     @endif
                                                                     <div class="chat-text">{{ $item->message }}</div>
                                                                 </div>
                                                             @endforeach
                                                         </div>
                                                         <div class="input-with-icon chat-input">
-                                                            <input type="text" class="form-control rounded-4" placeholder="Ketik di sini untuk admin" name="message">
+                                                            <input type="text" class="form-control rounded-4"
+                                                                placeholder="Ketik di sini untuk admin" name="message">
                                                             <button type="submit" class="send-button ml-2 mr-1">
                                                                 <i class="fas fa-paper-plane"></i>
                                                             </button>
@@ -260,35 +265,38 @@
             <!-- Modal -->
             <div class="modal fade" id="kirimkolaborasi" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content border-0" style="background-color: white">
-                        <div class="modal-header border-0">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel" style="color: #957DAD">Pembayaran</h1>
-                            <button type="button" class="btn-unstyled" data-bs-dismiss="modal" aria-label="Close">
-                                <i class="mdi mdi-close-circle-outline btn-icon" style="color: #957DAD"></i>
-                            </button>
-                        </div>
-                        <div class="modal-body border-0">
-                            <div class="col-md-12" style="font-size: 13px">
-                                <h5 class="judulnottebal mb-4">Persentase Pembayaran</h5>
-                                <div class="mb-3">
-                                    <div class="range-wrap">
-                                        <div class="range-value" id="rangeV">0%</div>
-                                        <input class="slider mb-4" id="range" type="range" min="0"
-                                            max="100" value="0" step="1">
-                                        <output for="range" class="output">Rp. 0</output>
+                <form action="{{ route('bayar', $project->code) }}" method="post">
+                    @csrf
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content border-0" style="background-color: white">
+                            <div class="modal-header border-0">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel" style="color: #957DAD">Pembayaran</h1>
+                                <button type="button" class="btn-unstyled" data-bs-dismiss="modal" aria-label="Close">
+                                    <i class="mdi mdi-close-circle-outline btn-icon" style="color: #957DAD"></i>
+                                </button>
+                            </div>
+                            <div class="modal-body border-0">
+                                <div class="col-md-12" style="font-size: 13px">
+                                    <h5 class="judulnottebal mb-4">Persentase Pembayaran</h5>
+                                    <div class="mb-3">
+                                        <div class="range-wrap">
+                                            <div class="range-value" id="rangeV">0%</div>
+                                            <input class="slider mb-4" id="range" name="range" type="range"
+                                                min="0" max="100" value="40" step="1">
+                                            <output for="range" class="output">Rp. 0</output>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="modal-footer border-0">
-                            <button type="button" class="btn rounded-3 full-width-button">
-                                <a href="" class="btn-link"
-                                    style="color: inherit; text-decoration: none;">Bayar</a>
-                            </button>
+                            <div class="modal-footer border-0">
+                                <button type="submit" class="btn rounded-3 full-width-button">
+                                    <a href="" class="btn-link"
+                                        style="color: inherit; text-decoration: none;">Bayar</a>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -299,10 +307,17 @@
 
         const setValue = () => {
             const persentase = Number(range.value);
-            const uang = (persentase / 100) * 2000000; // 2 juta
+            const faktor = 18000;
+
+            if (persentase < 40) {
+                range.value = 40;
+            } else if (persentase > 80) {
+                range.value = 80;
+            }
+
+            const uang = (persentase / 100) * faktor * 100;
             rangeV.innerHTML = `${persentase}%`;
 
-            // Konversi nilai uang ke format Rupiah (Rp)
             const harga = formatRupiah(uang);
             output.textContent = `Rp. ${harga}`;
         };

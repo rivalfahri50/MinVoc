@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\admin;
 use App\Models\album;
 use App\Models\artist;
 use App\Models\billboard;
@@ -53,7 +54,8 @@ class ArtistVerifiedController extends Controller
         $totalLagu = song::count();
         $totalArtist = artist::count();
         $songs = song::all();
-        return response()->view('artisVerified.penghasilan', compact('title', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs'));
+        $penghasilan = artist::where('user_id', auth()->user()->id)->first();
+        return response()->view('artisVerified.penghasilan', compact('title', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'penghasilan'));
     }
 
     protected function riwayat(): Response
@@ -606,7 +608,7 @@ class ArtistVerifiedController extends Controller
             'is_reject' => false,
         ];
 
-        dd($data);
+        // dd($data);
 
         try {
             $project->update($data);
@@ -619,7 +621,8 @@ class ArtistVerifiedController extends Controller
     protected function message(Request $request)
     {
         $project = projects::where('id', $request->input('id_project'))->first();
-        $user = artist::where('id', auth()->user()->id)->first();
+        $user = artist::where('user_id', auth()->user()->id)->first();
+        // dd(artist::where('id', auth()->user()->id)->first());
         $message = messages::create([
             'code' => Str::uuid(),
             'sender_id' => $user->id,
@@ -707,5 +710,41 @@ class ArtistVerifiedController extends Controller
             return response()->redirectTo('/artis-verified/kolaborasi')->with('message', "Gagal untuk register!!");
         }
         return response()->redirectTo('/artis-verified/kolaborasi')->with('message', 'User created successfully.');
+    }
+
+    protected function bayar(Request $request, string $code)
+    {
+        $project = projects::where('code', $code)->first();
+        $range = $request->input('range');
+
+        if ($range < 40) {
+            $persentase = 40;
+        } elseif ($range > 80) {
+            $persentase = 80;
+        }
+        
+        // Nilai uang tetap
+        $uangTetap = 1800000;
+        
+        // Hitung jumlah uang berdasarkan persentase
+        $uangYangDiterima = ($range / 100) * $uangTetap;
+        // Bagikan uang ke pengguna berdasarkan persentase
+        $uangPengguna = ($uangYangDiterima / 100) * $range;
+
+        try {
+            $admin = admin::where('id', 1)->first();
+            $admin->penghasilan = '200.000';
+            $admin->update();
+
+            $artisVerified = artist::where('id', $project->pembuat_project)->first();
+            $artis = artist::where('id', $project->penerima_project)->first();
+            $artisVerified->penghasilan = $uangYangDiterima;
+            $artisVerified->update();
+            $artis->penghasilan = $uangPengguna;
+            $artis->update();
+        } catch (\Throwable $th) {
+            return response()->redirectTo('/artis-verified/kolaborasi');
+        }
+        return response()->redirectTo('/artis-verified/kolaborasi');
     }
 }

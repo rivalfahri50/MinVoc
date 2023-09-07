@@ -6,7 +6,7 @@
     <div class="main-panel">
         <style>
             .table-container {
-               margin-bottom: 20px;
+                margin-bottom: 20px;
             }
 
             .table-sortable th {
@@ -26,6 +26,7 @@
             .table-sortable .th-sort-desc::after {
                 margin-left: 10px;
             }
+
             /*---- style untuk table ----*/
             .table-body {
                 padding: 20px;
@@ -129,7 +130,8 @@
                         </div>
                         <div class="col-6 row no-gutters">
                             <div class="card coba">
-                                <img src="/assets/images/logo.svg" width="80%" height="100%" alt="logo" class="ml-5 md-3" />
+                                <img src="/assets/images/logo.svg" width="80%" height="100%" alt="logo"
+                                    class="ml-5 md-3" />
                             </div>
                         </div>
                     </div>
@@ -149,9 +151,9 @@
                                 <table class="table">
                                     <thead class="table-header">
                                         <tr class="table-row header headerlengkung">
-                                            <th class="table-cell">Judul Lagu</th>
-                                            <th class="table-cell">Genre</th>
-                                            <th class="table-cell">Tanggal Pengajuan</th>
+                                            <th class="table-cell">Kolaborasi</th>
+                                            <th class="table-cell">Jumlah</th>
+                                            <th class="table-cell">Tanggal</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -177,13 +179,10 @@
                         </div>
                     </div>
                 </div>
-                <!-- partial -->
             </div>
-            <!-- main-panel ends -->
         </div>
-        <!-- page-body-wrapper ends -->
     </div>
-    <!-- container-scroller -->
+
 
     <script src="/user/assets/js/tablesort.js"></script>
     <script>
@@ -196,15 +195,19 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         var ctx = document.getElementById('myChart').getContext('2d');
+
+        var dataPendapatan = <?php echo json_encode($penghasilan->penghasilan); ?>;
+
+        var labels = Object.keys(dataPendapatan);
+        var pendapatanBulanan = Object.values(dataPendapatan);
+
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['January', 'February', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September',
-                    'Oktober', 'November', 'Desember'
-                ],
+                labels: labels,
                 datasets: [{
                     label: 'Pendapatan',
-                    data: [5, 3.5, 2.5, 0.5, 4.5, 1, 2, 5, 4, 2.5, 3, 1.5],
+                    data: pendapatanBulanan,
                     backgroundColor: [
                         'rgba(153, 102, 255, 0.2)',
                         'rgba(153, 102, 255, 0.2)',

@@ -63,7 +63,8 @@ class AdminController extends Controller
     protected function riwayat(): Response
     {
         $title = "MusiCave";
-        return response()->view('admin.riwayat', compact('title'));
+        $songs = song::all();
+        return response()->view('admin.riwayat', compact('title', 'songs'));
     }
 
     protected function verifikasi(): Response
