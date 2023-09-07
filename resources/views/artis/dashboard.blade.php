@@ -30,7 +30,7 @@
                                                  class="d-block billboard"
                                                  alt="...">
                                             <div class="bottom-left">
-                                                <h3 class="text-light">{{ $item->name }}</h3>
+                                                <h3 class="text-light">{{ $item->artis->user->name }}</h3>
                                             </div>
                                         </a>
                                     </div>

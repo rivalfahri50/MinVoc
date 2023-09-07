@@ -208,6 +208,6 @@ class authController extends Controller
         } catch (Throwable $e) {
             return response()->redirectTo('/buat-akun')->with('failed', "Gagal untuk register!!");
         }
-        return response()->redirectTo('/masuk')->with('success', 'User berhasil register.');
+        return response()->redirectTo('/masuk')->with('success', 'Berhasil register.');
     }
 }
