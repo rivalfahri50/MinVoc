@@ -165,9 +165,15 @@ class ArtistController extends Controller
 
         try {
             $imagePath = $request->file('foto')->store('images', 'public');
-            $msg = 'Pengajuan Verifikasi';
-            $notif = $artist->name . 'Akun Anda Telah di Verifikasi';
+
             $artist->pengajuan_verified_at = now()->toDateString();
+            Notifikasi::create([
+                'role'=>'artist',
+                'user_id'=>$artist->user_id,
+                'notif'=>$msg,
+                'deskripsi'=>$notif,
+                'kategori'=>'Pengajuan Verifikasi'
+            ]);
             $artist->image = $imagePath;
             Notifikasi::create([
                 'role' => 'artist',
@@ -182,6 +188,17 @@ class ArtistController extends Controller
             return response()->redirectTo('/artis/verified')->with('failed', "failed");
         }
         Alert::success('message', 'Success Mengirim Request Verification Account');
+        $msg => 'Pengajuan Verifikasi',
+        $notif => $verified->name.'Akun Anda Telah di Verifikasi';
+        notifikasi::create([
+            'role'=>'artist',
+            'user_id'=>$verified->user_id,
+            'notif'=>$msg,
+            'deskripsi'=>$notif,
+            'kategori'=>'Pengajuan Verifikasi'
+
+        ]);
+        
         return response()->redirectTo('/artis/verified')->with('message', "success");
     }
 
@@ -417,7 +434,8 @@ class ArtistController extends Controller
         $billboard = billboard::where('code', $code)->first();
         $albums = album::where('artis_id', $billboard->artis_id)->get();
         $songs = song::all();
-        return response()->view('artis.billboard.billboard', compact('title', 'billboard', 'albums', 'songs'));
+        $playlists = playlist::all();
+        return response()->view('artis.billboard.billboard', compact('title', 'billboard', 'albums', 'songs', 'playlists'));
     }
 
     protected function albumBillboard(string $code): Response
@@ -483,7 +501,8 @@ class ArtistController extends Controller
         if ($song) {
             return view('artis.search.songSearch', compact('song', 'title', 'songAll', 'playlists'));
         } else if ($user) {
-            $songUser = song::where('artis_id', $user->id)->get();
+            $artis = artist::where('user_id', $user->id)->first();
+            $songUser = song::where('artis_id', $artis->id)->get();
             return view('artis.search.artisSearch', compact('user', 'title', 'songUser', 'playlists'));
         }
     }

@@ -298,7 +298,7 @@
                                     <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ auth()->user()->name }}
                                     </p>
                                 </div>
-                                <a href="/pengguna/profile" class="dropdown-item preview-item">
+                                <a href="{{ route('ubah.profile', auth()->user()->code) }}" class="dropdown-item preview-item">
                                     <div class="preview-thumbnail">
                                         <div class="preview-icon">
                                             <i class="mdi mdi-account-circle-outline"></i>

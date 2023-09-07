@@ -131,7 +131,7 @@ class ArtistVerifiedController extends Controller
             [
                 'name' => 'required|string|max:255',
                 'avatar' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-                'email' => 'required|string|email|max:255',
+                'email' => 'required|string|email|max:255|unique:users,email',
                 'deskripsi' =>  'max:500',
             ],
             [
@@ -140,7 +140,7 @@ class ArtistVerifiedController extends Controller
                     'string' => 'Nama harus berupa teks.',
                     'max' => 'Nama tidak boleh lebih dari :max karakter.',
                 ],
-                'avatar' => [
+                'avatar' => [   
                     'image' => 'Avatar harus berupa gambar.',
                     'mimes' => 'Avatar harus dalam format: :values.',
                     'max' => 'Avatar tidak boleh lebih dari :max KB.',
@@ -149,6 +149,7 @@ class ArtistVerifiedController extends Controller
                     'required' => 'Email harus diisi.',
                     'string' => 'Email harus berupa teks.',
                     'email' => 'Format email tidak valid.',
+                    'uniqe' => 'Email sudah di pakai.',
                     'max' => 'Email tidak boleh lebih dari :max karakter.',
                 ],
                 'deskripsi' => [
@@ -227,9 +228,9 @@ class ArtistVerifiedController extends Controller
         try {
             User::where('code', $code)->update($value);
         } catch (Throwable $e) {
-            return response()->redirectTo('/artis-verified/profile')->with('failed', "failed");
+            return redirect()->back()->with(['message' => 'error']);
         }
-        return response()->redirectTo('/artis-verified/profile')->with('failed', "failed");
+        return redirect()->back()->with(['message' => 'success']);
     }
 
     protected function hapusPlaylist(string $code)

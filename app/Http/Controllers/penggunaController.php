@@ -203,10 +203,10 @@ class penggunaController extends Controller
     protected function billboard(string $code): Response
     {
         $title = "MusiCave";
+        $songs = song::all();
         $billboard = billboard::where('code', $code)->first();
         $albums = album::where('artis_id', $billboard->artis_id)->get();
-        $songs = song::all();
-        return response()->view('users.billboard.billboard', compact('title', 'billboard', 'albums', 'songs'));
+        return response()->view('users.billboard.billboard', compact('title', 'billboard', 'albums'));
     }
 
     protected function detailPlaylist(string $code): Response
