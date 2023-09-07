@@ -21,14 +21,15 @@
                 </div>
                 <div class="col-md-7">
                     <div class="card border-0 bg-dark coba">
-                        <div id="carouselExampleAutoplaying" class="carousel slide carousel-fade" data-bs-ride="carousel" data-interval="2000">
+                        <div id="carouselExampleAutoplaying" class="carousel slide carousel-fade" data-bs-ride="carousel"
+                            data-interval="2000">
                             <div class="carousel-inner">
                                 @foreach ($billboards as $index => $item)
                                     <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                        <a href="{{ route('detail.billboard.artisVerified', $item->code) }}" class="image-container">
+                                        <a href="{{ route('detail.billboard.artisVerified', $item->code) }}"
+                                            class="image-container">
                                             <img src="{{ asset('storage/' . $item->image_background) }}"
-                                                 class="d-block billboard"
-                                                 alt="...">
+                                                class="d-block billboard" alt="...">
                                             <div class="bottom-left">
                                                 <h3 class="text-light">{{ $item->name }}</h3>
                                             </div>
@@ -36,15 +37,17 @@
                                     </div>
                                 @endforeach
                             </div>
-                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+                            <button class="carousel-control-prev" type="button"
+                                data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Previous</span>
                             </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+                            <button class="carousel-control-next" type="button"
+                                data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Next</span>
                             </button>
-                        </div> 
+                        </div>
                     </div>
                     <h3 class="card-title mt-2 judul" style="font-size: 20px; font-weight: 600">Lagu Yang Disarankan</h3>
                     <div class="card datakanan scrollbar-down thin">
@@ -70,8 +73,8 @@
                                                     </div>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group align-items-center">
-                                                            <i id="like{{$item->id}}" data-id="{{ $item->id }}"
-                                                        onclick="toggleLike(this, {{ $item->id }})"
+                                                            <i id="like{{ $item->id }}" data-id="{{ $item->id }}"
+                                                                onclick="toggleLike(this, {{ $item->id }})"
                                                                 class="shared-icon-like {{ $item->likes > 0 ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                             <p style="pointer-events: none;">{{ $item->waktu }}</p>
                                                             <a data-bs-toggle="modal"
@@ -107,7 +110,7 @@
                                             @if ($item)
                                                 <div class="preview-item">
                                                     <div class="preview-thumbnail">
-                                                        <img src="/user/assets/images/faces/face1.jpg" width="10%">
+                                                        <img src="{{ asset('storage/' . $item->user->avatar) }}" width="10%">
                                                     </div>
                                                     <div class="preview-item-content d-sm-flex flex-grow">
                                                         <div class="flex-grow">

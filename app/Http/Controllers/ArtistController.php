@@ -48,11 +48,13 @@ class ArtistController extends Controller
     protected function penghasilan(): Response
     {
         $title = "MusiCave";
+        $projects = projects::all();
         $totalPengguna = User::count();
         $totalLagu = song::count();
         $totalArtist = artist::count();
         $songs = song::all();
-        return response()->view('artis.penghasilan', compact('title', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs'));
+        $penghasilan = artist::where('user_id', auth()->user()->id)->first();
+        return response()->view('artis.penghasilan', compact('title', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'penghasilan', 'projects'));
     }
 
     protected function riwayat(): Response
@@ -171,6 +173,17 @@ class ArtistController extends Controller
             return response()->redirectTo('/artis/verified')->with('failed', "failed");
         }
         Alert::success('message', 'Success Mengirim Request Verification Account');
+        $msg => 'Pengajuan Verifikasi',
+        $notif => $verified->name.'Akun Anda Telah di Verifikasi';
+        notifikasi::create([
+            'role'=>'artist',
+            'user_id'=>$verified->user_id,
+            'notif'=>$msg,
+            'deskripsi'=>$notif,
+            'kategori'=>'Pengajuan Verifikasi'
+
+        ]);
+        
         return response()->redirectTo('/artis/verified')->with('message', "success");
     }
 
@@ -222,7 +235,6 @@ class ArtistController extends Controller
                     ->withErrors($validate)
                     ->withInput();
             }
-
 
             if (Storage::disk('public')->exists($existingPhotoPath) == "images/default.png") {
                 $newImage = $request->file('avatar')->store('images', 'public');
@@ -703,7 +715,8 @@ class ArtistController extends Controller
     protected function message(Request $request)
     {
         $project = projects::where('id', $request->input('id_project'))->first();
-        $user = artist::where('id', auth()->user()->id)->first();
+        $user = artist::where('user_id', auth()->user()->id)->first();
+        // dd($user);
         $message = messages::create([
             'code' => Str::uuid(),
             'sender_id' => $project->pembuat_project,

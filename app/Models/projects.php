@@ -20,4 +20,14 @@ class projects extends Model
         'is_approved',
         'is_reject',
     ];
+
+    public function artist_pembuatProject()
+    {
+        return $this->hasOne(artist::class, 'pembuat_project', 'artis_id');
+    }
+
+    public function artist_penerimaProject()
+    {
+        return $this->hasOne(artist::class, 'penerima_project', 'artis_id');
+    }
 }

@@ -4,43 +4,16 @@
 @section('content')
     <link rel="stylesheet" href="/user/assets/css/contohPlaylist.css">
     <link rel="stylesheet" href="/user/assets/css/buatPlaylist.css">
-    @foreach ($songs as $item)
-        <div id="staticBackdrop-{{ $item->code }}" class="modal" data-bs-backdrop="static" data-bs-keyboard="false"
-            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="card windowi">
-                <div class="card-body">
-                    <h3 class="judul p-0 mb-4">Tambah Ke Playlist</h3>
-                    <a href="" class="close-button far fa-times-circle"></a>
-                    <form class="row" action="{{ route('tambah.playlist', $item->code) }}" method="POST">
-                        @csrf
-                        <div class="col-md-12">
-                            <div class="mb-4">
-                                <h6 class="form-label judulnottebal mb-3">Nama Playlist</h6>
-                                <select name="playlist_id" class="form-select" id="namaartis">
-                                    @foreach ($playlists as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="text-md-right">
-                            <button class="btn" type="submit">Tambah</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    @endforeach
-
-    <link rel="stylesheet" href="/user/assets/css/contohPlaylist.css">
-    <style>
-        .coba {
-            width: 200px;
-            height: 200px;
-            position: relative;
-            overflow: hidden;
-            border: none;
-            margin-right: 5px;
+    @include('partials.tambahkeplaylist')
+<link rel="stylesheet" href="/user/assets/css/contohPlaylist.css">
+<style>
+    .coba {
+        width: 200px;
+        height: 200px;
+        position: relative;
+        overflow: hidden;
+        border: none;
+        margin-right: 5px;
 
             display: flex;
             justify-content: center;

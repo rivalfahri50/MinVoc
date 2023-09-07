@@ -1,20 +1,20 @@
 <?php
 
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\ArtistController;
-use App\Http\Controllers\ArtistVerifiedController;
-use App\Http\Controllers\authController;
-use App\Http\Controllers\Controller;
-use App\Http\Controllers\penggunaController;
-use App\Http\Controllers\RiwayatController;
-use App\Http\Controllers\songController;
 use App\Models\admin;
 use App\Models\artist;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
+use App\Http\Controllers\authController;
+use App\Http\Controllers\songController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ArtistController;
+use App\Http\Controllers\RiwayatController;
+use App\Http\Controllers\penggunaController;
+use App\Http\Controllers\ArtistVerifiedController;
 
 /*
 |--------------------------------------------------------------------------
@@ -144,6 +144,7 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
         return view('artisVerified.peraturan', ['title' => 'MusiCave']);
     })->name('peraturan.artisVerified');
 
+    Route::post('/bayar/{code}', 'bayar')->name('bayar');
     Route::post('/tambah_playlist/{code}', 'tambah_playlist')->name('tambah.playlist.artisVerified');
     Route::post('/project', 'createProject')->name('createProject.artisVerified');
     Route::post('/unggahAudio', 'unggahAudio')->name('unggah.artisVerified');

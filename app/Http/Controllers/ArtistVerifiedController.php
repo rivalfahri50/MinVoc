@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\admin;
 use App\Models\album;
 use App\Models\artist;
 use App\Models\billboard;
@@ -53,7 +54,8 @@ class ArtistVerifiedController extends Controller
         $totalLagu = song::count();
         $totalArtist = artist::count();
         $songs = song::all();
-        return response()->view('artisVerified.penghasilan', compact('title', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs'));
+        $penghasilan = artist::where('user_id', auth()->user()->id)->first();
+        return response()->view('artisVerified.penghasilan', compact('title', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'penghasilan'));
     }
 
     protected function riwayat(): Response
@@ -173,7 +175,12 @@ class ArtistVerifiedController extends Controller
                     ->withInput();
             }
 
-            $newImage = $request->file('avatar')->store('images', 'public');
+            if (Storage::disk('public')->exists($existingPhotoPath) == "images/default.png") {
+                $newImage = $request->file('avatar')->store('images', 'public');
+            } else if (Storage::disk('public')->exists($existingPhotoPath)) {
+                Storage::disk('public')->delete($existingPhotoPath);
+                $newImage = $request->file('avatar')->store('images', 'public');
+            }
 
             if ($request->input('deskripsi') === "none" || $request->input('deskripsi') === null) {
                 $value = [
@@ -195,9 +202,6 @@ class ArtistVerifiedController extends Controller
                     'password' => $user->password,
                     'role_id' => $user->role_id,
                 ];
-            }
-            if (Storage::disk('public')->exists($existingPhotoPath)) {
-                Storage::disk('public')->delete($existingPhotoPath);
             }
         } else {
             if ($request->input('deskripsi') === "none" || $request->input('deskripsi') === null) {
@@ -237,17 +241,15 @@ class ArtistVerifiedController extends Controller
         }
 
         try {
-            if (Storage::disk('public')->exists($playlist->images)) {
+            if (!Storage::disk('public')->exists($playlist->images) == "images/default.png") {
                 Storage::disk('public')->delete($playlist->images);
-            }
+            } 
             $playlist->delete();
         } catch (\Throwable $th) {
             Log::error('Error deleting playlist: ' . $th->getMessage());
-            return response()->redirectTo('artisVerified/playlist');
+            return response()->redirectTo('artis-verified/playlist');
         }
-
-
-        return response()->redirectTo('artisVerified/playlist');
+        return response()->redirectTo('artis-verified/playlist');
     }
 
     protected function hapusAlbum(string $code)
@@ -448,8 +450,12 @@ class ArtistVerifiedController extends Controller
                         'user_id' => $playlists->user_id
                     ];
             } else if ($existImage = $request->file('images')->store('images', 'public')) {
-                if (Storage::disk('public')->exists($playlists->images)) {
+
+                if (Storage::disk('public')->exists($playlists->images) == "images/defaultPlaylist.png") {
+                    $newImage = $request->file('images')->store('images', 'public');
+                } else if (Storage::disk('public')->exists($playlists->images)) {
                     Storage::disk('public')->delete($playlists->images);
+                    $newImage = $request->file('images')->store('images', 'public');
                 }
 
                 $values =
@@ -606,7 +612,7 @@ class ArtistVerifiedController extends Controller
             'is_reject' => false,
         ];
 
-        dd($data);
+        // dd($data);
 
         try {
             $project->update($data);
@@ -619,7 +625,8 @@ class ArtistVerifiedController extends Controller
     protected function message(Request $request)
     {
         $project = projects::where('id', $request->input('id_project'))->first();
-        $user = artist::where('id', auth()->user()->id)->first();
+        $user = artist::where('user_id', auth()->user()->id)->first();
+        // dd(artist::where('id', auth()->user()->id)->first());
         $message = messages::create([
             'code' => Str::uuid(),
             'sender_id' => $user->id,
@@ -707,5 +714,41 @@ class ArtistVerifiedController extends Controller
             return response()->redirectTo('/artis-verified/kolaborasi')->with('message', "Gagal untuk register!!");
         }
         return response()->redirectTo('/artis-verified/kolaborasi')->with('message', 'User created successfully.');
+    }
+
+    protected function bayar(Request $request, string $code)
+    {
+        $project = projects::where('code', $code)->first();
+        $range = $request->input('range');
+
+        if ($range < 40) {
+            $persentase = 40;
+        } elseif ($range > 80) {
+            $persentase = 80;
+        }
+
+        // Nilai uang tetap
+        $uangTetap = 1800000;
+
+        // Hitung jumlah uang berdasarkan persentase
+        $uangYangDiterima = ($range / 100) * $uangTetap;
+        // Bagikan uang ke pengguna berdasarkan persentase
+        $uangPengguna = ($uangYangDiterima / 100) * $range;
+
+        try {
+            $admin = admin::where('id', 1)->first();
+            $admin->penghasilan = '200.000';
+            $admin->update();
+
+            $artisVerified = artist::where('id', $project->pembuat_project)->first();
+            $artis = artist::where('id', $project->penerima_project)->first();
+            $artisVerified->penghasilan = $uangYangDiterima;
+            $artisVerified->update();
+            $artis->penghasilan = $uangPengguna;
+            $artis->update();
+        } catch (\Throwable $th) {
+            return response()->redirectTo('/artis-verified/kolaborasi');
+        }
+        return response()->redirectTo('/artis-verified/kolaborasi');
     }
 }

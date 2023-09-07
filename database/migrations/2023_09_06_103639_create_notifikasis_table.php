@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('messages', function (Blueprint $table) {
+        Schema::create('notifikasis', function (Blueprint $table) {
             $table->id();
-            $table->string("code", 100);
-            $table->foreignId("sender_id")->constrained("artists");
-            $table->foreignId("receiver_id")->constrained("artists");
-            $table->foreignId("project_id")->constrained("projects");
-            $table->string("message");
+            $table->string('role');
+            $table->string('user_id');
+            $table->string('judul');
+            $table->string('deskripsi');
+            $table->string('kategori');
             $table->timestamps();
-
         });
     }
 
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('messages');
+        Schema::dropIfExists('notifikasis');
     }
 };

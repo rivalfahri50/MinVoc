@@ -105,33 +105,13 @@
 }
 
 
+.table-container {
+    margin-bottom: 20px;
+}
+
 .table-sortable th {
     cursor: pointer;
     border-radius: 10px;
-    position: relative;
-}
-
-.table-sortable th::after {
-    content: "";
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.table-sortable th::after {
-    content: "\25b4"; /* Panah naik secara default */
-    opacity: 0.4;
-}
-
-.table-sortable .th-sort-asc::after {
-    content: "\25b4"; /* Panah naik untuk urutan naik */
-    opacity: 1;
-}
-
-.table-sortable .th-sort-desc::after {
-    content: "\25be"; /* Panah turun untuk urutan turun */
-    opacity: 1;
 }
 
 /*---- style untuk button icon ----*/

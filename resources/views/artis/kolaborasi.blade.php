@@ -212,9 +212,6 @@
                                                     <td class="table-cell">
                                                         <span class="pl-2">{{ $item->name }}</span>
                                                     </td>
-                                                    <td class="table-cell">
-                                                        <div>Rp {{ $item->harga }}</div>
-                                                    </td>
                                                     <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
                                                     <td class="d-flex align-items-center">
                                                         <button class="btn-unstyled mr-2" data-bs-toggle="modal"
