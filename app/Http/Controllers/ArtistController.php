@@ -225,7 +225,6 @@ class ArtistController extends Controller
                     ->withInput();
             }
 
-
             if (Storage::disk('public')->exists($existingPhotoPath) == "images/default.png") {
                 $newImage = $request->file('avatar')->store('images', 'public');
             } else if (Storage::disk('public')->exists($existingPhotoPath)) {

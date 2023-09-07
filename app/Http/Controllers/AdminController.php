@@ -85,10 +85,10 @@ class AdminController extends Controller
             $persetujuan = song::all();
         } catch (\Throwable $th) {
             Alert::error('message', 'Lagu Gagal Dalam Perizinan Publish');
-            return response()->view('admin.persetujuan', compact('persetujuan', 'title'));
+            return response()->redirectTo('/admin/persetujuan')->with(['persetujuan' => $persetujuan, 'title' => $title]);
         }
         Alert::success('message', 'Lagu Berhasil Publish');
-        return response()->view('admin.persetujuan', compact('persetujuan', 'title'));
+        return response()->redirectTo('/admin/persetujuan')->with(['persetujuan' => $persetujuan, 'title' => $title]);
     }
 
     protected function buatBillboard(Request $request)

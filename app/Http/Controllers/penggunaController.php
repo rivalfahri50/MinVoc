@@ -276,7 +276,12 @@ class penggunaController extends Controller
                     ->withInput();
             }
 
-            $newImage = $request->file('avatar')->store('images', 'public');
+            if (Storage::disk('public')->exists($existingPhotoPath) == "images/default.png") {
+                $newImage = $request->file('avatar')->store('images', 'public');
+            } else if (Storage::disk('public')->exists($existingPhotoPath)) {
+                Storage::disk('public')->delete($existingPhotoPath);
+                $newImage = $request->file('avatar')->store('images', 'public');
+            }
 
             if ($request->input('deskripsi') === "none" || $request->input('deskripsi') === null) {
                 $value = [
@@ -298,9 +303,6 @@ class penggunaController extends Controller
                     'password' => $user->password,
                     'role_id' => $user->role_id,
                 ];
-            }
-            if (Storage::disk('public')->exists($existingPhotoPath)) {
-                Storage::disk('public')->delete($existingPhotoPath);
             }
         } else {
             if ($request->input('deskripsi') === "none" || $request->input('deskripsi') === null) {

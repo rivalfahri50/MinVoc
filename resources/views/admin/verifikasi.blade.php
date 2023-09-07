@@ -27,12 +27,14 @@
                                 <h5 class="judul mb-3">Tanggal Pengajuan :</h5>
                                 <p class="teksbiasa">{{ $item->pengajuan_verified_at }}</p>
                             </div>
+                            <div class="col-md-12 mb-4">
+                                <h5 class="judul mb-3">Pengikut :</h5>
+                                <p class="teksbiasa">{{ $item->pengajuan_verified_at }}</p>
+                            </div>
                             <div class="text-md-right">
                                 <button type="submit" class="btn">Setujui</button>
                                 <button type="button" data-bs-toggle="modal" data-bs-target="#modal1" class="btn">Tolak</button>
                             </div>
-
-
                         </div>
                     </div>
                 </div>
@@ -250,7 +252,6 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        /*===================================*/
 
         $(document).ready(function() {
             var itemsPerPage = 5;

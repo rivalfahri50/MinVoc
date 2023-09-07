@@ -175,7 +175,12 @@ class ArtistVerifiedController extends Controller
                     ->withInput();
             }
 
-            $newImage = $request->file('avatar')->store('images', 'public');
+            if (Storage::disk('public')->exists($existingPhotoPath) == "images/default.png") {
+                $newImage = $request->file('avatar')->store('images', 'public');
+            } else if (Storage::disk('public')->exists($existingPhotoPath)) {
+                Storage::disk('public')->delete($existingPhotoPath);
+                $newImage = $request->file('avatar')->store('images', 'public');
+            }
 
             if ($request->input('deskripsi') === "none" || $request->input('deskripsi') === null) {
                 $value = [
@@ -197,9 +202,6 @@ class ArtistVerifiedController extends Controller
                     'password' => $user->password,
                     'role_id' => $user->role_id,
                 ];
-            }
-            if (Storage::disk('public')->exists($existingPhotoPath)) {
-                Storage::disk('public')->delete($existingPhotoPath);
             }
         } else {
             if ($request->input('deskripsi') === "none" || $request->input('deskripsi') === null) {
@@ -239,17 +241,15 @@ class ArtistVerifiedController extends Controller
         }
 
         try {
-            if (Storage::disk('public')->exists($playlist->images)) {
+            if (!Storage::disk('public')->exists($playlist->images) == "images/default.png") {
                 Storage::disk('public')->delete($playlist->images);
-            }
+            } 
             $playlist->delete();
         } catch (\Throwable $th) {
             Log::error('Error deleting playlist: ' . $th->getMessage());
-            return response()->redirectTo('artisVerified/playlist');
+            return response()->redirectTo('artis-verified/playlist');
         }
-
-
-        return response()->redirectTo('artisVerified/playlist');
+        return response()->redirectTo('artis-verified/playlist');
     }
 
     protected function hapusAlbum(string $code)
@@ -450,8 +450,12 @@ class ArtistVerifiedController extends Controller
                         'user_id' => $playlists->user_id
                     ];
             } else if ($existImage = $request->file('images')->store('images', 'public')) {
-                if (Storage::disk('public')->exists($playlists->images)) {
+
+                if (Storage::disk('public')->exists($playlists->images) == "images/defaultPlaylist.png") {
+                    $newImage = $request->file('images')->store('images', 'public');
+                } else if (Storage::disk('public')->exists($playlists->images)) {
                     Storage::disk('public')->delete($playlists->images);
+                    $newImage = $request->file('images')->store('images', 'public');
                 }
 
                 $values =
@@ -722,10 +726,10 @@ class ArtistVerifiedController extends Controller
         } elseif ($range > 80) {
             $persentase = 80;
         }
-        
+
         // Nilai uang tetap
         $uangTetap = 1800000;
-        
+
         // Hitung jumlah uang berdasarkan persentase
         $uangYangDiterima = ($range / 100) * $uangTetap;
         // Bagikan uang ke pengguna berdasarkan persentase
