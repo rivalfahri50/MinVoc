@@ -57,8 +57,7 @@
                         <div class="mb-3">
                             <label for="namakategori" class="form-label judulnottebal">Nama
                                 Proyek</label>
-                            <input type="text" name="name" class="form-control form-i" id="namaproyek" required
-                                readonly value="{{ $item->name }}">
+                                <input type="text" name="name" class="form-control form-i" id="namaproyek" required="" readonly="" value="{{ $item->name }}" fdprocessedid="piymoo">
                         </div>
                         <div class="mb-3">
                             <label for="konsep" class="form-label judulnottebal">Deskripsi</label>
@@ -70,8 +69,7 @@
                 <div class="modal-footer border-0">
                     <button type="button" class="btn rounded-3">
                         <a href="{{ route('lirikAndChat.artisVerified', $item->code) }}" class="btn-link"
-                            style="color: inherit; text-decoration: none;">Buat
-                            Proyek</a></button>
+                            style="color: inherit; text-decoration: none;">Detail Project</a></button>
                 </div>
             </div>
         </div>
@@ -276,9 +274,6 @@
                                                 <tr class="table-row">
                                                     <td class="table-cell">
                                                         <span class="pl-2">{{ $item->name }}</span>
-                                                    </td>
-                                                    <td class="table-cell">
-                                                        <div>Rp {{ $item->harga }}</div>
                                                     </td>
                                                     <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
                                                     <td class="d-flex align-items-center">

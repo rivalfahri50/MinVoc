@@ -149,9 +149,9 @@
                                 <table class="table">
                                     <thead class="table-header">
                                         <tr class="table-row header headerlengkung">
-                                            <th class="table-cell">Judul Lagu</th>
-                                            <th class="table-cell">Genre</th>
-                                            <th class="table-cell">Tanggal Pengajuan</th>
+                                            <th class="table-cell">Kolaborasi</th>
+                                            <th class="table-cell">Jumlah</th>
+                                            <th class="table-cell">Tanggal</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -196,15 +196,21 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         var ctx = document.getElementById('myChart').getContext('2d');
+        
+        // Data pendapatan dari PHP
+        var dataPendapatan = <?php echo json_encode($penghasilan->penghasilan); ?>;
+        
+        // Mengonversi objek data ke dalam array
+        var labels = Object.keys(dataPendapatan);
+        var pendapatanBulanan = Object.values(dataPendapatan);
+
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['January', 'February', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September',
-                    'Oktober', 'November', 'Desember'
-                ],
+                labels: labels,
                 datasets: [{
                     label: 'Pendapatan',
-                    data: [5, 3.5, 2.5, 0.5, 4.5, 1, 2, 5, 4, 2.5, 3, 1.5],
+                    data: pendapatanBulanan,
                     backgroundColor: [
                         'rgba(153, 102, 255, 0.2)',
                         'rgba(153, 102, 255, 0.2)',

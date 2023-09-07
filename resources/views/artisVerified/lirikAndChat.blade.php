@@ -81,8 +81,7 @@
                 position: relative;
             }
 
-            .range-value {
-            }
+            .range-value {}
 
             .range-value span {
                 width: 30px;
@@ -138,10 +137,13 @@
                                             <div class="mb-3">
                                                 <input type="text" name="judul"
                                                     class="form-control form-i input-judul pl-3" id="namaproyek"
-                                                    placeholder="Judul Lagu" style="background-color: #ffffff" required>
+                                                    placeholder="{{ $project->judul }}" style="background-color: #ffffff" readonly
+                                                    required>
                                             </div>
-                                            <textarea name="lirik" id="summernote" style="background-color: #ffffff; border: 1px solid #6d6d6d"></textarea>
-                                            <script>
+                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="20" readonly
+                                                style="background-color: #ffffff;">{{ $project->lirik }}</textarea>
+                                            {{-- <textarea name="lirik" id="summernote" style="background-color: #ffffff; border: 1px solid #6d6d6d"></textarea> --}}
+                                            {{-- <script>
                                                 $('#summernote').summernote({
                                                     placeholder: 'Teks',
                                                     tabsize: 2,
@@ -154,7 +156,7 @@
                                                         ['view', ['codeview']]
                                                     ]
                                                 });
-                                            </script>
+                                            </script> --}}
                                             <div class="mt-3">
                                                 <button class="btn pl-3 kirim rounded-3 full-width-button" type="button"
                                                     data-bs-toggle="modal" data-bs-target="#kirimkolaborasi">
@@ -168,6 +170,51 @@
                         </div>
                     </div>
                 </div>
+                <style>
+                    .chat-box {
+                        overflow-y: scroll;
+                        height: 70vh;
+                        background-color: white;
+                        border-radius: 10px;
+                        border: 1px solid rgba(0, 0, 0, 0.2);
+                        padding: 10px;
+                    }
+
+                    /* CSS untuk pesan chat */
+                    .chat-message {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-start;
+                        margin-bottom: 10px;
+                    }
+
+                    .chat-name {
+                        font-size: 12px;
+                        color: rgb(171, 171, 171);
+                        text-align: right;
+                    }
+
+                    .chat-text {
+                        font-size: 14px;
+                        color: rgb(52, 52, 52);
+                        background-color: whitesmoke;
+                        max-width: 50%;
+                        border-radius: 15px;
+                        padding: 8px 15px;
+                    }
+
+                    /* CSS untuk input chat */
+                    .chat-input {
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        right: 10px;
+                        padding: 10px;
+                        display: flex;
+                        align-items: center;
+                        background-color: white;
+                    }
+                </style>
                 <div class="col-md-5">
                     <div class="card kanan scrollbar-dusty-grass square thin rounded-4">
                         <div class="card-body">
@@ -184,33 +231,25 @@
                                             <form action="{{ route('message.project.artisVerified') }}" method="post">
                                                 @csrf
                                                 <input type="hidden" name="id_project" value="{{ $project->id }}">
-                                                <div class="card ">
+                                                <div class="card">
                                                     <div style="height: 415px">
-                                                        <div class="card-body"
-                                                            style="overflow-y: scroll; height: 70vh; background-color: white; border-radius: 10px; border: 1px solid rgba(0,0,0,.2);">
-                                                            <div style="display: flex; flex-direction: column;">
-                                                                {{-- <span
-                                                                style="font-size: 12px; margin-bottom: 3px; color: rgb(171, 171, 171)">ghhhh</span>
-                                                            <span class="mb-2"
-                                                                style="font-size: 14px; color: rgb(52, 52, 52); background-color: whitesmoke; max-width: 50%; border-radius: 15px; text-align: left; padding: 3px 10px">ewfawe
-                                                            </span> --}}
-                                                                @foreach ($datas as $key => $item)
+                                                        <div class="card-body chat-box">
+                                                            @foreach ($datas as $key => $item)
+                                                                <div class="chat-message">
                                                                     @if ($key == 0 || $item->messages->name != $datas[$key - 1]->messages->name)
-                                                                        <span
-                                                                            style="font-size: 12px; margin-bottom: 3px; color: rgb(171, 171, 171)">ghhhh</span>
+                                                                        <div class="chat-name">{{ $item->messages->name }}
+                                                                        </div>
                                                                     @endif
-                                                                    <span class="mb-2"
-                                                                        style="font-size: 14px; color: rgb(52, 52, 52); background-color: whitesmoke; max-width: 50%; border-radius: 15px; text-align: left; padding: 3px 10px">{{ $item->message }}</span>
-                                                                @endforeach
-                                                            </div>
-                                                            <div class="input-with-icon"
-                                                                style="position: absolute; bottom: 0; left: 0; right: 10px; padding: 10px;">
-                                                                <input type="text" class="form-control rounded-4"
-                                                                    placeholder="ketik di sini untuk admin" name="message">
-                                                                <button type="submit" class="send-button ml-2 mr-1">
-                                                                    <i class="fas fa-paper-plane"></i>
-                                                                </button>
-                                                            </div>
+                                                                    <div class="chat-text">{{ $item->message }}</div>
+                                                                </div>
+                                                            @endforeach
+                                                        </div>
+                                                        <div class="input-with-icon chat-input">
+                                                            <input type="text" class="form-control rounded-4"
+                                                                placeholder="Ketik di sini untuk admin" name="message">
+                                                            <button type="submit" class="send-button ml-2 mr-1">
+                                                                <i class="fas fa-paper-plane"></i>
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -226,34 +265,38 @@
             <!-- Modal -->
             <div class="modal fade" id="kirimkolaborasi" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content border-0" style="background-color: white">
-                        <div class="modal-header border-0">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel" style="color: #957DAD">Pembayaran</h1>
-                            <button type="button" class="btn-unstyled" data-bs-dismiss="modal" aria-label="Close">
-                                <i class="mdi mdi-close-circle-outline btn-icon" style="color: #957DAD"></i>
-                            </button>
-                        </div>
-                        <div class="modal-body border-0">
-                            <div class="col-md-12" style="font-size: 13px">
-                                <h5 class="judulnottebal mb-4">Persentase Pembayaran</h5>
-                                <div class="mb-3">
-                                    <div class="range-wrap">
-                                        <div class="range-value" id="rangeV">0%</div>
-                                        <input class="slider mb-4" id="range" type="range" min="0" max="100" value="0" step="1">
-                                        <output for="range" class="output">Rp. 0</output>
-                                    </div>                                    
+                <form action="{{ route('bayar', $project->code) }}" method="post">
+                    @csrf
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content border-0" style="background-color: white">
+                            <div class="modal-header border-0">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel" style="color: #957DAD">Pembayaran</h1>
+                                <button type="button" class="btn-unstyled" data-bs-dismiss="modal" aria-label="Close">
+                                    <i class="mdi mdi-close-circle-outline btn-icon" style="color: #957DAD"></i>
+                                </button>
+                            </div>
+                            <div class="modal-body border-0">
+                                <div class="col-md-12" style="font-size: 13px">
+                                    <h5 class="judulnottebal mb-4">Persentase Pembayaran</h5>
+                                    <div class="mb-3">
+                                        <div class="range-wrap">
+                                            <div class="range-value" id="rangeV">0%</div>
+                                            <input class="slider mb-4" id="range" name="range" type="range"
+                                                min="0" max="100" value="40" step="1">
+                                            <output for="range" class="output">Rp. 0</output>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="modal-footer border-0">
-                            <button type="button" class="btn rounded-3 full-width-button">
-                                <a href="" class="btn-link"
-                                    style="color: inherit; text-decoration: none;">Bayar</a>
-                            </button>
+                            <div class="modal-footer border-0">
+                                <button type="submit" class="btn rounded-3 full-width-button">
+                                    <a href="" class="btn-link"
+                                        style="color: inherit; text-decoration: none;">Bayar</a>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -261,17 +304,24 @@
         const range = document.getElementById('range');
         const rangeV = document.getElementById('rangeV');
         const output = document.querySelector('.output');
-    
+
         const setValue = () => {
             const persentase = Number(range.value);
-            const uang = (persentase / 100) * 2000000; // 2 juta
+            const faktor = 18000;
+
+            if (persentase < 40) {
+                range.value = 40;
+            } else if (persentase > 80) {
+                range.value = 80;
+            }
+
+            const uang = (persentase / 100) * faktor * 100;
             rangeV.innerHTML = `${persentase}%`;
-    
-            // Konversi nilai uang ke format Rupiah (Rp)
+
             const harga = formatRupiah(uang);
             output.textContent = `Rp. ${harga}`;
         };
-    
+
         // Fungsi untuk mengonversi nilai menjadi format Rupiah (Rp)
         const formatRupiah = (angka) => {
             let reverse = angka.toString().split('').reverse().join('');
@@ -279,21 +329,21 @@
             ribuan = ribuan.join('.').split('').reverse().join('');
             return ribuan;
         };
-    
+
         document.addEventListener("DOMContentLoaded", () => {
             setValue();
         });
-    
+
         range.addEventListener('input', () => {
             setValue();
         });
-    
+
         // Agar rangeV mengikuti pergerakan thumb
         range.addEventListener('mousemove', () => {
             const newValue = Number(range.value);
             const newPosition = 10 - (newValue * 0.2);
             rangeV.style.left = `calc(${newValue}% + (${newPosition}px))`;
         });
-    </script>    
+    </script>
     </div>
 @endsection
