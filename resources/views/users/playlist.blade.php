@@ -16,7 +16,7 @@
                                         <div class="card-content">
                                             <div class="kotaktetap">
                                                 <img src="{{ asset('storage/' . $item->images) }}"
-                                                    class="img-fluid rounded-1">
+                                                    class="img-fluid rounded-1 p-2">
                                             </div>
                                             <h4 class="mt-2 judul">{{ $item->name }}</h4>
                                             <p class="teks">{{ $item->deskripsi === 'none' ? '' : "$item->deskripsi" }}

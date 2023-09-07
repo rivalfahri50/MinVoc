@@ -7,6 +7,7 @@ use App\Models\artist;
 use App\Models\billboard;
 use App\Models\genre;
 use App\Models\messages;
+use App\Models\Notifikasi;
 use App\Models\playlist;
 use App\Models\projects;
 use App\Models\song;
@@ -83,9 +84,9 @@ class ArtistController extends Controller
             $song->playlist_id = $request->input('playlist_id');
             $song->update();
         } catch (\Throwable $th) {
-            return back();
+            return response()->redirectTo('/artis/playlist');
         }
-        return back();
+        return response()->redirectTo('/artis/playlist');
     }
 
     protected function buatAlbum(Request $request, string $code)
@@ -164,26 +165,23 @@ class ArtistController extends Controller
 
         try {
             $imagePath = $request->file('foto')->store('images', 'public');
-
+            $msg = 'Pengajuan Verifikasi';
+            $notif = $artist->name . 'Akun Anda Telah di Verifikasi';
             $artist->pengajuan_verified_at = now()->toDateString();
             $artist->image = $imagePath;
+            Notifikasi::create([
+                'role' => 'artist',
+                'user_id' => $artist->user_id,
+                'notif' => $msg,
+                'deskripsi' => $notif,
+                'kategori' => 'Pengajuan Verifikasi'
+            ]);
             $artist->save();
         } catch (\Throwable $th) {
             Alert::error('message', 'Gagal Mengirim Request Verification Account');
             return response()->redirectTo('/artis/verified')->with('failed', "failed");
         }
         Alert::success('message', 'Success Mengirim Request Verification Account');
-        $msg => 'Pengajuan Verifikasi',
-        $notif => $verified->name.'Akun Anda Telah di Verifikasi';
-        notifikasi::create([
-            'role'=>'artist',
-            'user_id'=>$verified->user_id,
-            'notif'=>$msg,
-            'deskripsi'=>$notif,
-            'kategori'=>'Pengajuan Verifikasi'
-
-        ]);
-        
         return response()->redirectTo('/artis/verified')->with('message', "success");
     }
 
@@ -310,8 +308,6 @@ class ArtistController extends Controller
             Log::error('Error deleting playlist: ' . $th->getMessage());
             return response()->redirectTo('artis/playlist');
         }
-
-
         return response()->redirectTo('artis/playlist');
     }
 

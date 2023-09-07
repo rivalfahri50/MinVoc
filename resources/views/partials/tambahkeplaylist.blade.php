@@ -10,6 +10,10 @@
         visibility: hidden;
     }
 
+    label {
+        justify-content: right;
+    }
+
     #tambahkeplaylist .card-body {
         padding: 10px 7% 10px 7%;
     }
@@ -47,22 +51,30 @@
             <div class="card-body">
                 <h3 class="judul p-0 mb-4">Tambah Ke Playlist</h3>
                 <a href="" class="close-button far fa-times-circle"></a>
-                <form class="row" action="{{ route('tambah.playlist', $item->code) }}" method="POST">
-                    @csrf
-                    <div class="col-m`d-12">
-                        <div class="mb-4">
-                            <label for="namaartis" class="form-label judulnottebal">Nama Playlist</label>
-                            <select name="playlist_id" class="form-select" id="namaartis">
-                                <option value="" style="display: none;" selected disabled></option>
-                                @foreach ($playlists as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                @if (auth()->user()->role_id === 3)
+                    <form class="row" action="{{ route('tambah.playlist', $item->code) }}" method="POST">
+                @endif
+                @if (auth()->user()->role_id === 2)
+                    <form class="row" action="{{ route('tambah.playlist.artis', $item->code) }}" method="POST">
+                @endif
+                @if (auth()->user()->role_id === 1)
+                    <form class="row" action="{{ route('tambah.playlist.artisVerified', $item->code) }}" method="POST">
+                @endif
+                @csrf
+                <div class="col-m`d-12">
+                    <div class="mb-4">
+                        <h6 for="namaartis" class="form-label judulnottebal mb-2" style="font-weight: 100">Nama Playlist</h6>
+                        <select name="playlist_id" class="form-select" id="namaartis">
+                            <option value="" style="display: none;" selected disabled></option>
+                            @foreach ($playlists as $item)
+                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
-                    <div class="text-md-right">
-                        <button class="btn" type="submit" onclick="return validateForm();">Tambah</button>
-                    </div>
+                </div>
+                <div class="text-md-right">
+                    <button class="btn" type="submit" onclick="return validateForm();">Tambah</button>
+                </div>
                 </form>
             </div>
         </div>

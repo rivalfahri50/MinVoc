@@ -13,6 +13,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -51,8 +52,14 @@ class penggunaController extends Controller
     protected function riwayat(): Response
     {
         $title = "MusiCave";
+
         $riwayat = Riwayat::all();
-        return response()->view('users.riwayat', compact('title','riwayat'));
+
+        $uniqueRows = $riwayat->unique(function ($item) {
+            return $item->user_id . $item->song_id . $item->play_date;
+        });
+
+        return response()->view('users.riwayat', compact('title', 'uniqueRows'));
     }
 
     protected function profile(): Response
@@ -185,11 +192,9 @@ class penggunaController extends Controller
         $playlists = playlist::all();
         $songAll = song::all();
 
-        if ($song)
-        {
+        if ($song) {
             return view('users.search.songSearch', compact('song', 'title', 'songAll', 'playlists'));
-        } else if ($user)
-        {
+        } else if ($user) {
             $songUser = song::where('artis_id', $user->id)->get();
             return view('users.search.artisSearch', compact('user', 'title', 'songUser', 'playlists'));
         }
@@ -200,7 +205,8 @@ class penggunaController extends Controller
         $title = "MusiCave";
         $billboard = billboard::where('code', $code)->first();
         $albums = album::where('artis_id', $billboard->artis_id)->get();
-        return response()->view('users.billboard.billboard', compact('title', 'billboard', 'albums'));
+        $songs = song::all();
+        return response()->view('users.billboard.billboard', compact('title', 'billboard', 'albums', 'songs'));
     }
 
     protected function detailPlaylist(string $code): Response
