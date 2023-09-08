@@ -59,7 +59,7 @@
                     </div>
                 </div>
                 <div class="col-md-12 grid-margin stretch-card">
-                    <h3 class="card-title mb-4 judul" style="font-size: 20px; font-weight: 700">Lagu Populer Agnez mo</h3>
+                    <h3 class="card-title mb-4 judul" style="font-size: 20px; font-weight: 700">Lagu Populer {{ $billboard->artis->user->name }}</h3>
                     <div class="card scroll scrollbar-down thin">
                         <div class="card-body">
                             <div class="row" style="margin-top: -20px">

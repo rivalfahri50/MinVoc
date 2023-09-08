@@ -167,14 +167,8 @@ class ArtistController extends Controller
             $imagePath = $request->file('foto')->store('images', 'public');
 
             $artist->pengajuan_verified_at = now()->toDateString();
-            Notifikasi::create([
-                'role'=>'artist',
-                'user_id'=>$artist->user_id,
-                'notif'=>$msg,
-                'deskripsi'=>$notif,
-                'kategori'=>'Pengajuan Verifikasi'
-            ]);
-            $artist->image = $imagePath;
+            $msg = 'Pengajuan Verifikasi';
+            $notif = $artist->name . 'Akun Anda Telah di Verifikasi';
             Notifikasi::create([
                 'role' => 'artist',
                 'user_id' => $artist->user_id,
@@ -188,29 +182,20 @@ class ArtistController extends Controller
             return response()->redirectTo('/artis/verified')->with('failed', "failed");
         }
         Alert::success('message', 'Success Mengirim Request Verification Account');
-        $msg => 'Pengajuan Verifikasi',
-        $notif => $verified->name.'Akun Anda Telah di Verifikasi';
-        notifikasi::create([
-            'role'=>'artist',
-            'user_id'=>$verified->user_id,
-            'notif'=>$msg,
-            'deskripsi'=>$notif,
-            'kategori'=>'Pengajuan Verifikasi'
 
-        ]);
-        
         return response()->redirectTo('/artis/verified')->with('message', "success");
     }
 
     protected function updateProfile(string $code, Request $request)
     {
+        $user = User::where('code', $code)->first();
         $validate = Validator::make(
             $request->all(),
             [
                 'name' => 'required|string|max:255',
                 'avatar' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-                'email' => 'required|string|email|max:255',
-                'deskripsi' =>  'max:500',
+                'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+                'deskripsi' => 'max:500',
             ],
             [
                 'name' => [
@@ -228,6 +213,7 @@ class ArtistController extends Controller
                     'string' => 'Email harus berupa teks.',
                     'email' => 'Format email tidak valid.',
                     'max' => 'Email tidak boleh lebih dari :max karakter.',
+                    'unique' => 'Email sudah terdaftar.',
                 ],
                 'deskripsi' => [
                     'max' => 'Deskripsi tidak boleh lebih dari :max karakter.',
@@ -241,7 +227,6 @@ class ArtistController extends Controller
                 ->withInput();
         }
 
-        $user = User::where('code', $code)->first();
         $existingPhotoPath = $user->avatar;
 
         if ($request->hasFile('avatar') && $request->file('avatar')) {
@@ -303,9 +288,9 @@ class ArtistController extends Controller
         try {
             User::where('code', $code)->update($value);
         } catch (Throwable $e) {
-            return response()->redirectTo('/artis/profile')->with('failed', "failed");
+            return redirect()->back()->withErrors($validate)->withInput();
         }
-        return response()->redirectTo('/artis/profile')->with('failed', "failed");
+        return redirect()->back()->withErrors($validate)->withInput();
     }
 
     protected function hapusPlaylist(string $code)
@@ -442,7 +427,9 @@ class ArtistController extends Controller
     {
         $title = "MusiCave";
         $album = album::where('code', $code)->first();
-        return response()->view('artis.billboard.album', compact('title', 'album'));
+        $songs = song::where('album_id', $album->id)->get();
+        $playlists = playlist::all();
+        return response()->view('artis.billboard.album', compact('title', 'album', 'songs', 'playlists'));
     }
 
     protected function album(): Response
@@ -629,6 +616,7 @@ class ArtistController extends Controller
         $songs = song::all();
         $playlists = playlist::all();
         $title = "MusiCave";
+        // dd($songs);
         return response()->view('artis.playlist.contohAlbum', compact('title', 'albumDetail', 'songs', 'playlists'));
     }
 

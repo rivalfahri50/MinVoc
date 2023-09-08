@@ -1,45 +1,45 @@
 @extends('users.components.usersTemplates')
 
 @section('content')
-<style>
-    .cobai {
-        width: 130px;
-        height: 130px;
-        border-radius: 100px;
-        position: relative;
-        overflow: hidden;
-        border: none;
-        color: #957DAD;
-    }
+    <style>
+        .cobai {
+            width: 130px;
+            height: 130px;
+            border-radius: 100px;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            color: #957DAD;
+        }
 
-    .cob {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        margin: 0;
-    }
+        .cob {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+        }
 
-    .cob img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
+        .cob img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
 
 
-    .upload-label i {
-        font-size: 20px;
-        margin-bottom: 10px;
-    }
+        .upload-label i {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
 
-    .form-i {
-        height: 25px;
-        border-radius: 8px;
-    }
-</style>
+        .form-i {
+            height: 25px;
+            border-radius: 8px;
+        }
+    </style>
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="row">
@@ -55,43 +55,47 @@
                             <h4 style="font-size: 20px; font-weight: 600; color: #957dad">Foto profil</h4>
                             <div class="rounded-circle">
                                 <label id="tampil_gambar" class="cobai cob">
-                                    <img id="profile-image" src="{{ asset('storage/' . $user[0]->avatar) }}" class="rounded-circle" width="150" height="150">
+                                    <img id="profile-image" src="{{ asset('storage/' . $user[0]->avatar) }}"
+                                        class="rounded-circle" width="150" height="150">
                                 </label>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="p-5">
-                            <input type="file" id="gambar" accept="image/png,image/jpg" name="avatar" class="form-control" onchange="previewImage()">
+                            <input type="file" id="gambar" accept="image/png,image/jpg" name="avatar"
+                                class="form-control" onchange="previewImage()">
                         </div>
                     </div>
-                    
+
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="nama" class="form-label"
                                 style="font-size: 20px; font-weight: 600; color: #957dad">Nama pengguna</label>
                             <input type="text" class="form-control" name="name" id="nama"
-                                value="{{ $user[0]->name }}" aria-describedby="validationServer03Feedback">
-                            @error('name')
-                                <div id="validationServer03Feedback" class="invalid-feedback">
-                                    {{ $message }}
+                                value="{{ $user[0]->name }}" aria-describedby="namaFeedback">
+                            @if ($errors->has('name'))
+                                <div class="text-danger mt-1 my-1">
+                                    {{ $errors->first('name') }}
                                 </div>
-                            @enderror
+                            @endif
                         </div>
                     </div>
+
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="email" class="form-label"
                                 style="font-size: 20px; font-weight: 600; color: #957dad">Email</label>
                             <input type="email" class="form-control" name="email" id="email"
-                                value="{{ $user[0]->email }}" required>
-                            @error('email')
-                                <div id="validationServer03Feedback" class="invalid-feedback">
-                                    {{ $message }}
+                                value="{{ $user[0]->email }}" aria-describedby="emailFeedback">
+                            @if ($errors->has('email'))
+                                <div class="text-danger mt-1 my-1">
+                                    {{ $errors->first('email') }}
                                 </div>
-                            @enderror
+                            @endif
                         </div>
                     </div>
+
                     <div class="col-md-12">
                         <div class="mb-3">
                             <label for="deskripsi" class="form-label"

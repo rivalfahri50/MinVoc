@@ -51,7 +51,6 @@
                                         data-bs-target="#staticBackdrop">
                                         <span>Kebijakan Privasi</span>
                                 </a>
-
                                 </label>
 
                                 @error('kebijakan_privasi')

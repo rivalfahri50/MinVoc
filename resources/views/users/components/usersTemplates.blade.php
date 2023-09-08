@@ -218,7 +218,9 @@
                 <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
                     <ul class="navbar-nav w-75">
                         <li class="nav-item w-75">
-                            <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
+                            <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search" method="POST"
+                                action="{{ route('pencarian') }}">
+                                @csrf
                                 <div class="input-group mb-3">
                                     <span class="input-group-text"
                                         style="border-radius: 15px 0px 0px 15px; border: 1px solid #eaeaea">
@@ -229,7 +231,7 @@
                                                 stroke="#957DAD" stroke-width="2" stroke-linecap="round" />
                                         </svg>
                                     </span>
-                                    <input type="text" id="search" class="form-control"
+                                    <input type="text" id="search" name="search" class="form-control"
                                         placeholder="cari di sini" style="border-radius: 0px 15px 15px 0px">
                                 </div>
                             </form>
@@ -298,7 +300,8 @@
                                     <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ auth()->user()->name }}
                                     </p>
                                 </div>
-                                <a href="{{ route('ubah.profile', auth()->user()->code) }}" class="dropdown-item preview-item">
+                                <a href="{{ route('ubah.profile', auth()->user()->code) }}"
+                                    class="dropdown-item preview-item">
                                     <div class="preview-thumbnail">
                                         <div class="preview-icon">
                                             <i class="mdi mdi-account-circle-outline"></i>
@@ -329,6 +332,8 @@
             </nav>
 
             @yield('content')
+
+            @include('partials.tambahkeplaylist')
 
             <script>
                 $(document).ready(function() {
@@ -361,7 +366,19 @@
                                         result.artist.user.name +
                                         '</p></div><div class="mr-auto text-sm-right pt-2 pt-sm-0"><div class="text-group"><i onclick="myFunction(this)" class="far fa-heart pr-2"></i><p>' +
                                         result.waktu +
-                                        '</p><i class="fas fa-ellipsis-v"></i></div></div></div>'
+                                        `</p>
+                                        <a data-bs-toggle="modal"
+                                                            data-bs-target="#staticBackdrop-${result.waktu}"
+                                                            style="color: #957dad">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" x="0px"
+                                                                y="0px" width="20" height="20"
+                                                                viewBox="0 2 24 24">
+                                                                <path fill="#957DAD"
+                                                                    d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 11 L 7 11 L 7 13 L 11 13 L 11 17 L 13 17 L 13 13 L 17 13 L 17 11 L 13 11 L 13 7 L 11 7 z">
+                                                                </path>
+                                                            </svg>
+                                                        </a>
+                                        </div></div></div>`
                                     );
 
                                     $previewList.append($previewItem);
@@ -391,7 +408,6 @@
                                     );
                                 });
                                 $.each(results.artists, function(index, result) {
-                                    console.log(result.code);
                                     $searchResults.append(
                                         `<li><a href='/pengguna/search/${result.code}'>${result.name}</a></li>`
                                     );

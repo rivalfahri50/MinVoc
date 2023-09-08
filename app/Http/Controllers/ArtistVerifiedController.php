@@ -126,12 +126,13 @@ class ArtistVerifiedController extends Controller
 
     protected function updateProfile(string $code, Request $request)
     {
+        $user = User::where('code', $code)->first();
         $validate = Validator::make(
             $request->all(),
             [
                 'name' => 'required|string|max:255',
                 'avatar' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-                'email' => 'required|string|email|max:255|unique:users,email',
+                'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
                 'deskripsi' =>  'max:500',
             ],
             [
@@ -140,7 +141,7 @@ class ArtistVerifiedController extends Controller
                     'string' => 'Nama harus berupa teks.',
                     'max' => 'Nama tidak boleh lebih dari :max karakter.',
                 ],
-                'avatar' => [   
+                'avatar' => [
                     'image' => 'Avatar harus berupa gambar.',
                     'mimes' => 'Avatar harus dalam format: :values.',
                     'max' => 'Avatar tidak boleh lebih dari :max KB.',
@@ -166,7 +167,6 @@ class ArtistVerifiedController extends Controller
         }
 
 
-        $user = User::where('code', $code)->first();
         $existingPhotoPath = $user->avatar;
 
         if ($request->hasFile('avatar') && $request->file('avatar')) {
@@ -228,9 +228,9 @@ class ArtistVerifiedController extends Controller
         try {
             User::where('code', $code)->update($value);
         } catch (Throwable $e) {
-            return redirect()->back()->with(['message' => 'error']);
+            return redirect()->back();
         }
-        return redirect()->back()->with(['message' => 'success']);
+        return redirect()->back();
     }
 
     protected function hapusPlaylist(string $code)
@@ -244,7 +244,7 @@ class ArtistVerifiedController extends Controller
         try {
             if (!Storage::disk('public')->exists($playlist->images) == "images/default.png") {
                 Storage::disk('public')->delete($playlist->images);
-            } 
+            }
             $playlist->delete();
         } catch (\Throwable $th) {
             Log::error('Error deleting playlist: ' . $th->getMessage());
