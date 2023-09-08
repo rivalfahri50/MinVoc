@@ -191,10 +191,11 @@ class penggunaController extends Controller
         $song = song::where('code', $code)->first();
         $user = user::where('code', $code)->first();
         $playlists = playlist::all();
-        $songAll = song::all();
+        $songs = song::all();
 
         if ($song) {
-            return view('users.search.songSearch', compact('song', 'title', 'songAll', 'playlists'));
+            // dd($song);
+            return view('users.search.songSearch', compact('song', 'title', 'songs', 'playlists'));
         } else if ($user) {
             $songUser = song::where('artis_id', $user->id)->get();
             return view('users.search.artisSearch', compact('user', 'title', 'songUser', 'playlists'));
@@ -205,12 +206,12 @@ class penggunaController extends Controller
     {
         $title = "MusiCave";
         $playlists = playlist::all();
-        $songAll = song::all();
+        $songs = song::all();
         $song = song::where('judul', 'like', '%' .  $request->input('search') . '%')->first();
         $user = user::where('name', 'like', '%' .  $request->input('search') . '%')->first();
 
         if ($song) {
-            return view('users.search.songSearch', compact('song', 'title', 'songAll', 'playlists'));
+            return view('users.search.songSearch', compact('song', 'title', 'songs', 'playlists'));
         } else if ($user) {
             $songUser = song::where('artis_id', $user->id)->get();
             return view('users.search.artisSearch', compact('user', 'title', 'songUser', 'playlists'));

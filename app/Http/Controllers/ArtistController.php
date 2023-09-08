@@ -168,13 +168,13 @@ class ArtistController extends Controller
 
             $artist->pengajuan_verified_at = now()->toDateString();
             $msg = 'Pengajuan Verifikasi';
-            $notif = $artist->name.'Akun Anda Telah di Verifikasi';
+            $notif = $artist->name . 'Akun Anda Telah di Verifikasi';
             Notifikasi::create([
-                'role'=>'artist',
-                'user_id'=>$artist->user_id,
-                'notif'=>$msg,
-                'deskripsi'=>$notif,
-                'kategori'=>'Pengajuan Verifikasi'
+                'role' => 'artist',
+                'user_id' => $artist->user_id,
+                'notif' => $msg,
+                'deskripsi' => $notif,
+                'kategori' => 'Pengajuan Verifikasi'
             ]);
             $artist->image = $imagePath;
             $artist->save();
@@ -477,16 +477,34 @@ class ArtistController extends Controller
         return response()->json(['results' => $results]);
     }
 
+    protected function pencarian_input(Request $request)
+    {
+        $title = "MusiCave";
+        $playlists = playlist::all();
+        $songs = song::all();
+        $song = song::where('judul', 'like', '%' .  $request->input('search') . '%')->first();
+        $user = user::where('name', 'like', '%' .  $request->input('search') . '%')->first();
+
+        if ($song) {
+            return view('artis.search.songSearch', compact('song', 'title', 'songs', 'playlists'));
+        } else if ($user) {
+            $songUser = song::where('artis_id', $user->id)->get();
+            return view('artis.search.artisSearch', compact('user', 'title', 'songUser', 'playlists'));
+        } else {
+            return "not found";
+        }
+    }
+
     public function search_result(Request $request, string $code)
     {
         $title = "MusiCave";
         $song = song::where('code', $code)->first();
         $user = user::where('code', $code)->first();
         $playlists = playlist::all();
-        $songAll = song::all();
+        $songs = song::all();
 
         if ($song) {
-            return view('artis.search.songSearch', compact('song', 'title', 'songAll', 'playlists'));
+            return view('artis.search.songSearch', compact('song', 'title', 'songs', 'playlists'));
         } else if ($user) {
             $artis = artist::where('user_id', $user->id)->first();
             $songUser = song::where('artis_id', $artis->id)->get();

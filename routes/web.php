@@ -100,6 +100,7 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
         return view('artis.peraturan', ['title' => 'MusiCave']);
     })->name('peraturan.artis');
 
+    Route::post('/search', 'pencarian_input')->name('pencarian.artis');
     Route::post('/tambah_playlist/{code}', 'tambah_playlist')->name('tambah.playlist.artis');
     Route::POST('/buat-album/{code}', 'buatAlbum')->name('tambah.album.artis');
     Route::POST('/verified/{code}', 'verifiedAccount')->name('verified');

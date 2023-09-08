@@ -305,7 +305,9 @@
                     <ul class="navbar-nav w-75">
                         <ul class="navbar-nav w-75">
                             <li class="nav-item w-75">
-                                <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
+                                <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search" method="POST"
+                                    action="{{ route('pencarian.artis') }}">
+                                    @csrf
                                     <div class="input-group">
                                         <span class="input-group-text"
                                             style="border-radius: 15px 0px 0px 15px; border: 1px solid #eaeaea">
@@ -316,7 +318,7 @@
                                                     stroke="#957DAD" stroke-width="2" stroke-linecap="round" />
                                             </svg>
                                         </span>
-                                        <input type="text" id="search" class="form-control"
+                                        <input type="text" id="search" name="search" class="form-control"
                                             placeholder="cari di sini" style="border-radius: 0px 15px 15px 0px">
                                     </div>
                                 </form>
@@ -385,7 +387,8 @@
                                     <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ auth()->user()->name }}
                                     </p>
                                 </div>
-                                <a href="{{ route('ubah.profile.artis', auth()->user()->code) }}" class="dropdown-item preview-item">
+                                <a href="{{ route('ubah.profile.artis', auth()->user()->code) }}"
+                                    class="dropdown-item preview-item">
                                     <div class="preview-thumbnail">
                                         <div class="preview-icon">
                                             <i class="mdi mdi-account-circle-outline"></i>

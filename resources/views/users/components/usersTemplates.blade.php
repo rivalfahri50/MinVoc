@@ -458,8 +458,6 @@
 
             @yield('content')
 
-            @include('partials.tambahkeplaylist')
-
             <script>
                 $(document).ready(function() {
                     $('#search_song').on('keyup', function() {
