@@ -171,6 +171,7 @@ Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(pengguna
     Route::get('/profile-ubah/{code}', 'profile_ubah')->name('ubah.profile');
     Route::get('/billboard/{code}', 'billboard')->name('detail.billboard.pengguna');
     Route::get('/album', 'album');
+    Route::get('/album-billboard/{code}', 'albumBillboard')->name('albumBillboard.pengguna');
     Route::get('/kategori/{code}', 'kategori');
     Route::get('/buat-playlist', 'buatPlaylist');
     Route::get('/detail-playlist/{code}', 'detailPlaylist')->name('detailPlaylist');
@@ -185,7 +186,8 @@ Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(pengguna
     Route::get('/peraturan', function () {
         return view('users.peraturan', ['title' => 'MusiCave']);
     })->name('peraturan.pengguna');
-
+    
+    Route::post('/search', 'pencarian_input')->name('pencarian');
     Route::post('/tambah_playlist/{code}', 'tambah_playlist')->name('tambah.playlist');
     Route::post('/update/profile/{code}', 'updateProfile')->name('update.profile');
     Route::post('/buat-playlist', 'storePlaylist')->name('buat.playlist');

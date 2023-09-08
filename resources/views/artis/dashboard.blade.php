@@ -106,7 +106,7 @@
                                 <div class="col-12">
                                     <div class="preview-list">
                                         @foreach ($artist as $item)
-                                            @if (!$item)
+                                            {{-- @if (!$item) --}}
                                                 <div class="preview-item">
                                                     <div class="preview-thumbnail">
                                                         <img src="/user/assets/images/faces/face1.jpg" width="10%"
@@ -122,7 +122,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            @endif
+                                            {{-- @endif --}}
                                         @endforeach
                                     </div>
                                 </div>
