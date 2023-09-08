@@ -200,3 +200,7 @@ Route::controller(SongController::class)->group(function () {
     Route::post('/update-play-count/{song_id}', 'playCount');
 });
 Route::post('/simpan-riwayat', [RiwayatController::class ,'simpanRiwayat']);
+
+Route::get('/kebijakan-privasi', function () {
+    return view('auth.kebijakanprivasi');
+});

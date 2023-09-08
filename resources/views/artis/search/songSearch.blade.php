@@ -9,7 +9,7 @@
             <div class="card window">
                 <div class="card-body">
                     <h3 class="judul p-0 mb-4">Tambah Ke Playlist</h3>
-                    <a href="#" class="close-button far fa-times-circle"></a>
+                    <a href="" class="close-button far fa-times-circle"></a>
                     <form class="row" action="{{ route('tambah.playlist', $item->code) }}" method="POST">
                         @csrf
                         <div class="col-md-12">
@@ -37,22 +37,27 @@
                 <div class="col-md-12 mb-4">
                     <div class="row">
                         <div class="col-4">
-                            <div class="card coba" style="display: flex;">
+                            <div class="card coba" style="display: flex; width: 400px; height: 200px;">
                                 <div class="card-body" style="display: flex;">
-                                    <div class="cell-content">
+                                    <div class="image-container">
                                         <img src="{{ asset('storage/' . $song->image) }}" alt="Face" class="avatar">
                                     </div>
                                     <div style="margin-left: 10px;">
-                                        <h4 class="judul mt-4">{{ $song->judul }}</h4>
+                                        <h4 class="judul mt-4 clamp-text">{{ $song->judul }}</h4>
                                         <div class="d-flex flex-row align-content-center">
-                                            <p class="text-muted m-1">{{ $song->artist->user->name }}</p>
-                                            <a href="#" class="d-flex align-items-center d-block"
-                                                style="height: 28px;">
-                                                <i class="far fa-play-circle fa-2xl pl-2"
-                                                    style="font-size: 20px; display: none; color: #957DAD;"></i>
-                                            </a>
+                                            <p class="text-muted m-1 clamp-text">{{ $song->artist->user->name }}</p>
                                         </div>
+                                        <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
+                                            onclick="putar({{ $item->id }})">
+                                            <button onclick="togglePlayPause()" id="play" style="border: none">
+                                                <i id="playIcon" class="far fa-play-circle ukuraniconplaykhusus"
+                                                    style="color: #957DAD;"></i>
+                                            </button>
+                                        </a>
                                     </div>
+                                    <script>
+                                        var isPlaying = false; // Default status pemutaran lagu
+                                    </script>
                                 </div>
                             </div>
                         </div>
@@ -107,20 +112,25 @@
                     </div>
                 </div>
                 <script>
-                    // Fungsi untuk menampilkan/menyembunyikan ikon pada hover
-                    function toggleIcon(event) {
-                        var icon = event.currentTarget.querySelector('.fa-play-circle');
-                        icon.style.display = event.type === 'mouseenter' ? 'inline' : 'none';
+                    function togglePlayPause() {
+                        const playIcon = document.getElementById('playIcon');
+
+                        if (isPlaying) {
+                            // Jika sedang diputar, ganti menjadi pause
+                            playIcon.classList.remove('fa-pause-circle');
+                            playIcon.classList.add('fa-play-circle');
+                        } else {
+                            // Jika sedang tidak diputar, ganti menjadi play
+                            playIcon.classList.remove('fa-play-circle');
+                            playIcon.classList.add('fa-pause-circle');
+                        }
+
+                        // Ubah status pemutaran
+                        isPlaying = !isPlaying;
+
+                        // Panggil fungsi justplay() jika diperlukan
+                        justplay();
                     }
-
-                    // Ambil semua elemen dengan kelas 'coba'
-                    var cards = document.querySelectorAll('.coba');
-
-                    // Loop melalui setiap elemen dan tambahkan event listener
-                    cards.forEach(function(card) {
-                        card.addEventListener('mouseenter', toggleIcon);
-                        card.addEventListener('mouseleave', toggleIcon);
-                    });
 
 
                     function myFunction(x) {

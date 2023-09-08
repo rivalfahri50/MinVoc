@@ -163,7 +163,7 @@
                         <span class="menu-icon">
                             <i class="mdi mdi-music"></i>
                         </span>
-                        <span class="menu-title">Playlist</span>
+                        <span class="menu-title">Album</span>
                         <a href="#ui-basic" data-toggle="collapse" aria-expanded="false" aria-controls="ui-basic">
                             <span class="menu-arrow">
                                 <i class="mdi mdi-chevron-right"></i>
@@ -173,12 +173,6 @@
                     <div class="collapse" id="ui-basic">
                         <ul class="nav flex-column sub-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('buat.playlist.artis') }}">
-                                    <span class="menu-icon">
-                                        <i class="mdi mdi-plus-circle-outline"></i>
-                                    </span>
-                                    <span class="menu-title">Buat Playlist</span>
-                                </a>
                                 <a class="nav-link" href="#buat-album">
                                     <span class="menu-icon">
                                         <i class="mdi mdi-plus-circle-outline"></i>

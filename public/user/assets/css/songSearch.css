@@ -1,24 +1,18 @@
 .coba {
-    background-color: #fff;
-    border: 3px solid #957DAD;
-}
-
-.coba:hover {
     background-color: #ECECEC;
-    border: 3px solid #ECECEC;
 }
 
 
 .image-container {
-    width: 140px; /* Set a fixed width */
-    height: 140px; /* Set a fixed height */
+    width: 130px; /* Set a fixed width */
     overflow: hidden; /* Hide any overflow if the image exceeds the container size */
 }
 
 .avatar {
-    width: 100%; /* Make the image width 100% of the container */
-    height: auto; /* Allow the height to adjust proportionally based on the image's aspect ratio */
+    width: 100%;
+    height: 100%;
     border-radius: 0;
+    object-fit: cover;
 }
 
 /* Limit the number of words and add ellipsis for overflow */
@@ -81,4 +75,14 @@ hr {
 
 .warna-kostum-like {
     color: #957DAD;
+}
+
+.ukuraniconplaykhusus {
+    font-size: 20px;
+    color: #957dad;
+}
+
+.ukuraniconplaykhusus:before {
+    font-size: 20px;
+    color: #957dad;
 }

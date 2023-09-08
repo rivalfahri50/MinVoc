@@ -40,7 +40,7 @@
 
                         <div class="container-login100-form-btn mt-5">
                             <button class="login100 rounded-4" type="submit">
-                                Masuk
+                                Kirim
                             </button>
                         </div>
                         <div class="container-login100-form-btn mt-4">

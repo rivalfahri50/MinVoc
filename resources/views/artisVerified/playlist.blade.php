@@ -51,7 +51,7 @@
                         @endif
                     </div>
                 </div>
-                <div class="col-md-12 grid-margin stretch-card">
+                {{-- <div class="col-md-12 grid-margin stretch-card">
                     <h3 class="judul" style="font-size: 20px; font-weight: 600">Playlist saya</h3>
                     <div class="cards">
                         @if (!empty($playlists))
@@ -73,7 +73,7 @@
                             @endforeach
                         @endif
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>

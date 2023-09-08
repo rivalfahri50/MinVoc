@@ -89,6 +89,79 @@
             font-weight: bold;
             font-size: 14px;
         }
+
+        .untukpopup {
+            width: 150px;
+            height: 150px;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            color: #957dad;
+        }
+
+        .untukpopup:hover {
+            background-color: #69547d;
+            color: #eaeaea;
+        }
+
+        #buatplaylist {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            background: rgba(0, 0, 0, 0.7);
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            visibility: hidden;
+        }
+
+        .window {
+            background-color: #ffffff;
+            width: 500px;
+            border-radius: 10px;
+            position: relative;
+            margin: 9% auto;
+            padding: 10px;
+        }
+
+        .close-button {
+            display: block;
+            color: #957dad;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .noob {
+            display: none;
+        }
+
+        .wadah {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+        }
+
+        .upload-label i {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .form-i {
+            height: 25px;
+            border-radius: 8px;
+        }
+
+        #buatplaylist:target {
+            visibility: visible;
+        }
     </style>
     <script>
         // INI SCRIPT UNTUK HASIL SEARCH TAMPIL/TIDAK
@@ -139,7 +212,7 @@
                     <div class="collapse" id="ui-basic">
                         <ul class="nav flex-column sub-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('buat.playlist') }}">
+                                <a class="nav-link" href="#buatplaylist">
                                     <span class="menu-icon">
                                         <i class="mdi mdi-plus-circle-outline"></i>
                                     </span>
@@ -148,6 +221,57 @@
                             </li>
                         </ul>
                     </div>
+                    {{-- popupnya atas --}}
+                    <div id="buatplaylist">
+                        <div class="card window">
+                            <div class="card-body">
+                                <a href="#" class="close-button mdi mdi-close-circle-outline"></a>
+                                <h3 class="judul">Buat Playlist</h2>
+                                    <form class="row" action="{{ route('buat.playlist') }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="col-4">
+                                            <div class="card untukpopup">
+                                                <label for="gambarplaylist" id="tampil_gambarplaylist" class="wadah">
+                                                    <i class="fas fa-pen fa-2x"></i>
+                                                </label>
+                                                <input type="file" id="gambarplaylist" name="images"
+                                                    accept="image/png,image/jpg" class="noob">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7 ml-4">
+                                            <div class="mb-3">
+                                                <input type="text" class="form-control form-i" name="name"
+                                                    id="nama" placeholder="Judul Playlist">
+                                            </div>
+                                            <div class="mb-3">
+                                                <textarea id="deskripsi" class="form-control" name="deskripsi" maxlength="500" rows="6" placeholder="Deskripsi"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="text-md-right">
+                                            <button class="btn" type="submit">Simpan</button>
+                                        </div>
+                                    </form>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        const gambar = document.querySelector("#gambarplaylist");
+
+                        const tampilGambar = document.querySelector("#tampil_gambarplaylist");
+
+                        gambar.addEventListener("change", function() {
+                            const reader = new FileReader();
+
+                            reader.addEventListener("load", () => {
+                                tampilGambar.style.backgroundImage = `url(${reader.result})`;
+
+                                tampilGambar.innerHTML = "";
+                            });
+
+                            reader.readAsDataURL(this.files[0]);
+                        });
+                    </script>
                 </li>
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="/pengguna/riwayat">
@@ -191,8 +315,9 @@
                             <span id="current-time" class="durasi">00:00</span>
                             <div class="progress-bar">
                                 <div class="duration">
-                                    <input type="range" class="progress" min="0" step="1" max="100"
-                                        value="0" id="duration_slider" onchange="change_duration()">
+                                    <input type="range" class="progress" min="0" step="1"
+                                        max="100" value="0" id="duration_slider"
+                                        onchange="change_duration()">
                                 </div>
                             </div>
                             <span id="duration" class="durasi">00:00</span>
@@ -298,7 +423,8 @@
                                     <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ auth()->user()->name }}
                                     </p>
                                 </div>
-                                <a href="{{ route('ubah.profile', auth()->user()->code) }}" class="dropdown-item preview-item">
+                                <a href="{{ route('ubah.profile', auth()->user()->code) }}"
+                                    class="dropdown-item preview-item">
                                     <div class="preview-thumbnail">
                                         <div class="preview-icon">
                                             <i class="mdi mdi-account-circle-outline"></i>

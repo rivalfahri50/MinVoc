@@ -167,6 +167,8 @@ class ArtistController extends Controller
             $imagePath = $request->file('foto')->store('images', 'public');
 
             $artist->pengajuan_verified_at = now()->toDateString();
+            $msg = 'Pengajuan Verifikasi';
+            $notif = $artist->name.'Akun Anda Telah di Verifikasi';
             Notifikasi::create([
                 'role'=>'artist',
                 'user_id'=>$artist->user_id,
@@ -175,29 +177,12 @@ class ArtistController extends Controller
                 'kategori'=>'Pengajuan Verifikasi'
             ]);
             $artist->image = $imagePath;
-            Notifikasi::create([
-                'role' => 'artist',
-                'user_id' => $artist->user_id,
-                'notif' => $msg,
-                'deskripsi' => $notif,
-                'kategori' => 'Pengajuan Verifikasi'
-            ]);
             $artist->save();
         } catch (\Throwable $th) {
             Alert::error('message', 'Gagal Mengirim Request Verification Account');
             return response()->redirectTo('/artis/verified')->with('failed', "failed");
         }
         Alert::success('message', 'Success Mengirim Request Verification Account');
-        $msg => 'Pengajuan Verifikasi',
-        $notif => $verified->name.'Akun Anda Telah di Verifikasi';
-        notifikasi::create([
-            'role'=>'artist',
-            'user_id'=>$verified->user_id,
-            'notif'=>$msg,
-            'deskripsi'=>$notif,
-            'kategori'=>'Pengajuan Verifikasi'
-
-        ]);
         
         return response()->redirectTo('/artis/verified')->with('message', "success");
     }

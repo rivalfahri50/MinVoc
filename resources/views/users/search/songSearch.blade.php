@@ -3,7 +3,7 @@
 @section('content')
     <link rel="stylesheet" href="/user/assets/css/songSearch.css">
 
-    @foreach ($songAll as $item)
+    {{-- @foreach ($songAll as $item)
         <div id="staticBackdrop-{{ $item->code }}" class="modal" data-bs-backdrop="static" data-bs-keyboard="false"
             tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="card window">
@@ -29,7 +29,8 @@
                 </div>
             </div>
         </div>
-    @endforeach
+    @endforeach --}}
+    @include('partials.tambahkeplaylist')
 
     <div class="main-panel">
         <div class="content-wrapper">
@@ -37,7 +38,7 @@
                 <div class="col-md-12 mb-4">
                     <div class="row">
                         <div class="col-4">
-                            <div class="card coba" style="display: flex; width: 400px; height: 200px;">
+                            <div class="card coba" style="display: flex; width: 400px; height: 180px;">
                                 <div class="card-body" style="display: flex;">
                                     <div class="image-container">
                                         <img src="{{ asset('storage/' . $song->image) }}" alt="Face" class="avatar">
@@ -46,11 +47,18 @@
                                         <h4 class="judul mt-4 clamp-text">{{ $song->judul }}</h4>
                                         <div class="d-flex flex-row align-content-center">
                                             <p class="text-muted m-1 clamp-text">{{ $song->artist->user->name }}</p>
-                                            <button onclick="justplay()" id="play" class="d-flex align-items-center d-block" style="height: 28px;">
-                                            <i class="far fa-play-circle fa-2x pl-2" style="width: 10px; display: none; color: #957DAD;"></i>
-                                            </button>
                                         </div>
+                                        <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
+                                            onclick="putar({{ $item->id }})">
+                                            <button onclick="togglePlayPause()" id="play" style="border: none">
+                                                <i id="playIcon" class="far fa-play-circle ukuraniconplaykhusus"
+                                                    style="color: #957DAD;"></i>
+                                            </button>
+                                        </a>
                                     </div>
+                                    <script>
+                                        var isPlaying = false; // Default status pemutaran lagu
+                                    </script>
                                 </div>
                             </div>
                         </div>
@@ -73,10 +81,10 @@
                                                 </div>
                                                 <div class="preview-item-content d-sm-flex flex-grow">
                                                     <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
-                                                    onclick="putar({{ $item->id }})">
+                                                        onclick="putar({{ $item->id }})">
                                                         <h6 class="preview-subject">{{ $item->judul }}</h6>
                                                         <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
-                                                </a>
+                                                    </a>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group">
                                                             <i onclick="myFunction(this)" class="far fa-heart pr-2">
@@ -109,26 +117,30 @@
             <!-- page-body-wrapper ends -->
         </div>
         <script>
-            // Fungsi untuk menampilkan/menyembunyikan ikon pada hover
-            function toggleIcon(event) {
-                var icon = event.currentTarget.querySelector('.fa-play-circle');
-                icon.style.display = event.type === 'mouseenter' ? 'inline' : 'none';
-            }
-
-            // Ambil semua elemen dengan kelas 'coba'
-            var cards = document.querySelectorAll('.coba');
-
-            // Loop melalui setiap elemen dan tambahkan event listener
-            cards.forEach(function (card) {
-                card.addEventListener('mouseenter', toggleIcon);
-                card.addEventListener('mouseleave', toggleIcon);
-            });
-
-
             function myFunction(x) {
                 x.classList.toggle("far"); // Menghapus kelas "fa fa-heart"
                 x.classList.toggle("fas"); // Menambahkan kelas "fas fa-heart"
                 x.classList.toggle("warna-kostum-like"); // Menambahkan kelas warna merah
+            }
+
+            function togglePlayPause() {
+                const playIcon = document.getElementById('playIcon');
+
+                if (isPlaying) {
+                    // Jika sedang diputar, ganti menjadi pause
+                    playIcon.classList.remove('fa-pause-circle');
+                    playIcon.classList.add('fa-play-circle');
+                } else {
+                    // Jika sedang tidak diputar, ganti menjadi play
+                    playIcon.classList.remove('fa-play-circle');
+                    playIcon.classList.add('fa-pause-circle');
+                }
+
+                // Ubah status pemutaran
+                isPlaying = !isPlaying;
+
+                // Panggil fungsi justplay() jika diperlukan
+                justplay();
             }
         </script>
     </div>
