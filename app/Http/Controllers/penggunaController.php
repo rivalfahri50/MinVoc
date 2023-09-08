@@ -222,7 +222,6 @@ class penggunaController extends Controller
     protected function billboard(string $code): Response
     {
         $title = "MusiCave";
-        $songs = song::all();
         $billboard = billboard::where('code', $code)->first();
         $albums = album::where('artis_id', $billboard->artis_id)->get();
         $songs = song::all();
