@@ -49,6 +49,8 @@
                                                         <td class="table-cell">{{ $item->name }}</td>
                                                         <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
                                                         <td class="table-cell">
+                                                            <button type="button" class="btn btnicon" data-toggle="modal"data-target="#exampleModalCenter{{ $item->id }}">
+                                                                <i class="fas fa-edit " style="color: #5b6b89"></i>   </button>
                                                             <button class="btn btnicon"
                                                                 onclick="deleteGenre('{{ $item->code }}')">
                                                                 <i class="far fa-times-circle text-danger"></i>
@@ -110,6 +112,40 @@
                 </div>
                 <!-- page-body-wrapper ends -->
             </div>
+            @foreach ( $genres as $item)
+
+            <div class="modal fade" id="exampleModalCenter{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="card window">
+                    <div class="card-body">
+                        <a href="" class="close-button far fa-times-circle"></a>
+                        <h3 class="judul">Edit Kategori</h3>
+                        <form class="row" action="{{ route('buat.genre', $item->id) }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label for="namakategori" class="form-label judulnottebal">Nama Kategori</label>
+                                    <input type="text" name="name" class="form-control form-i" id="namaproyek" value="{{ $item->name }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="upload" class="form-label judulnottebal">Upload Foto</label>
+                                    <input type="file" name="images" class="form-control form-i" id="namaproyek">
+                                    @if(isset($item->images))
+                                    <img src="{{ asset('storage/' . $item->images) }}" alt="Foto Lama" width="100">
+                                    @endif
+                                </div>
+
+                            </div>
+                            <div class="text-md-right">
+                                <button type="submit" class="btn" type="submit">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            @endforeach
+
 
             <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

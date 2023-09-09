@@ -79,27 +79,28 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($billboards as $item)
-                                                    <tr class="table-row">
-                                                        <td class="table-cell">
-                                                            <div class="cell-content">
-                                                                <img src="{{ asset('storage/' . $item->artis->user->avatar) }}"
-                                                                    alt="Face" class="avatar">
-                                                            </div>
-                                                        </td>
-                                                        <td class="table-cell">{{ $item->artis->user->name }}</td>
-                                                        <td class="table-cell">{{ $item->deskripsi }}</td>
-                                                        <td class="table-cell">
-                                                            <button class="btn btnicon" data-bs-toggle="modal"
-                                                                data-bs-target="#staticBackdrop-{{ $item->code }}">
-                                                                <i class="far fa-eye text-info"></i>
-                                                            </button>
-                                                            <button class="btn btnicon"
-                                                                onclick="deleteBillboard('{{ $item->code }}')">
-                                                                <i class="far fa-times-circle text-danger"></i>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
+                                                <tr class="table-row">
+                                                    <td class="table-cell">
+                                                        <div class="cell-content">
+                                                            <img src="{{ asset('storage/' . $item->artis->user->avatar) }}" alt="Face" class="avatar" width="60">
+                                                        </div>
+                                                    </td>
+                                                    <td class="table-cell">{{ $item->artis->user->name }}</td>
+                                                    <td class="table-cell">{{ $item->deskripsi }}</td>
+                                                    <td class="table-cell">
+                                                        <button class="btn btnicon" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ $item->code }}">
+                                                            <i class="far fa-eye text-info"></i>
+                                                        </button>
+                                                        <button type="button" class="btn btnicon" data-toggle="modal" data-target="#exampleModalCenter">
+                                                            <i class="fas fa-edit" style="color: #5b6b89"></i>
+                                                        </button>
+                                                        <button class="btn btnicon" onclick="deleteBillboard('{{ $item->code }}')">
+                                                            <i class="far fa-times-circle text-danger"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -142,16 +143,12 @@
                                                 placeholder="Masukkan deskripsi" required></textarea>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="uploadlatar" class="form-label judulnottebal">Upload
-                                                Background Iklan</label>
-                                            <input type="file" name="image_background" class="form-control form-i"
-                                                id="uploadlatar" required>
+                                            <label for="uploadlatar" class="form-label judulnottebal">Upload Background Iklan</label>
+                                            <input type="file" name="image_background" class="form-control form-i" id="uploadlatar" required>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="uploadartis" class="form-label judulnottebal">Upload
-                                                Foto Artis</label>
-                                            <input type="file" name="image_artis" class="form-control form-i"
-                                                id="uploadartis" required>
+                                            <label for="uploadartis" class="form-label judulnottebal">Upload Foto Artis</label>
+                                            <input type="file" name="image_artis" class="form-control form-i" id="uploadartis" required>
                                         </div>
                                     </div>
                                     <div class="text-md-right">
@@ -208,6 +205,55 @@
                 <!-- page-body-wrapper ends -->
             </div>
             <!-- container-scroller -->
+            @foreach ($billboards as $item)
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="card window">
+                    <div class="card-body">
+                        <a href="" class="close-button far fa-times-circle"></a>
+                        <h3 class="judul">Edit Iklan</h3>
+                        <form class="row" action="{{ route('uploadBillboard' ,$item->id) }}" method="POST" enctype="multipart/form-data" >
+                            @csrf
+
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label for="namakategori" class="form-label judulnottebal">Nama
+                                        artis</label>
+                                    <input type="text" class="form-control form-i" id="namaproyek"
+                                        value="{{ $item->artis->user->name }}" >
+                                    </div>
+                                <div class="mb-3">
+                                    <label for="deskripsi" class="form-label judulnottebal">Deskripsi</label>
+                                    <textarea id="deskripsi" class="form-control" maxlength="500" rows="4" >{{ $item->deskripsi }}</textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="uploadlatar" class="form-label judulnottebal">Upload Background Iklan</label>
+                                    <input type="file" name="image_background" class="form-control form-i" id="uploadlatar">
+                                </div>
+                                @if ($item->image_background)
+                                <div class="mb-3">
+                                    <label for="fotoLamaBackground" class="form-label judulnottebal">Foto Background Iklan Lama</label>
+                                    <img src="{{ asset('storage/' . $item->image_background) }}" alt="Foto Lama" class="img-fluid">
+                                </div>
+                                @endif
+                                <div class="mb-3">
+                                    <label for="uploadartis" class="form-label judulnottebal">Upload Foto Artis</label>
+                                    <input type="file" name="image_artis" class="form-control form-i" id="uploadartis">
+                                </div>
+                                @if ($item->image_artis)
+                                <div class="mb-3">
+                                    <label for="fotoLamaArtis" class="form-label judulnottebal">Foto Artis Lama</label>
+                                    <img src="{{ asset('storage/' . $item->image_artis) }}" alt="Foto Lama" class="img-fluid">
+                                </div>
+                                @endif
+                            </div>
+                            <div class="text-md-right">
+                                <button class="btn" href="#" type="submit">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                @endforeach
+
 
 
 

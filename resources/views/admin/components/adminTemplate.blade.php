@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="assets/vendors/mdi/css/materialdesignicons.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="/admin/assets/css/style.css" />
-    <link rel="stylesheet" href="{{ asset('style.css')}}" />
     <link rel="shortcut icon" href="/image/favicon.svg" />
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -174,59 +173,6 @@
                     </a>
                 </li>
             </ul>
-            <footer
-            style="background-color: #6c6c6c; color: #957DAD; width: 100%; position: fixed; bottom: 0; height: 85px;"
-            id="lagu-diputar">
-            <div class="music-player">
-                <div class="song-bar">
-                    <div class="song-infos">
-                        <div class="image-container1">
-                            <img src="https://d2y6mqrpjbqoe6.cloudfront.net/image/upload/f_auto,q_auto/media/library-400/216_636967437355378335Your_Lie_Small_hq.jpg"
-                                alt="" id="track_image" />
-                        </div>
-                        <div class="song-description">
-                            <p id="title">
-                                Watashitachi
-                            </p>
-                            <p id="artist">Masaru Yokoyama</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="progress-controller">
-                    <div class="control-buttons">
-                        <div id="controls">
-                            <button onclick="previous_song()" id="pre"><i class="fa fa-step-backward"
-                                    aria-hidden="true"></i></button>
-                            <button onclick="justplay()" id="play"><i class="far fa-play-circle fr"
-                                    aria-hidden="true"></i></button>
-                            <button onclick="next_song()" id="next"><i class="fa fa-step-forward"
-                                    aria-hidden="true"></i></button>
-                        </div>
-                    </div>
-                    <div class="progress-container">
-                        <span id="current-time" class="durasi">00:00</span>
-                        <div class="progress-bar">
-                            <div class="duration">
-                                <input type="range" class="progress" min="0" step="1" max="100"
-                                    value="0" id="duration_slider" onchange="change_duration()">
-                            </div>
-                        </div>
-                        <span id="duration" class="durasi">00:00</span>
-                    </div>
-                </div>
-
-                <div class="other-features">
-                    <div class="volume-bar">
-                        <i class="mdi mdi-volume-high " onclick="mute_sound()" aria-hidden="true"
-                            id="volume_icon"></i>
-                        <input type="range" class="volume" min="0" max="100" step="1"
-                            value="100" onchange="volume_change()" id="volume">
-                        <p id="volume_show">100</p>
-
-                    </div>
-                </div>
-            </div>
-        </footer>
         </nav>
         <!-- partial -->
         <div class="container-fluid page-body-wrapper">
@@ -237,30 +183,39 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
                                 data-toggle="dropdown">
-                                <i class="mdi mdi-bell"></i>
+                                <div class="notification-panel">
+                                    <i class="mdi mdi-bell"></i>
+                                    {{-- @foreach ($notifikasi as $notif)
+                                        <li>
+                                            <strong>{{ $notif->kategori }}</strong>: {{ $notif->deskripsi }}
+                                        </li>
+                                    @endforeach --}}
+                                </div>
+
                                 <span class="count bg-danger"></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                                 aria-labelledby="notificationDropdown">
-                                <a href="#" class="dropdown-item preview-item">
+                                <a href="verifikasi" class="dropdown-item preview-item">
                                     <div class="preview-thumbnail">
                                         <div class="preview-icon">
                                             <img src="assets/images/faces/face16.jpg" class="rounded-circle">
                                         </div>
                                     </div>
                                     <div class="preview-item-content">
-                                        <p class="preview-subject mb-1">Ahmad</p>
+                                        <p class="preview-subject mb-1">Pengajuan Verified Akun</p>
+                                        <p class="text-muted ellipsis mb-0"> rival </p>
                                     </div>
                                 </a>
-                                <a href="#" class="dropdown-item preview-item">
+                                <a href="verifikasi" class="dropdown-item preview-item">
                                     <div class="preview-thumbnail">
                                         <div class="preview-icon">
                                             <img src="assets/images/faces/face12.jpg">
                                         </div>
                                     </div>
                                     <div class="preview-item-content">
-                                        <p class="preview-subject mb-1">Gajah</p>
-                                        <p class="text-muted ellipsis mb-0"> Tulus </p>
+                                        <p class="preview-subject mb-1">Pengajuan Verified Akun</p>
+                                        <p class="text-muted ellipsis mb-0"> Kiki </p>
                                     </div>
                                 </a>
                             </div>
@@ -268,16 +223,16 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                                 <div class="navbar-profile">
-                                    <img class="img-xs rounded-circle" src="https://cdn.pnghd.pics/data/815/profil-wa-kosong-28.jpg"
-                                        alt="">
+                                    <img class="img-xs rounded-circle"
+                                        src="https://cdn.pnghd.pics/data/815/profil-wa-kosong-28.jpg" alt="">
                                 </div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                                 aria-labelledby="profileDropdown">
                                 <div class="p-3 mb-0 gap-3"
                                     style="display: flex; flex-direction: row; align-items: center;">
-                                    <img class="img-xs rounded-circle" src="https://cdn.pnghd.pics/data/815/profil-wa-kosong-28.jpg"
-                                        alt="">
+                                    <img class="img-xs rounded-circle"
+                                        src="https://cdn.pnghd.pics/data/815/profil-wa-kosong-28.jpg" alt="">
                                     <p class="mb-0 d-none d-sm-block navbar-profile-name">Admin</p>
                                 </div>
                                 <a class="dropdown-item preview-item" href="{{ route('logout.users') }}">
@@ -302,360 +257,6 @@
 
             @include('sweetalert::alert')
             @yield('content')
-            <script>
-                let previous = document.querySelector('#pre');
-                let play = document.querySelector('#play');
-                let next = document.querySelector('#next');
-                let title = document.querySelector('#title');
-                let artist = document.querySelector('#artist');
-
-                let muteButton = document.querySelector('#volume_icon')
-                let recent_volume = document.querySelector('#volume');
-                let volume_show = document.querySelector('#volume_show');
-
-                let slider = document.querySelector('#duration_slider');
-                let show_duration = document.querySelector('#show_duration');
-                let track_image = document.querySelector('#track_image');
-
-                let auto_play = document.querySelector('#auto');
-
-                let timer;
-                let autoplay = 1;
-                let playCount = 0;
-                let prevVolume;
-                let currentTime = 1;
-
-                let index_no = 0;
-                let Playing_song = false;
-
-                // create a audio element
-                let track = document.createElement('audio');
-
-
-                let All_song = [];
-
-
-                async function ambilDataLagu() {
-                    await fetch('/ambil-lagu')
-                        .then(response => response.json())
-                        .then(data => {
-                            All_song = data.map(lagu => {
-                                return {
-                                    id: lagu.id,
-                                    judul: lagu.judul,
-                                    audio: lagu.audio,
-                                    image: lagu.image,
-                                    artistId: lagu.artist.user.name
-                                };
-                            });
-                            console.log(All_song);
-                            if (All_song.length > 0) {
-                                // Memanggil load_track dengan indeks 0 sebagai lagu pertama
-                                load_track(0);
-                            } else {
-                                console.error("Data lagu kosong.");
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error fetching data:', error);
-                        });
-                }
-
-                ambilDataLagu();
-                // semua function
-
-                // function load the track
-                function load_track(index_no) {
-                    if (index_no >= 0 && index_no < All_song.length) {
-                        console.log("tester " + All_song[index_no].audio);
-                        track.src = '{{ asset('storage') }}' + '/' + All_song[index_no].audio;
-                        title.innerHTML = All_song[index_no].judul;
-                        artist.innerHTML = All_song[index_no].artistId;
-                        track_image.src = '{{ asset('storage') }}' + '/' + All_song[index_no].image;
-                        track.load();
-
-                        timer = setInterval(range_slider, 1000);
-
-                    } else {
-                        console.error("Index_no tidak valid.");
-                    }
-                }
-                load_track(All_song);
-
-                // fungsi mute sound
-                function mute_sound() {
-                    if (track.volume === 0) {
-                        track.volume = prevVolume;
-                        recent_volume.value = prevVolume * 100;
-                    } else {
-                        prevVolume = track.volume;
-                        track.volume = 0;
-                        recent_volume.value = 0;
-                    }
-                    updateMuteButtonIcon();
-                }
-
-                // fungsi untuk memeriksa lagu diputar atau tidak
-                function justplay() {
-                    if (Playing_song == false) {
-                        playsong();
-                    } else {
-                        pausesong();
-                    }
-                }
-
-                // reset song slider
-                function reset_slider() {
-                    slider.value = 100;
-                }
-
-                // play song
-                function playsong() {
-                    if (track.paused) {
-                        track.play();
-                        Playing_song = true;
-                        play.innerHTML = '<i class="far fa-pause-circle fr" aria-hidden="true"></i>';
-                    } else {
-                        track.pause();
-                        Playing_song = false;
-                        play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>';
-                    }
-
-                    // Periksa apakah index_no memiliki nilai yang benar
-                    if (index_no >= 0 && index_no < All_song.length) {
-                        // Perbarui playCount dengan songId yang sesuai
-                        const songId = All_song[index_no].id;
-                        console.log(All_song[index_no])
-                        updatePlayCount(songId);
-                        history(songId);
-
-                    }
-                    track.addEventListener('timeupdate', updateDuration);
-                    playCount++;
-                }
-
-                var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-                function updatePlayCount(songId) {
-                    fetch(`/update-play-count/${songId}`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': csrfToken
-                            },
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log('Play count updated:', data.message);
-                        })
-                        .catch(error => {
-                            // Tangani error jika diperlukan
-                            console.error('Error updating play count:', error);
-                        });
-                }
-
-                function history(songId) {
-                    console.log('Mengirim riwayat untuk songId:', songId);
-                    $.ajax({
-                        url: '/simpan-riwayat',
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': csrfToken
-                        },
-                        dataType: 'json',
-                        data: {
-                            song_id: songId,
-                        },
-                        success: function(response) {
-                            console.log('Respon dari simpan-riwayat:', response);
-                        },
-                        error: function(error) {
-                            console.error('Error saat mengirim riwayat:', error);
-                        }
-                    });
-                }
-
-
-
-
-                // pause song
-                function pausesong() {
-                    track.pause();
-                    Playing_song = false;
-                    play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>'
-                }
-
-                function putar(id) {
-                    console.log('ID yang dikirim:', id);
-                    id = id - 1;
-                    const lagu = All_song[id];
-                    // alert(All_song.length - 1 + " " + id);
-                    if (lagu) {
-                        const new_index_no = All_song.indexOf(lagu);
-                        if (new_index_no >= 0) {
-                            index_no = new_index_no;
-                            load_track(id);
-                            playsong();
-                        } else {
-                            index_no = 0;
-                            load_track(index_no);
-                            playsong();
-                        }
-                    } else {
-                        console.error('Lagu dengan ID ' + id + ' tidak ditemukan dalam data lagu.');
-                    }
-
-                }
-
-                track.addEventListener('ended', function() {
-                    // Panggil fungsi untuk memutar lagu selanjutnya
-                    next_song();
-                });
-
-                // fungsi untuk memutar lagu sesudahnya
-                function next_song() {
-                    if (index_no < All_song.length - 1) {
-                        index_no += 1;
-                    } else {
-                        index_no = 0;
-                    }
-                    load_track(index_no);
-                    playsong();
-                    if (autoplay == 1) {
-                        // Set interval sebelum memulai lagu selanjutnya
-                        setTimeout(function() {
-                            track.play();
-                        }, 1000); // Delay 1 detik sebelum memulai lagu selanjutnya
-                    }
-                }
-
-                // fungsi untuk memutar lagu sebelumnya
-                function previous_song() {
-                    if (index_no > 0) {
-                        index_no -= 1;
-                    } else {
-                        index_no = All_song.length - 1;
-                    }
-                    load_track(index_no);
-                    playsong();
-                }
-
-                // ubah volume
-                function volume_change() {
-                    volume_show.innerHTML = recent_volume.value;
-                    track.volume = recent_volume.value / 100;
-                }
-
-                // ubah posisi slider
-                // Fungsi untuk mengubah posisi slider
-                function change_duration() {
-                    if (!isNaN(track.duration) && isFinite(slider_value)) {
-                        let slider_value = parseInt(slider.value);
-                        track.currentTime = track.duration * (slider_value / 100);
-                        console.log(track.duration * (slider_value / 100), slider_value, track.currentTime)
-
-                    }
-                }
-
-                slider.addEventListener('input', function() {
-                    change_duration();
-                    clearInterval(timer);
-                    Playing_song = true;
-                    play.innerHTML = '<i class="far fa-pause-circle fr" aria-hidden="true"></i>';
-                    track.addEventListener('timeupdate', updateDuration)
-                    track.play();
-                })
-
-                // range slider
-                function range_slider() {
-                    let position = 0;
-                    // memperbaharui posisi slider
-                    if (!isNaN(track.duration)) {
-                        position = track.currentTime * (100 / track.duration);
-                        slider.value = position;
-                        // console.log(track.duration);
-                    }
-                    if (track.ended) {
-                        play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>';
-                        if (autoplay == 1) {
-                            index_no += 1;
-                            load_track(index_no);
-                            playsong();
-                        }
-                    }
-
-                    // kalkulasi waktu dari durasi audio
-                    const durationElement = document.getElementById('duration');
-                    const durationMinutes = Math.floor(track.duration / 60);
-                    const durationSeconds = Math.floor(track.duration % 60);
-                    const formattedDuration = `${durationMinutes}:${durationSeconds < 10 ? '0' : ''}${durationSeconds}`;
-                    durationElement.textContent = formattedDuration;
-                }
-
-                track.addEventListener('timeupdate', range_slider);
-
-                // fungsi ini akan dijalankan ketika lagu selesai (mengubah icon play menjadi pause)
-                if (track.ended) {
-                    play.innerHTML = '<i class="fa fa-play-circle" aria-hidden="true"></i>';
-                    if (autoplay == 1) {
-                        index_no += 1;
-                        load_track(index_no);
-                        playsong();
-                    }
-                }
-
-                // Fungsi untuk mengupdate durasi waktu (waktu berjalan sesuai real time)
-                function updateDuration() {
-                    // Menghitung durasi waktu yang telah berlalu
-                    const currentMinutes = Math.floor(track.currentTime / 60);
-                    const currentSeconds = Math.floor(track.currentTime % 60);
-                    // Memformat durasi waktu yang akan ditampilkan
-                    const formattedCurrentTime = `${currentMinutes}:${currentSeconds < 10 ? '0' : ''}${currentSeconds}`;
-                    // console.log(formattedCurrentTime);
-                    // Menampilkan durasi waktu pada elemen yang sesuai
-                    const currentTimeElement = document.getElementById('current-time');
-                    currentTimeElement.textContent = formattedCurrentTime;
-                }
-
-                // Fungsi yang dipanggil saat audio selesai dimainkan
-                function onTrackEnded() {
-
-                    // Menghapus event listener setelah audio selesai dimainkan
-                    track.removeEventListener('timeupdate', updateDuration);
-                }
-
-                // Event listener for mute button
-                muteButton.addEventListener('click', function() {
-                    mute_sound();
-                    updateMuteButtonIcon();
-                });
-
-                recent_volume.addEventListener('input', function() {
-                    // Calculate volume value based on slider position
-                    let slider_value = recent_volume.value / 100;
-                    track.volume = slider_value;
-
-                    // Update mute button icon and volume display
-                    updateMuteButtonIcon();
-                    volume_show.innerHTML = Math.round(slider_value * 100);
-                });
-
-
-                // Function to update mute button icon
-                function updateMuteButtonIcon() {
-                    if (track.volume === 0) {
-                        muteButton.classList.remove('mdi-volume-heigh');
-                        muteButton.classList.add('mdi-volume-off');
-                        volume_show.innerHTML = 0;
-                    } else {
-                        muteButton.classList.remove('mdi-volume-off');
-                        muteButton.classList.add('mdi-volume-heigh');
-                        volume_show.innerHTML = Math.round(track.volume * 100);
-                        recent_volume.value = track.volume * 100;
-                    }
-                }
-            </script>
 
             <script src="assets/js/liked.js"></script>
             <script src="/user/assets/js/closepopup.js"></script>
