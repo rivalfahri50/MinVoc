@@ -290,7 +290,9 @@
                     <ul class="navbar-nav w-75">
                         <ul class="navbar-nav w-75">
                             <li class="nav-item w-75">
-                                <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
+                                <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search" method="POST"
+                                action="{{ route('pencarian.artisVerified') }}">
+                                @csrf
                                     <div class="input-group mb-3">
                                         <span class="input-group-text"
                                             style="border-radius: 15px 0px 0px 15px; border: 1px solid #eaeaea">
@@ -301,7 +303,7 @@
                                                     stroke="#957DAD" stroke-width="2" stroke-linecap="round" />
                                             </svg>
                                         </span>
-                                        <input type="text" id="search" class="form-control"
+                                        <input type="text" id="search" name="search" class="form-control"
                                             placeholder="cari di sini" style="border-radius: 0px 15px 15px 0px">
                                     </div>
                                 </form>
@@ -370,7 +372,8 @@
                                     <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ auth()->user()->name }}
                                     </p>
                                 </div>
-                                <a href="{{ route('ubah.profile.artisVerified', auth()->user()->code) }}" class="dropdown-item preview-item">
+                                <a href="{{ route('ubah.profile.artisVerified', auth()->user()->code) }}"
+                                    class="dropdown-item preview-item">
                                     <div class="preview-thumbnail">
                                         <div class="preview-icon">
                                             <i class="mdi mdi-account-circle-outline"></i>
@@ -462,7 +465,7 @@
                     $('#search').on('keyup', function() {
                         var query = $(this).val();
                         $.ajax({
-                            url: '/artis/search/',
+                            url: '/artis-verified/search/',
                             type: 'GET',
                             data: {
                                 query: query
@@ -472,15 +475,27 @@
                                 var results = response.results;
                                 var $searchResults = $('#search-results');
                                 $searchResults.empty();
-
-                                $.each(results, function(index, result) {
-                                    $searchResults.append('<li>' + result.name + '</li>');
+                                $.each(results.songs, function(index, result) {
+                                    $searchResults.append(
+                                        `<li><a href='/artis-verified/search/${result.code}'>${result.judul}</a></li>`
+                                    );
+                                });
+                                $.each(results.artists, function(index, result) {
+                                    $searchResults.append(
+                                        `<li><a href='/artis-verified/search/${result.code}'>${result.name}</a></li>`
+                                    );
                                 });
                             }
                         });
                     });
                 });
+                $(document).ready(function() {
+                    $('.menu-arrow').click(function() {
+                        $(this).find('i').toggleClass('mdi-chevron-right mdi-chevron-down');
+                    });
+                });
             </script>
+
             <script>
                 $(document).ready(function() {
                     $.ajax({

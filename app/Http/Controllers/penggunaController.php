@@ -191,14 +191,14 @@ class penggunaController extends Controller
         $song = song::where('code', $code)->first();
         $user = user::where('code', $code)->first();
         $playlists = playlist::all();
-        $songs = song::all();
-
+        
         if ($song) {
-            // dd($song);
+            $songs = song::all();
             return view('users.search.songSearch', compact('song', 'title', 'songs', 'playlists'));
         } else if ($user) {
-            $songUser = song::where('artis_id', $user->id)->get();
-            return view('users.search.artisSearch', compact('user', 'title', 'songUser', 'playlists'));
+            $artis = artist::where('user_id', $user->id)->first();
+            $songs = song::where('artis_id', $artis->id)->get();
+            return view('users.search.artisSearch', compact('user', 'title', 'songs', 'playlists'));
         }
     }
 
@@ -206,15 +206,16 @@ class penggunaController extends Controller
     {
         $title = "MusiCave";
         $playlists = playlist::all();
-        $songs = song::all();
         $song = song::where('judul', 'like', '%' .  $request->input('search') . '%')->first();
         $user = user::where('name', 'like', '%' .  $request->input('search') . '%')->first();
 
         if ($song) {
+        $songs = song::all();
             return view('users.search.songSearch', compact('song', 'title', 'songs', 'playlists'));
         } else if ($user) {
-            $songUser = song::where('artis_id', $user->id)->get();
-            return view('users.search.artisSearch', compact('user', 'title', 'songUser', 'playlists'));
+            $artis = artist::where('user_id', $user->id)->first();
+            $songs = song::where('artis_id', $artis->id)->get();
+            return view('users.search.artisSearch', compact('user', 'title', 'songs', 'playlists'));
         } else {
             return "not found";
         }
@@ -225,7 +226,7 @@ class penggunaController extends Controller
         $title = "MusiCave";
         $billboard = billboard::where('code', $code)->first();
         $albums = album::where('artis_id', $billboard->artis_id)->get();
-        $songs = song::all();
+        $songs = song::where('artis_id', $billboard->artis_id)->get();
         $playlists = playlist::all();
         return response()->view('users.billboard.billboard', compact('title', 'billboard', 'albums', 'songs', 'playlists'));
     }

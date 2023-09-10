@@ -165,19 +165,18 @@ class ArtistController extends Controller
 
         try {
             $imagePath = $request->file('foto')->store('images', 'public');
-
             $artist->pengajuan_verified_at = now()->toDateString();
             $msg = 'Pengajuan Verifikasi';
             $notif = $artist->name . 'Akun Anda Telah di Verifikasi';
-            Notifikasi::create([
-                'role' => 'artist',
-                'user_id' => $artist->user_id,
-                'notif' => $msg,
-                'deskripsi' => $notif,
-                'kategori' => 'Pengajuan Verifikasi'
-            ]);
+            // $data = Notifikasi::create([
+            //     'role' => 'artist',
+            //     'user_id' => $artist->user_id,
+            //     'notif' => $msg,
+            //     'deskripsi' => $notif,
+            //     'kategori' => 'Pengajuan Verifikasi'
+            // ]);
             $artist->image = $imagePath;
-            $artist->save();
+            $artist->update();
         } catch (\Throwable $th) {
             Alert::error('message', 'Gagal Mengirim Request Verification Account');
             return response()->redirectTo('/artis/verified')->with('failed', "failed");
@@ -481,15 +480,16 @@ class ArtistController extends Controller
     {
         $title = "MusiCave";
         $playlists = playlist::all();
-        $songs = song::all();
         $song = song::where('judul', 'like', '%' .  $request->input('search') . '%')->first();
         $user = user::where('name', 'like', '%' .  $request->input('search') . '%')->first();
-
+        
         if ($song) {
+            $songs = song::all();
             return view('artis.search.songSearch', compact('song', 'title', 'songs', 'playlists'));
         } else if ($user) {
-            $songUser = song::where('artis_id', $user->id)->get();
-            return view('artis.search.artisSearch', compact('user', 'title', 'songUser', 'playlists'));
+            $artis = artist::where('user_id', $user->id)->first();
+            $songs = song::where('artis_id', $artis->id)->get();
+            return view('artis.search.artisSearch', compact('user', 'title', 'songs', 'playlists'));
         } else {
             return "not found";
         }
@@ -501,14 +501,14 @@ class ArtistController extends Controller
         $song = song::where('code', $code)->first();
         $user = user::where('code', $code)->first();
         $playlists = playlist::all();
-        $songs = song::all();
-
+        
         if ($song) {
+            $songs = song::all();
             return view('artis.search.songSearch', compact('song', 'title', 'songs', 'playlists'));
         } else if ($user) {
             $artis = artist::where('user_id', $user->id)->first();
-            $songUser = song::where('artis_id', $artis->id)->get();
-            return view('artis.search.artisSearch', compact('user', 'title', 'songUser', 'playlists'));
+            $songs = song::where('artis_id', $artis->id)->get();
+            return view('artis.search.artisSearch', compact('user', 'title', 'songs', 'playlists'));
         }
     }
 

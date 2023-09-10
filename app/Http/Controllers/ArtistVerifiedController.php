@@ -358,14 +358,18 @@ class ArtistVerifiedController extends Controller
         $title = "MusiCave";
         $billboard = billboard::where('code', $code)->first();
         $albums = album::where('artis_id', $billboard->artis_id)->get();
-        return response()->view('artisVerified.billboard.billboard', compact('title', 'billboard', 'albums'));
+        $songs = song::where('artis_id', $billboard->artis_id)->get();
+        $playlists = playlist::all();
+        return response()->view('artisVerified.billboard.billboard', compact('title', 'billboard', 'albums', 'songs', 'playlists'));
     }
 
     protected function albumBillboard(string $code): Response
     {
         $title = "MusiCave";
         $album = album::where('code', $code)->first();
-        return response()->view('artisVerified.billboard.album', compact('title', 'album'));
+        $songs = song::where('album_id', $album->id)->get();
+        $playlists = playlist::all();
+        return response()->view('artisVerified.billboard.album', compact('title', 'album', 'songs', 'playlists'));
     }
 
     protected function album(): Response
@@ -393,8 +397,52 @@ class ArtistVerifiedController extends Controller
     public function search(Request $request)
     {
         $query = $request->input('query');
-        $results = User::where('name', 'LIKE', '%' . $query . '%')->get();
+        $songs = Song::where('judul', 'LIKE', '%' . $query . '%')->get();
+
+        $artists = User::where('name', 'LIKE', '%' . $query . '%')->get();
+
+        $results = [
+            'songs' => $songs,
+            'artists' => $artists,
+        ];
+        // $results = User::where('name', 'LIKE', '%' . $query . '%')->get();
         return response()->json(['results' => $results]);
+    }
+
+    protected function pencarian_input(Request $request)
+    {
+        $title = "MusiCave";
+        $playlists = playlist::all();
+        $song = song::where('judul', 'like', '%' .  $request->input('search') . '%')->first();
+        $user = user::where('name', 'like', '%' .  $request->input('search') . '%')->first();
+
+        if ($song) {
+            $songs = song::all();
+            return view('artisVerified.search.songSearch', compact('song', 'title', 'songs', 'playlists'));
+        } else if ($user) {
+            $artis = artist::where('user_id', $user->id)->first();
+            $songs = song::where('artis_id', $artis->id)->get();
+            return view('artisVerified.search.artisSearch', compact('user', 'title', 'songs', 'playlists'));
+        } else {
+            return "not found";
+        }
+    }
+
+    public function search_result(Request $request, string $code)
+    {
+        $title = "MusiCave";
+        $song = song::where('code', $code)->first();
+        $user = user::where('code', $code)->first();
+        $playlists = playlist::all();
+        
+        if ($song) {
+            $songs = song::all();
+            return view('artisVerified.search.songSearch', compact('song', 'title', 'songs', 'playlists'));
+        } else if ($user) {
+            $artis = artist::where('user_id', $user->id)->first();
+            $songs = song::where('artis_id', $artis->id)->get();
+            return view('artisVerified.search.artisSearch', compact('user', 'title', 'songs', 'playlists'));
+        }
     }
 
     public function search_song(Request $request)
@@ -513,17 +561,19 @@ class ArtistVerifiedController extends Controller
     protected function detailPlaylist(string $code): Response
     {
         $playlistDetail = playlist::where('code', $code)->first();
-        $songs = song::all();
+        $songs = song::where('playlist_id', $playlistDetail->id)->get();
+        $playlists = playlist::all();
         $title = "MusiCave";
-        return response()->view('artisVerified.playlist.contoh', compact('title', 'playlistDetail', 'songs'));
+        return response()->view('artisVerified.playlist.contoh', compact('title', 'playlistDetail', 'songs', 'playlists'));
     }
 
     protected function detailAlbum(string $code): Response
     {
         $albumDetail = album::where('code', $code)->first();
         $songs = song::all();
+        $playlists = playlist::all();
         $title = "MusiCave";
-        return response()->view('artisVerified.playlist.contohAlbum', compact('title', 'albumDetail', 'songs'));
+        return response()->view('artisVerified.playlist.contohAlbum', compact('title', 'albumDetail', 'songs', 'playlists'));
     }
 
     protected function contohPlaylist(): Response

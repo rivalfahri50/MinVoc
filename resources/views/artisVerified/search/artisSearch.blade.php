@@ -1,4 +1,4 @@
-@extends('artis.components.artisTemplate')
+@extends('artisVerified.components.artisVerifiedTemplate')
 
 @section('content')
     <link rel="stylesheet" href="/user/assets/css/userSearch.css">
@@ -32,7 +32,8 @@
                     <hr class="divider">
                 </div>
                 <div class="col-md-12 grid-margin stretch-card">
-                    <a href="#" class="card-title judul"><i class="far fa-play-circle fa-2x mb-4"></i></a>
+                    <button onclick="justplay()" id="play" class="card-title judul"><i
+                            class="far fa-play-circle fa-2x mb-4" aria-hidden="true"></i></button>
                     <div class="card scroll scrollbar-down thin">
                         <div class="card-body">
                             <div class="row" style="margin-top: -20px">

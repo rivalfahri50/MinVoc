@@ -116,7 +116,6 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
 });
 
 Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->controller(ArtistVerifiedController::class)->group(function () {
-    // Route::get('/dashboard', 'viewDashboard');
     Route::get('/kolaborasi', 'viewKolaborasi')->name('artist-verified.kolaborasi');
     Route::get('/lirik-chat/{code}', 'viewLirikAndChat')->name('lirikAndChat.artisVerified');
     Route::get('/show/{code}', 'showData')->name('project.show.artisVerified');
@@ -141,11 +140,13 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
     Route::get('/contoh-playlist', 'contohPlaylist');
     Route::get('/disukai-playlist', 'disukaiPlaylist');
     Route::get('/hapus-playlist/{code}', 'hapusPlaylist')->name('hapus.playlist.artisVerified');
+    Route::get('/search/{code}', 'search_result');
     Route::get('/peraturan', function () {
         return view('artisVerified.peraturan', ['title' => 'MusiCave']);
     })->name('peraturan.artisVerified');
 
     Route::post('/bayar/{code}', 'bayar')->name('bayar');
+    Route::post('/search', 'pencarian_input')->name('pencarian.artisVerified');
     Route::post('/tambah_playlist/{code}', 'tambah_playlist')->name('tambah.playlist.artisVerified');
     Route::post('/project', 'createProject')->name('createProject.artisVerified');
     Route::post('/unggahAudio', 'unggahAudio')->name('unggah.artisVerified');
@@ -187,7 +188,7 @@ Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(pengguna
     Route::get('/peraturan', function () {
         return view('users.peraturan', ['title' => 'MusiCave']);
     })->name('peraturan.pengguna');
-    
+
     Route::post('/search', 'pencarian_input')->name('pencarian');
     Route::post('/tambah_playlist/{code}', 'tambah_playlist')->name('tambah.playlist');
     Route::post('/update/profile/{code}', 'updateProfile')->name('update.profile');
@@ -202,7 +203,7 @@ Route::controller(SongController::class)->group(function () {
     Route::get('/ambil-lagu', 'ambillagu');
     Route::post('/update-play-count/{song_id}', 'playCount');
 });
-Route::post('/simpan-riwayat', [RiwayatController::class ,'simpanRiwayat']);
+Route::post('/simpan-riwayat', [RiwayatController::class, 'simpanRiwayat']);
 
 Route::get('/kebijakan-privasi', function () {
     return view('auth.kebijakanprivasi');

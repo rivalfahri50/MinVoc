@@ -642,9 +642,7 @@
                 // create a audio element
                 let track = document.createElement('audio');
 
-
                 let All_song = [];
-
 
                 async function ambilDataLagu() {
                     await fetch('/ambil-lagu')
@@ -787,9 +785,6 @@
                         }
                     });
                 }
-
-
-
 
                 // pause song
                 function pausesong() {

@@ -3,33 +3,8 @@
 @section('content')
     <link rel="stylesheet" href="/user/assets/css/userSearch.css">
 
-    @foreach ($songUser as $item)
-        <div id="staticBackdrop-{{ $item->code }}" class="modal" data-bs-backdrop="static" data-bs-keyboard="false"
-            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="card window">
-                <div class="card-body">
-                    <h3 class="judul p-0 mb-4">Tambah Ke Playlist</h3>
-                    <a href="#" class="close-button far fa-times-circle"></a>
-                    <form class="row" action="{{ route('tambah.playlist', $item->code) }}" method="POST">
-                        @csrf
-                        <div class="col-md-12">
-                            <div class="mb-4">
-                                <label for="namaartis" class="form-label judulnottebal">Nama Playlist</label>
-                                <select name="playlist_id" class="form-select" id="namaartis">
-                                    @foreach ($playlists as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="text-md-right">
-                            <button class="btn" type="submit">Tambah</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    @endforeach
+    @include('partials.tambahkeplaylist')
+
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="row">
@@ -64,7 +39,7 @@
                             <div class="row" style="margin-top: -20px">
                                 <div class="col-12">
                                     <div class="preview-list">
-                                        @foreach ($songUser as $item)
+                                        @foreach ($songs as $item)
                                             <div class="preview-item">
                                                 <div class="preview-thumbnail">
                                                     <img src="{{ asset('storage/' . $item->image) }}" width="10%">

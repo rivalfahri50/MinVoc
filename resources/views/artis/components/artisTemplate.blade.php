@@ -255,11 +255,6 @@
                                 <p id="artist">Masaru Yokoyama</p>
                             </div>
                         </div>
-                        {{-- <div class="icons">
-                        <i id="audio-player-like-icon like"
-                            class="shared-icon-like fas fa-heart fr fh"
-                            data-id="" onclick="toggleLike(this)"></i>
-                    </div> --}}
                     </div>
                     <div class="progress-controller">
                         <div class="control-buttons">
@@ -463,14 +458,11 @@
                             },
                             dataType: 'json',
                             success: function(response) {
-                                console.log(results);
                                 var results = response.results;
-                                var $searchResults = $('#search-results-song');
-                                $searchResults.empty();
-
-
+                                var $previewList = $('.preview-list');
+                                $previewList.empty();
+                                
                                 $.each(results, function(index, result) {
-
                                     var $previewItem = $(
                                         '<div class="preview-item" data-song-id="' + result
                                         .id + '">');

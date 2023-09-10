@@ -1,38 +1,47 @@
-@extends('artis.components.artisTemplate')
+@extends('artisVerified.components.artisVerifiedTemplate')
 
 @section('content')
-    <link rel="stylesheet" href="/user/assets/css/userSearch.css">
+    <link rel="stylesheet" href="/user/assets/css/songSearch.css">
 
     @include('partials.tambahkeplaylist')
 
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="row">
-                <div class="col-md-12 stretch-card">
-                    <div class="custom-container">
-                        <div class="row">
-                            <div class="col-3">
-                                <div class="card coba">
-                                    <img src="{{ asset('storage/' . $user->avatar) }}" alt="Gambar">
-                                </div>
-                            </div>
-                            <div class="col-9 text-xxl-end">
-                                <div class="bottom-left-text">
-                                    <h3 class="judul">{{ $user->name }}</h3>
-                                    <p class="m-0" style="color: #957dad; font-weight: 400;">662,429 didengar
-                                        <span class="fas fa-circle mr-2 ml-2"
-                                            style="color: #cccccc; font-size: 8px;"></span> 145,534 disukai
-                                    </p>
+                <div class="col-md-12 mb-4">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="card coba" style="display: flex; width: 400px; height: 180px;">
+                                <div class="card-body" style="display: flex;">
+                                    <div class="image-container">
+                                        <img src="{{ asset('storage/' . $song->image) }}" alt="Face" class="avatar">
+                                    </div>
+                                    <div style="margin-left: 10px;">
+                                        <h4 class="judul mt-4 clamp-text">{{ $song->judul }}</h4>
+                                        <div class="d-flex flex-row align-content-center">
+                                            <p class="text-muted m-1 clamp-text">{{ $song->artist->user->name }}</p>
+                                        </div>
+                                        <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
+                                            onclick="putar({{ $song->id }})">
+                                            <button onclick="togglePlayPause()" id="play" style="border: none">
+                                                <i id="playIcon" class="far fa-play-circle ukuraniconplaykhusus"
+                                                    style="color: #957DAD;"></i>
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <script>
+                                        var isPlaying = false; // Default status pemutaran lagu
+                                    </script>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <hr class="divider">
+                    <hr class="divider"> <!-- Divider -->
                 </div>
                 <div class="col-md-12 grid-margin stretch-card">
-                    <a href="#" class="card-title judul"><i class="far fa-play-circle fa-2x mb-4"></i></a>
+                    <h3 class="card-title judul">Lagu-lagu</h3>
                     <div class="card scroll scrollbar-down thin">
                         <div class="card-body">
                             <div class="row" style="margin-top: -20px">
@@ -41,7 +50,7 @@
                                         @foreach ($songs as $item)
                                             <div class="preview-item">
                                                 <div class="preview-thumbnail">
-                                                    <img src="{{ asset('storage/' . $item->image) }}" width="10%">
+                                                    <img src="{{ asset('storage/' . $song->image) }}" width="10%">
                                                 </div>
                                                 <div class="preview-item-content d-sm-flex flex-grow">
                                                     <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
@@ -76,7 +85,36 @@
                         </div>
                     </div>
                 </div>
+                <!-- main-panel ends -->
             </div>
+            <!-- page-body-wrapper ends -->
         </div>
+        <script>
+            function myFunction(x) {
+                x.classList.toggle("far"); // Menghapus kelas "fa fa-heart"
+                x.classList.toggle("fas"); // Menambahkan kelas "fas fa-heart"
+                x.classList.toggle("warna-kostum-like"); // Menambahkan kelas warna merah
+            }
+
+            function togglePlayPause() {
+                const playIcon = document.getElementById('playIcon');
+
+                if (isPlaying) {
+                    // Jika sedang diputar, ganti menjadi pause
+                    playIcon.classList.remove('fa-pause-circle');
+                    playIcon.classList.add('fa-play-circle');
+                } else {
+                    // Jika sedang tidak diputar, ganti menjadi play
+                    playIcon.classList.remove('fa-play-circle');
+                    playIcon.classList.add('fa-pause-circle');
+                }
+
+                // Ubah status pemutaran
+                isPlaying = !isPlaying;
+
+                // Panggil fungsi justplay() jika diperlukan
+                justplay();
+            }
+        </script>
     </div>
 @endSection
