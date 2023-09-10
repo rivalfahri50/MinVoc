@@ -31,8 +31,8 @@
             }
 
             .avatar {
-                width: 60px;
-                height: 60px;
+                width: 90px;
+                height: 90px;
                 /* Ketinggian tetap 60px */
                 margin-right: 10px;
                 border-radius: 0;
@@ -92,7 +92,7 @@
                                                             <i class="far fa-eye text-info"></i>
                                                         </button>
                                                         <button type="button" class="btn btnicon" data-toggle="modal" data-target="#exampleModalCenter">
-                                                            <i class="fas fa-edit" style="color: #5b6b89"></i>
+                                                            <i class="fas fa-pencil-alt text-warning"></i>
                                                         </button>
                                                         <button class="btn btnicon" onclick="deleteBillboard('{{ $item->code }}')">
                                                             <i class="far fa-times-circle text-danger"></i>
@@ -177,21 +177,27 @@
                                                 <label for="deskripsi" class="form-label judulnottebal">Deskripsi</label>
                                                 <textarea id="deskripsi" class="form-control" maxlength="500" rows="4" readonly disabled>{{ $item->deskripsi }}</textarea>
                                             </div>
-                                            <div class="mb-3">
-                                                <label for="namakategori" class="form-label judulnottebal">Gambar
-                                                    background
-                                                    iklan</label>
-                                                <div class="cell-content gambar-container">
-                                                    <img src="{{ asset('storage/' . $item->image_background) }}"
-                                                        alt="Face" class="gambarbg">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="mb-3">
+                                                        <label for="namakategori" class="form-label judulnottebal">Gambar
+                                                            background
+                                                            iklan</label>
+                                                        <div class="cell-content gambar-container">
+                                                            <img src="{{ asset('storage/' . $item->image_background) }}"
+                                                                alt="Face" class="gambarbg">
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="namakategori" class="form-label judulnottebal">Gambar
-                                                    artis</label>
-                                                <div class="cell-content gambar-container">
-                                                    <img src="{{ asset('storage/' . $item->image_artis) }}"
-                                                        alt="Face" class="avatar">
+                                                <div class="col-6">
+                                                    <div class="mb-3">
+                                                        <label for="namakategori" class="form-label judulnottebal">Gambar
+                                                            artis</label>
+                                                        <div class="cell-content gambar-container">
+                                                            <img src="{{ asset('storage/' . $item->image_artis) }}"
+                                                                alt="Face" class="avatar">
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -225,26 +231,32 @@
                                     <label for="deskripsi" class="form-label judulnottebal">Deskripsi</label>
                                     <textarea id="deskripsi" class="form-control" maxlength="500" rows="4" >{{ $item->deskripsi }}</textarea>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="uploadlatar" class="form-label judulnottebal">Upload Background Iklan</label>
-                                    <input type="file" name="image_background" class="form-control form-i" id="uploadlatar">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label for="uploadlatar" class="form-label judulnottebal">Upload Background Iklan</label>
+                                            <input type="file" name="image_background" class="form-control form-i" id="uploadlatar">
+                                        </div>
+                                        @if ($item->image_background)
+                                        <div class="mb-3">
+                                            <label for="fotoLamaBackground" class="form-label col-12" style="color: #676767">Foto Background Iklan Lama</label>
+                                            <img src="{{ asset('storage/' . $item->image_background) }}" alt="Foto Lama"  class="gambarbg">
+                                        </div>
+                                        @endif
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label for="uploadartis" class="form-label judulnottebal">Upload Foto Artis</label>
+                                            <input type="file" name="image_artis" class="form-control form-i" id="uploadartis">
+                                        </div>
+                                        @if ($item->image_artis)
+                                        <div class="mb-3">
+                                            <label for="fotoLamaArtis" class="form-label col-12" style="color: #676767">Foto Artis Lama</label>
+                                            <img src="{{ asset('storage/' . $item->image_artis) }}" alt="Foto Lama" class="avatar">
+                                        </div>
+                                        @endif
+                                    </div>
                                 </div>
-                                @if ($item->image_background)
-                                <div class="mb-3">
-                                    <label for="fotoLamaBackground" class="form-label judulnottebal">Foto Background Iklan Lama</label>
-                                    <img src="{{ asset('storage/' . $item->image_background) }}" alt="Foto Lama" class="img-fluid">
-                                </div>
-                                @endif
-                                <div class="mb-3">
-                                    <label for="uploadartis" class="form-label judulnottebal">Upload Foto Artis</label>
-                                    <input type="file" name="image_artis" class="form-control form-i" id="uploadartis">
-                                </div>
-                                @if ($item->image_artis)
-                                <div class="mb-3">
-                                    <label for="fotoLamaArtis" class="form-label judulnottebal">Foto Artis Lama</label>
-                                    <img src="{{ asset('storage/' . $item->image_artis) }}" alt="Foto Lama" class="img-fluid">
-                                </div>
-                                @endif
                             </div>
                             <div class="text-md-right">
                                 <button class="btn" href="#" type="submit">Simpan</button>

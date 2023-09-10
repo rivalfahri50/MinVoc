@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" name="desc">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,86 +10,104 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
-    <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="css/util.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,400;0,500;1,100;1,200&display=swap');
 
         body {
+            background-color: whitesmoke;
             font-family: 'Poppins', sans-serif;
+        }
+
+        .kembali {
+            text-decoration: none;
+            font-size: 15px;
+            color: #957DAD;
+        }
+
+        .kembali:hover {
+            color: #7745a9;
         }
     </style>
 </head>
+
 <body>
-    <div>
-        <span class="fw-bold">Privacy Policy untuk Hummasoft Technology</span>
-        <p>Di Magang Hummasoft, dapat diakses dari MagangHummasoft.com, salah satu prioritas utama kami
-            adalah
-            privasi pengunjung kami. Dokumen Kebijakan Privasi ini berisi jenis informasi yang dikumpulkan
-            dan
-            dicatat oleh MagangHummasoft.com dan bagaimana kami menggunakannya.</p>
-        <p>
-            Jika Anda memiliki pertanyaan tambahan atau memerlukan informasi lebih lanjut tentang Kebijakan
-            Privasi
-            kami, jangan ragu untuk menghubungi kami.
-        </p>
-    </div>
-    <div>
-        <span class="fw-bold">
-            Informasi yang Kami Kumpulkan
-        </span>
-        <p>
-            MagangHummasoft.com mengikuti prosedur standar menggunakan file log. File-file ini mencatat
-            pengunjung
-            ketika mereka mengunjungi situs web. Semua perusahaan hosting melakukan ini dan merupakanbagian
-            dari
-            analisis layanan hosting. Informasi yang dikumpulkan oleh file log termasuk alamat protokol
-            internet
-            (IP), jenis browser, Penyedia Layanan Internet (ISP), tanggal dan waktu, halaman rujukan/keluar,
-            dan
-            mungkin jumlah klik.Ini tidak terkait dengan informasi apa pun yang dapat diidentifikasi secara
-            pribadi.
-            Tujuan informasi adalah untuk menganalisis jurnal sisiwa magang, mengelola siswa magang, dan
-            pendataran
-            siswa magang.
-        </p>
-    </div>
-    <div>
-        <span class="fw-bold">
-            Cookies
-        </span>
-        <p>
-            Seperti situs web lainnya, MagangHummasoft.com menggunakan ‘cookie’. Cookie digunakan untuk
-            menyimpan
-            informasi seperti preferensi pengunjung dan halaman yang diakses atau dikunjungi pengunjung pada
-            situs
-            web ini. Informasi tersebut kami gunakan untuk mengoptimalkan pengalaman pengguna dengan
-            menyesuaikan
-            konten halaman web kami.
-        </p>
-    </div>
-    <div>
-        <span class="fw-bold">
-            Kebijakan Privasi Pihak Ketiga
-        </span>
-        <p>
-            Kebijakan Privasi MagangHummasoft.com tidak berlaku untuk pengiklan atau situs web lain. Karena
-            itu,
-            kami menyarankan Anda untuk membaca seksama masing-masing Kebijakan Privasi dari pihak ketiga
-            untuk
-            informasi yang lebih rinci. Anda berhak untuk menonaktifkan cookies pada browser Anda.
-        </p>
-    </div>
-    <div>
-        <span class="fw-bold">
-            Persetujuan
-        </span>
-        <p>
-            Dengan menggunakan situs web kami, Anda dengan ini menyetujui Kebijakan Privasi kami dan
-            menyetujui
-            syarat dan ketentuannya.
-        </p>
+    <div class="p-5">
+        <div class="mb-3">
+            <a href="/masuk" class="kembali">
+                <i class="fas fa-arrow-left"></i>
+                Kembali
+            </a>
+        </div>
+        <div>
+            <div class="mb-3">
+                <span class="fw-bold fs-3">Kebijakan Privasi</span>
+            </div>
+            <div class="mb-3">
+                <p>
+                    Selamat datang di layanan Music Player kami. Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, dan melindungi informasi pribadi Anda saat Anda menggunakan aplikasi Music Player kami. Kami sangat menghormati privasi Anda, dan kami berkomitmen untuk menjaga informasi pribadi Anda aman.
+                </p>
+            </div>
+            <div class="mb-3">
+                <div class="ml-3">
+                    <div><p>1. Informasi yang Kami Kumpulkan Kami dapat mengumpulkan informasi berikut ini ketika Anda
+                        menggunakan Music Player kami: <br></p>
+                        <p class="ml-3">
+                            a. Informasi Identifikasi Pribadi: Ini termasuk nama Anda, alamat email, dan informasi kontak
+                            lainnya yang Anda berikan secara sukarela saat mendaftar atau berinteraksi dengan aplikasi kami.
+                            <br>
+                            b. Informasi Perangkat: Kami dapat mengumpulkan informasi tentang perangkat Anda, seperti jenis
+                            perangkat, sistem operasi, dan identifikasi unik perangkat. <br>
+                            c. Data Aktivitas: Kami dapat memonitor aktivitas Anda di dalam website Music Player, termasuk
+                            data tentang lagu yang Anda dengarkan, waktu pemutaran, dan preferensi musik Anda. <br>
+                        </p>
+                        <p>2. Cara Kami Menggunakan Informasi Anda Kami menggunakan informasi yang kami kumpulkan untuk
+                        berbagai tujuan, termasuk: <br></p>
+                        <p class="ml-3">
+                            a. Memberikan Layanan: Kami menggunakan informasi Anda untuk menyediakan layanan Music Player
+                            kami, seperti memungkinkan Anda untuk mendengarkan musik, menyusun daftar putar, dan
+                            berinteraksi dengan fitur lainnya. <br>
+                            b. Perbaikan Layanan: Kami dapat menggunakan informasi Anda untuk mengembangkan, mengoptimalkan,
+                            dan memperbaiki aplikasi kami berdasarkan penggunaan Anda. <br>
+                            c. Komunikasi: Kami dapat mengirimkan email atau pemberitahuan lainnya yang berkaitan dengan
+                            akun Anda, pembaruan aplikasi, atau informasi penting lainnya. <br>
+                            d. Keamanan: Kami menggunakan informasi Anda untuk melindungi layanan kami dan mencegah
+                            penyalahgunaan atau aktivitas yang melanggar hukum. <br>
+                        </p>
+                        <p>3. Bagaimana Kami Melindungi Informasi Anda Kami sangat peduli terhadap keamanan informasi
+                        pribadi Anda. Kami menggunakan langkah-langkah keamanan yang tepat, termasuk enkripsi data,
+                        untuk melindungi informasi Anda dari akses yang tidak sah, pengungkapan, perubahan, atau
+                        penghancuran yang tidak sah. <br>
+                        4. Bagikan Informasi Anda Kami tidak akan membagikan informasi pribadi Anda kepada pihak ketiga
+                        tanpa izin Anda, kecuali jika diperlukan oleh hukum atau dalam kasus pemeliharaan atau
+                        pengembangan aplikasi kami. Kami dapat berbagi data yang telah diidentifikasi secara anonim atau
+                        dalam bentuk agregat untuk analisis statistik atau tujuan penelitian. <br>
+                        5. Hak Privasi Anda Anda memiliki hak untuk mengakses, mengoreksi, membatasi, atau menghapus
+                        informasi pribadi Anda yang kami miliki. Jika Anda memiliki pertanyaan atau permintaan terkait
+                        privasi, silakan hubungi kami melalui informasi kontak yang tersedia di akun Anda.
+                        Perubahan Kebijakan Privasi Kami dapat memperbarui Kebijakan Privasi ini dari waktu ke waktu.
+                        Jika ada perubahan signifikan, kami akan memberikan pemberitahuan yang sesuai. Anda disarankan
+                        untuk secara berkala memeriksa kebijakan ini untuk tetap memahami bagaimana kami melindungi
+                        informasi Anda.
+                        Jika Anda memiliki pertanyaan tambahan atau memerlukan informasi lebih lanjut tentang Kebijakan
+                        Privasi
+                        kami, jangan ragu untuk menghubungi kami.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <p>
+                    Dengan menggunakan aplikasi Music Player kami, Anda menyetujui dan mengetahui Kebijakan Privasi ini.
+                    Jika Anda tidak setuju dengan Kebijakan Privasi kami, harap jangan gunakan aplikasi ini.
+                    Terima kasih telah menggunakan Music Player kami. Kami berkomitmen untuk menjaga informasi pribadi
+                    Anda aman dan menghormati privasi Anda.
+                </p>
+            </div>
+        </div>
     </div>
 </body>
+
 </html>

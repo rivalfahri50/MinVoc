@@ -32,7 +32,7 @@
                     <hr class="divider">
                 </div>
                 <div class="col-md-12 grid-margin stretch-card">
-                    <button onclick="justplay()" id="play" class="card-title judul"><i
+                    <button onclick="justplay()" id="play" class="card-title judul" style="border: none; background: none"><i
                             class="far fa-play-circle fa-2x mb-4" aria-hidden="true"></i></button>
                     <div class="card scroll scrollbar-down thin">
                         <div class="card-body">
