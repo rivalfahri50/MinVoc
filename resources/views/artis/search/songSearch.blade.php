@@ -71,7 +71,7 @@
                                         @foreach ($songAll as $item)
                                             <div class="preview-item">
                                                 <div class="preview-thumbnail">
-                                                    <img src="{{ asset('storage/' . $song->image) }}" width="10%">
+                                                    <img src="{{ asset('storage/' . $item->image) }}" width="10%">
                                                 </div>
                                                 <div class="preview-item-content d-sm-flex flex-grow">
                                                     <a href="#lagu-diputar" class="flex-grow text-decoration-none link"

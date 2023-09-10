@@ -44,7 +44,7 @@
                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Next</span>
                             </button>
-                        </div>                        
+                        </div>
                     </div>
                     <h3 class="card-title mt-2 judul" style="font-size: 20px; font-weight: 600">Lagu Yang Disarankan</h3>
                     <div class="card datakanan scrollbar-down thin">
@@ -103,7 +103,7 @@
                                 <div class="col-12">
                                     <div class="preview-list">
                                         @foreach ($artist as $item)
-                                            @if (!$item)
+                                            {{-- @if (!$item) --}}
                                                 <div class="preview-item">
                                                     <div class="preview-thumbnail">
                                                         <img src="/user/assets/images/faces/face1.jpg" width="10%" class="fit">
@@ -111,14 +111,14 @@
                                                     <div class="preview-item-content d-sm-flex flex-grow">
                                                         <div class="flex-grow">
                                                             <h6 class="preview-subject">{{ $item->user->name }}</h6>
-                                                            <p class="text-muted mb-0">{{ $item->didengar }} didengar</p>
+                                                            <p class="text-muted mb-0">{{ $item->likes }} didengar</p>
                                                         </div>
                                                         <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                             <i onclick="myFunction(this)" class="far fa-heart pr-2"></i>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            @endif
+                                            {{-- @endif --}}
                                         @endforeach
                                     </div>
                                 </div>

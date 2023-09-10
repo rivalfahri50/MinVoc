@@ -44,7 +44,7 @@
                             <div class="col-9 text-xxl-end">
                                 <div class="bottom-left-text">
                                     <h3 class="judul">{{ $user->name }}</h3>
-                                    <p class="m-0" style="color: #957dad; font-weight: 400;">662,429 didengar
+                                    <p class="m-0" style="color: #957dad; font-weight: 400;">{{$user->code}} didengar
                                         <span class="fas fa-circle mr-2 ml-2"
                                             style="color: #cccccc; font-size: 8px;"></span> 145,534 disukai
                                     </p>
@@ -57,8 +57,9 @@
                     <hr class="divider">
                 </div>
                 <div class="col-md-12 grid-margin stretch-card">
-                    <button onclick="justplay()" id="play" class="card-title judul"><i
-                            class="far fa-play-circle fa-2x mb-4" aria-hidden="true"></i></button>
+                    <button class="" onclick="justplay()" id="play" style="border: none;background:none;">
+                        <i class="far fa-play-circle fa-2x mb-4"></i>
+                    </button>
                     <div class="card scroll scrollbar-down thin">
                         <div class="card-body">
                             <div class="row" style="margin-top: -20px">

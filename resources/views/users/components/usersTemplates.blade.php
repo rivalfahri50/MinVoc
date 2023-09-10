@@ -409,6 +409,63 @@
             </script>
 
             <script>
+                var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                $(document).ready(function() {
+                    $.ajax({
+                        url: `/artist/check`,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(response) {
+                            console.log(response);
+                            response.forEach(function(item) {
+                                const artistId = item.artist_id;
+                                const like = document.getElementById(`like-artist${item.artist_id}`);
+                                like.classList.toggle('fas');
+                            })
+                        }
+                    });
+                });
+
+                function likeArtist(iconElement, artistId) {
+                    alert("peeeeeeeeeeeeeeee")
+                    iconElement.classList.toggle('fas');
+                    iconElement.classList.toggle('far');
+
+                    const isLiked = iconElement.classList.contains('fas');
+
+                    fetch(`/artist/${artistId}/like`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': csrfToken
+                            },
+                            body: JSON.stringify({
+                                isLiked: iconElement.classList.contains('fas')
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            alert(data);
+                            console.log(data)
+                        })
+                        .catch(error => {
+                            alert(error);
+                            console.error(error)
+                        });
+                }
+
+
+                function updateSongLikeStatus(artistId, isLiked) {
+                    const likeIcons = document.querySelectorAll(`.like[data-id="${artistId}"]`);
+                    likeIcons.forEach(likeIcon => {
+                        likeIcon.classList.toggle('fas', isLiked);
+                        likeIcon.classList.toggle('far', !isLiked);
+                    });
+                }
+            </script>
+
+            <script>
+                var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                 $(document).ready(function() {
                     $.ajax({
                         url: `/song/check`,
@@ -431,13 +488,6 @@
 
                     const isLiked = iconElement.classList.contains('fas');
 
-                    // updateSongLikeStatus(songId, isLiked);
-                    // const sharedHeartIcons = document.querySelectorAll('.shared-icon-like');
-                    // sharedHeartIcons.forEach(heartIcon => {
-                    //     heartIcon.classList.toggle('fas', isLiked);
-                    //     heartIcon.classList.toggle('far', !isLiked);
-                    // });
-
                     fetch(`/song/${songId}/like`, {
                             method: 'POST',
                             headers: {
@@ -450,20 +500,11 @@
                         })
                         .then(response => response.json())
                         .then(data => {
-                            // updateSongLikeStatus(songId, isLiked);
-
-                            // const audioPlayerLikeIcon = document.getElementById('audio-player-like-icon');
-                            // if (audioPlayerLikeIcon) {
-                            //     audioPlayerLikeIcon.classList.toggle('fas', isLiked);
-                            //     audioPlayerLikeIcon.classList.toggle('far', !isLiked);
-                            // }
 
                         })
-                        .catch(error => {
-                            // console.error('Error:', error);
-                        });
+                        .catch(error => {});
                 }
-                var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
 
                 function updateSongLikeStatus(songId, isLiked) {
                     const likeIcons = document.querySelectorAll(`.shared-icon-like[data-id="${songId}"]`);
@@ -644,7 +685,7 @@
                             console.error('Error saat mengirim riwayat:', error);
 
                             // Tambahkan ini untuk mencetak pesan kesalahan dari respons server
-                            console.log('Pesan Kesalahan Server:', xhr.responseText);
+                            // console.log('Pesan Kesalahan Server:', xhr.responseText);
                         }
                     });
                 }

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('code', 100);
             $table->foreignId('user_id')->constrained('users');
             $table->string('image')->default("none");
+            $table->bigInteger('likes')->default(0);
             $table->boolean('is_verified')->default(false);
             $table->string('verification_status')->default('pending');
             $table->string('penghasilan')->default('0');

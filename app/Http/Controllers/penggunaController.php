@@ -190,7 +190,8 @@ class penggunaController extends Controller
             return view('users.search.songSearch', compact('song', 'title', 'songAll', 'playlists'));
         } else if ($user)
         {
-            $songUser = song::where('artis_id', $user->id)->get();
+            $artis = artist::where('user_id', $user->id)->first();
+            $songUser = song::where('artis_id', $artis->id)->get();
             return view('users.search.artisSearch', compact('user', 'title', 'songUser', 'playlists'));
         }
     }

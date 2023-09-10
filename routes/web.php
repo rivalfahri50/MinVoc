@@ -15,6 +15,7 @@ use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\penggunaController;
 use App\Http\Controllers\ArtistVerifiedController;
+use App\Http\Controllers\LikeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -199,4 +200,11 @@ Route::controller(SongController::class)->group(function () {
     Route::get('/ambil-lagu', 'ambillagu');
     Route::post('/update-play-count/{song_id}', 'playCount');
 });
+
+Route::controller(LikeController::class)->group(function () {
+    Route::post('/artist/{artist}/like', 'likeArtist');
+    Route::get('/artist/check', 'likeCheck');
+    Route::post('/artist/{artist}/like', 'like');
+});
+
 Route::post('/simpan-riwayat', [RiwayatController::class ,'simpanRiwayat']);

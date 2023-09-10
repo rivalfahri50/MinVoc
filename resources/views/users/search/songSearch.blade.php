@@ -46,9 +46,12 @@
                                         <h4 class="judul mt-4 clamp-text">{{ $song->judul }}</h4>
                                         <div class="d-flex flex-row align-content-center">
                                             <p class="text-muted m-1 clamp-text">{{ $song->artist->user->name }}</p>
-                                            <button onclick="justplay()" id="play" class="d-flex align-items-center d-block" style="height: 28px;">
+                                            <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
+                                            onclick="putar({{ $song->id }})">
                                             <i class="far fa-play-circle fa-2x pl-2" style="width: 10px; display: none; color: #957DAD;"></i>
-                                            </button>
+                                            {{-- <button onclick="justplay()" id="play" class="d-flex align-items-center d-block" style="height: 28px;">
+                                            </button> --}}
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -60,7 +63,7 @@
                     <hr class="divider"> <!-- Divider -->
                 </div>
                 <div class="col-md-12 grid-margin stretch-card">
-                    <h3 class="card-title judul">Lagu-lagu</h3>
+                    <h3 class="card-title judul">Lagu-lagu yang disarankan</h3>
                     <div class="card scroll scrollbar-down thin">
                         <div class="card-body">
                             <div class="row" style="margin-top: -20px">
@@ -69,7 +72,7 @@
                                         @foreach ($songAll as $item)
                                             <div class="preview-item">
                                                 <div class="preview-thumbnail">
-                                                    <img src="{{ asset('storage/' . $song->image) }}" width="10%">
+                                                    <img src="{{ asset('storage/' . $item->image) }}" width="10%">
                                                 </div>
                                                 <div class="preview-item-content d-sm-flex flex-grow">
                                                     <a href="#lagu-diputar" class="flex-grow text-decoration-none link"

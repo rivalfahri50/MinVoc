@@ -14,7 +14,7 @@ class Like extends Model
     {
         return $this->belongsTo(User::class);
     }
-
+    
     public function song()
     {
         return $this->belongsTo(Song::class);

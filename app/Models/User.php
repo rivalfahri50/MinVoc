@@ -31,12 +31,17 @@ class User extends Authenticatable
 
     public function likedSongs()
     {
-        return $this->belongsToMany(Song::class, 'likes', 'user_id', 'song_id')
-            ->withTimestamps();
+        return $this->belongsToMany(Song::class, 'likes', 'user_id', 'song_id')->withTimestamps();
     }
+
     public function hasLikedSong($songId)
     {
         return $this->likedSongs->contains($songId);
+    }
+
+    public function likeArtist()
+    {
+        return $this->belongsToMany(artist::class, 'likes', 'user_id', 'artist_id')->withTimestamps();
     }
     /**
      * The attributes that should be hidden for serialization.

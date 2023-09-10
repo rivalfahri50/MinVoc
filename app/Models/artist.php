@@ -13,10 +13,15 @@ class artist extends Model
         'code',
         'user_id',
         'image',
+        'likes',
         'is_verified',
         'verification_status',
         'pengajuan_verified_at',
     ];
+    public function likedByUsers()
+    {
+        return $this->belongsToMany(user::class, 'likes', 'user_id', 'artist_id')->withTimestamps();
+    }
 
     public function user()
     {
