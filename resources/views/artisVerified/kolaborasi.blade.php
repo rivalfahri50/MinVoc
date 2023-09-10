@@ -41,42 +41,6 @@
     </div>
 @endforeach --}}
 
-@foreach ($datas as $item)
-    <div class="modal fade" id="staticBackdrop-{{ $item->code }}" data-bs-backdrop="static" data-bs-keyboard="false"
-        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header border-0">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Detail Kolaborasi</h1>
-                    <button type="button" class="btn-unstyled" data-bs-dismiss="modal" aria-label="Close">
-                        <i class="mdi mdi-close-circle-outline btn-icon" style="color: #957DAD"></i>
-                    </button>
-                </div>
-                <div class="modal-body border-0">
-                    <div class="col-md-12" style="font-size: 13px">
-                        <div class="mb-3">
-                            <label for="namakategori" class="form-label judulnottebal">Nama
-                                Proyek</label>
-                                <input type="text" name="name" class="form-control form-i" id="namaproyek" required="" readonly="" value="{{ $item->name }}" fdprocessedid="piymoo">
-                        </div>
-                        <div class="mb-3">
-                            <label for="konsep" class="form-label judulnottebal">Deskripsi</label>
-                            <textarea id="konsep" readonly name="konsep" class="form-control" maxlength="500" rows="4" required>{{ $item->konsep }}</textarea>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="modal-footer border-0">
-                    <button type="button" class="btn rounded-3">
-                        <a href="{{ route('lirikAndChat.artisVerified', $item->code) }}" class="btn-link"
-                            style="color: inherit; text-decoration: none;">Detail Project</a></button>
-                </div>
-            </div>
-        </div>
-    </div>
-@endforeach
-
-
 @section('content')
     <div class="main-panel">
         <style>
@@ -86,8 +50,7 @@
                 flex-direction: column;
                 width: 100%;
                 pointer-events: auto;
-                background-color: white
-                background-clip: padding-box;
+                background-color: white background-clip: padding-box;
                 border: none;
                 border-radius: 1rem;
                 outline: 0;
@@ -243,6 +206,58 @@
                 top: 10px;
                 right: 10px;
             }
+
+            .chat-box {
+                overflow-y: scroll;
+                height: 40vh;
+                background-color: #eaeaea;
+                border-radius: 10px;
+                border: 1px solid rgba(0, 0, 0, 0.2);
+                padding: 10px;
+            }
+
+            /* CSS untuk pesan chat */
+            .chat-message {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                margin-bottom: 10px;
+            }
+
+            .chat-name {
+                font-size: 12px;
+                color: rgb(171, 171, 171);
+                text-align: right;
+            }
+
+            .chat-text {
+                font-size: 14px;
+                color: rgb(52, 52, 52);
+                background-color: whitesmoke;
+                max-width: 50%;
+                border-radius: 15px;
+                padding: 8px 15px;
+            }
+
+            /* CSS untuk input chat */
+            .chat-input {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 10px;
+                padding: 10px;
+                display: flex;
+                align-items: center;
+            }
+
+            .send-button {
+                background-color: #957dad;
+                color: #fff;
+                border: none;
+                padding: 5px 10px;
+                border-radius: 4px;
+                cursor: pointer;
+            }
         </style>
         <div class="content-wrapper">
             <div class="row ">
@@ -303,9 +318,80 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col-12 grid-margin">
+                    <h3 style="color: #957DAD">Undangan Kolaborasi</h3>
+                    <div class="card rounded-4">
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table class="table custom-table mt-3" style="">
+                                    <thead class="table-header">
+                                        <tr class="table-row header headerlengkung">
+                                            <th class="table-cell"> Artis </th>
+                                            <th class="table-cell"> Nama Proyek </th>
+                                            <th class="table-cell"> Tanggal </th>
+                                            <th class="table-cell"> Status </th>
+                                            <th class="table-cell"> Aksi </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{-- jika proses --}}
+                                        <tr class="table-row">
+                                            <td class="table-cell">Tulus</td>
+                                            <td class="table-cell">Kenangan</td>
+                                            <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
+                                            <td class="table-cell text-warning">Pending</td>
+                                            <td class="d-flex align-items-center">
+                                                <a href="" class="btn-unstyled" data-bs-toggle="modal"
+                                                    data-bs-target="#chat">
+                                                    <i class="fa-regular fa-comment-dots text-primary fs-5 ml-1"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+
+                                        {{-- jika disetujui --}}
+                                        <tr class="table-row">
+                                            <td class="table-cell">Tulus</td>
+                                            <td class="table-cell">Kenangan</td>
+                                            <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
+                                            <td class="table-cell text-success">Disetujui</td>
+                                            <td class="d-flex align-items-center">
+                                                <a href="" class="btn-unstyled" data-bs-toggle="modal"
+                                                    data-bs-target="#chat">
+                                                    <i class="fa-regular fa-comment-dots text-primary fs-5 ml-1"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+
+                                        {{-- jika ditolak --}}
+                                        <tr class="table-row">
+                                            <td class="table-cell">Tulus</td>
+                                            <td class="table-cell">Kenangan</td>
+                                            <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
+                                            <td class="table-cell text-danger">Ditolak</td>
+                                            <td class="d-flex align-items-center">
+                                                <form action="{{ route('reject.project.artisVerified') }}" method="post"
+                                                    class="m-0">
+                                                    @csrf
+                                                    <button type="submit">
+                                                        <input type="hidden" name="code" value="{{ $item->code }}">
+                                                        <input type="hidden" name="is_reject" value="true">
+                                                        <i class="mdi mdi-close-circle-outline btn-icon text-danger"
+                                                            style="font-size: 20px"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
+        {{-- untuk tambah kolab --}}
         <div class="modal fade" id="tambahModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -334,5 +420,140 @@
                 </div>
             </div>
         </div>
+
+        {{-- untuk detail kolab --}}
+        @foreach ($datas as $item)
+            <div class="modal fade" id="staticBackdrop-{{ $item->code }}" data-bs-backdrop="static"
+                data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header border-0">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel" style="color: #957DAD">Detail
+                                Kolaborasi
+                            </h1>
+                            <button type="button" class="btn-unstyled" data-bs-dismiss="modal" aria-label="Close">
+                                <i class="fa-regular fa-circle-xmark fa-lg btn-icon" style="color: #957DAD"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body border-0">
+                            <div class="col-md-12" style="font-size: 13px">
+                                <div class="mb-3">
+                                    <label for="namakategori" class="form-label judulnottebal">Nama
+                                        Proyek</label>
+                                    <input type="text" name="name" class="form-control form-i" id="namaproyek"
+                                        required="" readonly="" value="{{ $item->name }}"
+                                        fdprocessedid="piymoo">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="konsep" class="form-label judulnottebal">Deskripsi</label>
+                                    <textarea id="konsep" readonly name="konsep" class="form-control" maxlength="500" rows="4" required>{{ $item->konsep }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer border-0">
+                            <button type="button" class="btn rounded-3" data-bs-toggle="modal"
+                                data-bs-target="#undang">
+                                <a href="#" class="btn-link"
+                                    style="color: inherit; text-decoration: none;">Undang</a>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+
+        {{-- untuk chat --}}
+        @foreach ($datas as $item)
+            <div class="modal fade" id="chat" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header border-0">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel" style="color: #957DAD">Chat
+                            </h1>
+                            <button type="button" class="btn-unstyled" data-bs-dismiss="modal" aria-label="Close">
+                                <i class="fa-regular fa-circle-xmark fa-lg btn-icon" style="color: #957DAD"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body border-0">
+                            <div class="chat" style="margin-top: -20px; position: relative">
+                                <form action="{{ route('message.project.artisVerified') }}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="id_project" value="">
+                                    <div class="card">
+                                        <div style="height: 241px">
+                                            <div class="card-body chat-box">
+                                                <div class="chat-message">
+                                                    <div class="chat-name">
+                                                    </div>
+                                                    <div class="chat-text"></div>
+                                                </div>
+                                            </div>
+                                            <div class="input-with-icon chat-input">
+                                                <input type="text" class="form-control rounded-4"
+                                                    placeholder="Ketik di sini untuk admin" name="message"
+                                                    style="background-color: white;">
+                                                <button type="submit" class="send-button ml-2 mr-1">
+                                                    <i class="fas fa-paper-plane"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer border-0">
+                            <button type="button" class="btn rounded-3">
+                                <a href="{{ route('lirikAndChat.artisVerified', $item->code) }}" class="btn-link"
+                                    style="color: inherit; text-decoration: none;">Buat Proyek</a>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+
+        {{-- untuk undang kolab --}}
+        @foreach ($datas as $item)
+            <div class="modal fade" id="undang" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header border-0">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel" style="color: #957DAD">Undang
+                                Kolaborator</h1>
+                            <button type="button" class="btn-unstyled" data-bs-dismiss="modal" aria-label="Close">
+                                <i class="fa-regular fa-circle-xmark fa-lg btn-icon" style="color: #957DAD"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body border-0">
+                            <div class="col-md-12" style="font-size: 13px">
+                                <div class="mb-3">
+                                    <label for="namakategori" class="form-label judulnottebal">Nama artis</label>
+                                    <select name="kolaborator" class="form-select" id="namakolaborator">
+                                        <option value="" style="display: none;" selected disabled></option>
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="namakategori" class="form-label judulnottebal">Nama
+                                        Proyek</label>
+                                    <input type="text" name="name" class="form-control form-i" id="namaproyek"
+                                        required="" readonly="" value="{{ $item->name }}"
+                                        fdprocessedid="piymoo">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer border-0">
+                            <button type="button" class="btn rounded-3">
+                                <a href="" class="btn-link"
+                                    style="color: inherit; text-decoration: none;">Undang</a></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+
+
     </div>
 @endsection

@@ -113,31 +113,41 @@
             display: inline-block;
             margin-right: 13px;
         }
+
+        .window {
+            background-color: #ffffff;
+            width: 350px;
+            border-radius: 10px;
+            position: relative;
+            margin: 9% auto;
+            padding: 10px;
+        }
     </style>
 
     <div id="popup">
         <div class="card window">
             <div class="card-body">
                 <a href="#" class="close-button mdi mdi-close-circle-outline"></a>
-                <h3 class="judul">Buat Playlist</h3>
+                <h3 class="judul">Edit Album</h3>
                 <div>
                     <form class="row" action="{{ route('ubah.album.artis', $albumDetail->code) }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
-                        <div class="col-4">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <input type="text" class="form-control form-i" name="name" id="nama"
+                                    placeholder="{{ $albumDetail->name }}">
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-3">
                             <div class="card cobai">
                                 <label for="gambar" id="tampil_gambar">
                                     <img src="{{ asset('storage/' . $albumDetail->image) }}"
                                         style="background-size: cover; background-repeat: no-repeat" width="150"
                                         alt="Gambar">
                                 </label>
-                                <input type="file" id="gambar" name="image" accept="image/png,image/jpg">
-                            </div>
-                        </div>
-                        <div class="col-md-7 ml-4">
-                            <div class="mb-3">
-                                <textarea id="deskripsi" class="form-control" name="name" maxlength="500" rows="9"
-                                    placeholder="{{ $albumDetail->name }}"></textarea>
+                                <input type="file" id="gambar" name="image" accept="image/png,image/jpg"
+                                    class="inputgambar">
                             </div>
                         </div>
                         <div class="text-md-right col-md-12">
@@ -145,6 +155,7 @@
                                 <button class="btn btn-primary" type="submit">Ubah</button>
                                 <button form="hapus" class="btn btn-delete" type="submit">Hapus</button>
                             </div>
+                        </div>
                     </form>
                     <form id="hapus" action="{{ route('hapus.albums.artis', $albumDetail->code) }}" method="GET">
                         @csrf
