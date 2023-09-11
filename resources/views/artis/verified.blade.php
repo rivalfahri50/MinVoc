@@ -16,9 +16,7 @@
                                 pelayanan lebih baik, peningkatan visibilitas, pembeda dari akun palsu,
                                 meningkatkan profesionalisme, partisipasi dalam fitur khusus dan perlindungan
                                 merek. Pengguna harus memenuhi syarat pengajuan verifikasi akun dengan <span
-                                    class="highlight">minimal
-                                    memiliki jumlah like lagu sebanyak 1.000 like dan sudah bergabung dengan
-                                    <span class="judul">MusiCave</span>minimal selama 1 tahun.</span></p>
+                                    class="highlight"> minimal memiliki jumlah like lagu sebanyak 1.000 like dan sudah didengar sebanyak 1.500 pengguna.</span></p>
                             <form class="row" action="{{ route('verified', auth()->user()->code) }}" method="POST"
                                 enctype="multipart/form-data">
                                 @csrf

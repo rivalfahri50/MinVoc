@@ -112,13 +112,19 @@
             display: inline-block;
             margin-right: 13px;
         }
+
+        /* .shorten {
+            width: 500px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        } */
     </style>
 
     <div id="popup">
         <div class="card window">
             <div class="card-body">
                 <a href="#" class="close-button mdi mdi-close-circle-outline"></a>
-                <h3 class="judul">Buat Playlist</h3>
+                <h3 class="judul">Edit Album</h3>
                 <div>
                     <form class="row" action="{{ route('ubah.album.artisVerified', $albumDetail->code) }}"
                         method="POST" enctype="multipart/form-data">
@@ -130,12 +136,12 @@
                                         style="background-size: cover; background-repeat: no-repeat" width="150"
                                         alt="Gambar">
                                 </label>
-                                <input type="file" id="gambar" name="image" accept="image/png,image/jpg">
+                                <input type="file" id="gambar" name="image" accept="image/png,image/jpg" class="inputgambar">
                             </div>
                         </div>
                         <div class="col-md-7 ml-4">
                             <div class="mb-3">
-                                <textarea id="deskripsi" class="form-control" name="name" maxlength="500" rows="9"
+                                <textarea id="deskripsi" class="form-control" name="name" maxlength="100" rows="9"
                                     placeholder="{{ $albumDetail->name }}"></textarea>
                             </div>
                         </div>
@@ -144,6 +150,7 @@
                                 <button class="btn btn-primary" type="submit">Ubah</button>
                                 <button form="hapus" class="btn btn-delete" type="submit">Hapus</button>
                             </div>
+                        </div>
                     </form>
                     <form id="hapus" action="{{ route('hapus.albums.artis', $albumDetail->code) }}" method="GET">
                         @csrf

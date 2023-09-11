@@ -372,8 +372,7 @@
                                     <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ auth()->user()->name }}
                                     </p>
                                 </div>
-                                <a href="{{ route('ubah.profile.artisVerified', auth()->user()->code) }}"
-                                    class="dropdown-item preview-item">
+                                <a href="{{ route('ubah.profile.artisVerified', auth()->user()->code) }}" class="dropdown-item preview-item">
                                     <div class="preview-thumbnail">
                                         <div class="preview-icon">
                                             <i class="mdi mdi-account-circle-outline"></i>
@@ -417,7 +416,7 @@
                                 <div class="mb-3">
                                     <h3 class="form-label judul">Nama Album</h3>
                                     <input type="text" name="name" class="form-control" id="namaproyek"
-                                        placeholder="Masukkan nama kategori musik" required>
+                                        placeholder="Masukkan nama kategori musik" maxlength="80" required>
                                 </div>
                                 <div class="mb-3">
                                     <h3 for="upload" class="form-label judul">Upload
