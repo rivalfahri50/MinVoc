@@ -3,76 +3,89 @@
 @foreach ($artist as $item)
     <div class="modal fade" id="staticBackdrop-{{ $item->code }}" data-bs-backdrop="static" data-bs-keyboard="false"
         tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <form action="{{ route('tambah.verified', $item->code) }}" method="post">
-                @csrf
-                <div class="modal-content" style="background-color: whitesmoke">
-                    <div class="card-body">
-                        <a href="" class="close-button far fa-times-circle"></a>
-                        <h3 class="judul">Detail Pengajuan Verifikasi Akun</h3>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background-color: whitesmoke;">
+                <div class="modal-header" style="border-bottom: 0;">
+                    <h3 class="modal-title judul" id="exampleModalLabel">Detail Pengajuan Verifikasi Akun</h3>
+                    <button type="button" class="close-button far fa-times-circle" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="padding: 0 30px;">
+                    <form action="{{ route('tambah.verified', $item->code) }}" method="post">
+                        @csrf
                         <div class="row mt-4">
-                            <div class="col-md-12 mb-4">
-                                <h5 class="judul mb-3">Nama :</h5>
+                            <div class="col-6 mb-4">
+                                <div class="mb-4">
+                                    <h5 class="judul mb-3">Nama :</h5>
+                                    <td class="table-cell">
+                                        <div class="cell-content">
+                                            <img src="{{ asset('storage/' . $item->user->avatar) }}" alt="Face"
+                                                class="avatar">
+                                            <div>
+                                                <p class="teksbiasa">{{ $item->user->name }}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </div>
+                                <div class="mb-4">
+                                    <h5 class="judul mb-3">Tanggal Pengajuan :</h5>
+                                    <p class="teksbiasa">{{ $item->pengajuan_verified_at }}</p>
+                                </div>
+                                <div class="mb-4">
+                                    <h5 class="judul mb-3">Pengikut :</h5>
+                                    <p class="teksbiasa">{{ $item->Pengikut }}</p>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <h5 class="judul mb-3">Foto KTP :</h5>
                                 <td class="table-cell">
                                     <div class="cell-content">
                                         <img src="{{ asset('storage/' . $item->user->avatar) }}" alt="Face"
-                                            class="avatar">
-                                        <div>
-                                            <p class="teksbiasa">{{ $item->user->name }}</p>
-                                        </div>
+                                            class="ktp">
                                     </div>
                                 </td>
                             </div>
-                            <div class="col-md-12 mb-4">
-                                <h5 class="judul mb-3">Tanggal Pengajuan :</h5>
-                                <p class="teksbiasa">{{ $item->pengajuan_verified_at }}</p>
-                            </div>
-                            <div class="col-md-12 mb-4">
-                                <h5 class="judul mb-3">Pengikut :</h5>
-                                <p class="teksbiasa">{{ $item->Pengikut }}</p>
-                            </div>
-                            <div class="text-md-right">
-                                <button type="submit" class="btn">Setujui</button>
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal1" class="btn">Tolak</button>
-                            </div>
                         </div>
-                    </div>
+                        <div class="text-md-right">
+                            <button type="submit" class="btn">Setujui</button>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#modal1"
+                                class="btn tolakbtn">Tolak</button>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 @endforeach
 
 
 @section('content')
-
-@foreach ($artist as $item)
-{{-- @dd($item) --}}
-<div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal bg-white">
-                <h5 class="modal-title bg-white" id="exampleModalLabel">Alasan Ditolak</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body bg-white">
-                {{-- @dd($item) --}}
-                <form id="hapus" action="{{ route('hapus.verified', $item->code) }}" method="GET">
-                    @csrf
-                    <div class="form-group">
-                        <a href="" class="close-button far fa-times-circle"></a>
-                        <h3 class="judul">Alasan Menolak Persetujuan</h3>
-                        <textarea class="form-control mt-3 " id="alasan" name="alasan" rows="10" placeholder="Tulis alasan anda"></textarea>
+    @foreach ($artist as $item)
+        {{-- @dd($item) --}}
+        <div class="modal fade" id="modal1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content" style="background-color: whitesmoke;">
+                    <div class="modal-header" style="border-bottom: 0;">
+                        <h5 class="modal-title judul" id="exampleModalLabel">Alasan Menolak Persetujuan</h5>
+                        <a href="" type="button" class="close-button far fa-times-circle"></a>
                     </div>
-                    <div class="text-md-right">
-                    <button type="submit" class="btn">Kirim</button>
+                    <div class="modal-body">
+                        {{-- @dd($item) --}}
+                        <form id="hapus" action="{{ route('hapus.verified', $item->code) }}" method="GET">
+                            @csrf
+                            <div class="form-group">
+                                <textarea class="form-control mt-3 " id="alasan" name="alasan" rows="10" placeholder="Tulis alasan anda"></textarea>
+                            </div>
+                            <div class="text-md-right">
+                                <button type="submit" class="btn">Kirim</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                </form>
             </div>
         </div>
-    </div>
-</div>
-@endforeach
+    @endforeach
 
     <link rel="stylesheet" href="/admin/assets/css/verifikasi.css">
     <!-- partial | ISI -->
@@ -145,6 +158,14 @@
                 margin-right: 10px;
             }
 
+            .ktp {
+                width: 100px;
+                margin-right: 10px;
+                border-radius: 0;
+                height: 100px;
+                object-fit: cover;
+            }
+
             .table td img {
                 border-radius: 0;
             }
@@ -178,6 +199,21 @@
             /*---- style untuk jangka ----*/
             .card .card-body {
                 padding: 5px 20px;
+            }
+
+            .tolakbtn {
+                background-color: #fb101a;
+                border: 1px solid #fb101a;
+            }
+
+            .tolakbtn:hover {
+                color: #fb101a;
+                border: 1px solid #fb101a;
+                background-color: white !important;
+            }
+
+            button {
+                border: none;
             }
         </style>
         <div class="content-wrapper">
@@ -253,53 +289,59 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-
         $(document).ready(function() {
-            var itemsPerPage = 5;
+            var itemsPerPage = 4;
+            var currentPage = 1;
 
-            // Menyembunyikan semua baris tabel
-            $(".table-row").hide();
-
-
-            // Menampilkan 'itemsPerPage' baris pertama
-            $(".table-row").slice(0, itemsPerPage).show();
-
-
-            // Menghitung jumlah halaman
-            var numPages = Math.ceil($(".table-row").length / itemsPerPage);
-
-
-            // Menambahkan item-item paginatio
-            for (var i = 1; i <= numPages; i++) {
-                $(".pagination").append("<li class='page-item'><a class='page-link' href='#'>" + i + "</a></li>");
+            function setURLParameter(page) {
+                var newURL = window.location.href.split('?')[0] + '?page=' + page;
+                window.history.replaceState({}, document.title, newURL);
             }
 
-            // Menyembunyikan atau menampilkan pagination berdasarkan jumlah halaman
-            if (numPages <= 1) {
-                $(".pagination").hide();
+            function getURLParameter() {
+                var urlParams = new URLSearchParams(window.location.search);
+                return parseInt(urlParams.get('page')) || 1;
             }
 
-            // Mengatur pengklikan pagination
-            $(".pagination a").click(function(e) {
-                e.preventDefault();
-                var page = $(this).text();
-                var start = (page - 1) * itemsPerPage;
+            currentPage = getURLParameter();
+
+            function showTableRows() {
+                var start = (currentPage - 1) * itemsPerPage;
                 var end = start + itemsPerPage;
-                $(".table-row").hide();
-                $(".table-row").slice(start, end).show();
-                $(".pagination a").removeClass("active");
-                $(this).addClass("active");
-            });
+                $(".baris").hide();
+                $(".baris").slice(start, end).show();
+            }
 
-            // Menampilkan halaman sebelumnya saat tombol '<<' diklik
-            $(".pagination .prev").click(function(e) {
-                e.preventDefault();
-                var activePage = $(".pagination .active").text();
-                var prevPage = parseInt(activePage) - 1;
-                if (prevPage >= 1) {
-                    $(".pagination a").eq(prevPage - 1).click();
+            function updatePagination() {
+                $(".pagination").empty();
+                var numPages = Math.ceil($(".baris").length / itemsPerPage);
+
+                for (var i = 1; i <= numPages; i++) {
+                    var activeClass = i === currentPage ? "active" : "";
+                    var buttonText = i.toString();
+                    var buttonClass = "page-link";
+                    if (i === currentPage) {
+                        buttonClass += " active";
+                    }
+
+                    var button = $("<a>")
+                        .addClass("page-item " + activeClass)
+                        .addClass(buttonClass)
+                        .attr("href", "?page=" + i) // Set the page number as a query parameter
+                        .text(buttonText);
+
+                    $(".pagination").append($("<li>").append(button));
                 }
-            });
+
+                if (numPages <= 1) {
+                    $(".pagination").hide();
+                }
+            }
+
+            showTableRows();
+            updatePagination();
+
+            setURLParameter(currentPage);
         });
     </script>
 @endsection

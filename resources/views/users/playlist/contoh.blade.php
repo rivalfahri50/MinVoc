@@ -151,6 +151,12 @@
         .judul {
             font-size: 20px;
         }
+
+        .iconminus {
+            border: none;
+            padding: 0 0 0 5px;
+            font-size: 17px;
+        }
     </style>
     <div class="main-panel">
         <div class="content-wrapper">
@@ -231,7 +237,7 @@
                                                                 </svg>
                                                             </a>
                                                             <form action="{{ route('hapusSongPlaylist', $item->code) }}" method="get">
-                                                                <button type="submit">
+                                                                <button type="submit" class="iconminus">
                                                                     <i class="far fa-minus-square text-danger"
                                                                         style="font-size: 19px"></i>
                                                                 </button>

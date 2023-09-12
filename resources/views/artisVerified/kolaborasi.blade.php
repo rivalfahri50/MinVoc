@@ -359,7 +359,7 @@
                                                                 <input type="hidden" name="code"
                                                                     value="{{ $item->code }}">
                                                                 <input type="hidden" name="is_reject" value="true">
-                                                                <i class="mdi mdi-close-circle-outline btn-icon text-danger"
+                                                                <i class="far fa-times-circle btn-icon text-danger"
                                                                     style="font-size: 20px"></i>
                                                             </button>
                                                         </form>

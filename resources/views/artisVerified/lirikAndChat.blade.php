@@ -249,7 +249,7 @@
                     }
 
                     .form-i {
-                        height: 25px;
+                        height: 35px;
                         border-radius: 8px;
                     }
 
@@ -269,28 +269,32 @@
                     <div class="card kiri scrollbar-dusty-grass square thin rounded-4">
                         <div class="card-body">
                             <div class="row">
-                                <h3 class="fw-semibold mb-5" style="color: #957dad; margin-top: -10px;">Unggah Musik
+                                <h3 class="fw-semibold mb-3" style="color: #957dad; margin-top: -10px;">Unggah Musik
                                     Kolaborasi</h3>
                                 <div class="col-12">
                                     <div class="preview-list">
                                         <form action="{{ route('create.project.artisVerified', $project->code) }}" method="POST" enctype="multipart/form-data">
                                             @csrf
-                                            <div class="d-flex flex-row gap-2">
-                                                <div class="card cobai mb-3">
-                                                    <label for="gambar" id="tampil_gambar">
-                                                        <i class="fas fa-pen fa-2x"></i>
-                                                    </label>
-                                                    <input type="file" id="gambar" name="images"
-                                                        accept="image/png,image/jpg" class="inputgambar">
+                                            <div class="row">
+                                                <div class="col-5 pr-0">
+                                                    <div class="card cobai mb-3">
+                                                        <label for="gambar" id="tampil_gambar">
+                                                            <i class="fas fa-pen fa-2x"></i>
+                                                        </label>
+                                                        <input type="file" id="gambar" name="images"
+                                                            accept="image/png,image/jpg" class="inputgambar">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <input type="text" class="form-control form-i inputcolor" name="name"
-                                                    id="nama" placeholder="Judul Playlist">
-                                            </div>
-                                            <div class="mb-5">
-                                                <input type="file" name="audio" class="form-control inputcolor"
-                                                    id="namaproyek" required>
+                                                <div class="col-7">
+                                                    <div class="mb-3">
+                                                        <input type="text" class="form-control form-i inputcolor" name="name"
+                                                            id="nama" placeholder="Judul Lagu">
+                                                    </div>
+                                                    <div class="mb-5">
+                                                        <input type="file" name="image" class="form-control inputcolor"
+                                                            id="namaproyek" required>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="mt-3">
                                                 <button class="btn pl-3 kirim rounded-3 full-width-button" type="button"
