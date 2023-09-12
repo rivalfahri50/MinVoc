@@ -118,58 +118,6 @@
         </style>
         <div class="content-wrapper">
             <div class="row">
-                <div class="col-md-7">
-                    <div class="card kiri scrollbar-dusty-grass square thin rounded-4">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="preview-list">
-                                        <form action="{{ route('create.project.artisVerified') }}" method="POST">
-                                            @csrf
-                                            <input type="hidden" name="code" value="{{ $project->code }}">
-                                            <div class="preview-item">
-                                                <div class="preview-item-content d-sm-flex flex-grow">
-                                                    <h3 class="fw-semibold" style="color: #957dad; margin-top: -30px;">
-                                                        Project
-                                                        {{ $project->name }}</h3>
-                                                </div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <input type="text" name="judul"
-                                                    class="form-control form-i input-judul pl-3" id="namaproyek"
-                                                    placeholder="{{ $project->judul }}" style="background-color: #ffffff" readonly
-                                                    required>
-                                            </div>
-                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="20" readonly
-                                                style="background-color: #ffffff;">{{ $project->lirik }}</textarea>
-                                            {{-- <textarea name="lirik" id="summernote" style="background-color: #ffffff; border: 1px solid #6d6d6d"></textarea> --}}
-                                            {{-- <script>
-                                                $('#summernote').summernote({
-                                                    placeholder: 'Teks',
-                                                    tabsize: 2,
-                                                    height: 250,
-                                                    toolbar: [
-                                                        ['style', ['style']],
-                                                        ['font', ['bold', 'underline', 'clear']],
-                                                        ['color', ['color']],
-                                                        ['para', ['paragraph']],
-                                                        ['view', ['codeview']]
-                                                    ]
-                                                });
-                                            </script> --}}
-                                            <div class="mt-3">
-                                                <button class="btn pl-3 kirim rounded-3 full-width-button" type="button"
-                                                    data-bs-toggle="modal" data-bs-target="#kirimkolaborasi">
-                                                    kirim
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <style>
                     .chat-box {
                         overflow-y: scroll;
@@ -215,7 +163,7 @@
                         background-color: white;
                     }
                 </style>
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <div class="card kanan scrollbar-dusty-grass square thin rounded-4">
                         <div class="card-body">
                             <div class="row">
@@ -255,6 +203,97 @@
                                                 </div>
                                             </form>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <style>
+                    .cobai {
+                        width: 150px;
+                        height: 150px;
+                        position: relative;
+                        overflow: hidden;
+                        border: none;
+                        color: #957dad;
+                        background-color: white
+                    }
+
+                    .cobai:hover {
+                        background-color: #69547d;
+                        color: #eaeaea;
+                    }
+
+                    .inputgambar {
+                        display: none;
+                    }
+
+                    label {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        cursor: pointer;
+                        width: 100%;
+                        height: 100%;
+                        background-size: cover;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        margin: 0;
+                    }
+
+                    .upload-label i {
+                        font-size: 20px;
+                        margin-bottom: 10px;
+                    }
+
+                    .form-i {
+                        height: 25px;
+                        border-radius: 8px;
+                    }
+
+                    .inputcolor{
+                        background-color: white
+                    }
+                    .inputcolor:hover {
+                        background-color: white
+                    }
+
+                    #popup:target {
+                        visibility: visible;
+                    }
+                </style>
+                <div class="col-md-6">
+                    <div class="card kiri scrollbar-dusty-grass square thin rounded-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <h3 class="fw-semibold mb-5" style="color: #957dad; margin-top: -10px;">Unggah Musik Kolaborasi</h3>
+                                <div class="col-12">
+                                    <div class="preview-list">
+                                        <form action="{{ route('create.project.artisVerified') }}" method="POST">
+                                            @csrf
+                                            <div class="card cobai mb-3">
+                                                <label for="gambar" id="tampil_gambar">
+                                                    <i class="fas fa-pen fa-2x"></i>
+                                                </label>
+                                                <input type="file" id="gambar" name="images"
+                                                    accept="image/png,image/jpg" class="inputgambar">
+                                            </div>
+                                            <div class="mb-3">
+                                                <input type="text" class="form-control form-i inputcolor" name="name"
+                                                    id="nama" placeholder="Judul Playlist">
+                                            </div>
+                                            <div class="mb-5">
+                                                <input type="file" name="image" class="form-control inputcolor" id="namaproyek"
+                                                    required>
+                                            </div>
+                                            <div class="mt-3">
+                                                <button class="btn pl-3 kirim rounded-3 full-width-button" type="button"
+                                                    data-bs-toggle="modal" data-bs-target="#kirimkolaborasi">
+                                                    Unggah
+                                                </button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -301,6 +340,22 @@
         </div>
     </div>
     <script>
+        const gambar = document.querySelector("#gambar");
+
+        const tampilGambar = document.querySelector("#tampil_gambar");
+
+        gambar.addEventListener("change", function() {
+            const reader = new FileReader();
+
+            reader.addEventListener("load", () => {
+                tampilGambar.style.backgroundImage = `url(${reader.result})`;
+
+                tampilGambar.innerHTML = "";
+            });
+
+            reader.readAsDataURL(this.files[0]);
+        });
+
         const range = document.getElementById('range');
         const rangeV = document.getElementById('rangeV');
         const output = document.querySelector('.output');

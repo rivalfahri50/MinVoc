@@ -1,4 +1,4 @@
-@extends('users.components.usersTemplates')
+@extends('artisVerified.components.artisVerifiedTemplate')
 
 @section('content')
     <link rel="stylesheet" href="/user/assets/css/userSearch.css">
@@ -19,7 +19,7 @@
                             <div class="col-9 text-xxl-end">
                                 <div class="bottom-left-text">
                                     <h3 class="judul">{{ $user->name }}</h3>
-                                    <p class="m-0" style="color: #957dad; font-weight: 400;">{{$user->code}} didengar
+                                    <p class="m-0" style="color: #957dad; font-weight: 400;">662,429 didengar
                                         <span class="fas fa-circle mr-2 ml-2"
                                             style="color: #cccccc; font-size: 8px;"></span> 145,534 disukai
                                     </p>
@@ -32,7 +32,7 @@
                     <hr class="divider">
                 </div>
                 <div class="col-md-12 grid-margin stretch-card">
-                    <button onclick="justplay()" id="play" class="card-title judul" style="border: none; background: none"><i
+                    <button onclick="justplay()" id="play" class="card-title judul"><i
                             class="far fa-play-circle fa-2x mb-4" aria-hidden="true"></i></button>
                     <div class="card scroll scrollbar-down thin">
                         <div class="card-body">

@@ -16,16 +16,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($riwayat as $item )
+                                @foreach ($uniqueRows as $item)
                                     <tr class="table-row baris">
                                         <td class="table-cell">
-                                            <h6>{{ $item->song->judul}}</h6>
-                                            <p class="text-muted m-0">{{ $item->song->artist->user->name}}</p>
+                                            <h6>{{ $item->judul }}</h6>
+                                            <p class="text-muted m-0">{{ $item->song->artist->user->name }}</p>
                                         </td>
-                                        <td class="table-cell">{{ $item->song->genre->name}}</td>
-                                        <td class="table-cell">{{ $item->play_date}}</td>
+                                        <td class="table-cell">{{ $item->song->genre->name }}</td>
+                                        <td class="table-cell">
+                                            {{ \Carbon\Carbon::parse($item->play_date)->isoFormat('D MMMM Y') }}</td>
+                                        <!-- tambahkan kolom lainnya sesuai kebutuhan -->
                                     </tr>
-
                                 @endforeach
                             </tbody>
                         </table>

@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{{ $title }}</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
@@ -163,7 +163,7 @@
                         <span class="menu-icon">
                             <i class="mdi mdi-music"></i>
                         </span>
-                        <span class="menu-title">Playlist</span>
+                        <span class="menu-title">Album</span>
                         <a href="#ui-basic" data-toggle="collapse" aria-expanded="false" aria-controls="ui-basic">
                             <span class="menu-arrow">
                                 <i class="mdi mdi-chevron-right"></i>
@@ -173,12 +173,6 @@
                     <div class="collapse" id="ui-basic">
                         <ul class="nav flex-column sub-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('buat.playlist.artis') }}">
-                                    <span class="menu-icon">
-                                        <i class="mdi mdi-plus-circle-outline"></i>
-                                    </span>
-                                    <span class="menu-title">Buat Playlist</span>
-                                </a>
                                 <a class="nav-link" href="#buat-album">
                                     <span class="menu-icon">
                                         <i class="mdi mdi-plus-circle-outline"></i>
@@ -197,7 +191,7 @@
                         <span class="menu-title">Unggah</span>
                     </a>
                 </li>
-                <li class="nav-item menu-items">
+                {{-- <li class="nav-item menu-items">
                     <a class="nav-link" href="/artis/kolaborasi">
                         @if ($title === 'kolaborasi')
                             <span class="menu-icon">
@@ -210,7 +204,7 @@
                             <span class="menu-title">Kolaborasi</span>
                         @endif
                     </a>
-                </li>
+                </li> --}}
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="/artis/penghasilan">
                         <span class="menu-icon">
@@ -261,11 +255,6 @@
                                 <p id="artist">Masaru Yokoyama</p>
                             </div>
                         </div>
-                        {{-- <div class="icons">
-                        <i id="audio-player-like-icon like"
-                            class="shared-icon-like fas fa-heart fr fh"
-                            data-id="" onclick="toggleLike(this)"></i>
-                    </div> --}}
                     </div>
                     <div class="progress-controller">
                         <div class="control-buttons">
@@ -311,7 +300,9 @@
                     <ul class="navbar-nav w-75">
                         <ul class="navbar-nav w-75">
                             <li class="nav-item w-75">
-                                <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
+                                <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search" method="POST"
+                                    action="{{ route('pencarian.artis') }}">
+                                    @csrf
                                     <div class="input-group">
                                         <span class="input-group-text"
                                             style="border-radius: 15px 0px 0px 15px; border: 1px solid #eaeaea">
@@ -322,7 +313,7 @@
                                                     stroke="#957DAD" stroke-width="2" stroke-linecap="round" />
                                             </svg>
                                         </span>
-                                        <input type="text" id="search" class="form-control"
+                                        <input type="text" id="search" name="search" class="form-control"
                                             placeholder="cari di sini" style="border-radius: 0px 15px 15px 0px">
                                     </div>
                                 </form>
@@ -391,7 +382,8 @@
                                     <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ auth()->user()->name }}
                                     </p>
                                 </div>
-                                <a href="/artis/profile" class="dropdown-item preview-item">
+                                <a href="{{ route('ubah.profile.artis', auth()->user()->code) }}"
+                                    class="dropdown-item preview-item">
                                     <div class="preview-thumbnail">
                                         <div class="preview-icon">
                                             <i class="mdi mdi-account-circle-outline"></i>
@@ -466,14 +458,11 @@
                             },
                             dataType: 'json',
                             success: function(response) {
-                                console.log(results);
                                 var results = response.results;
-                                var $searchResults = $('#search-results-song');
-                                $searchResults.empty();
-
-
+                                var $previewList = $('.preview-list');
+                                $previewList.empty();
+                                
                                 $.each(results, function(index, result) {
-
                                     var $previewItem = $(
                                         '<div class="preview-item" data-song-id="' + result
                                         .id + '">');

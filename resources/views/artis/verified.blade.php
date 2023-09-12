@@ -10,7 +10,7 @@
                 <div class="col-md-12">
                     <div class="card mb-3">
                         <div class="card-body">
-                            <h2 class="judul mb-3 fw-bolder">Daftar Di Sini Untuk Verifikasi Akun Anda</h2>
+                            <h2 class="judul mb-3 fw-bolder fs-4">Daftar Di Sini Untuk Verifikasi Akun Anda</h2>
                             <p class="teks-biasa">Pengajuan verifikasi akun di sini guna untuk meningkatkan
                                 kepercayaan dan kredibilitas, perlindungan dari pemalsuan, dukungan dan
                                 pelayanan lebih baik, peningkatan visibilitas, pembeda dari akun palsu,
@@ -18,7 +18,7 @@
                                 merek. Pengguna harus memenuhi syarat pengajuan verifikasi akun dengan <span
                                     class="highlight">minimal
                                     memiliki jumlah like lagu sebanyak 1.000 like dan sudah bergabung dengan
-                                    <span class="judul">MusiCave</span> minimal selama 1 tahun.</span></p>
+                                    <span class="judul">MusiCave</span>minimal selama 1 tahun.</span></p>
                             <form class="row" action="{{ route('verified', auth()->user()->code) }}" method="POST"
                                 enctype="multipart/form-data">
                                 @csrf
@@ -30,7 +30,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-6 mb-4" style="padding-left: 0;">
-                                        <h4 class="judul fw-bolder">Masukkan tanda pengenal</h4>
+                                        <h4 class="judul fw-bolder">Unggah Foto KTP :</h4>
                                         <input type="file" id="foto" name="foto" class="form-control filecolor"
                                             aria-label="Pilih tanda pengenal" required>
                                         @error('foto')

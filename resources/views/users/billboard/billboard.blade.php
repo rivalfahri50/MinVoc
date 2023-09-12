@@ -1,7 +1,8 @@
-@extends('artis.components.artisTemplate')
+@extends('users.components.usersTemplates')
 
 @section('content')
     <link rel="stylesheet" href="/user/assets/css/billboard.css">
+    @include('partials.tambahkeplaylist')
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="row">
@@ -50,7 +51,7 @@
                     <div class="cards d-flex justify-content-center z-3 gap-4"
                         style="margin-top: -150px; margin-left: 12px;">
                         @foreach ($albums as $item)
-                            <a href="{{ route('albumBillboard', $item->code) }}">
+                            <a href="{{ route('albumBillboard.pengguna', $item->code) }}">
                                 <img src="{{ asset('storage/' . $item->image) }}" width="170"
                                     class="img-fluid rounded-4 fit">
                             </a>
@@ -58,7 +59,7 @@
                     </div>
                 </div>
                 <div class="col-md-12 grid-margin stretch-card">
-                    <h3 class="card-title mb-4 judul" style="font-size: 20px; font-weight: 700">Lagu Populer Agnez mo</h3>
+                    <h3 class="card-title mb-4 judul" style="font-size: 20px; font-weight: 700">Lagu Populer {{ $billboard->artis->user->name }}</h3>
                     <div class="card scroll scrollbar-down thin">
                         <div class="card-body">
                             <div class="row" style="margin-top: -20px">
@@ -67,7 +68,7 @@
                                         @foreach ($songs as $item)
                                             <div class="preview-item">
                                                 <div class="preview-thumbnail">
-                                                    <img src="{{ asset('storage/' . $item->image ) }}" width="10%">
+                                                    <img src="{{ asset('storage/' . $item->image) }}" width="10%">
                                                 </div>
                                                 <div class="preview-item-content d-sm-flex flex-grow">
                                                     <a href="" class="flex-grow text-decoration-none link">
@@ -80,16 +81,16 @@
                                                         <i onclick="myFunction(this)" class="far fa-heart pr-2"></i>
                                                         <p style="pointer-events: none;">{{ $item->waktu }}</p>
                                                         <a data-bs-toggle="modal"
-                                                                data-bs-target="#staticBackdrop-{{ $item->code }}"
-                                                                style="color: #957dad">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" x="0px"
-                                                                    y="0px" width="20" height="20"
-                                                                    viewBox="0 2 24 24">
-                                                                    <path fill="#957DAD"
-                                                                        d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 11 L 7 11 L 7 13 L 11 13 L 11 17 L 13 17 L 13 13 L 17 13 L 17 11 L 13 11 L 13 7 L 11 7 z">
-                                                                    </path>
-                                                                </svg>
-                                                            </a>
+                                                            data-bs-target="#staticBackdrop-{{ $item->code }}"
+                                                            style="color: #957dad">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" x="0px"
+                                                                y="0px" width="20" height="20"
+                                                                viewBox="0 2 24 24">
+                                                                <path fill="#957DAD"
+                                                                    d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 11 L 7 11 L 7 13 L 11 13 L 11 17 L 13 17 L 13 13 L 17 13 L 17 11 L 13 11 L 13 7 L 11 7 z">
+                                                                </path>
+                                                            </svg>
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>

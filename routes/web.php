@@ -101,6 +101,7 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
         return view('artis.peraturan', ['title' => 'MusiCave']);
     })->name('peraturan.artis');
 
+    Route::post('/search', 'pencarian_input')->name('pencarian.artis');
     Route::post('/tambah_playlist/{code}', 'tambah_playlist')->name('tambah.playlist.artis');
     Route::POST('/buat-album/{code}', 'buatAlbum')->name('tambah.album.artis');
     Route::POST('/verified/{code}', 'verifiedAccount')->name('verified');
@@ -116,7 +117,6 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
 });
 
 Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->controller(ArtistVerifiedController::class)->group(function () {
-    // Route::get('/dashboard', 'viewDashboard');
     Route::get('/kolaborasi', 'viewKolaborasi')->name('artist-verified.kolaborasi');
     Route::get('/lirik-chat/{code}', 'viewLirikAndChat')->name('lirikAndChat.artisVerified');
     Route::get('/show/{code}', 'showData')->name('project.show.artisVerified');
@@ -141,11 +141,13 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
     Route::get('/contoh-playlist', 'contohPlaylist');
     Route::get('/disukai-playlist', 'disukaiPlaylist');
     Route::get('/hapus-playlist/{code}', 'hapusPlaylist')->name('hapus.playlist.artisVerified');
+    Route::get('/search/{code}', 'search_result');
     Route::get('/peraturan', function () {
         return view('artisVerified.peraturan', ['title' => 'MusiCave']);
     })->name('peraturan.artisVerified');
 
     Route::post('/bayar/{code}', 'bayar')->name('bayar');
+    Route::post('/search', 'pencarian_input')->name('pencarian.artisVerified');
     Route::post('/tambah_playlist/{code}', 'tambah_playlist')->name('tambah.playlist.artisVerified');
     Route::post('/project', 'createProject')->name('createProject.artisVerified');
     Route::post('/unggahAudio', 'unggahAudio')->name('unggah.artisVerified');
@@ -172,6 +174,7 @@ Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(pengguna
     Route::get('/profile-ubah/{code}', 'profile_ubah')->name('ubah.profile');
     Route::get('/billboard/{code}', 'billboard')->name('detail.billboard.pengguna');
     Route::get('/album', 'album');
+    Route::get('/album-billboard/{code}', 'albumBillboard')->name('albumBillboard.pengguna');
     Route::get('/kategori/{code}', 'kategori');
     Route::get('/buat-playlist', 'buatPlaylist');
     Route::get('/detail-playlist/{code}', 'detailPlaylist')->name('detailPlaylist');
@@ -187,6 +190,7 @@ Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(pengguna
         return view('users.peraturan', ['title' => 'MusiCave']);
     })->name('peraturan.pengguna');
 
+    Route::post('/search', 'pencarian_input')->name('pencarian');
     Route::post('/tambah_playlist/{code}', 'tambah_playlist')->name('tambah.playlist');
     Route::post('/update/profile/{code}', 'updateProfile')->name('update.profile');
     Route::post('/buat-playlist', 'storePlaylist')->name('buat.playlist');
@@ -207,4 +211,8 @@ Route::controller(LikeController::class)->group(function () {
     Route::post('/artist/{artist}/like', 'like');
 });
 
-Route::post('/simpan-riwayat', [RiwayatController::class ,'simpanRiwayat']);
+Route::post('/simpan-riwayat', [RiwayatController::class, 'simpanRiwayat']);
+
+Route::get('/kebijakan-privasi', function () {
+    return view('auth.kebijakanprivasi');
+});

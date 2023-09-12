@@ -13,9 +13,11 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use Throwable;
 
@@ -51,8 +53,14 @@ class penggunaController extends Controller
     protected function riwayat(): Response
     {
         $title = "MusiCave";
+
         $riwayat = Riwayat::all();
-        return response()->view('users.riwayat', compact('title','riwayat'));
+
+        $uniqueRows = $riwayat->unique(function ($item) {
+            return $item->user_id . $item->song_id . $item->play_date;
+        });
+
+        return response()->view('users.riwayat', compact('title', 'uniqueRows'));
     }
 
     protected function profile(): Response
@@ -183,16 +191,33 @@ class penggunaController extends Controller
         $song = song::where('code', $code)->first();
         $user = user::where('code', $code)->first();
         $playlists = playlist::all();
-        $songAll = song::all();
 
-        if ($song)
-        {
-            return view('users.search.songSearch', compact('song', 'title', 'songAll', 'playlists'));
-        } else if ($user)
-        {
+        if ($song) {
+            $songs = song::all();
+            return view('users.search.songSearch', compact('song', 'title', 'songs', 'playlists'));
+        } else if ($user) {
             $artis = artist::where('user_id', $user->id)->first();
-            $songUser = song::where('artis_id', $artis->id)->get();
-            return view('users.search.artisSearch', compact('user', 'title', 'songUser', 'playlists'));
+            $songs = song::where('artis_id', $artis->id)->get();
+            return view('users.search.artisSearch', compact('user', 'title', 'songs', 'playlists'));
+        }
+    }
+
+    protected function pencarian_input(Request $request)
+    {
+        $title = "MusiCave";
+        $playlists = playlist::all();
+        $song = song::where('judul', 'like', '%' .  $request->input('search') . '%')->first();
+        $user = user::where('name', 'like', '%' .  $request->input('search') . '%')->first();
+
+        if ($song) {
+        $songs = song::all();
+            return view('users.search.songSearch', compact('song', 'title', 'songs', 'playlists'));
+        } else if ($user) {
+            $artis = artist::where('user_id', $user->id)->first();
+            $songs = song::where('artis_id', $artis->id)->get();
+            return view('users.search.artisSearch', compact('user', 'title', 'songs', 'playlists'));
+        } else {
+            return "not found";
         }
     }
 
@@ -201,7 +226,9 @@ class penggunaController extends Controller
         $title = "MusiCave";
         $billboard = billboard::where('code', $code)->first();
         $albums = album::where('artis_id', $billboard->artis_id)->get();
-        return response()->view('users.billboard.billboard', compact('title', 'billboard', 'albums'));
+        $songs = song::where('artis_id', $billboard->artis_id)->get();
+        $playlists = playlist::all();
+        return response()->view('users.billboard.billboard', compact('title', 'billboard', 'albums', 'songs', 'playlists'));
     }
 
     protected function detailPlaylist(string $code): Response
@@ -211,6 +238,15 @@ class penggunaController extends Controller
         $songs = song::where('playlist_id', $playlistDetail->id)->get();
         $playlists = playlist::all();
         return response()->view('users.playlist.contoh', compact('title', 'playlistDetail', 'songs', 'playlists'));
+    }
+
+    protected function albumBillboard(string $code): Response
+    {
+        $title = "MusiCave";
+        $album = album::where('code', $code)->first();
+        $songs = song::where('album_id', $album->id)->get();
+        $playlists = playlist::all();
+        return response()->view('artis.billboard.album', compact('title', 'album', 'songs', 'playlists'));
     }
 
     function detailAlbum(string $code): Response
@@ -230,13 +266,21 @@ class penggunaController extends Controller
 
     protected function updateProfile(string $code, Request $request)
     {
+        $user = User::where('code', $code)->first();
         $validate = Validator::make(
             $request->all(),
             [
                 'name' => 'required|string|max:255',
                 'avatar' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-                'email' => 'required|string|email|max:255',
-                'deskripsi' =>  'max:500',
+                // 'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+                'email' => [
+                    'required',
+                    'string',
+                    'email',
+                    'max:255',
+                    Rule::unique('users')->ignore($user->id),
+                ],
+                'deskripsi' => 'max:500',
             ],
             [
                 'name' => [
@@ -254,6 +298,7 @@ class penggunaController extends Controller
                     'string' => 'Email harus berupa teks.',
                     'email' => 'Format email tidak valid.',
                     'max' => 'Email tidak boleh lebih dari :max karakter.',
+                    'unique' => 'Email sudah terdaftar.',
                 ],
                 'deskripsi' => [
                     'max' => 'Deskripsi tidak boleh lebih dari :max karakter.',
@@ -261,15 +306,12 @@ class penggunaController extends Controller
             ]
         );
 
-
         if ($validate->fails()) {
             return redirect()->back()
                 ->withErrors($validate)
                 ->withInput();
         }
 
-
-        $user = User::where('code', $code)->first();
         $existingPhotoPath = $user->avatar;
 
         if ($request->hasFile('avatar') && $request->file('avatar')) {
@@ -331,9 +373,11 @@ class penggunaController extends Controller
         try {
             User::where('code', $code)->update($value);
         } catch (Throwable $e) {
-            return response()->redirectTo('/pengguna/profile')->with('failed', "failed");
+            return redirect()->back();
         }
-        return response()->redirectTo('/pengguna/profile')->with('failed', "failed");
+        return redirect()->back();
+        // return response()->redirectTo('/pengguna/profile')->with('failed', "failed");
+        // return response()->redirectTo('/pengguna/profile')->with('failed', "failed");
     }
 
     public function search(Request $request)

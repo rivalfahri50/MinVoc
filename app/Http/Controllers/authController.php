@@ -67,15 +67,14 @@ class authController extends Controller
         ], [
             'email.unique' => 'Alamat email ini sudah terdaftar di sistem kami.',
         ]);
-        
+
         $status = Password::sendResetLink(
             $request->only('email')
         );
-        
+
         return $status === Password::RESET_LINK_SENT
             ? back()->with(['status' => __($status), 'title' => 'musiCave'])
             : back()->withErrors(['email' => __($status)]);
-        
     }
 
     protected function ubahPassword(Request $request)
@@ -121,6 +120,12 @@ class authController extends Controller
             'password.string' => 'Kolom password harus berupa teks.',
             'password.min' => 'Panjang password minimal :min karakter.',
         ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
 
         if (Auth::attempt($credentials)) {
             $user = auth()->user();
@@ -208,6 +213,6 @@ class authController extends Controller
         } catch (Throwable $e) {
             return response()->redirectTo('/buat-akun')->with('failed', "Gagal untuk register!!");
         }
-        return response()->redirectTo('/masuk')->with('success', 'User berhasil register.');
+        return response()->redirectTo('/masuk')->with('success', 'Berhasil register.');
     }
 }

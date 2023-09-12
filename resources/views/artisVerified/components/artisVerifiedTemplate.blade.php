@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{{ $title }}</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
@@ -150,7 +150,7 @@
                         <span class="menu-icon">
                             <i class="mdi mdi-music"></i>
                         </span>
-                        <span class="menu-title">Playlist</span>
+                        <span class="menu-title">Album</span>
                         <a href="#ui-basic" data-toggle="collapse" aria-expanded="false" aria-controls="ui-basic">
                             <span class="menu-arrow">
                                 <i class="mdi mdi-chevron-right"></i>
@@ -160,12 +160,12 @@
                     <div class="collapse" id="ui-basic">
                         <ul class="nav flex-column sub-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('buat.playlist.artisVerified') }}">
+                                {{-- <a class="nav-link" href="{{ route('buat.playlist.artisVerified') }}">
                                     <span class="menu-icon">
                                         <i class="mdi mdi-plus-circle-outline"></i>
                                     </span>
                                     <span class="menu-title">Buat Playlist</span>
-                                </a>
+                                </a> --}}
                                 <a class="nav-link" href="#buat-album">
                                     <span class="menu-icon">
                                         <i class="mdi mdi-plus-circle-outline"></i>
@@ -217,7 +217,7 @@
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="{{ route('peraturan.artisVerified') }}">
                         <span class="menu-icon">
-                            <i class="mdi mdi-clock-outline"></i>
+                            <i class="mdi mdi-information-outline"></i>
                         </span>
                         <span class="menu-title">Peraturan</span>
                     </a>
@@ -290,7 +290,9 @@
                     <ul class="navbar-nav w-75">
                         <ul class="navbar-nav w-75">
                             <li class="nav-item w-75">
-                                <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
+                                <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search" method="POST"
+                                action="{{ route('pencarian.artisVerified') }}">
+                                @csrf
                                     <div class="input-group mb-3">
                                         <span class="input-group-text"
                                             style="border-radius: 15px 0px 0px 15px; border: 1px solid #eaeaea">
@@ -301,7 +303,7 @@
                                                     stroke="#957DAD" stroke-width="2" stroke-linecap="round" />
                                             </svg>
                                         </span>
-                                        <input type="text" id="search" class="form-control"
+                                        <input type="text" id="search" name="search" class="form-control"
                                             placeholder="cari di sini" style="border-radius: 0px 15px 15px 0px">
                                     </div>
                                 </form>
@@ -370,7 +372,8 @@
                                     <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ auth()->user()->name }}
                                     </p>
                                 </div>
-                                <a href="/artis-verified/profile" class="dropdown-item preview-item">
+                                <a href="{{ route('ubah.profile.artisVerified', auth()->user()->code) }}"
+                                    class="dropdown-item preview-item">
                                     <div class="preview-thumbnail">
                                         <div class="preview-icon">
                                             <i class="mdi mdi-account-circle-outline"></i>
@@ -462,7 +465,7 @@
                     $('#search').on('keyup', function() {
                         var query = $(this).val();
                         $.ajax({
-                            url: '/artis/search/',
+                            url: '/artis-verified/search/',
                             type: 'GET',
                             data: {
                                 query: query
@@ -472,15 +475,27 @@
                                 var results = response.results;
                                 var $searchResults = $('#search-results');
                                 $searchResults.empty();
-
-                                $.each(results, function(index, result) {
-                                    $searchResults.append('<li>' + result.name + '</li>');
+                                $.each(results.songs, function(index, result) {
+                                    $searchResults.append(
+                                        `<li><a href='/artis-verified/search/${result.code}'>${result.judul}</a></li>`
+                                    );
+                                });
+                                $.each(results.artists, function(index, result) {
+                                    $searchResults.append(
+                                        `<li><a href='/artis-verified/search/${result.code}'>${result.name}</a></li>`
+                                    );
                                 });
                             }
                         });
                     });
                 });
+                $(document).ready(function() {
+                    $('.menu-arrow').click(function() {
+                        $(this).find('i').toggleClass('mdi-chevron-right mdi-chevron-down');
+                    });
+                });
             </script>
+
             <script>
                 $(document).ready(function() {
                     $.ajax({

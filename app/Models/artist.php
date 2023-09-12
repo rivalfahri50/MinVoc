@@ -27,4 +27,9 @@ class artist extends Model
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
+
+    public function song()
+    {
+        return $this->belongsTo(song::class, 'id', 'user_id');
+    }
 }

@@ -97,8 +97,8 @@
     right: 10px;
 }
 
-input {
-    /* display: none; */
+.inputgambar {
+    display: none;
 }
 
 label {

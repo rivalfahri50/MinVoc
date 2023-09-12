@@ -73,7 +73,7 @@
 }
 
 .kotaktetap {
-    width: 150px; /* Ganti dengan lebar yang Anda inginkan */
+    width: 100%; /* Ganti dengan lebar yang Anda inginkan */
     height: 150px; /* Ganti dengan tinggi yang Anda inginkan */
     overflow: hidden;
     border-radius: 10px;

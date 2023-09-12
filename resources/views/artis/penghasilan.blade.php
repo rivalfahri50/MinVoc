@@ -6,7 +6,7 @@
     <div class="main-panel">
         <style>
             .table-container {
-               margin-bottom: 20px;
+                margin-bottom: 20px;
             }
 
             .table-sortable th {
@@ -26,6 +26,7 @@
             .table-sortable .th-sort-desc::after {
                 margin-left: 10px;
             }
+
             /*---- style untuk table ----*/
             .table-body {
                 padding: 20px;
@@ -129,7 +130,8 @@
                         </div>
                         <div class="col-6 row no-gutters">
                             <div class="card coba">
-                                <img src="/assets/images/logo.svg" width="80%" height="100%" alt="logo" class="ml-5 md-3" />
+                                <img src="/assets/images/logo.svg" width="80%" height="100%" alt="logo"
+                                    class="ml-5 md-3" />
                             </div>
                         </div>
                     </div>
@@ -196,10 +198,10 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         var ctx = document.getElementById('myChart').getContext('2d');
-        
+
         // Data pendapatan dari PHP
         var dataPendapatan = <?php echo json_encode($penghasilan->penghasilan); ?>;
-        
+
         // Mengonversi objek data ke dalam array
         var labels = Object.keys(dataPendapatan);
         var pendapatanBulanan = Object.values(dataPendapatan);

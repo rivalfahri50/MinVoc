@@ -98,7 +98,7 @@
                                     placeholder="Judul Playlist">
                             </div>
                             <div class="mb-3">
-                                <textarea id="deskripsi" class="form-control" name="deskripsi" maxlength="500" rows="6" placeholder="Deskripsi"></textarea>
+                                <textarea id="deskripsi" class="form-control" name="deskripsi" maxlength="50" rows="6" placeholder="Deskripsi"></textarea>
                             </div>
                         </div>
                         <div class="text-md-right">

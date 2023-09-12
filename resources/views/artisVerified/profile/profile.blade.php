@@ -56,7 +56,7 @@
                         </div>
                     </div>
                     <div class="col-1">
-                        <a href="{{ route('ubah.profile.artisVerified', auth()->user()->code) }}" class="btn" type="submit">Perbarui</a>
+                        <a href="" class="btn" type="submit">Perbarui</a>
                     </div>
                 </form>
             </div>
