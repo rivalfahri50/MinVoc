@@ -242,10 +242,10 @@
                                         <div class="col-md-7 ml-4">
                                             <div class="mb-3">
                                                 <input type="text" class="form-control form-i" name="name"
-                                                    id="nama" placeholder="Judul Playlist">
+                                                    id="nama" placeholder="Judul Playlist" maxlength="40">
                                             </div>
                                             <div class="mb-3">
-                                                <textarea id="deskripsi" class="form-control" name="deskripsi" maxlength="500" rows="6" placeholder="Deskripsi"></textarea>
+                                                <textarea id="deskripsi" class="form-control" name="deskripsi" maxlength="200" rows="6" placeholder="Deskripsi"></textarea>
                                             </div>
                                         </div>
                                         <div class="text-md-right">
@@ -256,17 +256,17 @@
                         </div>
                     </div>
                     <script>
-                        const gambar = document.querySelector("#gambarplaylist");
+                        const gambarplaylist = document.querySelector("#gambarplaylist");
 
-                        const tampilGambar = document.querySelector("#tampil_gambarplaylist");
+                        const tampilGambarplaylist = document.querySelector("#tampil_gambarplaylist");
 
-                        gambar.addEventListener("change", function() {
+                        gambarplaylist.addEventListener("change", function() {
                             const reader = new FileReader();
 
                             reader.addEventListener("load", () => {
-                                tampilGambar.style.backgroundImage = `url(${reader.result})`;
+                                tampilGambarplaylist.style.backgroundImage = `url(${reader.result})`;
 
-                                tampilGambar.innerHTML = "";
+                                tampilGambarplaylist.innerHTML = "";
                             });
 
                             reader.readAsDataURL(this.files[0]);

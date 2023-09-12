@@ -50,7 +50,8 @@
                                                         <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
                                                         <td class="table-cell">
                                                             <button type="button" class="btn btnicon" data-toggle="modal"data-target="#exampleModalCenter{{ $item->id }}">
-                                                                <i class="fas fa-edit " style="color: #5b6b89"></i>   </button>
+                                                                <i class="fas fa-pencil-alt text-warning"></i>
+                                                            </button>
                                                             <button class="btn btnicon"
                                                                 onclick="deleteGenre('{{ $item->code }}')">
                                                                 <i class="far fa-times-circle text-danger"></i>
