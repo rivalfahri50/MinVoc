@@ -81,8 +81,8 @@
                 <div class="table-container">
                     <table class="table table-sortable">
                         <thead>
-                            <tr class="table-row table-header" style="border-radius: 20px; font-weight: bold;">
-                                <th class="table-cell">Artis</th>
+                            <tr class="table-row table-header">
+                                <th class="table-cell">Lagu</th>
                                 <th class="table-cell">Genre</th>
                                 <th class="table-cell">Tanggal</th>
                                 <th class="table-cell">Status</th>
@@ -90,22 +90,25 @@
                         </thead>
                         <tbody>
                             @foreach ($datas as $item)
-                                <tr class="table-row">
-                                    <td class="table-cell">
-                                        <div class="cell-content">
-                                            <img width="50" src="{{ asset('storage/' . $item->image) }}"
-                                                alt="Face" class="avatar">
-                                            <div>
-                                                <h6>{{ $item->judul }}</h6>
-                                                <p class="text-muted m-0">{{ $item->artist->user->name }}</p>
+                                @if ($item->artis_id === $artis->id)
+                                    <tr class="table-row">
+                                        <td class="table-cell">
+                                            <div class="cell-content">
+                                                <img width="50" src="{{ asset('storage/' . $item->image) }}"
+                                                    alt="Face" class="avatar">
+                                                <div>
+                                                    <h6>{{ $item->judul }}</h6>
+                                                    <p class="text-muted m-0">{{ $item->artist->user->name }}</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td class="table-cell">{{$item->genre->name}}</td>
-                                    <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
-                                    <td class="table-cell" style="font-weight: 600">
-                                        {{ $item->is_approved == 0 ? 'Pending' : 'Publish' }}</td>
-                                </tr>
+                                        </td>
+                                        <td class="table-cell">{{ $item->genre->name }}</td>
+                                        <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
+                                        <td class="table-cell {{ $item->is_approved == 0 ? 'text-warning' : 'text-success' }}"
+                                            style="font-weight: 600">
+                                            {{ $item->is_approved == 0 ? 'Pending' : 'Publish' }}</td>
+                                    </tr>
+                                @endIf
                             @endforeach
                         </tbody>
                     </table>

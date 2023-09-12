@@ -29,7 +29,7 @@
                             </div>
                             <div class="col-md-12 mb-4">
                                 <h5 class="judul mb-3">Pengikut :</h5>
-                                <p class="teksbiasa">{{ $item->pengajuan_verified_at }}</p>
+                                <p class="teksbiasa">{{ $item->Pengikut }}</p>
                             </div>
                             <div class="text-md-right">
                                 <button type="submit" class="btn">Setujui</button>
@@ -57,7 +57,7 @@
             </div>
             <div class="modal-body bg-white">
                 {{-- @dd($item) --}}
-                <form id="hapus" action="{{ route('hapus.verified', $item->code) }}" method="post">
+                <form id="hapus" action="{{ route('hapus.verified', $item->code) }}" method="GET">
                     @csrf
                     <div class="form-group">
                         <a href="" class="close-button far fa-times-circle"></a>
@@ -198,7 +198,6 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($artist as $item)
-                                        {{-- @dd($item->pengajuan_verified_at) --}}
                                             @if ($item->pengajuan_verified_at)
                                                 <tr class="table-row ">
                                                     <td class="table-cell">

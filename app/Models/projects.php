@@ -14,20 +14,17 @@ class projects extends Model
         'name',
         'konsep',
         'judul',
-        'lirik',
+        'audio',
         'harga',
         'artist_id',
+        'request_project_artis_id',
         'is_approved',
         'is_reject',
     ];
 
-    public function artist_pembuatProject()
+    public function artis()
     {
-        return $this->hasOne(artist::class, 'pembuat_project', 'artis_id');
+        return $this->hasOne(artist::class, 'id', 'artist_id');
     }
 
-    public function artist_penerimaProject()
-    {
-        return $this->hasOne(artist::class, 'penerima_project', 'artis_id');
-    }
 }

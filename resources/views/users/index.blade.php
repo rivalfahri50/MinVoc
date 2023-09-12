@@ -12,21 +12,23 @@
                     <div class="cards">
                         @foreach ($genres as $item)
                             <a href="/pengguna/kategori/{{ $item->code }}" class="card cardi card-scroll rounded-4">
-                                <img src="{{ asset('storage/' . $item->images) }}" class="img-fluid rounded-4 fit" width="100%" height="100%">
+                                <img src="{{ asset('storage/' . $item->images) }}" class="img-fluid rounded-4 fit"
+                                    width="100%" height="100%">
                             </a>
                         @endforeach
                     </div>
                 </div>
                 <div class="col-md-7">
                     <div class="card border-0 bg-dark coba">
-                        <div id="carouselExampleAutoplaying" class="carousel slide carousel-fade" data-bs-ride="carousel" data-interval="2000">
+                        <div id="carouselExampleAutoplaying" class="carousel slide carousel-fade" data-bs-ride="carousel"
+                            data-interval="2000">
                             <div class="carousel-inner">
                                 @foreach ($billboards as $index => $item)
                                     <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                        <a href="{{ route('detail.billboard.pengguna', $item->code) }}" class="image-container">
+                                        <a href="{{ route('detail.billboard.pengguna', $item->code) }}"
+                                            class="image-container">
                                             <img src="{{ asset('storage/' . $item->image_background) }}"
-                                                 class="d-block billboard"
-                                                 alt="...">
+                                                class="d-block billboard" alt="...">
                                             <div class="bottom-left">
                                                 <h3 class="text-light">{{ $item->artis->user->name }}</h3>
                                             </div>
@@ -34,11 +36,13 @@
                                     </div>
                                 @endforeach
                             </div>
-                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+                            <button class="carousel-control-prev" type="button"
+                                data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Previous</span>
                             </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+                            <button class="carousel-control-next" type="button"
+                                data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Next</span>
                             </button>
@@ -54,44 +58,46 @@
                                             $index_no = 0;
                                         @endphp
                                         @foreach ($songs as $item)
-                                            <div class="preview-item">
-                                                <div class="preview-thumbnail">
-                                                    <img src="{{ asset('storage/' . $item->image) }}" width="10%">
-                                                </div>
-                                                <div class="preview-item-content d-sm-flex flex-grow">
-                                                    <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
-                                                        onclick="putar({{ $item->id }})">
-                                                        <h6 class="preview-subject">{{ $item->judul }}</h6>
-                                                        <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
-                                                    </a>
-                                                </div>
-                                                @if ($loop->index == $index_no)
-                                                    @php
-                                                        $currentSong = $item;
-                                                        $currentSongId = $currentSong->id;
-                                                        $currentSongLiked = $currentSong->likes > 0;
-                                                    @endphp
-                                                @endif
-                                                <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                    <div class="text-group align-items-center">
-                                                        <i id="like{{$item->id}}" data-id="{{ $item->id }}"
-                                                            onclick="toggleLike(this, {{ $item->id }})"
-                                                            class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
-                                                        <p style="pointer-events: none;">{{ $item->waktu }}</p>
-                                                        <a data-bs-toggle="modal"
-                                                            data-bs-target="#staticBackdrop-{{ $item->code }}"
-                                                            style="color: #957dad">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" x="0px"
-                                                                y="0px" width="20" height="20"
-                                                                viewBox="0 2 24 24">
-                                                                <path fill="#957DAD"
-                                                                    d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 11 L 7 11 L 7 13 L 11 13 L 11 17 L 13 17 L 13 13 L 17 13 L 17 11 L 13 11 L 13 7 L 11 7 z">
-                                                                </path>
-                                                            </svg>
+                                            @if ($item->is_approved)
+                                                <div class="preview-item">
+                                                    <div class="preview-thumbnail">
+                                                        <img src="{{ asset('storage/' . $item->image) }}" width="10%">
+                                                    </div>
+                                                    <div class="preview-item-content d-sm-flex flex-grow">
+                                                        <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
+                                                            onclick="putar({{ $item->id }})">
+                                                            <h6 class="preview-subject">{{ $item->judul }}</h6>
+                                                            <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
                                                         </a>
                                                     </div>
+                                                    @if ($loop->index == $index_no)
+                                                        @php
+                                                            $currentSong = $item;
+                                                            $currentSongId = $currentSong->id;
+                                                            $currentSongLiked = $currentSong->likes > 0;
+                                                        @endphp
+                                                    @endif
+                                                    <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                                        <div class="text-group align-items-center">
+                                                            <i id="like{{ $item->id }}" data-id="{{ $item->id }}"
+                                                                onclick="toggleLike(this, {{ $item->id }})"
+                                                                class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
+                                                            <p style="pointer-events: none;">{{ $item->waktu }}</p>
+                                                            <a data-bs-toggle="modal"
+                                                                data-bs-target="#staticBackdrop-{{ $item->code }}"
+                                                                style="color: #957dad">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" x="0px"
+                                                                    y="0px" width="20" height="20"
+                                                                    viewBox="0 2 24 24">
+                                                                    <path fill="#957DAD"
+                                                                        d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 11 L 7 11 L 7 13 L 11 13 L 11 17 L 13 17 L 13 13 L 17 13 L 17 11 L 13 11 L 13 7 L 11 7 z">
+                                                                    </path>
+                                                                </svg>
+                                                            </a>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            @endIf
                                         @endforeach
                                     </div>
                                 </div>
@@ -108,20 +114,21 @@
                                     <div class="preview-list">
                                         @foreach ($artist as $item)
                                             {{-- @if (!$item->didengar === 0) --}}
-                                                <div class="preview-item">
-                                                    <div class="preview-thumbnail">
-                                                        <img src="{{asset('storage/' . $item->user->avatar)}}" width="10%">
+                                            <div class="preview-item">
+                                                <div class="preview-thumbnail">
+                                                    <img src="{{ asset('storage/' . $item->user->avatar) }}"
+                                                        width="10%">
+                                                </div>
+                                                <div class="preview-item-content d-sm-flex flex-grow">
+                                                    <div class="flex-grow">
+                                                        <h6 class="preview-subject">{{ $item->user->name }}</h6>
+                                                        <p class="text-muted mb-0">{{ $item->likes }} didengar</p>
                                                     </div>
-                                                    <div class="preview-item-content d-sm-flex flex-grow">
-                                                        <div class="flex-grow">
-                                                            <h6 class="preview-subject">{{ $item->user->name }}</h6>
-                                                            <p class="text-muted mb-0">{{ $item->likes }} didengar</p>
-                                                        </div>
-                                                        <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                            <i onclick="toggleLike(this)" class="far fa-heart pr-2"></i>
-                                                        </div>
+                                                    <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                                        <i onclick="toggleLike(this)" class="far fa-heart pr-2"></i>
                                                     </div>
                                                 </div>
+                                            </div>
                                             {{-- @endif --}}
                                         @endforeach
                                     </div>

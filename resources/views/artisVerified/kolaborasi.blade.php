@@ -209,10 +209,10 @@
 
             .chat-box {
                 overflow-y: scroll;
-                height: 40vh;
+                height: 29vh;
                 background-color: #eaeaea;
                 border-radius: 10px;
-                border: 1px solid rgba(0, 0, 0, 0.2);
+                /* border: 1px solid rgba(0, 0, 0, 0.2); */
                 padding: 10px;
             }
 
@@ -285,31 +285,33 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($datas as $item)
-                                            @if (!$item->is_reject && $item->judul == 'none' && $item->lirik == 'none')
-                                                <tr class="table-row">
-                                                    <td class="table-cell">
-                                                        <span class="pl-2">{{ $item->name }}</span>
-                                                    </td>
-                                                    <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
-                                                    <td class="d-flex align-items-center">
-                                                        <a href="" class="btn-unstyled" data-bs-toggle="modal"
-                                                            data-bs-target="#staticBackdrop-{{ $item->code }}">
-                                                            <i class="mdi mdi-eye btn-icon text-primary"
-                                                                style="font-size: 20px; margin-right: 2px;"></i>
-                                                        </a>
-                                                        <form action="{{ route('reject.project.artisVerified') }}"
-                                                            method="post" class="m-0">
-                                                            @csrf
-                                                            <button type="submit">
-                                                                <input type="hidden" name="code"
-                                                                    value="{{ $item->code }}">
-                                                                <input type="hidden" name="is_reject" value="true">
-                                                                <i class="mdi mdi-close-circle-outline btn-icon text-danger"
-                                                                    style="font-size: 20px"></i>
-                                                            </button>
-                                                        </form>
-                                                    </td>
-                                                </tr>
+                                            @if ($item->artist_id === $artisUser->id)
+                                                @if (!$item->is_reject && $item->judul == 'none' && $item->audio == 'none' && $item->request_project_artis_id == null)
+                                                    <tr class="table-row">
+                                                        <td class="table-cell">
+                                                            <span class="pl-2">{{ $item->name }}</span>
+                                                        </td>
+                                                        <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
+                                                        <td class="d-flex align-items-center">
+                                                            <a href="" class="btn-unstyled" data-bs-toggle="modal"
+                                                                data-bs-target="#staticBackdrop-{{ $item->code }}">
+                                                                <i class="mdi mdi-eye btn-icon text-primary"
+                                                                    style="font-size: 20px; margin-right: 2px;"></i>
+                                                            </a>
+                                                            <form action="{{ route('reject.project.artisVerified') }}"
+                                                                method="post" class="m-0">
+                                                                @csrf
+                                                                <button type="submit">
+                                                                    <input type="hidden" name="code"
+                                                                        value="{{ $item->code }}">
+                                                                    <input type="hidden" name="is_reject" value="true">
+                                                                    <i class="mdi mdi-close-circle-outline btn-icon text-danger"
+                                                                        style="font-size: 20px"></i>
+                                                                </button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                @endif
                                             @endif
                                         @endforeach
                                     </tbody>
@@ -335,25 +337,42 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {{-- jika proses --}}
-                                        <tr class="table-row">
-                                            <td class="table-cell">Tulus</td>
-                                            <td class="table-cell">Kenangan</td>
-                                            <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
-                                            <td class="table-cell text-warning">Pending</td>
-                                            <td class="d-flex align-items-center">
-                                                <a href="" class="btn-unstyled" data-bs-toggle="modal"
-                                                    data-bs-target="#chat">
-                                                    <i class="fa-regular fa-comment-dots text-primary fs-5 ml-1"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
+                                        @foreach ($datas as $item)
+                                            {{-- @if ($item->status == 'pending' && $item->request_project_artis_id !== null) --}}
+                                            @if (
+                                                ($item->request_project_artis_id !== null && $item->artist_id === $artisUser->id) ||
+                                                    $item->request_project_artis_id === $artisUser->id)
+                                                <tr class="table-row">
+                                                    <td class="table-cell">{{ $item->artis->user->name }}</td>
+                                                    <td class="table-cell">{{ $item->name }}</td>
+                                                    <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
+                                                    <td class="table-cell text-warning">Pending</td>
+                                                    <td class="d-flex align-items-center">
+                                                        <a href="" class="btn-unstyled" data-bs-toggle="modal"
+                                                            data-bs-target="#chat-{{ $item->code }}">
+                                                            <i
+                                                                class="fa-regular fa-comment-dots text-primary fs-5 ml-1"></i>
+                                                        </a>
+                                                        <form action="{{ route('reject.project.artisVerified') }}"
+                                                            method="post" class="m-0">
+                                                            @csrf
+                                                            <button type="submit">
+                                                                <input type="hidden" name="code"
+                                                                    value="{{ $item->code }}">
+                                                                <input type="hidden" name="is_reject" value="true">
+                                                                <i class="mdi mdi-close-circle-outline btn-icon text-danger"
+                                                                    style="font-size: 20px"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
 
-                                        {{-- jika disetujui --}}
-                                        <tr class="table-row">
+                                        {{-- <tr class="table-row">
                                             <td class="table-cell">Tulus</td>
                                             <td class="table-cell">Kenangan</td>
-                                            <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
+                                            <td class="table-cell">13123123</td>
                                             <td class="table-cell text-success">Disetujui</td>
                                             <td class="d-flex align-items-center">
                                                 <a href="" class="btn-unstyled" data-bs-toggle="modal"
@@ -363,25 +382,24 @@
                                             </td>
                                         </tr>
 
-                                        {{-- jika ditolak --}}
                                         <tr class="table-row">
                                             <td class="table-cell">Tulus</td>
                                             <td class="table-cell">Kenangan</td>
-                                            <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
+                                            <td class="table-cell">13123123</td>
                                             <td class="table-cell text-danger">Ditolak</td>
                                             <td class="d-flex align-items-center">
                                                 <form action="{{ route('reject.project.artisVerified') }}" method="post"
                                                     class="m-0">
                                                     @csrf
                                                     <button type="submit">
-                                                        <input type="hidden" name="code" value="{{ $item->code }}">
+                                                        <input type="hidden" name="code" value="aa">
                                                         <input type="hidden" name="is_reject" value="true">
                                                         <i class="mdi mdi-close-circle-outline btn-icon text-danger"
                                                             style="font-size: 20px"></i>
                                                     </button>
                                                 </form>
                                             </td>
-                                        </tr>
+                                        </tr> --}}
                                     </tbody>
                                 </table>
                             </div>
@@ -452,7 +470,7 @@
                         </div>
                         <div class="modal-footer border-0">
                             <button type="button" class="btn rounded-3" data-bs-toggle="modal"
-                                data-bs-target="#undang">
+                                data-bs-target="#undang-{{ $item->code }}">
                                 <a href="#" class="btn-link"
                                     style="color: inherit; text-decoration: none;">Undang</a>
                             </button>
@@ -463,9 +481,9 @@
         @endforeach
 
         {{-- untuk chat --}}
-        @foreach ($datas as $item)
-            <div class="modal fade" id="chat" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        @foreach ($datas as $project)
+            <div class="modal fade" id="chat-{{ $project->code }}" data-bs-backdrop="static" data-bs-keyboard="false"
+                tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header border-0">
@@ -477,17 +495,24 @@
                         </div>
                         <div class="modal-body border-0">
                             <div class="chat" style="margin-top: -20px; position: relative">
-                                <form action="{{ route('message.project.artisVerified') }}" method="post">
+                                <form action="{{ route('message.project.artisVerified', $project->code) }}"
+                                    method="post">
                                     @csrf
                                     <input type="hidden" name="id_project" value="">
                                     <div class="card">
                                         <div style="height: 241px">
                                             <div class="card-body chat-box">
-                                                <div class="chat-message">
-                                                    <div class="chat-name">
-                                                    </div>
-                                                    <div class="chat-text"></div>
-                                                </div>
+                                                @foreach ($messages as $key => $item)
+                                                    @if ($project->id === $item->project->id)
+                                                        <div class="chat-message mt-1">
+                                                            @if ($key == 0 || $item->sender->user->name != $messages[$key - 1]->sender->user->name)
+                                                                <div class="chat-name">{{ $item->sender->user->name }}
+                                                                </div>
+                                                            @endif
+                                                            <div class="chat-text">{{ $item->message }}</div>
+                                                        </div>
+                                                    @endIf
+                                                @endforeach
                                             </div>
                                             <div class="input-with-icon chat-input">
                                                 <input type="text" class="form-control rounded-4"
@@ -504,7 +529,7 @@
                         </div>
                         <div class="modal-footer border-0">
                             <button type="button" class="btn rounded-3">
-                                <a href="{{ route('lirikAndChat.artisVerified', $item->code) }}" class="btn-link"
+                                <a href="{{ route('lirikAndChat.artisVerified', $project->code) }}" class="btn-link"
                                     style="color: inherit; text-decoration: none;">Buat Proyek</a>
                             </button>
                         </div>
@@ -515,9 +540,11 @@
 
         {{-- untuk undang kolab --}}
         @foreach ($datas as $item)
-            <div class="modal fade" id="undang" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
+            <div class="modal fade" id="undang-{{ $item->code }}" data-bs-backdrop="static" data-bs-keyboard="false"
+                tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <form class="modal-dialog modal-dialog-centered" action="{{ route('undangColab', $item->code) }}"
+                    method="post">
+                    @csrf
                     <div class="modal-content">
                         <div class="modal-header border-0">
                             <h1 class="modal-title fs-5" id="staticBackdropLabel" style="color: #957DAD">Undang
@@ -529,28 +556,31 @@
                         <div class="modal-body border-0">
                             <div class="col-md-12" style="font-size: 13px">
                                 <div class="mb-3">
-                                    <label for="namakategori" class="form-label judulnottebal">Nama artis</label>
-                                    <select name="kolaborator" class="form-select" id="namakolaborator">
-                                        <option value="" style="display: none;" selected disabled></option>
-                                        <option value=""></option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
                                     <label for="namakategori" class="form-label judulnottebal">Nama
                                         Proyek</label>
                                     <input type="text" name="name" class="form-control form-i" id="namaproyek"
                                         required="" readonly="" value="{{ $item->name }}"
                                         fdprocessedid="piymoo">
                                 </div>
+                                <div class="mb-3">
+                                    <label for="namakategori" class="form-label judulnottebal">Nama artis</label>
+                                    <select name="kolaborator" class="form-select" id="namakolaborator">
+                                        <option style="display: none;" selected disabled>artis verified</option>
+                                        @foreach ($artis as $item)
+                                            @if ($item->is_verified && $item->user_id !== auth()->user()->id)
+                                                <option value="{{ $item->id }}">{{ $item->user->name }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer border-0">
-                            <button type="button" class="btn rounded-3">
-                                <a href="" class="btn-link"
-                                    style="color: inherit; text-decoration: none;">Undang</a></button>
+                            <button type="submit" class="btn rounded-3 btn-link"
+                                style="color: inherit; text-decoration: none;">Undang</button>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
         @endforeach
 

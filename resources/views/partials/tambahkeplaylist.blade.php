@@ -65,7 +65,6 @@
                     <div class="mb-4">
                         <h6 for="namaartis" class="form-label judulnottebal mb-2" style="font-weight: 100">Nama Playlist</h6>
                         <select name="playlist_id" class="form-select" id="namaartis">
-                            <option value="" style="display: none;" selected disabled></option>
                             @foreach ($playlists as $item)
                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
                             @endforeach
@@ -84,7 +83,8 @@
 <script>
     function validateForm() {
         var selectedOption = document.getElementById("namaartis").value;
-        if (selectedOption === "") {
+        console.log(selectedOption);
+        if (!selectedOption) {
             alert("Pilih sebuah playlist terlebih dahulu!");
             return false; // Mencegah pengiriman formulir jika tidak ada opsi yang dipilih
         }

@@ -45,7 +45,7 @@
             <div class="col-md-12 grid-margin stretch-card">
                 <h3 class="card-title judul">Temukan berbagai lagu</h3>
                 <form class="col-6 mb-4 p-0 nav-link search">
-                    <input type="text" class="form-control rounded-4" placeholder="Cari musik">
+                    <input type="text" id="search_song" class="form-control rounded-4" placeholder="Cari musik">
                 </form>
                 <div class="card scroll scrollbar-down thin">
                     <div class="card-body">
@@ -145,7 +145,7 @@
                                 <button form="hapus" class="btn btn-delete" type="submit">Hapus</button>
                             </div>
                     </form>
-                    <form id="hapus" action="{{ route('hapus.albums.artis', $albumDetail->code) }}" method="GET">
+                    <form id="hapus" action="{{ route('hapus.albums.artisVerified', $albumDetail->code) }}" method="GET">
                         @csrf
                     </form>
                 </div>

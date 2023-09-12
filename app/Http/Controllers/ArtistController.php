@@ -7,6 +7,7 @@ use App\Models\artist;
 use App\Models\billboard;
 use App\Models\genre;
 use App\Models\messages;
+use App\Models\notif;
 use App\Models\Notifikasi;
 use App\Models\playlist;
 use App\Models\projects;
@@ -167,21 +168,13 @@ class ArtistController extends Controller
             $imagePath = $request->file('foto')->store('images', 'public');
             $artist->pengajuan_verified_at = now()->toDateString();
             $msg = 'Pengajuan Verifikasi';
-            $notif = $artist->name . 'Akun Anda Telah di Verifikasi';
-            // $data = Notifikasi::create([
-            //     'role' => 'artist',
-            //     'user_id' => $artist->user_id,
-            //     'notif' => $msg,
-            //     'deskripsi' => $notif,
-            //     'kategori' => 'Pengajuan Verifikasi'
-            // ]);
             $artist->image = $imagePath;
             $artist->update();
         } catch (\Throwable $th) {
             Alert::error('message', 'Gagal Mengirim Request Verification Account');
             return response()->redirectTo('/artis/verified')->with('failed', "failed");
         }
-        Alert::success('message', 'Success Mengirim Request Verification Account');
+        Alert::info('message', 'Success Mengirim Request Verification Account, Mohon Tunggu!!')->autoClose(2000);
         return response()->redirectTo('/artis/verified')->with('message', "success");
     }
 
@@ -301,10 +294,12 @@ class ArtistController extends Controller
         }
 
         try {
-            if (Storage::disk('public')->exists($playlist->images)) {
+            if (Storage::disk('public')->exists($playlist->images) === 'images/defaultPlaylist.png') {
                 Storage::disk('public')->delete($playlist->images);
+                $playlist->delete();
+            } else {
+                $playlist->delete();
             }
-            $playlist->delete();
         } catch (\Throwable $th) {
             Log::error('Error deleting playlist: ' . $th->getMessage());
             return response()->redirectTo('artis/playlist');
@@ -312,10 +307,21 @@ class ArtistController extends Controller
         return response()->redirectTo('artis/playlist');
     }
 
+    protected function hapusSongPlaylist(string $code)
+    {
+        $song = song::where('code', $code)->first();
+        try {
+            $song->playlist_id = null;
+            $song->save();
+        } catch (\Throwable $th) {
+            return redirect()->back();
+        }
+        return redirect()->back();
+    }
+
     protected function hapusAlbum(string $code)
     {
         $album = album::where('code', $code)->first();
-
         if (!$album) {
             return response()->redirectTo('artis/album');
         }
@@ -324,22 +330,24 @@ class ArtistController extends Controller
             if (Storage::disk('public')->exists($album->image)) {
                 Storage::disk('public')->delete($album->image);
             }
+            song::where('album_id', $album->id)->update(['album_id' => null]);
             $album->delete();
         } catch (\Throwable $th) {
             Log::error('Error deleting playlist: ' . $th->getMessage());
-            return response()->redirectTo('artis/playlist');
+            return response()->redirectTo('/artis/playlist');
         }
 
-        return response()->redirectTo('artis/playlist');
+        return response()->redirectTo('/artis/playlist');
     }
 
     protected function viewUnggahAudio(Request $request): Response
     {
         $title = "Unggah Audio";
         $datas = song::with('artist')->get();
+        $artis = artist::where('user_id', auth()->user()->id)->first();
         $genres = genre::all();
         $albums = album::all();
-        return response()->view('artis.unggahAudio', compact('title', 'datas', 'genres', 'albums'));
+        return response()->view('artis.unggahAudio', compact('title', 'datas', 'genres', 'albums', 'artis'));
     }
 
     protected function unggahAudio(Request $request)
@@ -370,7 +378,6 @@ class ArtistController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-
 
         try {
             DB::beginTransaction();
@@ -482,7 +489,7 @@ class ArtistController extends Controller
         $playlists = playlist::all();
         $song = song::where('judul', 'like', '%' .  $request->input('search') . '%')->first();
         $user = user::where('name', 'like', '%' .  $request->input('search') . '%')->first();
-        
+
         if ($song) {
             $songs = song::all();
             return view('artis.search.songSearch', compact('song', 'title', 'songs', 'playlists'));
@@ -501,7 +508,7 @@ class ArtistController extends Controller
         $song = song::where('code', $code)->first();
         $user = user::where('code', $code)->first();
         $playlists = playlist::all();
-        
+
         if ($song) {
             $songs = song::all();
             return view('artis.search.songSearch', compact('song', 'title', 'songs', 'playlists'));
@@ -596,7 +603,6 @@ class ArtistController extends Controller
                         'code' => $code,
                         'name' => $request->input('name') == null ? $album->name : $request->input('name'),
                         'image' => $album->image,
-                        'artis_id' => $album->artis->user_id
                     ];
             } else if ($existImage = $request->file('image')->store('images', 'public')) {
                 if (Storage::disk('public')->exists($album->image)) {
@@ -608,7 +614,6 @@ class ArtistController extends Controller
                         'code' => $code,
                         'name' => $request->input('name') == null ? $album->name : $request->input('name'),
                         'image' => $existImage,
-                        'artis_id' => $album->artis->user_id
                     ];
             }
             $album->update($values);

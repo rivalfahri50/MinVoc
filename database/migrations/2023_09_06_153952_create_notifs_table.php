@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('notifs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('artis_id')->nullable();
             $table->string('title');
             $table->text('message');
-            $table->timestamp('read_at')->nullable();
             $table->timestamps();
+
+            $table->foreign('artis_id')->references('id')->on('artists')->onDelete('cascade');
         });
     }
 

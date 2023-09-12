@@ -74,11 +74,11 @@
                                 style="font-size: 20px; font-weight: 600; color: #957dad">Nama pengguna</label>
                             <input type="text" class="form-control" name="name" id="nama"
                                 value="{{ $user[0]->name }}" aria-describedby="validationServer03Feedback">
-                            @error('name')
-                                <div id="validationServer03Feedback" class="invalid-feedback">
-                                    {{ $message }}
+                            @if ($errors->has('name'))
+                                <div class="text-danger mt-1 my-1">
+                                    {{ $errors->first('name') }}
                                 </div>
-                            @enderror
+                            @endif
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -87,11 +87,11 @@
                                 style="font-size: 20px; font-weight: 600; color: #957dad">Email</label>
                             <input type="email" class="form-control" name="email" id="email"
                                 value="{{ $user[0]->email }}" required>
-                            @error('email')
-                                <div id="validationServer03Feedback" class="invalid-feedback">
-                                    {{ $message }}
+                            @if ($errors->has('email'))
+                                <div class="text-danger mt-1 my-1">
+                                    {{ $errors->first('email') }}
                                 </div>
-                            @enderror
+                            @endif
                         </div>
                     </div>
                     <div class="col-md-12">

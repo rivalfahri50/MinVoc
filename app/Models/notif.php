@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class notif extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'artis_id',
+        'message',
+        'title',
+    ];
 }

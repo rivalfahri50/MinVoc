@@ -35,8 +35,7 @@
 }
 
 .table-header {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    border-radius: 50px;
     background-color: #957dad;
     color: white;
 }

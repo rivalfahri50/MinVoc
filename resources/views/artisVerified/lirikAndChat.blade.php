@@ -151,7 +151,6 @@
                         padding: 8px 15px;
                     }
 
-                    /* CSS untuk input chat */
                     .chat-input {
                         position: absolute;
                         bottom: 0;
@@ -176,20 +175,22 @@
                                             </div>
                                         </div>
                                         <div class="chat" style="margin-top: -20px; position: relative">
-                                            <form action="{{ route('message.project.artisVerified') }}" method="post">
+                                            <form action="{{ route('message.project.artisVerified', $project->code) }}"
+                                                method="post">
                                                 @csrf
                                                 <input type="hidden" name="id_project" value="{{ $project->id }}">
                                                 <div class="card">
                                                     <div style="height: 415px">
-                                                        <div class="card-body chat-box">
-                                                            @foreach ($datas as $key => $item)
-                                                                <div class="chat-message">
-                                                                    @if ($key == 0 || $item->messages->name != $datas[$key - 1]->messages->name)
-                                                                        <div class="chat-name">{{ $item->messages->name }}
-                                                                        </div>
-                                                                    @endif
-                                                                    <div class="chat-text">{{ $item->message }}</div>
-                                                                </div>
+                                                        <div class="card-body chat-box" style="height: 355px;">
+                                                            @foreach ($messages as $key => $item)
+                                                                    <div class="chat-message mt-1">
+                                                                        @if ($key == 0 || $item->sender->user->name != $messages[$key - 1]->sender->user->name)
+                                                                            <div class="chat-name">
+                                                                                {{ $item->sender->user->name }}
+                                                                            </div>
+                                                                        @endif
+                                                                        <div class="chat-text">{{ $item->message }}</div>
+                                                                    </div>
                                                             @endforeach
                                                         </div>
                                                         <div class="input-with-icon chat-input">
@@ -198,7 +199,7 @@
                                                             <button type="submit" class="send-button ml-2 mr-1">
                                                                 <i class="fas fa-paper-plane"></i>
                                                             </button>
-                                                        </div>
+                                                        </div>  
                                                     </div>
                                                 </div>
                                             </form>
@@ -252,9 +253,10 @@
                         border-radius: 8px;
                     }
 
-                    .inputcolor{
+                    .inputcolor {
                         background-color: white
                     }
+
                     .inputcolor:hover {
                         background-color: white
                     }
@@ -267,7 +269,8 @@
                     <div class="card kiri scrollbar-dusty-grass square thin rounded-4">
                         <div class="card-body">
                             <div class="row">
-                                <h3 class="fw-semibold mb-5" style="color: #957dad; margin-top: -10px;">Unggah Musik Kolaborasi</h3>
+                                <h3 class="fw-semibold mb-5" style="color: #957dad; margin-top: -10px;">Unggah Musik
+                                    Kolaborasi</h3>
                                 <div class="col-12">
                                     <div class="preview-list">
                                         <form action="{{ route('create.project.artisVerified') }}" method="POST">
@@ -284,8 +287,8 @@
                                                     id="nama" placeholder="Judul Playlist">
                                             </div>
                                             <div class="mb-5">
-                                                <input type="file" name="image" class="form-control inputcolor" id="namaproyek"
-                                                    required>
+                                                <input type="file" name="image" class="form-control inputcolor"
+                                                    id="namaproyek" required>
                                             </div>
                                             <div class="mt-3">
                                                 <button class="btn pl-3 kirim rounded-3 full-width-button" type="button"

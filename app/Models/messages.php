@@ -17,8 +17,18 @@ class messages extends Model
         'message',
     ];
 
-    public function messages()
+    public function sender()
     {
-        return $this->hasOne(User::class, 'id', 'sender_id');
+        return $this->hasOne(artist::class, 'id', 'sender_id');
+    }
+
+    public function receiver()
+    {
+        return $this->hasOne(artist::class, 'id', 'receiver_id');
+    }
+
+    public function project()
+    {
+        return $this->hasOne(projects::class, 'id', 'project_id');
     }
 }

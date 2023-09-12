@@ -14,12 +14,11 @@ return new class extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->string("code", 100);
-            $table->foreignId("sender_id")->constrained("artists");
-            $table->foreignId("receiver_id")->constrained("artists");
-            $table->foreignId("project_id")->constrained("projects");
+            $table->foreignId("sender_id")->nullable()->constrained("artists");
+            $table->foreignId("receiver_id")->nullable()->constrained("artists");
+            $table->foreignId("project_id")->nullable()->constrained("projects");
             $table->string("message");
             $table->timestamps();
-
         });
     }
 
