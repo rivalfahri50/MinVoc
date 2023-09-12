@@ -23,7 +23,6 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use getID3;
-use RealRashid\SweetAlert\Facades\Alert;
 use Throwable;
 
 class ArtistVerifiedController extends Controller
@@ -55,8 +54,9 @@ class ArtistVerifiedController extends Controller
         $totalLagu = song::count();
         $totalArtist = artist::count();
         $songs = song::all();
+        $projects = projects::where('status', 'accept')->get();
         $penghasilan = artist::where('user_id', auth()->user()->id)->first();
-        return response()->view('artisVerified.penghasilan', compact('title', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'penghasilan'));
+        return response()->view('artisVerified.penghasilan', compact('title', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'penghasilan', 'projects'));
     }
 
     protected function riwayat(): Response
@@ -64,10 +64,14 @@ class ArtistVerifiedController extends Controller
         $title = "MusiCave";
         $riwayat = Riwayat::all();
 
-        $uniqueRows = $riwayat->unique(function ($item) {
-            return $item->user_id . $item->song_id . $item->play_date;
-        });
-        return response()->view('artisVerified.riwayat', compact('title','uniqueRows'));
+        try {
+            $uniqueRows = $riwayat->unique(function ($item) {
+                return $item->user_id . $item->song_id . $item->play_date;
+            });
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
+        return response()->view('artisVerified.riwayat', compact('title', 'uniqueRows'));
     }
 
     protected function profile(): Response
@@ -88,10 +92,12 @@ class ArtistVerifiedController extends Controller
         try {
             projects::where('code', $code)
                 ->update([
-                    'request_project_artis_id' => $request->input('kolaborator')
+                    'request_project_artis_id' => $request->input('kolaborator'),
+                    'status' => "pending",
+                    'pengajuan_project' => now()
                 ]);
         } catch (\Throwable $th) {
-            return redirect()->back();
+            return abort(404);
         }
         return redirect()->back();
     }
@@ -140,7 +146,7 @@ class ArtistVerifiedController extends Controller
             $playlists = playlist::all();
             $albums = album::all();
         } catch (\Throwable $th) {
-            return response()->view('artisVerified.playlist', compact('title', 'playlists', 'albums'));
+            return abort(404);
         }
         return response()->view('artisVerified.playlist', compact('title', 'playlists', 'albums'));
     }
@@ -250,7 +256,7 @@ class ArtistVerifiedController extends Controller
         try {
             User::where('code', $code)->update($value);
         } catch (Throwable $e) {
-            return redirect()->back();
+            return abort(404);
         }
         return redirect()->back();
     }
@@ -271,8 +277,7 @@ class ArtistVerifiedController extends Controller
                 $playlist->delete();
             }
         } catch (\Throwable $th) {
-            Log::error('Error deleting playlist: ' . $th->getMessage());
-            return response()->redirectTo('artis-verified/playlist');
+            return abort(404);
         }
         return response()->redirectTo('artis-verified/playlist');
     }
@@ -284,7 +289,7 @@ class ArtistVerifiedController extends Controller
             $song->playlist_id = $request->input('playlist_id');
             $song->update();
         } catch (\Throwable $th) {
-            return response()->redirectTo('/artis-verified/playlist');
+            return abort(404);
         }
         return response()->redirectTo('/artis-verified/playlist');
     }
@@ -296,7 +301,7 @@ class ArtistVerifiedController extends Controller
             $song->playlist_id = null;
             $song->save();
         } catch (\Throwable $th) {
-            return redirect()->back();
+            return abort(404);
         }
         return redirect()->back();
     }
@@ -316,10 +321,8 @@ class ArtistVerifiedController extends Controller
             song::where('album_id', $album->id)->update(['album_id' => null]);
             $album->delete();
         } catch (\Throwable $th) {
-            Log::error('Error deleting playlist: ' . $th->getMessage());
-            return response()->redirectTo('/artis-verified/playlist');
+            return abort(404);
         }
-
         return response()->redirectTo('/artis-verified/playlist');
     }
 
@@ -392,13 +395,10 @@ class ArtistVerifiedController extends Controller
             ]);
             DB::commit();
 
-            // Alert::success('message', 'Berhasil Mengunggah Lagu');
             return redirect('/artis-verified/unggahAudio')->with('success', 'Song uploaded successfully.');
         } catch (\Throwable $e) {
             DB::rollBack();
-            Log::error('Error uploading song: ' . $e->getMessage());
-            // Alert::error('message', 'Gagal Mengunggah Lagu');
-            return redirect('/artis-verified/unggahAudio')->with('error', 'Failed to upload song. Please try again later.');
+            return abort(404);
         }
     }
 
@@ -451,11 +451,14 @@ class ArtistVerifiedController extends Controller
 
         $artists = User::where('name', 'LIKE', '%' . $query . '%')->get();
 
-        $results = [
-            'songs' => $songs,
-            'artists' => $artists,
-        ];
-        // $results = User::where('name', 'LIKE', '%' . $query . '%')->get();
+        try {
+            $results = [
+                'songs' => $songs,
+                'artists' => $artists,
+            ];
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
         return response()->json(['results' => $results]);
     }
 
@@ -474,7 +477,7 @@ class ArtistVerifiedController extends Controller
             $songs = song::where('artis_id', $artis->id)->get();
             return view('artisVerified.search.artisSearch', compact('user', 'title', 'songs', 'playlists'));
         } else {
-            return "not found";
+            return abort(404);
         }
     }
 
@@ -492,6 +495,8 @@ class ArtistVerifiedController extends Controller
             $artis = artist::where('user_id', $user->id)->first();
             $songs = song::where('artis_id', $artis->id)->get();
             return view('artisVerified.search.artisSearch', compact('user', 'title', 'songs', 'playlists'));
+        } else {
+            return abort(404);
         }
     }
 
@@ -529,7 +534,7 @@ class ArtistVerifiedController extends Controller
             playlist::create($values);
             $playlists = playlist::all();
         } catch (\Throwable $th) {
-            return response()->view('artisVerified.playlist', compact('title'));
+            return abort(404);
         }
         return response()->view('artisVerified.playlist', compact('title', 'playlists'));
     }
@@ -569,7 +574,7 @@ class ArtistVerifiedController extends Controller
             playlist::where('code', $code)->update($values);
             $playlists = playlist::all();
         } catch (\Throwable $th) {
-            return response()->view('artisVerified.playlist', compact('title'));
+            return abort(404);
         }
         return response()->view('artisVerified.playlist', compact('title', 'playlists'));
     }
@@ -601,7 +606,7 @@ class ArtistVerifiedController extends Controller
             $album->update($values);
             $album = album::all();
         } catch (\Throwable $th) {
-            return response()->view('artisVerified.playlist', compact('title'));
+            return abort(404);
         }
         return response()->view('artisVerified.playlist', compact('title', 'album'));
     }
@@ -655,7 +660,7 @@ class ArtistVerifiedController extends Controller
         try {
             projects::where('code', $project->code)->update(['penerima_project' => $artis->id]);
         } catch (\Throwable $th) {
-            return response()->view('artisVerified.lirikAndChat', compact('title', 'project', 'messages'));
+            return abort(404);
         }
         return response()->view('artisVerified.lirikAndChat', compact('title', 'project', 'messages'));
     }
@@ -672,27 +677,43 @@ class ArtistVerifiedController extends Controller
         return response()->redirectTo("/masuk");
     }
 
-    protected function Project(Request $request)
+    protected function Project(Request $request, string $code)
     {
+        // $data = [
+        //     'images' => $request->file('images'),
+        //     'name' => $request->input('name'),
+        //     'audio' => $request->file('audio'),
+        //     'range' => $request->input('range'),
+        // ];
         $validate = Validator::make(
-            $request->only('judul', 'lirik', 'code'),
+            $request->only('images', 'name', 'audio', 'range'),
             [
-                'judul' => 'required|string|max:255',
-                'lirik' => 'required|string',
-                'code' => [
-                    'required',
-                    Rule::in([$request->input('code')]),
-                ]
+                'images' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'name' => 'required|string|max:255',
+                'audio' => 'required|mimes:mp3|max:10240',
+                'range' => 'required|integer|min:0|max:100',
             ],
             [
-                'required' => 'Kolom :attribute harus diisi.',
-                'string' => 'Kolom :attribute harus berupa teks.',
-                'max' => [
-                    'string' => 'Kolom :attribute tidak boleh lebih dari :max karakter.',
-                ],
-                'in' => 'Kolom :attribute tidak valid.',
+                'images.required' => 'Gambar wajib diunggah.',
+                'images.image' => 'File harus berupa gambar.',
+                'images.mimes' => 'Format gambar yang diperbolehkan adalah: jpeg, png, jpg, gif.',
+                'images.max' => 'Ukuran gambar maksimal adalah 2 MB.',
+
+                'name.required' => 'Judul wajib diisi.',
+                'name.string' => 'Judul harus berupa teks.',
+                'name.max' => 'Judul tidak boleh lebih dari 255 karakter.',
+
+                'audio.required' => 'File audio wajib diunggah.',
+                'audio.mimes' => 'Format audio yang diperbolehkan adalah: mp3.',
+                'audio.max' => 'Ukuran file audio maksimal adalah 10 MB.',
+
+                'range.required' => 'Rentang wajib diisi.',
+                'range.integer' => 'Rentang harus berupa angka bulat.',
+                'range.min' => 'Rentang minimal adalah 0.',
+                'range.max' => 'Rentang maksimal adalah 100.',
             ]
         );
+
 
         if ($validate->fails()) {
             return redirect()->back()
@@ -700,26 +721,38 @@ class ArtistVerifiedController extends Controller
                 ->withInput();
         }
 
-        $project = projects::where('code', $request->input('code'))->first();
+        $project = projects::where('code', $code)->first();
+
+        $range = $request->input('range');
+
+        if ($range < 40) {
+            $persentase = 40;
+        } elseif ($range > 80) {
+            $persentase = 80;
+        }
+
+        $uangTetap = 200000000;
+
+        // Hitung jumlah uang berdasarkan persentase
+        $uangYangDiterima = ($range / 100) * $uangTetap;
 
         $data = [
             'code' => $project->code,
             'name' => $project->name,
-            'judul' => $request->input('judul'),
-            'lirik' => $request->input('lirik'),
             'konsep' => $project->konsep,
-            'harga' => $project->harga,
-            'artist_id' => Auth::user()->id,
-            'is_approved' => false,
+            'judul' => $request->input('name'),
+            'audio' => $request->file('audio'),
+            'harga' => $uangYangDiterima,
+            'status' => "accept",
+            'pembuat_project' => Auth::user()->id,
+            'penerima_project' => $project->request_project_artis_id,
+            'is_approved' => true,
             'is_reject' => false,
         ];
-
-        // dd($data);
-
         try {
             $project->update($data);
         } catch (Throwable $e) {
-            return response()->redirectTo('/artis-verified/kolaborasi')->with('message', "Gagal untuk register!!");
+            return abort(404);
         }
         return response()->redirectTo('/artis-verified/kolaborasi')->with('message', 'User created successfully.');
     }
@@ -728,8 +761,7 @@ class ArtistVerifiedController extends Controller
     {
         $project = projects::where('code', $code)->first();
         $sender = artist::where('user_id', auth()->user()->id)->first();
-        if ($sender->id === $project->artist_id)
-        {
+        if ($sender->id === $project->artist_id) {
             $data = [
                 'code' => Str::uuid(),
                 'sender_id' => $sender->id,
@@ -751,7 +783,7 @@ class ArtistVerifiedController extends Controller
             $message = messages::create($data);
             $data = messages::with(['sender', 'receiver', 'project'])->get();
         } catch (\Throwable $th) {
-            return redirect()->back();
+            return abort(404);
         }
 
         return redirect()->back()->with([
@@ -763,7 +795,6 @@ class ArtistVerifiedController extends Controller
     protected function rejectProject(Request $request)
     {
         $project = projects::where('code', $request->input('code'))->first();
-        // dd($project);
         try {
             $data = [
                 'code' => $project->code,
@@ -778,7 +809,7 @@ class ArtistVerifiedController extends Controller
             ];
             $project->update($data);
         } catch (\Throwable $th) {
-            return redirect()->back();
+            return abort(404);
         }
         return redirect()->back();
     }
@@ -813,25 +844,24 @@ class ArtistVerifiedController extends Controller
         $artis = artist::where('user_id', auth()->user()->id)->first();
 
         $code = Str::uuid();
-        $data = projects::create(
-            [
-                'code' => $code,
-                'name' => $request->input('name'),
-                'konsep' => $request->input('konsep'),
-                'artist_id' => $artis->id,
-            ]
-        );
-
-        // dd($data);
         try {
+            projects::create(
+                [
+                    'code' => $code,
+                    'name' => $request->input('name'),
+                    'konsep' => $request->input('konsep'),
+                    'artist_id' => $artis->id,
+                ]
+            );
         } catch (Throwable $e) {
-            return response()->redirectTo('/artis-verified/kolaborasi')->with('message', "Gagal untuk register!!");
+            return abort(404);
         }
         return response()->redirectTo('/artis-verified/kolaborasi')->with('message', 'User created successfully.');
     }
 
     protected function bayar(Request $request, string $code)
     {
+        dd($code);
         $project = projects::where('code', $code)->first();
         $range = $request->input('range');
 
@@ -861,7 +891,7 @@ class ArtistVerifiedController extends Controller
             $artis->penghasilan = $uangPengguna;
             $artis->update();
         } catch (\Throwable $th) {
-            return response()->redirectTo('/artis-verified/kolaborasi');
+            return abort(404);
         }
         return response()->redirectTo('/artis-verified/kolaborasi');
     }

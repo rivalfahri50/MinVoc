@@ -514,7 +514,7 @@
                                                 @endforeach
                                             </div>
                                             <div class="input-with-icon chat-input">
-                                                <input type="text" class="form-control rounded-4"
+                                                <input type="text" class="form-control rounded-4" maxlength="50"
                                                     placeholder="Ketik di sini untuk admin" name="message"
                                                     style="background-color: white;">
                                                 <button type="submit" class="send-button ml-2 mr-1">

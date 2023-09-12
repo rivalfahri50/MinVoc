@@ -157,7 +157,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($songs as $item)
+                                        @foreach ($projects as $item)
                                             <tr class="table-row">
                                                 <td class="table-cell">
                                                     <div class="cell-content">
@@ -165,7 +165,7 @@
                                                             class="avatar">
                                                         <div>
                                                             <h6>{{ $item->judul }}</h6>
-                                                            <p class="text-muted m-0">{{ $item->artist->user->name }}</p>
+                                                            {{-- <p class="text-muted m-0">{{ $item->artist->user->name }}</p> --}}
                                                         </div>
                                                     </div>
                                                 </td>

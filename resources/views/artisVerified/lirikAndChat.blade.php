@@ -273,21 +273,23 @@
                                     Kolaborasi</h3>
                                 <div class="col-12">
                                     <div class="preview-list">
-                                        <form action="{{ route('create.project.artisVerified') }}" method="POST">
+                                        <form action="{{ route('create.project.artisVerified', $project->code) }}" method="POST" enctype="multipart/form-data">
                                             @csrf
-                                            <div class="card cobai mb-3">
-                                                <label for="gambar" id="tampil_gambar">
-                                                    <i class="fas fa-pen fa-2x"></i>
-                                                </label>
-                                                <input type="file" id="gambar" name="images"
-                                                    accept="image/png,image/jpg" class="inputgambar">
+                                            <div class="d-flex flex-row gap-2">
+                                                <div class="card cobai mb-3">
+                                                    <label for="gambar" id="tampil_gambar">
+                                                        <i class="fas fa-pen fa-2x"></i>
+                                                    </label>
+                                                    <input type="file" id="gambar" name="images"
+                                                        accept="image/png,image/jpg" class="inputgambar">
+                                                </div>
                                             </div>
                                             <div class="mb-3">
                                                 <input type="text" class="form-control form-i inputcolor" name="name"
                                                     id="nama" placeholder="Judul Playlist">
                                             </div>
                                             <div class="mb-5">
-                                                <input type="file" name="image" class="form-control inputcolor"
+                                                <input type="file" name="audio" class="form-control inputcolor"
                                                     id="namaproyek" required>
                                             </div>
                                             <div class="mt-3">
@@ -296,7 +298,7 @@
                                                     Unggah
                                                 </button>
                                             </div>
-                                        </form>
+                                        {{-- </form> --}}
                                     </div>
                                 </div>
                             </div>
@@ -307,8 +309,8 @@
             <!-- Modal -->
             <div class="modal fade" id="kirimkolaborasi" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
-                <form action="{{ route('bayar', $project->code) }}" method="post">
-                    @csrf
+                {{-- <form action="{{ route('bayar', $project->code) }}" method="post"> --}}
+                    {{-- @csrf --}}
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content border-0" style="background-color: white">
                             <div class="modal-header border-0">
