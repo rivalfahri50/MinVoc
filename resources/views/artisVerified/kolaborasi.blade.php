@@ -61,37 +61,12 @@
                 background: none;
             }
 
-            .table-container {
-                margin-bottom: 20px;
-            }
-
-            .table-sortable th {
-                cursor: pointer;
-                border-radius: 10px;
-            }
-
-            .table-sortable .th-sort-asc::after {
-                content: "\25b4";
-            }
-
-            .table-sortable .th-sort-desc::after {
-                content: "\25be";
-            }
-
-            .table-sortable .th-sort-asc::after,
-            .table-sortable .th-sort-desc::after {
-                margin-left: 10px;
-            }
-
             /*---- style untuk table ----*/
-            .table-body {
-                padding: 20px;
-            }
-
-
             .table-container {
-                max-width: 100%;
-                overflow-x: auto;
+                max-height: 200px;
+                overflow-y: auto;
+                position: relative;
+                margin-bottom: 20px;
             }
 
             .table {
@@ -103,6 +78,14 @@
                 margin-bottom: 10px;
                 background-color: #957DAD;
                 overflow: hidden;
+            }
+
+            /* Style for the fixed header */
+            .fixed-header {
+                position: sticky;
+                top: 0;
+                z-index: 1;
+                background-color: #f3f3f3;
             }
 
             .table-cell {
@@ -121,11 +104,6 @@
                 padding-top: 10px;
                 padding-bottom: 10px;
                 color: white;
-            }
-
-            .avatar {
-                width: 40px;
-                margin-right: 10px;
             }
 
             .table td img {
@@ -258,6 +236,27 @@
                 border-radius: 4px;
                 cursor: pointer;
             }
+
+            .scrollbar-down::-webkit-scrollbar-track {
+                -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+                background-color: #ffffff;
+                border-radius: 10px;
+            }
+
+            .scrollbar-down::-webkit-scrollbar {
+                width: 12px;
+                background-color: #f5f5f5;
+            }
+
+            .scrollbar-down::-webkit-scrollbar-thumb {
+                border-radius: 10px;
+                -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+                background-color: #957dad;
+            }
+
+            .thin::-webkit-scrollbar {
+                width: 6px;
+            }
         </style>
         <div class="content-wrapper">
             <div class="row ">
@@ -273,10 +272,10 @@
                         </div>
                     </div>
                     <div class="card rounded-4">
-                        <div class="card-body">
-                            <div class="table-container">
-                                <table class="table custom-table mt-3" style="">
-                                    <thead class="table-header">
+                        <div class="card-body pt-3">
+                            <div class="table-container scrollbar-down thin">
+                                <table class="table custom-table" style="">
+                                    <thead class="table-header fixed-header">
                                         <tr class="table-row header headerlengkung">
                                             <th class="table-cell"> Nama Proyek </th>
                                             <th class="table-cell"> Tanggal </th>
@@ -324,10 +323,10 @@
                 <div class="col-12 grid-margin">
                     <h3 style="color: #957DAD">Undangan Kolaborasi</h3>
                     <div class="card rounded-4">
-                        <div class="card-body">
-                            <div class="table-container">
-                                <table class="table custom-table mt-3" style="">
-                                    <thead class="table-header">
+                        <div class="card-body pt-3">
+                            <div class="table-container scrollbar-down thin">
+                                <table class="table custom-table" style="">
+                                    <thead class="table-header fixed-header">
                                         <tr class="table-row header headerlengkung">
                                             <th class="table-cell"> Artis </th>
                                             <th class="table-cell"> Nama Proyek </th>
