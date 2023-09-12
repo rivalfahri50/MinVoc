@@ -284,7 +284,7 @@
                             <div class="card cobai">
                                 <label for="gambar" id="tampil_gambar">
                                     <img src="{{ asset('storage/' . $playlistDetail->images) }}"
-                                        style="background-size: cover; background-repeat: no-repeat" width="150"
+                                        style="height: 100%; object-fit: cover;" width="150"
                                         alt="Gambar">
                                 </label>
                                 <input type="file" id="gambar" name="images" accept="image/png,image/jpg"
