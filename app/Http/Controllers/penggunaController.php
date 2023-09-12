@@ -177,7 +177,19 @@ class penggunaController extends Controller
         return response()->view('users.playlist', compact('title', 'playlists'));
     }
 
-    public function search_song(Request $request)
+    protected function hapusSongPlaylist(string $code)
+    {
+        $song = song::where('code', $code)->first();
+        try {
+            $song->playlist_id = null;
+            $song->save();
+        } catch (\Throwable $th) {
+            return redirect()->back();
+        }
+        return redirect()->back();
+    }
+
+    protected function search_song(Request $request)
     {
         $query = $request->input('query');
         $results = song::with('artist.user')->where('judul', 'like', '%' . $query . '%')->get();
@@ -185,7 +197,7 @@ class penggunaController extends Controller
         return response()->json(['results' => $results]);
     }
 
-    public function search_result(Request $request, string $code)
+    protected function search_result(Request $request, string $code)
     {
         $title = "MusiCave";
         $song = song::where('code', $code)->first();
@@ -210,7 +222,7 @@ class penggunaController extends Controller
         $user = user::where('name', 'like', '%' .  $request->input('search') . '%')->first();
 
         if ($song) {
-        $songs = song::all();
+            $songs = song::all();
             return view('users.search.songSearch', compact('song', 'title', 'songs', 'playlists'));
         } else if ($user) {
             $artis = artist::where('user_id', $user->id)->first();
@@ -376,8 +388,6 @@ class penggunaController extends Controller
             return redirect()->back();
         }
         return redirect()->back();
-        // return response()->redirectTo('/pengguna/profile')->with('failed', "failed");
-        // return response()->redirectTo('/pengguna/profile')->with('failed', "failed");
     }
 
     public function search(Request $request)
@@ -391,23 +401,24 @@ class penggunaController extends Controller
             'songs' => $songs,
             'artists' => $artists,
         ];
-        // $results = User::where('name', 'LIKE', '%' . $query . '%')->get();
         return response()->json(['results' => $results]);
     }
 
     protected function hapusPlaylist(string $code)
     {
         $playlist = Playlist::where('code', $code)->first();
-
+        $songs = song::where('playlist_id', $playlist->id)->get();
         if (!$playlist) {
             return response()->redirectTo('pengguna/playlist');
         }
 
         try {
-            if (Storage::disk('public')->exists($playlist->images)) {
+            if (Storage::disk('public')->exists($playlist->images) === 'images/defaultPlaylist.png') {
                 Storage::disk('public')->delete($playlist->images);
+                $playlist->delete();
+            } else {
+                $playlist->delete();
             }
-            $playlist->delete();
         } catch (\Throwable $th) {
             Log::error('Error deleting playlist: ' . $th->getMessage());
             return response()->redirectTo('pengguna/playlist');

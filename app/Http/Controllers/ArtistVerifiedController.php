@@ -83,6 +83,19 @@ class ArtistVerifiedController extends Controller
         return response()->view('artisVerified.profile.profile_ubah', compact('title', 'user'));
     }
 
+    protected function undangColab(Request $request, string $code)
+    {
+        try {
+            projects::where('code', $code)
+                ->update([
+                    'request_project_artis_id' => $request->input('kolaborator')
+                ]);
+        } catch (\Throwable $th) {
+            return redirect()->back();
+        }
+        return redirect()->back();
+    }
+
     protected function buatAlbum(Request $request, string $code)
     {
         $user = User::where('code', $code)->first();
@@ -123,10 +136,13 @@ class ArtistVerifiedController extends Controller
                 'name' => $request->input('name'),
                 'image' => $imagePath,
             ]);
+            $title = "MusiCave";
+            $playlists = playlist::all();
+            $albums = album::all();
         } catch (\Throwable $th) {
-            return response()->redirectTo('/artis-verified/playlist')->with('failed', "failed");
+            return response()->view('artisVerified.playlist', compact('title', 'playlists', 'albums'));
         }
-        return response()->redirectTo('/artis-verified/playlist')->with('message', "success");
+        return response()->view('artisVerified.playlist', compact('title', 'playlists', 'albums'));
     }
 
 
@@ -248,15 +264,41 @@ class ArtistVerifiedController extends Controller
         }
 
         try {
-            if (!Storage::disk('public')->exists($playlist->images) == "images/default.png") {
+            if (Storage::disk('public')->exists($playlist->images) === 'images/defaultPlaylist.png') {
                 Storage::disk('public')->delete($playlist->images);
+                $playlist->delete();
+            } else {
+                $playlist->delete();
             }
-            $playlist->delete();
         } catch (\Throwable $th) {
             Log::error('Error deleting playlist: ' . $th->getMessage());
             return response()->redirectTo('artis-verified/playlist');
         }
         return response()->redirectTo('artis-verified/playlist');
+    }
+
+    protected function tambah_playlist(string $code, Request $request)
+    {
+        $song = song::where('code', $code)->first();
+        try {
+            $song->playlist_id = $request->input('playlist_id');
+            $song->update();
+        } catch (\Throwable $th) {
+            return response()->redirectTo('/artis-verified/playlist');
+        }
+        return response()->redirectTo('/artis-verified/playlist');
+    }
+
+    protected function hapusSongPlaylist(string $code)
+    {
+        $song = song::where('code', $code)->first();
+        try {
+            $song->playlist_id = null;
+            $song->save();
+        } catch (\Throwable $th) {
+            return redirect()->back();
+        }
+        return redirect()->back();
     }
 
     protected function hapusAlbum(string $code)
@@ -271,22 +313,24 @@ class ArtistVerifiedController extends Controller
             if (Storage::disk('public')->exists($album->image)) {
                 Storage::disk('public')->delete($album->image);
             }
+            song::where('album_id', $album->id)->update(['album_id' => null]);
             $album->delete();
         } catch (\Throwable $th) {
             Log::error('Error deleting playlist: ' . $th->getMessage());
-            return response()->redirectTo('artisVerified/playlist');
+            return response()->redirectTo('/artis-verified/playlist');
         }
 
-        return response()->redirectTo('artisVerified/playlist');
+        return response()->redirectTo('/artis-verified/playlist');
     }
 
     protected function viewUnggahAudio(Request $request): Response
     {
         $title = "Unggah Audio";
         $datas = song::with('artist')->get();
+        $artis = artist::where('user_id', auth()->user()->id)->first();
         $genres = genre::all();
         $albums = album::all();
-        return response()->view('artisVerified.unggahAudio', compact('title', 'datas', 'genres', 'albums'));
+        return response()->view('artisVerified.unggahAudio', compact('title', 'datas', 'genres', 'albums', 'artis'));
     }
 
     protected function unggahAudio(Request $request)
@@ -454,7 +498,7 @@ class ArtistVerifiedController extends Controller
     public function search_song(Request $request)
     {
         $query = $request->input('query');
-        $results = song::where('judul', 'like', '%' . $query . '%')->get();
+        $results = song::with('artist.user')->where('judul', 'like', '%' . $query . '%')->get();
 
         return response()->json(['results' => $results]);
     }
@@ -541,7 +585,6 @@ class ArtistVerifiedController extends Controller
                         'code' => $code,
                         'name' => $request->input('name') == null ? $album->name : $request->input('name'),
                         'image' => $album->image,
-                        'artis_id' => $album->artis->user_id
                     ];
             } else if ($existImage = $request->file('image')->store('images', 'public')) {
                 if (Storage::disk('public')->exists($album->image)) {
@@ -553,7 +596,6 @@ class ArtistVerifiedController extends Controller
                         'code' => $code,
                         'name' => $request->input('name') == null ? $album->name : $request->input('name'),
                         'image' => $existImage,
-                        'artis_id' => $album->artis->user_id
                     ];
             }
             $album->update($values);
@@ -597,8 +639,11 @@ class ArtistVerifiedController extends Controller
     protected function viewKolaborasi(Request $request)
     {
         $title = "Kolaborasi";
-        $datas = projects::all();
-        return response()->view('artisVerified.kolaborasi', compact('title', 'datas'));
+        $datas = projects::with('artis')->get();
+        $artisUser = artist::where('user_id', auth()->user()->id)->first();
+        $artis = artist::all();
+        $messages = messages::with(['sender.user', 'receiver', 'project'])->get();
+        return response()->view('artisVerified.kolaborasi', compact('title', 'datas', 'artis', 'artisUser', 'messages'));
     }
 
     protected function viewLirikAndChat(Request $request, string $code)
@@ -606,13 +651,13 @@ class ArtistVerifiedController extends Controller
         $title = "Kolaborasi";
         $project = DB::table('projects')->where('code', $code)->first();
         $artis = artist::where('user_id', auth()->user()->id)->first();
-        $datas = messages::with('messages')->get();
+        $messages = messages::with(['sender', 'project'])->where('project_id', $project->id)->get();
         try {
-            projects::where('code', $project->code)->update(['pembuat_project' => $artis->id]);
+            projects::where('code', $project->code)->update(['penerima_project' => $artis->id]);
         } catch (\Throwable $th) {
-            return response()->view('artisVerified.lirikAndChat', compact('title', 'project', 'datas'));
+            return response()->view('artisVerified.lirikAndChat', compact('title', 'project', 'messages'));
         }
-        return response()->view('artisVerified.lirikAndChat', compact('title', 'project', 'datas'));
+        return response()->view('artisVerified.lirikAndChat', compact('title', 'project', 'messages'));
     }
 
     protected function showData(string $id)
@@ -679,20 +724,32 @@ class ArtistVerifiedController extends Controller
         return response()->redirectTo('/artis-verified/kolaborasi')->with('message', 'User created successfully.');
     }
 
-    protected function message(Request $request)
+    protected function message(Request $request, string $code)
     {
-        $project = projects::where('id', $request->input('id_project'))->first();
-        $user = artist::where('user_id', auth()->user()->id)->first();
-        // dd(artist::where('id', auth()->user()->id)->first());
-        $message = messages::create([
-            'code' => Str::uuid(),
-            'sender_id' => $user->id,
-            'receiver_id' => $project->penerima_project,
-            'project_id' => $project->id,
-            'message' => $request->input('message')
-        ]);
-        $data = messages::with('messages')->get();
+        $project = projects::where('code', $code)->first();
+        $sender = artist::where('user_id', auth()->user()->id)->first();
+        if ($sender->id === $project->artist_id)
+        {
+            $data = [
+                'code' => Str::uuid(),
+                'sender_id' => $sender->id,
+                'receiver_id' => $project->request_project_artis_id,
+                'project_id' => $project->id,
+                'message' => $request->input('message')
+            ];
+        } else {
+            $data = [
+                'code' => Str::uuid(),
+                'sender_id' => $sender->id,
+                'receiver_id' => $project->artist_id,
+                'project_id' => $project->id,
+                'message' => $request->input('message')
+            ];
+        }
+
         try {
+            $message = messages::create($data);
+            $data = messages::with(['sender', 'receiver', 'project'])->get();
         } catch (\Throwable $th) {
             return redirect()->back();
         }
@@ -753,20 +810,20 @@ class ArtistVerifiedController extends Controller
                 ->withInput();
         }
 
+        $artis = artist::where('user_id', auth()->user()->id)->first();
+
+        $code = Str::uuid();
+        $data = projects::create(
+            [
+                'code' => $code,
+                'name' => $request->input('name'),
+                'konsep' => $request->input('konsep'),
+                'artist_id' => $artis->id,
+            ]
+        );
+
+        // dd($data);
         try {
-            $code = Str::uuid();
-            projects::create(
-                [
-                    'code' => $code,
-                    'name' => $request->input('name'),
-                    'konsep' => $request->input('konsep'),
-                    'judul' => "none",
-                    'lirik' => "none",
-                    'artist_id' => 0,
-                    'is_approved' => false,
-                    'is_reject' => false,
-                ]
-            );
         } catch (Throwable $e) {
             return response()->redirectTo('/artis-verified/kolaborasi')->with('message', "Gagal untuk register!!");
         }
@@ -789,7 +846,7 @@ class ArtistVerifiedController extends Controller
 
         // Hitung jumlah uang berdasarkan persentase
         $uangYangDiterima = ($range / 100) * $uangTetap;
-        // Bagikan uang ke pengguna berdasarkan persentase
+        // Bagikan uang ke pesngguna berdasarkan persentase
         $uangPengguna = ($uangYangDiterima / 100) * $range;
 
         try {

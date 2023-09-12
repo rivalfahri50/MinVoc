@@ -17,9 +17,12 @@ return new class extends Migration
             $table->string('name');
             $table->text('konsep');
             $table->string('judul')->default("none");
-            $table->string('lirik')->default("none");
-            $table->string('harga')->default('2.000.000');
-            $table->integer('artist_id')->default(0);
+            $table->string('audio')->default("none");
+            $table->string('harga')->default('0');
+            $table->foreignId("artist_id")->nullable()->constrained("artists");
+            $table->foreignId("request_project_artis_id")->nullable()->constrained("artists");
+            $table->enum('status', ['pending', 'accept', 'reject'])->nullable();
+            $table->timestamp('pengajuan_project')->nullable();
             $table->integer('pembuat_project')->default(0);
             $table->integer('penerima_project')->default(0);
             $table->boolean('is_approved')->default(false);

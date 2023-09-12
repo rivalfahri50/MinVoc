@@ -59,28 +59,30 @@
                     </div>
                 </div>
                 <div class="col-md-12 grid-margin stretch-card">
-                    <h3 class="card-title mb-4 judul" style="font-size: 20px; font-weight: 700">Lagu Populer {{ $billboard->artis->user->name }}</h3>
+                    <h3 class="card-title mb-4 judul" style="font-size: 20px; font-weight: 700">Lagu Populer
+                        {{ $billboard->artis->user->name }}</h3>
                     <div class="card scroll scrollbar-down thin">
                         <div class="card-body">
                             <div class="row" style="margin-top: -20px">
                                 <div class="col-12">
                                     <div class="preview-list">
                                         @foreach ($songs as $item)
-                                            <div class="preview-item">
-                                                <div class="preview-thumbnail">
-                                                    <img src="{{ asset('storage/' . $item->image ) }}" width="10%">
-                                                </div>
-                                                <div class="preview-item-content d-sm-flex flex-grow">
-                                                    <a href="" class="flex-grow text-decoration-none link">
-                                                        <h6 class="preview-subject">{{ $item->judul }}</h6>
-                                                        <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
-                                                    </a>
-                                                </div>
-                                                <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                    <div class="text-group">
-                                                        <i onclick="myFunction(this)" class="far fa-heart pr-2"></i>
-                                                        <p style="pointer-events: none;">{{ $item->waktu }}</p>
-                                                        <a data-bs-toggle="modal"
+                                            @if ($item->is_approved)
+                                                <div class="preview-item">
+                                                    <div class="preview-thumbnail">
+                                                        <img src="{{ asset('storage/' . $item->image) }}" width="10%">
+                                                    </div>
+                                                    <div class="preview-item-content d-sm-flex flex-grow">
+                                                        <a href="" class="flex-grow text-decoration-none link">
+                                                            <h6 class="preview-subject">{{ $item->judul }}</h6>
+                                                            <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
+                                                        </a>
+                                                    </div>
+                                                    <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                                        <div class="text-group">
+                                                            <i onclick="myFunction(this)" class="far fa-heart pr-2"></i>
+                                                            <p style="pointer-events: none;">{{ $item->waktu }}</p>
+                                                            <a data-bs-toggle="modal"
                                                                 data-bs-target="#staticBackdrop-{{ $item->code }}"
                                                                 style="color: #957dad">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" x="0px"
@@ -91,9 +93,10 @@
                                                                     </path>
                                                                 </svg>
                                                             </a>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            @endIf
                                         @endforeach
                                     </div>
                                 </div>

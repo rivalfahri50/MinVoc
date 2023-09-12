@@ -97,6 +97,7 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
     Route::get('/hapus-album/{code}', 'hapusAlbum')->name('hapus.albums.artis');
     Route::get('/search_song', 'search_song')->name('search.song.artis');
     Route::get('/search/{code}', 'search_result');
+    Route::get('/hapusSongPlaylist/{code}', 'hapusSongPlaylist')->name('hapusSongPlaylist.artis');
     Route::get('/peraturan', function () {
         return view('artis.peraturan', ['title' => 'MusiCave']);
     })->name('peraturan.artis');
@@ -141,11 +142,15 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
     Route::get('/contoh-playlist', 'contohPlaylist');
     Route::get('/disukai-playlist', 'disukaiPlaylist');
     Route::get('/hapus-playlist/{code}', 'hapusPlaylist')->name('hapus.playlist.artisVerified');
+    Route::get('/hapus-album/{code}', 'hapusAlbum')->name('hapus.albums.artisVerified');
+    Route::get('/hapusSongPlaylist/{code}', 'hapusSongPlaylist')->name('hapusSongPlaylist.artisVerified');
+    Route::get('/search_song', 'search_song')->name('search.song.artisVerified');
     Route::get('/search/{code}', 'search_result');
     Route::get('/peraturan', function () {
         return view('artisVerified.peraturan', ['title' => 'MusiCave']);
     })->name('peraturan.artisVerified');
 
+    Route::post('/undangColab/{code}', 'undangColab')->name('undangColab');
     Route::post('/bayar/{code}', 'bayar')->name('bayar');
     Route::post('/search', 'pencarian_input')->name('pencarian.artisVerified');
     Route::post('/tambah_playlist/{code}', 'tambah_playlist')->name('tambah.playlist.artisVerified');
@@ -156,7 +161,7 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
     Route::post('/ubah-playlist/{code}', 'ubahPlaylist')->name('ubah.playlist.artisVerified');
     Route::post('/update/profile/{code}', 'updateProfile')->name('update.profile.artisVerified');
     Route::post('/create-lirik', 'Project')->name('create.project.artisVerified');
-    Route::post('/message', 'message')->name('message.project.artisVerified');
+    Route::post('/message/{code}', 'message')->name('message.project.artisVerified');
     Route::post('/reject-project', 'rejectProject')->name('reject.project.artisVerified');
     Route::post('/ubah-album/{code}', 'ubahAlbum')->name('ubah.album.artisVerified');
     Route::post('/update/profile/{code}', 'updateProfile')->name('update.profile.artisVerified');
@@ -186,6 +191,7 @@ Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(pengguna
     Route::get('/hapus-playlist/{code}', 'hapusPlaylist')->name('hapus.playlist.user');
     Route::get('/search_song', 'search_song')->name('search.song.pengguna');
     Route::get('/search/{code}', 'search_result');
+    Route::get('/hapusSongPlaylist/{code}', 'hapusSongPlaylist')->name('hapusSongPlaylist');
     Route::get('/peraturan', function () {
         return view('users.peraturan', ['title' => 'MusiCave']);
     })->name('peraturan.pengguna');

@@ -148,6 +148,57 @@
                             </li>
                         </ul>
                     </div>
+                    {{-- popupnya atas --}}
+                    <div id="buatplaylist">
+                        <div class="card window">
+                            <div class="card-body">
+                                <a href="#" class="close-button mdi mdi-close-circle-outline"></a>
+                                <h3 class="judul">Buat Playlist</h2>
+                                    <form class="row" action="{{ route('buat.playlist') }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="col-4">
+                                            <div class="card untukpopup">
+                                                <label for="gambarplaylist" id="tampil_gambarplaylist" class="wadah">
+                                                    <i class="fas fa-pen fa-2x"></i>
+                                                </label>
+                                                <input type="file" id="gambarplaylist" name="images"
+                                                    accept="image/png,image/jpg" class="noob">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7 ml-4">
+                                            <div class="mb-3">
+                                                <input type="text" class="form-control form-i" name="name"
+                                                    id="nama" placeholder="Judul Playlist" maxlength="40">
+                                            </div>
+                                            <div class="mb-3">
+                                                <textarea id="deskripsi" class="form-control" name="deskripsi" maxlength="200" rows="6" placeholder="Deskripsi"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="text-md-right">
+                                            <button class="btn" type="submit">Simpan</button>
+                                        </div>
+                                    </form>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        const gambarplaylist = document.querySelector("#gambarplaylist");
+
+                        const tampilGambarplaylist = document.querySelector("#tampil_gambarplaylist");
+
+                        gambarplaylist.addEventListener("change", function() {
+                            const reader = new FileReader();
+
+                            reader.addEventListener("load", () => {
+                                tampilGambarplaylist.style.backgroundImage = `url(${reader.result})`;
+
+                                tampilGambarplaylist.innerHTML = "";
+                            });
+
+                            reader.readAsDataURL(this.files[0]);
+                        });
+                    </script>
                 </li>
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="/pengguna/riwayat">

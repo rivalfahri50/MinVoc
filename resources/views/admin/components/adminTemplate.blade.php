@@ -176,7 +176,6 @@
         </nav>
         <!-- partial -->
         <div class="container-fluid page-body-wrapper">
-            <!-- partial:partials/_navbar.html -->
             <nav class="navbar p-0 fixed-top d-flex flex-row">
                 <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
                     <ul class="navbar-nav navbar-nav-right">
@@ -185,28 +184,11 @@
                                 data-toggle="dropdown">
                                 <div class="notification-panel">
                                     <i class="mdi mdi-bell"></i>
-                                    {{-- @foreach ($notifikasi as $notif)
-                                        <li>
-                                            <strong>{{ $notif->kategori }}</strong>: {{ $notif->deskripsi }}
-                                        </li>
-                                    @endforeach --}}
                                 </div>
-
                                 <span class="count bg-danger"></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                                 aria-labelledby="notificationDropdown">
-                                <a href="verifikasi" class="dropdown-item preview-item">
-                                    <div class="preview-thumbnail">
-                                        <div class="preview-icon">
-                                            <img src="assets/images/faces/face16.jpg" class="rounded-circle">
-                                        </div>
-                                    </div>
-                                    <div class="preview-item-content">
-                                        <p class="preview-subject mb-1">Pengajuan Verified Akun</p>
-                                        <p class="text-muted ellipsis mb-0"> rival </p>
-                                    </div>
-                                </a>
                                 <a href="verifikasi" class="dropdown-item preview-item">
                                     <div class="preview-thumbnail">
                                         <div class="preview-icon">

@@ -81,6 +81,12 @@
                                                                     </path>
                                                                 </svg>
                                                             </a>
+                                                            <form action="{{ route('hapusSongPlaylist.artisVerified', $item->code) }}" method="get">
+                                                                <button type="submit">
+                                                                    <i class="far fa-minus-square text-danger"
+                                                                        style="font-size: 19px"></i>
+                                                                </button>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 </div>

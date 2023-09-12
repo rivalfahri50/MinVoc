@@ -3,7 +3,6 @@
 @section('content')
     <link rel="stylesheet" href="/user/assets/css/verified.css">
 
-    <!-- partial | ISI -->
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="row">
@@ -16,16 +15,15 @@
                                 pelayanan lebih baik, peningkatan visibilitas, pembeda dari akun palsu,
                                 meningkatkan profesionalisme, partisipasi dalam fitur khusus dan perlindungan
                                 merek. Pengguna harus memenuhi syarat pengajuan verifikasi akun dengan <span
-                                    class="highlight">minimal
-                                    memiliki jumlah like lagu sebanyak 1.000 like dan sudah bergabung dengan
-                                    <span class="judul">MusiCave</span>minimal selama 1 tahun.</span></p>
+                                    class="highlight"> minimal memiliki jumlah like lagu sebanyak 1.000 like dan sudah didengar sebanyak 1.500 pengguna.</span></p>
                             <form class="row" action="{{ route('verified', auth()->user()->code) }}" method="POST"
                                 enctype="multipart/form-data">
                                 @csrf
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <input type="text" class="form-control rounded-4" name="name" id="name"
-                                            value="{{ auth()->user()->name }}"  style="border: 1px solid #957DAD; color: #6c6c6c;" readonly>
+                                            value="{{ auth()->user()->name }}"
+                                            style="border: 1px solid #957DAD; color: #6c6c6c;" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-12">

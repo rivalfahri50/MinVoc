@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="/user/assets/css/style.css">
     <link rel="stylesheet" href="{{ asset('style.css') }}">
     <link rel="shortcut icon" href="/image/favicon.svg" type="image/x-icon">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,400;0,500;1,100;1,200&display=swap');
 
@@ -413,6 +415,7 @@
                 </div>
             </nav>
 
+            @include('sweetalert::alert')
             @yield('content')
 
             <div id="buat-album">
@@ -427,7 +430,7 @@
                                 <div class="mb-3">
                                     <h3 class="form-label judul">Nama Album</h3>
                                     <input type="text" name="name" class="form-control" id="namaproyek"
-                                        placeholder="Masukkan nama kategori musik" required>
+                                        placeholder="Masukkan nama kategori musik" maxlength="80" required>
                                 </div>
                                 <div class="mb-3">
                                     <h3 for="upload" class="form-label judul">Upload

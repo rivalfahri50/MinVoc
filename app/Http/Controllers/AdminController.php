@@ -6,6 +6,7 @@ use App\Models\admin;
 use App\Models\artist;
 use App\Models\billboard;
 use App\Models\genre;
+use App\Models\notif;
 use App\Models\projects;
 use App\Models\song;
 use App\Models\User;
@@ -298,6 +299,12 @@ class AdminController extends Controller
         $artis = artist::where('code', $code)->first();
 
         try {
+            notif::create([
+                'artis_id' => $artis->id,
+                'title' => "Verifikasi Account Reject",
+                'message' => $request->input('alasan')
+            ]);
+
             $artis->image = "none";
             $artis->pengajuan_verified_at = null;
             $artis->verification_status = "failed";

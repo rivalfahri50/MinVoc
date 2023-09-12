@@ -1,6 +1,5 @@
 .card .card-body {
     padding: 1.75rem 1.5625rem;
-    padding-bottom: 8rem;
 }
 
 .coba {
@@ -181,15 +180,6 @@ label {
     visibility: visible;
 }
 
-.window {
-    background-color: #ffffff;
-    width: 300px;
-    border-radius: 10px;
-    position: relative;
-    margin: 15% auto;
-    padding: 10px;
-}
-
 .close-button {
     display: block;
     color: #957dad;
@@ -201,8 +191,6 @@ label {
 .judul {
     font-size: 20px;
 }
-
-
 .ukuraniconplay {
     font-size: 40px;
     color: #957dad;
@@ -211,4 +199,9 @@ label {
 .ukuraniconplay:before {
     font-size: 40px;
     color: #957dad;
+}
+
+button {
+    border: none;
+    background: none;
 }
