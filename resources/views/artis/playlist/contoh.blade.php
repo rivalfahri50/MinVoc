@@ -5,15 +5,15 @@
     <link rel="stylesheet" href="/user/assets/css/contohPlaylist.css">
     <link rel="stylesheet" href="/user/assets/css/buatPlaylist.css">
     @include('partials.tambahkeplaylist')
-<link rel="stylesheet" href="/user/assets/css/contohPlaylist.css">
-<style>
-    .coba {
-        width: 200px;
-        height: 200px;
-        position: relative;
-        overflow: hidden;
-        border: none;
-        margin-right: 5px;
+    <link rel="stylesheet" href="/user/assets/css/contohPlaylist.css">
+    <style>
+        .coba {
+            width: 200px;
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            margin-right: 5px;
 
             display: flex;
             justify-content: center;
@@ -216,8 +216,9 @@
                                                 </a>
                                                 <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                     <div class="text-group">
-                                                        <i onclick="myFunction(this)" class="far fa-heart pr-2">
-                                                        </i>
+                                                        <i id="like{{ $item->id }}" data-id="{{ $item->id }}"
+                                                            onclick="toggleLike(this, {{ $item->id }})"
+                                                            class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                         <p>{{ $item->waktu }}</p>
                                                         <a data-bs-toggle="modal"
                                                             data-bs-target="#staticBackdrop-{{ $item->code }}"

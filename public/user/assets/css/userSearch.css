@@ -201,3 +201,14 @@ label {
 .judul {
     font-size: 20px;
 }
+
+
+.ukuraniconplay {
+    font-size: 40px;
+    color: #957dad;
+}
+
+.ukuraniconplay:before {
+    font-size: 40px;
+    color: #957dad;
+}

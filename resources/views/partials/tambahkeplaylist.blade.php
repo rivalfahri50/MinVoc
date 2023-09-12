@@ -65,7 +65,7 @@
                     <div class="mb-4">
                         <h6 for="namaartis" class="form-label judulnottebal mb-2" style="font-weight: 100">Nama Playlist</h6>
                         <select name="playlist_id" class="form-select" id="namaartis">
-                            <option value="" style="display: none;" selected disabled></option>
+                            {{-- <option value="" style="display: none;" selected disabled></option> --}}
                             @foreach ($playlists as $item)
                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
                             @endforeach

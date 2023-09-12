@@ -19,7 +19,7 @@
                             <div class="col-9 text-xxl-end">
                                 <div class="bottom-left-text">
                                     <h3 class="judul">{{ $user->name }}</h3>
-                                    <p class="m-0" style="color: #957dad; font-weight: 400;">{{$user->code}} didengar
+                                    <p class="m-0" style="color: #957dad; font-weight: 400;">{{ $user->code }} didengar
                                         <span class="fas fa-circle mr-2 ml-2"
                                             style="color: #cccccc; font-size: 8px;"></span> 145,534 disukai
                                     </p>
@@ -32,8 +32,15 @@
                     <hr class="divider">
                 </div>
                 <div class="col-md-12 grid-margin stretch-card">
-                    <button onclick="justplay()" id="play" class="card-title judul" style="border: none; background: none"><i
-                            class="far fa-play-circle fa-2x mb-4" aria-hidden="true"></i></button>
+                    <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
+                        onclick="putar({{ 'id' }})">
+                        <button onclick="togglePlayPause()" id="play" style="border: none; background:none">
+                            <i id="playIcon" class="far fa-play-circle ukuraniconplay" style="color: #957DAD;"></i>
+                        </button>
+                    </a>
+                    <script>
+                        var isPlaying = false; // Default status pemutaran lagu
+                    </script>
                     <div class="card scroll scrollbar-down thin">
                         <div class="card-body">
                             <div class="row" style="margin-top: -20px">
@@ -80,4 +87,25 @@
             </div>
         </div>
     </div>
+    <script>
+        function togglePlayPause() {
+            const playIcon = document.getElementById('playIcon');
+
+            if (isPlaying) {
+                // Jika sedang diputar, ganti menjadi pause
+                playIcon.classList.remove('fa-pause-circle');
+                playIcon.classList.add('fa-play-circle');
+            } else {
+                // Jika sedang tidak diputar, ganti menjadi play
+                playIcon.classList.remove('fa-play-circle');
+                playIcon.classList.add('fa-pause-circle');
+            }
+
+            // Ubah status pemutaran
+            isPlaying = !isPlaying;
+
+            // Panggil fungsi justplay() jika diperlukan
+            justplay();
+        }
+    </script>
 @endSection

@@ -208,7 +208,7 @@ Route::controller(SongController::class)->group(function () {
 Route::controller(LikeController::class)->group(function () {
     Route::post('/artist/{artist}/like', 'likeArtist');
     Route::get('/artist/check', 'likeCheck');
-    Route::post('/artist/{artist}/like', 'like');
+    // Route::post('/artist/{artist}/like', 'like');
 });
 
 Route::post('/simpan-riwayat', [RiwayatController::class, 'simpanRiwayat']);

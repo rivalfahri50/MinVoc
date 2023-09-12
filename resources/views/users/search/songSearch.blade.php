@@ -60,8 +60,10 @@
                                                     </a>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group">
-                                                            <i onclick="myFunction(this)" class="far fa-heart pr-2">
-                                                            </i>
+                                                            <i id="like-artist{{ $item->id }}"
+                                                                data-id="{{ $item->id }}"
+                                                                onclick="likeArtist(this, {{ $item->id }}, {{ $item->isLiked ? 'true' : 'false' }})"
+                                                                class="like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                             <p>{{ $item->waktu }}</p>
                                                             <a data-bs-toggle="modal"
                                                                 data-bs-target="#staticBackdrop-{{ $item->code }}"

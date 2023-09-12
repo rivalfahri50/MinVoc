@@ -240,11 +240,6 @@
                                 <p id="artist">Masaru Yokoyama</p>
                             </div>
                         </div>
-                        {{-- <div class="icons">
-                        <i id="audio-player-like-icon like"
-                            class="shared-icon-like fas fa-heart fr fh"
-                            data-id="" onclick="toggleLike(this)"></i>
-                    </div> --}}
                     </div>
                     <div class="progress-controller">
                         <div class="control-buttons">
@@ -291,8 +286,8 @@
                         <ul class="navbar-nav w-75">
                             <li class="nav-item w-75">
                                 <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search" method="POST"
-                                action="{{ route('pencarian.artisVerified') }}">
-                                @csrf
+                                    action="{{ route('pencarian.artisVerified') }}">
+                                    @csrf
                                     <div class="input-group mb-3">
                                         <span class="input-group-text"
                                             style="border-radius: 15px 0px 0px 15px; border: 1px solid #eaeaea">
@@ -497,6 +492,63 @@
             </script>
 
             <script>
+                var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                $(document).ready(function() {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        url: `/artist/check`,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(response) {
+                            console.log(response);
+                            response.forEach(function(item) {
+                                const artistId = item.artist_id;
+                                const like = document.getElementById(`like-artist${item.artist_id}`);
+                                like.classList.toggle('fas');
+                            })
+                        },
+                        error: function(response) {
+                            console.log(response)
+                        }
+                    });
+                });
+
+                function likeArtist(iconElement, artistId) {
+                    iconElement.classList.toggle('fas');
+                    iconElement.classList.toggle('far');
+
+                    const isLiked = iconElement.classList.contains('fas');
+
+                    $.ajax({
+                        url: `/artist/${artistId}/like`,
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function(response) {
+                            console.log(response);
+                        },
+                        error: function(response) {
+                            console.log(response);
+                        }
+
+                    })
+                }
+
+
+                function updateSongLikeStatus(artistId, isLiked) {
+                    const likeIcons = document.querySelectorAll(`.like[data-id="${artistId}"]`);
+                    likeIcons.forEach(likeIcon => {
+                        likeIcon.classList.toggle('fas', isLiked);
+                        likeIcon.classList.toggle('far', !isLiked);
+                    });
+                }
+            </script>
+
+            <script>
+                var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                 $(document).ready(function() {
                     $.ajax({
                         url: `/song/check`,
@@ -519,19 +571,11 @@
 
                     const isLiked = iconElement.classList.contains('fas');
 
-                    // updateSongLikeStatus(songId, isLiked);
-                    // const sharedHeartIcons = document.querySelectorAll('.shared-icon-like');
-                    // sharedHeartIcons.forEach(heartIcon => {
-                    //     heartIcon.classList.toggle('fas', isLiked);
-                    //     heartIcon.classList.toggle('far', !isLiked);
-                    // });
-
                     fetch(`/song/${songId}/like`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
                                 'X-CSRF-TOKEN': csrfToken
-
                             },
                             body: JSON.stringify({
                                 isLiked: iconElement.classList.contains('fas')
@@ -539,30 +583,21 @@
                         })
                         .then(response => response.json())
                         .then(data => {
-                            // updateSongLikeStatus(songId, isLiked);
-
-                            const audioPlayerLikeIcon = document.getElementById('audio-player-like-icon');
-                            if (audioPlayerLikeIcon) {
-                                audioPlayerLikeIcon.classList.toggle('fas', isLiked);
-                                audioPlayerLikeIcon.classList.toggle('far', !isLiked);
-                            }
 
                         })
-                        .catch(error => {
-                            // console.error('Error:', error);
-                        });
+                        .catch(error => {});
                 }
-                // alert("beeeeeee");
-                var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
 
                 function updateSongLikeStatus(songId, isLiked) {
-                    const likeIcons = document.querySelectorAll(`.shared-icon-like[data-song-id="${songId}"]`);
+                    const likeIcons = document.querySelectorAll(`.shared-icon-like[data-id="${songId}"]`);
                     likeIcons.forEach(likeIcon => {
                         likeIcon.classList.toggle('fas', isLiked);
                         likeIcon.classList.toggle('far', !isLiked);
                     });
                 }
             </script>
+            
             <script>
                 let previous = document.querySelector('#pre');
                 let play = document.querySelector('#play');
@@ -579,14 +614,12 @@
                 let track_image = document.querySelector('#track_image');
 
                 let auto_play = document.querySelector('#auto');
-                // let present = document.querySelector('#present');
-                // let total = document.querySelector('#total');
-                // let audio = document.querySelector('audio');
 
                 let timer;
-                let autoplay = 0;
+                let autoplay = 1;
                 let playCount = 0;
                 let prevVolume;
+                let currentTime = 1;
 
                 let index_no = 0;
                 let Playing_song = false;
@@ -594,11 +627,10 @@
                 // create a audio element
                 let track = document.createElement('audio');
 
-
                 let All_song = [];
 
-                function ambilDataLagu() {
-                    fetch('/ambil-lagu')
+                async function ambilDataLagu() {
+                    await fetch('/ambil-lagu')
                         .then(response => response.json())
                         .then(data => {
                             All_song = data.map(lagu => {
@@ -611,7 +643,12 @@
                                 };
                             });
                             console.log(All_song);
-                            load_track(index_no);
+                            if (All_song.length > 0) {
+                                // Memanggil load_track dengan indeks 0 sebagai lagu pertama
+                                load_track(0);
+                            } else {
+                                console.error("Data lagu kosong.");
+                            }
                         })
                         .catch(error => {
                             console.error('Error fetching data:', error);
@@ -623,20 +660,21 @@
 
                 // function load the track
                 function load_track(index_no) {
-                    clearInterval(timer)
-                    reset_slider();
-                    track.src = '{{ asset('storage') }}' + '/' + All_song[index_no].audio;
-                    title.innerHTML = All_song[index_no].judul;
-                    artist.innerHTML = All_song[index_no].artistId;
-                    track_image.src = '{{ asset('storage') }}' + '/' + All_song[index_no].image;
-                    track.load();
+                    if (index_no >= 0 && index_no < All_song.length) {
+                        console.log("tester " + index_no);
+                        track.src = '{{ asset('storage') }}' + '/' + All_song[index_no].audio;
+                        title.innerHTML = All_song[index_no].judul;
+                        artist.innerHTML = All_song[index_no].artistId;
+                        track_image.src = '{{ asset('storage') }}' + '/' + All_song[index_no].image;
+                        track.load();
 
-                    timer = setInterval(range_slider, 1000);
-                    // total.innerHTML = All_song.length;
-                    // present.innerHTML = index_no + 1;
+                        timer = setInterval(range_slider, 1000);
+
+                    } else {
+                        console.error("Index_no tidak valid.");
+                    }
                 }
-
-                load_track(index_no);
+                load_track(0);
 
                 // fungsi mute sound
                 function mute_sound() {
@@ -662,7 +700,7 @@
 
                 // reset song slider
                 function reset_slider() {
-                    slider.value = 0;
+                    slider.value = 100;
                 }
 
                 // play song
@@ -683,18 +721,22 @@
                         const songId = All_song[index_no].id;
                         console.log(All_song[index_no])
                         updatePlayCount(songId);
+                        history(songId);
+
                     }
                     track.addEventListener('timeupdate', updateDuration);
                     playCount++;
                 }
 
-                function updatePlayCount(songId) {
-                    const headers = new Headers();
-                    headers.append('X-CSRF-TOKEN', csrfToken);
+                var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
+                function updatePlayCount(songId) {
                     fetch(`/update-play-count/${songId}`, {
                             method: 'POST',
-                            headers: headers,
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': csrfToken
+                            },
                         })
                         .then(response => response.json())
                         .then(data => {
@@ -705,6 +747,32 @@
                             console.error('Error updating play count:', error);
                         });
                 }
+
+                function history(songId) {
+                    console.log('Mengirim riwayat untuk songId:', songId);
+                    $.ajax({
+                        url: '/simpan-riwayat',
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        data: {
+                            song_id: songId,
+                        },
+                        success: function(response) {
+                            console.log('Respon dari simpan-riwayat:', response);
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error saat mengirim riwayat:', error);
+
+                            // Tambahkan ini untuk mencetak pesan kesalahan dari respons server
+                            // console.log('Pesan Kesalahan Server:', xhr.responseText);
+                        }
+                    });
+                }
+
+
+
 
                 // pause song
                 function pausesong() {
@@ -735,6 +803,11 @@
 
                 }
 
+                track.addEventListener('ended', function() {
+                    // Panggil fungsi untuk memutar lagu selanjutnya
+                    next_song();
+                });
+
                 // fungsi untuk memutar lagu sesudahnya
                 function next_song() {
                     if (index_no < All_song.length - 1) {
@@ -744,6 +817,12 @@
                     }
                     load_track(index_no);
                     playsong();
+                    if (autoplay == 1) {
+                        // Set interval sebelum memulai lagu selanjutnya
+                        setTimeout(function() {
+                            track.play();
+                        }, 1000); // Delay 1 detik sebelum memulai lagu selanjutnya
+                    }
                 }
 
                 // fungsi untuk memutar lagu sebelumnya
@@ -757,22 +836,26 @@
                     playsong();
                 }
 
-                // ubah posisi slider
-                function change_duration() {
-                    let slider_position = track.duration * (slider.value / 100);
-                    track.currentTime = slider_position;
-                }
-
                 // ubah volume
                 function volume_change() {
                     volume_show.innerHTML = recent_volume.value;
                     track.volume = recent_volume.value / 100;
                 }
 
+                // ubah posisi slider
+                // Fungsi untuk mengubah posisi slider
+                function change_duration() {
+                    if (!isNaN(track.duration) && isFinite(slider_value)) {
+                        let slider_value = parseInt(slider.value);
+                        track.currentTime = track.duration * (slider_value / 100);
+                        console.log(track.duration * (slider_value / 100), slider_value, track.currentTime)
+
+                    }
+                }
+
                 slider.addEventListener('input', function() {
                     change_duration();
                     clearInterval(timer);
-                    track.currentTime = track.duration * (slider.value / 100);
                     Playing_song = true;
                     play.innerHTML = '<i class="far fa-pause-circle fr" aria-hidden="true"></i>';
                     track.addEventListener('timeupdate', updateDuration)
@@ -788,14 +871,12 @@
                         slider.value = position;
                         // console.log(track.duration);
                     }
-
                     if (track.ended) {
                         play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>';
                         if (autoplay == 1) {
                             index_no += 1;
                             load_track(index_no);
                             playsong();
-                            console.log(track.ended);
                         }
                     }
 
@@ -807,7 +888,7 @@
                     durationElement.textContent = formattedDuration;
                 }
 
-                // console.log(range_slider());
+                track.addEventListener('timeupdate', range_slider);
 
                 // fungsi ini akan dijalankan ketika lagu selesai (mengubah icon play menjadi pause)
                 if (track.ended) {
@@ -824,10 +905,9 @@
                     // Menghitung durasi waktu yang telah berlalu
                     const currentMinutes = Math.floor(track.currentTime / 60);
                     const currentSeconds = Math.floor(track.currentTime % 60);
-
                     // Memformat durasi waktu yang akan ditampilkan
                     const formattedCurrentTime = `${currentMinutes}:${currentSeconds < 10 ? '0' : ''}${currentSeconds}`;
-
+                    // console.log(formattedCurrentTime);
                     // Menampilkan durasi waktu pada elemen yang sesuai
                     const currentTimeElement = document.getElementById('current-time');
                     currentTimeElement.textContent = formattedCurrentTime;
@@ -869,14 +949,6 @@
                         volume_show.innerHTML = Math.round(track.volume * 100);
                         recent_volume.value = track.volume * 100;
                     }
-                }
-            </script>
-
-            <script>
-                function myFunction(x) {
-                    x.classList.toggle("far");
-                    x.classList.toggle("fas");
-                    x.classList.toggle("warna-kostum-like");
                 }
             </script>
 

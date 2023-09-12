@@ -10,6 +10,7 @@ use App\Models\genre;
 use App\Models\messages;
 use App\Models\playlist;
 use App\Models\projects;
+use App\Models\Riwayat;
 use App\Models\song;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -61,7 +62,12 @@ class ArtistVerifiedController extends Controller
     protected function riwayat(): Response
     {
         $title = "MusiCave";
-        return response()->view('artisVerified.riwayat', compact('title'));
+        $riwayat = Riwayat::all();
+
+        $uniqueRows = $riwayat->unique(function ($item) {
+            return $item->user_id . $item->song_id . $item->play_date;
+        });
+        return response()->view('artisVerified.riwayat', compact('title','uniqueRows'));
     }
 
     protected function profile(): Response
@@ -434,7 +440,7 @@ class ArtistVerifiedController extends Controller
         $song = song::where('code', $code)->first();
         $user = user::where('code', $code)->first();
         $playlists = playlist::all();
-        
+
         if ($song) {
             $songs = song::all();
             return view('artisVerified.search.songSearch', compact('song', 'title', 'songs', 'playlists'));

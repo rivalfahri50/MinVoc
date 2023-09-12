@@ -32,7 +32,15 @@
                     <hr class="divider">
                 </div>
                 <div class="col-md-12 grid-margin stretch-card">
-                    <a href="#" class="card-title judul"><i class="far fa-play-circle fa-2x mb-4"></i></a>
+                    <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
+                    onclick="putar({{ 'id' }})">
+                    <button onclick="togglePlayPause()" id="play" style="border: none; background:none">
+                        <i id="playIcon" class="far fa-play-circle ukuraniconplay" style="color: #957DAD;"></i>
+                    </button>
+                </a>
+                <script>
+                    var isPlaying = false; // Default status pemutaran lagu
+                </script>
                     <div class="card scroll scrollbar-down thin">
                         <div class="card-body">
                             <div class="row" style="margin-top: -20px">
@@ -51,8 +59,9 @@
                                                     </a>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group">
-                                                            <i onclick="myFunction(this)" class="far fa-heart pr-2">
-                                                            </i>
+                                                            <i id="like{{$item->id}}" data-id="{{ $item->id }}"
+                                                                onclick="toggleLike(this, {{ $item->id }})"
+                                                                class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                             <p>{{ $item->waktu }}</p>
                                                             <a data-bs-toggle="modal"
                                                                 data-bs-target="#staticBackdrop-{{ $item->code }}"
@@ -79,4 +88,26 @@
             </div>
         </div>
     </div>
+    <script>
+        function togglePlayPause() {
+            const playIcon = document.getElementById('playIcon');
+
+            if (isPlaying) {
+                // Jika sedang diputar, ganti menjadi pause
+                playIcon.classList.remove('fa-pause-circle');
+                playIcon.classList.add('fa-play-circle');
+            } else {
+                // Jika sedang tidak diputar, ganti menjadi play
+                playIcon.classList.remove('fa-play-circle');
+                playIcon.classList.add('fa-pause-circle');
+            }
+
+            // Ubah status pemutaran
+            isPlaying = !isPlaying;
+
+            // Panggil fungsi justplay() jika diperlukan
+            justplay();
+        }
+
+    </script>
 @endSection

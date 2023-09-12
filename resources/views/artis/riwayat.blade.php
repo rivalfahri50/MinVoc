@@ -16,6 +16,9 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ($collection as $item)
+
+                                @endforeach
                                 <tr class="table-row baris">
                                     <td class="table-cell">
                                         <h6>Cindy</h6>
@@ -23,38 +26,6 @@
                                     </td>
                                     <td class="table-cell">Dangdut</td>
                                     <td class="table-cell">04/09/2023</td>
-                                </tr>
-                                <tr class="table-row baris">
-                                    <td class="table-cell">
-                                        <h6>Bagus</h6>
-                                        <p class="text-muted m-0">Dtulus</p>
-                                    </td>
-                                    <td class="table-cell">Apa</td>
-                                    <td class="table-cell">01/09/2023</td>
-                                </tr>
-                                <tr class="table-row baris">
-                                    <td class="table-cell">
-                                        <h6>Agus</h6>
-                                        <p class="text-muted m-0">Btulus</p>
-                                    </td>
-                                    <td class="table-cell">Ciee</td>
-                                    <td class="table-cell">02/09/2023</td>
-                                </tr>
-                                <tr class="table-row baris">
-                                    <td class="table-cell">
-                                        <h6>Denis</h6>
-                                        <p class="text-muted m-0">Ctulus</p>
-                                    </td>
-                                    <td class="table-cell">Bajigur</td>
-                                    <td class="table-cell">10/10/2023</td>
-                                </tr>
-                                <tr class="table-row baris">
-                                    <td class="table-cell">
-                                        <h6>Genis</h6>
-                                        <p class="text-muted m-0">Ctulus</p>
-                                    </td>
-                                    <td class="table-cell">Bajigur</td>
-                                    <td class="table-cell">10/10/2023</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -80,30 +51,30 @@
         $(document).ready(function() {
             var itemsPerPage = 4;
             var currentPage = 1;
-    
+
             function setURLParameter(page) {
                 var newURL = window.location.href.split('?')[0] + '?page=' + page;
                 window.history.replaceState({}, document.title, newURL);
             }
-    
+
             function getURLParameter() {
                 var urlParams = new URLSearchParams(window.location.search);
                 return parseInt(urlParams.get('page')) || 1;
             }
-    
+
             currentPage = getURLParameter();
-    
+
             function showTableRows() {
                 var start = (currentPage - 1) * itemsPerPage;
                 var end = start + itemsPerPage;
                 $(".baris").hide();
                 $(".baris").slice(start, end).show();
             }
-    
+
             function updatePagination() {
                 $(".pagination").empty();
                 var numPages = Math.ceil($(".baris").length / itemsPerPage);
-    
+
                 for (var i = 1; i <= numPages; i++) {
                     var activeClass = i === currentPage ? "active" : "";
                     var buttonText = i.toString();
@@ -111,12 +82,12 @@
                     if (i === currentPage) {
                         buttonClass += " active";
                     }
-    
+
                     var button = $("<button>")
                         .addClass("page-item " + activeClass)
                         .addClass(buttonClass)
                         .text(buttonText);
-    
+
                     button.click(function() {
                         var page = parseInt($(this).text());
                         currentPage = page;
@@ -124,20 +95,20 @@
                         showTableRows();
                         updatePagination();
                     });
-    
+
                     $(".pagination").append($("<li>").append(button));
                 }
-    
+
                 if (numPages <= 1) {
                     $(".pagination").hide();
                 }
             }
-    
+
             showTableRows();
             updatePagination();
-    
+
             setURLParameter(currentPage);
         });
     </script>
-    
+
 @endsection

@@ -25,6 +25,7 @@ class LikeController extends Controller
 
     public function likeArtist(Request $request, artist $artist)
     {
+       
         $user = Auth::user();
         if (!$user) {
             return response()->json(['error' => 'Pengguana tidak diotentifikasi'], 401);

@@ -15,7 +15,7 @@ class SongController extends Controller
         $lagu = Song::with('artist.user')->get();
         return response()->json($lagu);
     }
-    
+
     public function cekLike(Song $song)
     {
         $user = Auth::user();

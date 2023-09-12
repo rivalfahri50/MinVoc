@@ -109,16 +109,18 @@
                                             {{-- @if (!$item) --}}
                                                 <div class="preview-item">
                                                     <div class="preview-thumbnail">
-                                                        <img src="/user/assets/images/faces/face1.jpg" width="10%"
+                                                        <img src="{{ asset('storage/' . $item->user->avatar) }}" width="10%"
                                                             class="fit">
                                                     </div>
                                                     <div class="preview-item-content d-sm-flex flex-grow">
                                                         <div class="flex-grow">
                                                             <h6 class="preview-subject">{{ $item->user->name }}</h6>
-                                                            <p class="text-muted mb-0">{{ $item->likes }} didengar</p>
+                                                            <p class="text-muted mb-0">{{ $item->likes }} suka</p>
                                                         </div>
                                                         <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                            <i onclick="myFunction(this)" class="far fa-heart pr-2"></i>
+                                                            <i id="like-artist{{$item->id}}" data-id="{{ $item->id }}"
+                                                                onclick="likeArtist(this, {{ $item->id }}, {{ $item->isLiked ? 'true' : 'false'}})"
+                                                                class="like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                         </div>
                                                     </div>
                                                 </div>

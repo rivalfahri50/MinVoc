@@ -119,7 +119,7 @@
                                                         </div>
                                                         <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                            <i id="like-artist{{$item->id}}" data-id="{{ $item->id }}"
-                                                            onclick="likeArtist(this, {{ $item->id }}, {{ $item->isLiked ? 'true' : 'false'}})"
+                                                            onclick="likeArtist(this, {{ $item->id }})"
                                                             class="like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                         </div>
                                                     </div>
