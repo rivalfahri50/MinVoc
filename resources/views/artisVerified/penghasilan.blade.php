@@ -118,7 +118,7 @@
             }
 
             .link {
-                color: #96D1F4;
+                color: #85BAD9;
             }
         </style>
         <div class="content-wrapper">
