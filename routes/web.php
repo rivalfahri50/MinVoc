@@ -160,7 +160,7 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
     Route::post('/buat-playlist', 'storePlaylist')->name('buat.playlist.artisVerified');
     Route::post('/ubah-playlist/{code}', 'ubahPlaylist')->name('ubah.playlist.artisVerified');
     Route::post('/update/profile/{code}', 'updateProfile')->name('update.profile.artisVerified');
-    Route::post('/create-lirik', 'Project')->name('create.project.artisVerified');
+    Route::post('/create-project/{code}', 'Project')->name('create.project.artisVerified');
     Route::post('/message/{code}', 'message')->name('message.project.artisVerified');
     Route::post('/reject-project', 'rejectProject')->name('reject.project.artisVerified');
     Route::post('/ubah-album/{code}', 'ubahAlbum')->name('ubah.album.artisVerified');

@@ -273,7 +273,7 @@
                                     Kolaborasi</h3>
                                 <div class="col-12">
                                     <div class="preview-list">
-                                        <form action="{{ route('create.project.artisVerified') }}" method="POST">
+                                        <form action="{{ route('create.project.artisVerified', $project->code) }}" method="POST" enctype="multipart/form-data">
                                             @csrf
                                             <div class="row">
                                                 <div class="col-5 pr-0">
@@ -313,8 +313,8 @@
             <!-- Modal -->
             <div class="modal fade" id="kirimkolaborasi" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
-                <form action="{{ route('bayar', $project->code) }}" method="post">
-                    @csrf
+                {{-- <form action="{{ route('bayar', $project->code) }}" method="post"> --}}
+                    {{-- @csrf --}}
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content border-0" style="background-color: white">
                             <div class="modal-header border-0">

@@ -127,23 +127,26 @@ class authController extends Controller
                 ->withInput();
         }
 
-        if (Auth::attempt($credentials)) {
-            $user = auth()->user();
-            switch ($user->role_id) {
-                case 3:
-                    return redirect()->intended(route('user.dashboard'));
-                case 2:
-                    return redirect()->intended(route('artist.dashboard'));
-                case 1:
-                    return redirect()->intended(route('artist-verified.dashboard'));
-                case 4:
-                    if (auth('admin')->attempt($credentials)) {
-                        return redirect()->intended(route('admin.dashboard'));
-                    }
-                    break;
+        try {
+            if (Auth::attempt($credentials)) {
+                $user = auth()->user();
+                switch ($user->role_id) {
+                    case 3:
+                        return redirect()->intended(route('user.dashboard'));
+                    case 2:
+                        return redirect()->intended(route('artist.dashboard'));
+                    case 1:
+                        return redirect()->intended(route('artist-verified.dashboard'));
+                    case 4:
+                        if (auth('admin')->attempt($credentials)) {
+                            return redirect()->intended(route('admin.dashboard'));
+                        }
+                        break;
+                }
             }
+        } catch (\Throwable $th) {
+            return abort(404);
         }
-
         return back()->withErrors(['password' => 'Kredensial tidak valid..']);
     }
 

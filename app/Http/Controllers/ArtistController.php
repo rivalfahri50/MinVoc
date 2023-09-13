@@ -86,7 +86,7 @@ class ArtistController extends Controller
             $song->playlist_id = $request->input('playlist_id');
             $song->update();
         } catch (\Throwable $th) {
-            return response()->redirectTo('/artis/playlist');
+            return abort(404);
         }
         return response()->redirectTo('/artis/playlist');
     }
@@ -135,7 +135,7 @@ class ArtistController extends Controller
             $playlists = playlist::all();
             $albums = album::all();
         } catch (\Throwable $th) {
-            return response()->view('artis.playlist', compact('title', 'playlists', 'albums'));
+            return abort(404);
         }
         return response()->view('artis.playlist', compact('title', 'playlists', 'albums'));
     }
@@ -281,7 +281,7 @@ class ArtistController extends Controller
         try {
             User::where('code', $code)->update($value);
         } catch (Throwable $e) {
-            return redirect()->back()->withErrors($validate)->withInput();
+            return abort(404);
         }
         return redirect()->back()->withErrors($validate)->withInput();
     }
@@ -302,8 +302,7 @@ class ArtistController extends Controller
                 $playlist->delete();
             }
         } catch (\Throwable $th) {
-            Log::error('Error deleting playlist: ' . $th->getMessage());
-            return response()->redirectTo('artis/playlist');
+            return abort(404);
         }
         return response()->redirectTo('artis/playlist');
     }
@@ -315,7 +314,7 @@ class ArtistController extends Controller
             $song->playlist_id = null;
             $song->save();
         } catch (\Throwable $th) {
-            return redirect()->back();
+            return abort(404);
         }
         return redirect()->back();
     }
@@ -334,8 +333,7 @@ class ArtistController extends Controller
             song::where('album_id', $album->id)->update(['album_id' => null]);
             $album->delete();
         } catch (\Throwable $th) {
-            Log::error('Error deleting playlist: ' . $th->getMessage());
-            return response()->redirectTo('/artis/playlist');
+            return abort(404);
         }
 
         return response()->redirectTo('/artis/playlist');
@@ -409,13 +407,10 @@ class ArtistController extends Controller
             ]);
             DB::commit();
 
-            // Alert::success('message', 'Berhasil Mengunggah Lagu');
             return redirect('/artis/unggahAudio')->with('success', 'Song uploaded successfully.');
         } catch (\Throwable $e) {
             DB::rollBack();
-            Log::error('Error uploading song: ' . $e->getMessage());
-            // Alert::error('message', 'Gagal Mengunggah Lagu');
-            return redirect('/artis/unggahAudio')->with('error', 'Failed to upload song. Please try again later.');
+            return abort(404);
         }
     }
 
@@ -468,11 +463,14 @@ class ArtistController extends Controller
 
         $artists = User::where('name', 'LIKE', '%' . $query . '%')->get();
 
-        $results = [
-            'songs' => $songs,
-            'artists' => $artists,
-        ];
-        // $results = User::where('name', 'LIKE', '%' . $query . '%')->get();
+        try {
+            $results = [
+                'songs' => $songs,
+                'artists' => $artists,
+            ];
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
         return response()->json(['results' => $results]);
     }
 
@@ -499,7 +497,7 @@ class ArtistController extends Controller
             $songs = song::where('artis_id', $artis->id)->get();
             return view('artis.search.artisSearch', compact('user', 'title', 'songs', 'playlists'));
         } else {
-            return "not found";
+            return abort(404);
         }
     }
 
@@ -517,6 +515,8 @@ class ArtistController extends Controller
             $artis = artist::where('user_id', $user->id)->first();
             $songs = song::where('artis_id', $artis->id)->get();
             return view('artis.search.artisSearch', compact('user', 'title', 'songs', 'playlists'));
+        } else {
+            return abort(404);
         }
     }
 
@@ -552,7 +552,7 @@ class ArtistController extends Controller
             playlist::create($values);
             $playlists = playlist::all();
         } catch (\Throwable $th) {
-            return response()->view('artis.playlist', compact('title'));
+            return abort(404);
         }
         return response()->view('artis.playlist', compact('title', 'playlists'));
     }
@@ -588,7 +588,7 @@ class ArtistController extends Controller
             playlist::where('code', $code)->update($values);
             $playlists = playlist::all();
         } catch (\Throwable $th) {
-            return response()->view('artis.playlist', compact('title'));
+            return abort(404);
         }
         return response()->view('artis.playlist', compact('title', 'playlists'));
     }
@@ -620,7 +620,7 @@ class ArtistController extends Controller
             $album->update($values);
             $album = album::all();
         } catch (\Throwable $th) {
-            return response()->view('artis.playlist', compact('title'));
+            return abort(404);
         }
         return response()->view('artis.playlist', compact('title', 'album'));
     }
@@ -640,7 +640,6 @@ class ArtistController extends Controller
         $songs = song::all();
         $playlists = playlist::all();
         $title = "MusiCave";
-        // dd($songs);
         return response()->view('artis.playlist.contohAlbum', compact('title', 'albumDetail', 'songs', 'playlists'));
     }
 
@@ -672,7 +671,7 @@ class ArtistController extends Controller
         try {
             projects::where('code', $project->code)->update(['penerima_project' => $artis->id]);
         } catch (\Throwable $th) {
-            return response()->view('artis.lirikAndChat', compact('title', 'project', 'datas'));
+            return abort(404);
         }
         return response()->view('artis.lirikAndChat', compact('title', 'project', 'datas'));
     }
@@ -734,7 +733,7 @@ class ArtistController extends Controller
         try {
             $project->update($data);
         } catch (Throwable $e) {
-            return response()->redirectTo('/artis/kolaborasi')->with('message', "Gagal untuk register!!");
+            return abort(404);
         }
         return response()->redirectTo('/artis/kolaborasi')->with('message', 'User created successfully.');
     }
@@ -743,7 +742,6 @@ class ArtistController extends Controller
     {
         $project = projects::where('id', $request->input('id_project'))->first();
         $user = artist::where('user_id', auth()->user()->id)->first();
-        // dd($user);
         $message = messages::create([
             'code' => Str::uuid(),
             'sender_id' => $project->pembuat_project,
@@ -751,12 +749,11 @@ class ArtistController extends Controller
             'project_id' => $project->id,
             'message' => $request->input('message')
         ]);
-        $data = messages::with('messages')->get();
         try {
+        $data = messages::with('messages')->get();
         } catch (\Throwable $th) {
-            return redirect()->back();
+            return abort(404);
         }
-
         return redirect()->back()->with([
             'message' => $message->message,
             'datas' => $data
@@ -766,7 +763,6 @@ class ArtistController extends Controller
     protected function rejectProject(Request $request)
     {
         $project = projects::where('code', $request->input('code'))->first();
-        // dd($project);
         try {
             $data = [
                 'code' => $project->code,
@@ -782,7 +778,7 @@ class ArtistController extends Controller
             ];
             $project->update($data);
         } catch (\Throwable $th) {
-            return redirect()->back();
+            return abort(404);
         }
         return redirect()->back();
     }
@@ -829,7 +825,7 @@ class ArtistController extends Controller
                 ]
             );
         } catch (Throwable $e) {
-            return response()->redirectTo('/artis/kolaborasi')->with('message', "Gagal untuk register!!");
+            return abort(404);
         }
         return response()->redirectTo('/artis/kolaborasi')->with('message', 'User created successfully.');
     }
