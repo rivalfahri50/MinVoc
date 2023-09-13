@@ -294,6 +294,12 @@
                                                         <input type="file" name="audio" class="form-control inputcolor"
                                                             id="namaproyek" required>
                                                     </div>
+                                                    <div>
+                                                        <button class="btn kirim rounded-3 full-width-button" type="button"
+                                                            data-bs-toggle="modal" data-bs-target="#kirimkolaborasi">
+                                                            Unggah
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="mt-3">
