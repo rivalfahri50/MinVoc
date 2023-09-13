@@ -13,6 +13,7 @@ use App\Models\projects;
 use App\Models\Riwayat;
 use App\Models\song;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -23,6 +24,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use getID3;
+use Illuminate\Support\Facades\Cache;
 use Throwable;
 
 class ArtistVerifiedController extends Controller
@@ -648,6 +650,7 @@ class ArtistVerifiedController extends Controller
         $artisUser = artist::where('user_id', auth()->user()->id)->first();
         $artis = artist::all();
         $messages = messages::with(['sender.user', 'receiver', 'project'])->get();
+
         return response()->view('artisVerified.kolaborasi', compact('title', 'datas', 'artis', 'artisUser', 'messages'));
     }
 
@@ -679,12 +682,8 @@ class ArtistVerifiedController extends Controller
 
     protected function Project(Request $request, string $code)
     {
-        // $data = [
-        //     'images' => $request->file('images'),
-        //     'name' => $request->input('name'),
-        //     'audio' => $request->file('audio'),
-        //     'range' => $request->input('range'),
-        // ];
+        $statusPersetujuan = Cache::get('status_persetujuan_' . auth()->user()->id);
+        // dd($statusPersetujuan);
         $validate = Validator::make(
             $request->only('images', 'name', 'audio', 'range'),
             [
@@ -714,6 +713,7 @@ class ArtistVerifiedController extends Controller
             ]
         );
 
+        setlocale(LC_MONETARY, 'id_ID');
 
         if ($validate->fails()) {
             return redirect()->back()
@@ -733,7 +733,6 @@ class ArtistVerifiedController extends Controller
 
         $uangTetap = 200000000;
 
-        // Hitung jumlah uang berdasarkan persentase
         $uangYangDiterima = ($range / 100) * $uangTetap;
 
         $data = [
@@ -742,7 +741,7 @@ class ArtistVerifiedController extends Controller
             'konsep' => $project->konsep,
             'judul' => $request->input('name'),
             'audio' => $request->file('audio'),
-            'harga' => $uangYangDiterima,
+            'harga' =>  number_format($uangYangDiterima, 2, ',', '.'),
             'status' => "accept",
             'pembuat_project' => Auth::user()->id,
             'penerima_project' => $project->request_project_artis_id,

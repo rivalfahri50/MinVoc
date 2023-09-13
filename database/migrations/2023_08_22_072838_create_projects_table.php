@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('konsep');
             $table->string('judul')->default("none");
+            $table->string('images')->default("none");
             $table->string('audio')->default("none");
             $table->string('harga')->default('0');
             $table->foreignId("artist_id")->nullable()->constrained("artists");

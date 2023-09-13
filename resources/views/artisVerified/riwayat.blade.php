@@ -57,15 +57,17 @@
                             </thead>
                             <tbody>
                                 @foreach ($uniqueRows as $item)
-                                    <tr class="table-row baris">
-                                        <td class="table-cell">
-                                            <h6>{{ $item->song->judul }}</h6>
-                                            <p class="text-muted m-0">{{ $item->song->artist->user->name }}</p>
-                                        </td>
-                                        <td class="table-cell">{{ $item->song->genre->name }}</td>
-                                        <td class="table-cell">
-                                            {{ \Carbon\Carbon::parse($item->playdate)->isoFormat('D MMMM Y') }} </td>
-                                    </tr>
+                                    @if ($item->user_id === auth()->user()->id)
+                                        <tr class="table-row baris">
+                                            <td class="table-cell">
+                                                <h6>{{ $item->song->judul }}</h6>
+                                                <p class="text-muted m-0">{{ $item->song->artist->user->name }}</p>
+                                            </td>
+                                            <td class="table-cell">{{ $item->song->genre->name }}</td>
+                                            <td class="table-cell">
+                                                {{ $item->created_at->diffForHumans() }} </td>
+                                        </tr>
+                                    @endif
                                 @endforeach
                             </tbody>
                         </table>

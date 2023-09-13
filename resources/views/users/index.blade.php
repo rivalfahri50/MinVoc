@@ -113,7 +113,7 @@
                                 <div class="col-12">
                                     <div class="preview-list">
                                         @foreach ($artist as $item)
-                                            {{-- @if (!$item->didengar === 0) --}}
+                                        @if ($item->user_id !== auth()->user()->id)
                                             <div class="preview-item">
                                                 <div class="preview-thumbnail">
                                                     <img src="{{ asset('storage/' . $item->user->avatar) }}"
@@ -135,7 +135,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            {{-- @endif --}}
+                                            @endif
                                         @endforeach
                                     </div>
                                 </div>

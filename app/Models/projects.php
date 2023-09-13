@@ -14,6 +14,7 @@ class projects extends Model
         'name',
         'konsep',
         'judul',
+        'images',
         'audio',
         'harga',
         'artist_id',
@@ -23,6 +24,7 @@ class projects extends Model
         'pembuat_project',
         'penerima_project',
         'is_reject',
+        'is_approved',
     ];
 
     public function artis()

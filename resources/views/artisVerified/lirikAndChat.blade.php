@@ -290,8 +290,8 @@
                                                         <input type="text" class="form-control form-i inputcolor" name="name"
                                                             id="nama" placeholder="Judul Lagu">
                                                     </div>
-                                                    <div style="margin-bottom: 30px;">
-                                                        <input type="file" name="image" class="form-control inputcolor"
+                                                    <div class="mb-5">
+                                                        <input type="file" name="audio" class="form-control inputcolor"
                                                             id="namaproyek" required>
                                                     </div>
                                                     <div>
@@ -302,7 +302,13 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </form>
+                                            <div class="mt-3">
+                                                <button class="btn pl-3 kirim rounded-3 full-width-button" type="button"
+                                                    data-bs-toggle="modal" data-bs-target="#kirimkolaborasi-{{ $project->code }}">
+                                                    Unggah
+                                                </button>
+                                            </div>
+                                        {{-- </form> --}}
                                     </div>
                                 </div>
                             </div>
@@ -311,7 +317,7 @@
                 </div>
             </div>
             <!-- Modal -->
-            <div class="modal fade" id="kirimkolaborasi" tabindex="-1" aria-labelledby="exampleModalLabel"
+            <div class="modal fade" id="kirimkolaborasi-{{ $project->code }}" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
                 {{-- <form action="{{ route('bayar', $project->code) }}" method="post"> --}}
                     {{-- @csrf --}}
