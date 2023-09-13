@@ -101,42 +101,53 @@
                 border-top-right-radius: 10px;
                 border-bottom-right-radius: 10px;
             }
+
+            .judul {
+                padding: 5px;
+                color: #957DAD;
+                font-weight: 600;
+                font-size: 20px;
+            }
+
+            .jarak {
+                gap: 10px;
+            }
+
+            .pcard {
+                padding: 15px 10px;
+            }
+
+            .link {
+                color: #96D1F4;
+            }
         </style>
         <div class="content-wrapper">
             <div class="row">
                 <div class="col-md-12 mb-3">
                     <div class="row">
-                        <div class="col-2">
-                            <div class="card coba">
-                                <h3 class="angka m-0">{{ $totalPengguna }} <span class="fas fa-user fa-sm ikon"></span></h3>
-                                <h4 class="judul mb-3">Pengguna</h4>
-                                <p class="teks">Sejak 2023</p>
+                        <div class="col-4">
+                            <div class="card pcard jarak">
+                                <h3 class="angka m-0">Rp 20.000.000</h3>
+                                <h4 class="judulnottebal mb-0">Total penghasilan</h4>
+                                <a href="" class="link mb-0">Cairkan Penghasilan</a>
                             </div>
                         </div>
-                        <div class="col-2">
-                            <div class="card coba">
-                                <h3 class="angka m-0">{{ $totalLagu }}<span
-                                        class="fas fa-microphone-alt fa-sm ikon"></span></h3>
-                                <h4 class="judul mb-3">Lagu</h4>
-                                <p class="teks">Sejak 2023</p>
+                        <div class="col-4">
+                            <div class="card pcard jarak" style="height: 100%;">
+                                <h3 class="angka m-0">Rp 10.000.000</h3>
+                                <h4 class="judulnottebal">Sisa Penghasilan</h4>
                             </div>
                         </div>
-                        <div class="col-2">
-                            <div class="card coba">
-                                <h3 class="angka m-0">{{ $totalArtist }} <span class="fas fa-music fa-sm ikon"></span></h3>
-                                <h4 class="judul mb-3">Artis</h4>
-                                <p class="teks">Sejak 2023</p>
-                            </div>
-                        </div>
-                        <div class="col-6 row no-gutters">
-                            <div class="card coba">
+                        <div class="col-4 row no-gutters">
+                            <div class="card">
                                 <img src="/assets/images/logo.svg" width="80%" height="100%" alt="logo"
-                                    class="ml-5 md-3" />
+                                    class="ml-4 md-3" />
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-12 mb-3">
+                    <h3 class="judul">Grafik total penghasilan</h3>
                     <div class="card coba">
                         <canvas id="myChart" width="800" height="300"></canvas>
                     </div>
@@ -144,7 +155,7 @@
 
 
                 <div class="col-md-12">
-                    <h3 class="judul">Riwayat Persetujuan </h3>
+                    <h3 class="judul">Riwayat Penghasilan Masuk</h3>
                     <div class="card mb-3">
                         <div class="table-body">
                             <div class="table-container">

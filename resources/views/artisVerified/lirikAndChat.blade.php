@@ -290,17 +290,17 @@
                                                         <input type="text" class="form-control form-i inputcolor" name="name"
                                                             id="nama" placeholder="Judul Lagu">
                                                     </div>
-                                                    <div class="mb-5">
+                                                    <div style="margin-bottom: 30px;">
                                                         <input type="file" name="image" class="form-control inputcolor"
                                                             id="namaproyek" required>
                                                     </div>
+                                                    <div>
+                                                        <button class="btn kirim rounded-3 full-width-button" type="button"
+                                                            data-bs-toggle="modal" data-bs-target="#kirimkolaborasi">
+                                                            Unggah
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="mt-3">
-                                                <button class="btn pl-3 kirim rounded-3 full-width-button" type="button"
-                                                    data-bs-toggle="modal" data-bs-target="#kirimkolaborasi">
-                                                    Unggah
-                                                </button>
                                             </div>
                                         </form>
                                     </div>

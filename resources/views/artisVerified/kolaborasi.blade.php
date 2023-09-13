@@ -183,6 +183,7 @@
                 position: absolute;
                 top: 10px;
                 right: 10px;
+                font-size: 15px;
             }
 
             .chat-box {
@@ -256,6 +257,13 @@
 
             .thin::-webkit-scrollbar {
                 width: 6px;
+            }
+
+            .judul {
+                padding: 5px;
+                color: #957DAD;
+                font-weight: 600;
+                font-size: 20px;
             }
         </style>
         <div class="content-wrapper">
@@ -347,10 +355,8 @@
                                                     <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
                                                     <td class="table-cell text-warning">Pending</td>
                                                     <td class="d-flex align-items-center">
-                                                        <a href="" class="btn-unstyled" data-bs-toggle="modal"
-                                                            data-bs-target="#chat-{{ $item->code }}">
-                                                            <i
-                                                                class="fa-regular fa-comment-dots text-primary fs-5 ml-1"></i>
+                                                        <a href="" class="btn-unstyled">
+                                                            <i class="far fa-check-circle fs-5 text-success ml-1"></i>
                                                         </a>
                                                         <form action="{{ route('reject.project.artisVerified') }}"
                                                             method="post" class="m-0">
@@ -413,8 +419,8 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h3 class="modal-title" id="exampleModalLabel">Tambah Kolaborasi</h3>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h3 class="modal-title judul" id="exampleModalLabel">Tambah Kolaborasi</h3>
+                        <button type="button" class="close-button far fa-times-circle" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form action="{{ route('createProject.artisVerified') }}" method="POST"
