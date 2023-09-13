@@ -20,7 +20,7 @@
                             <div class="text-lg-end mb-3">
                                 <a href="#popuptambah" class="btn full-width-btn" type="button">
                                     <i class="fas fa-plus"></i>
-                                    Tambah kategori
+                                    Tambah Genre
                                 </a>
                             </div>
                         </div>
@@ -50,7 +50,7 @@
                                                         <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
                                                         <td class="table-cell">
                                                             <button type="button" class="btn btnicon" data-toggle="modal"data-target="#exampleModalCenter{{ $item->id }}">
-                                                                <i class="fas fa-pencil-alt text-warning"></i>
+                                                                <i class="fas fa-pencil-alt" style="color: #5b6b89"></i>
                                                             </button>
                                                             <button class="btn btnicon"
                                                                 onclick="deleteGenre('{{ $item->code }}')">

@@ -40,7 +40,7 @@
                                 <h5 class="judul mb-3">Foto KTP :</h5>
                                 <td class="table-cell">
                                     <div class="cell-content">
-                                        <img src="{{ asset('storage/' . $item->user->avatar) }}" alt="Face"
+                                        <img src="{{ asset('storage/' . $item->image) }}" alt="Face"
                                             class="ktp">
                                     </div>
                                 </td>

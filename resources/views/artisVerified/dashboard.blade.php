@@ -106,7 +106,7 @@
                                 <div class="col-12">
                                     <div class="preview-list">
                                         @foreach ($artist as $item)
-                                            @if ($item)
+                                        @if ($item->user_id !== auth()->user()->id)
                                                 <div class="preview-item">
                                                     <div class="preview-thumbnail">
                                                         <img src="{{ asset('storage/' . $item->user->avatar) }}" width="10%">
@@ -114,7 +114,7 @@
                                                     <div class="preview-item-content d-sm-flex flex-grow">
                                                         <div class="flex-grow">
                                                             <h6 class="preview-subject">{{ $item->user->name }}</h6>
-                                                            <p class="text-muted mb-0">{{ $item->likes }} suka</p>
+                                                            <p class="text-muted mb-0">{{ number_format($item->likes) }} suka</p>
                                                         </div>
                                                         <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                             <i id="like-artist{{$item->id}}" data-id="{{ $item->id }}"

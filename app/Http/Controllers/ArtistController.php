@@ -168,6 +168,7 @@ class ArtistController extends Controller
         try {
             $imagePath = $request->file('foto')->store('images', 'public');
             $artist->pengajuan_verified_at = now()->toDateString();
+            $artist->verification_status = "pending";
             $msg = 'Pengajuan Verifikasi';
             $artist->image = $imagePath;
             $artist->update();
@@ -523,7 +524,8 @@ class ArtistController extends Controller
     public function verified(Request $request)
     {
         $title = "MusiCave";
-        return response()->view('artis.verified', compact('title'));
+        $artis = artist::where('user_id', auth()->user()->id)->first();
+        return response()->view('artis.verified', compact('title', 'artis'));
     }
 
     protected function storePlaylist(Request $request): Response

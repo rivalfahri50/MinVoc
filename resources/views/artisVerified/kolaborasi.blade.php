@@ -344,7 +344,7 @@
                                                 <tr class="table-row">
                                                     <td class="table-cell">{{ $item->artis->user->name }}</td>
                                                     <td class="table-cell">{{ $item->name }}</td>
-                                                    <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
+                                                    <td class="table-cell">{{ $item->created_at->diffForHumans() }}</td>
                                                     <td class="table-cell text-warning">Pending</td>
                                                     <td class="d-flex align-items-center">
                                                         <a href="" class="btn-unstyled" data-bs-toggle="modal"

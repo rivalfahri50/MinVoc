@@ -142,6 +142,7 @@
                     </div>
                 </div>
 
+                {{-- @dd($projects) --}}
 
                 <div class="col-md-12">
                     <h3 class="judul">Riwayat Persetujuan </h3>
@@ -165,11 +166,11 @@
                                                             class="avatar">
                                                         <div>
                                                             <h6>{{ $item->judul }}</h6>
-                                                            {{-- <p class="text-muted m-0">{{ $item->artist->user->name }}</p> --}}
+                                                            <p class="text-muted m-0">{{ $item->artis->user->name }}</p>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td class="table-cell">{{ $item->genre }}</td>
+                                                <td class="table-cell">{{ $item->harga }}</td>
                                                 <td class="table-cell">{{ $item->created_at->toDateString() }}</td>
                                             </tr>
                                         @endforeach
