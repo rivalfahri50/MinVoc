@@ -92,7 +92,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($datas as $item)
+                                @foreach ($datas->reverse() as $item)
                                     @if ($item->artis_id === $artis->id)
                                         <tr class="table-row">
                                             <td class="table-cell">
@@ -107,7 +107,7 @@
                                             </td>
                                             <td class="table-cell">{{ $item->genre->name }}</td>
                                             <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
-                                            <td class="table-cell text-warning" style="font-weight: 600">
+                                            <td class="table-cell {{ $item->is_approved == 0 ? "text-warning" : "text-success" }}" style="font-weight: 600">
                                                 {{ $item->is_approved == 0 ? 'Pending' : 'Publish' }}</td>
                                         </tr>
                                     @endIf

@@ -16,17 +16,18 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($uniqueRows as $item)
-                                    <tr class="table-row baris">
-                                        <td class="table-cell">
-                                            <h6>{{ $item->song->judul }}</h6>
-                                            <p class="text-muted m-0">{{ $item->song->artist->user->name }}</p>
-                                        </td>
-                                        <td class="table-cell">{{ $item->song->genre->name }}</td>
-                                        <td class="table-cell">
-                                            {{ \Carbon\Carbon::parse($item->play_date)->isoFormat('D MMMM Y') }}</td>
-                                        <!-- tambahkan kolom lainnya sesuai kebutuhan -->
-                                    </tr>
+                                @foreach ($uniqueRows->reverse() as $item)
+                                    @if ($item->user_id === auth()->user()->id)
+                                        <tr class="table-row baris">
+                                            <td class="table-cell">
+                                                <h6>{{ $item->song->judul }}</h6>
+                                                <p class="text-muted m-0">{{ $item->song->artist->user->name }}</p>
+                                            </td>
+                                            <td class="table-cell">{{ $item->song->genre->name }}</td>
+                                            <td class="table-cell">
+                                                {{ $item->created_at->diffForHumans() }} </td>
+                                        </tr>
+                                    @endIf
                                 @endforeach
                             </tbody>
                         </table>
@@ -34,14 +35,13 @@
                     <div class="text-center">
                         <div class="text-center">
                             <ul class="pagination justify-content-center">
+                                <!-- Pagination links will be dynamically generated here -->
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    </div>
     </div>
 
     <script src="/user/assets/js/tablesort.js"></script>
@@ -83,18 +83,11 @@
                         buttonClass += " active";
                     }
 
-                    var button = $("<button>")
+                    var button = $("<a>")
                         .addClass("page-item " + activeClass)
                         .addClass(buttonClass)
+                        .attr("href", "?page=" + i) // Set the page number as a query parameter
                         .text(buttonText);
-
-                    button.click(function() {
-                        var page = parseInt($(this).text());
-                        currentPage = page;
-                        setURLParameter(currentPage);
-                        showTableRows();
-                        updatePagination();
-                    });
 
                     $(".pagination").append($("<li>").append(button));
                 }

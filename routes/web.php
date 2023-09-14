@@ -16,6 +16,7 @@ use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\penggunaController;
 use App\Http\Controllers\ArtistVerifiedController;
 use App\Http\Controllers\LikeController;
+use App\Models\notif;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,16 +55,24 @@ Route::prefix('admin')->middleware('admin')->controller(AdminController::class)-
     Route::get('/iklan', 'iklan');
     Route::get('/riwayat', 'riwayat');
     Route::get('/verifikasi', 'verifikasi');
+    Route::get('/pencairan', 'pencairan');
     Route::get('/show', 'show');
     Route::get('/hapus-billboard/{code}', 'hapusBillboard')->name('hapus.billoard');
     Route::get('/hapus-music/{code}', 'hapusMusic')->name('hapus.music');
     Route::get('/hapus-genre/{code}', 'hapusGenre')->name('hapus.genre');
     Route::get('/hapus-verified/{code}', 'hapusVerified')->name('hapus.verified');
     Route::get('/setuju-music/{code}', 'setujuMusic')->name('setuju.upload.music');
+    Route::get('/admin/pencairan', 'AdminController@pencairan')->name('admin.pencairan');
+  
+
+
 
     Route::POST('/setuju-verified/{code}', 'setujuVerified')->name('tambah.verified');
     Route::post('/uploadBillboard', 'buatBillboard')->name('uploadBillboard');
+    Route::post('/edit-billboard/{code}', 'updatebillboard')->name('updateBillboard');
     Route::post('/genre', 'buatGenre')->name('buat.genre');
+    Route::post('/edit-genre/{code}', 'editGenre')->name('edit.genre');
+
 });
 
 Route::post('/validationSIgnInAdmin', [AdminController::class, 'storeSignIn'])->name('storeSignIn.admin');
@@ -99,7 +108,8 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
     Route::get('/search/{code}', 'search_result');
     Route::get('/hapusSongPlaylist/{code}', 'hapusSongPlaylist')->name('hapusSongPlaylist.artis');
     Route::get('/peraturan', function () {
-        return view('artis.peraturan', ['title' => 'MusiCave']);
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return view('artis.peraturan', ['title' => 'MusiCave', 'notifs' => $notifs]);
     })->name('peraturan.artis');
 
     Route::post('/search', 'pencarian_input')->name('pencarian.artis');
@@ -147,7 +157,8 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
     Route::get('/search_song', 'search_song')->name('search.song.artisVerified');
     Route::get('/search/{code}', 'search_result');
     Route::get('/peraturan', function () {
-        return view('artisVerified.peraturan', ['title' => 'MusiCave']);
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return view('artisVerified.peraturan', ['title' => 'MusiCave', 'notifs' => $notifs]);
     })->name('peraturan.artisVerified');
 
     Route::post('/undangColab/{code}', 'undangColab')->name('undangColab');
@@ -160,7 +171,7 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
     Route::post('/buat-playlist', 'storePlaylist')->name('buat.playlist.artisVerified');
     Route::post('/ubah-playlist/{code}', 'ubahPlaylist')->name('ubah.playlist.artisVerified');
     Route::post('/update/profile/{code}', 'updateProfile')->name('update.profile.artisVerified');
-    Route::post('/create-lirik', 'Project')->name('create.project.artisVerified');
+    Route::post('/create-project/{code}', 'Project')->name('create.project.artisVerified');
     Route::post('/message/{code}', 'message')->name('message.project.artisVerified');
     Route::post('/reject-project', 'rejectProject')->name('reject.project.artisVerified');
     Route::post('/ubah-album/{code}', 'ubahAlbum')->name('ubah.album.artisVerified');
@@ -193,7 +204,8 @@ Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(pengguna
     Route::get('/search/{code}', 'search_result');
     Route::get('/hapusSongPlaylist/{code}', 'hapusSongPlaylist')->name('hapusSongPlaylist');
     Route::get('/peraturan', function () {
-        return view('users.peraturan', ['title' => 'MusiCave']);
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return view('users.peraturan', ['title' => 'MusiCave', 'notifs' => $notifs]);
     })->name('peraturan.pengguna');
 
     Route::post('/search', 'pencarian_input')->name('pencarian');

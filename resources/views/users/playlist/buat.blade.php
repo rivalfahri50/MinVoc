@@ -45,7 +45,7 @@
                                         @php
                                             $index_no = 0;
                                         @endphp
-                                        @foreach ($songs as $item)
+                                        @foreach ($songs->reverse() as $item)
                                             <div class="preview-item">
                                                 <div class="preview-thumbnail">
                                                     <img src="{{ asset('storage/' . $item->image) }}" width="10%">

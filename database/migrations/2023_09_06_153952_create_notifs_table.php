@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('artis_id')->nullable();
             $table->string('title');
-            $table->text('message');
+            $table->text('message')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained('users');
+            $table->boolean('is_reject')->default(false);
             $table->timestamps();
 
             $table->foreign('artis_id')->references('id')->on('artists')->onDelete('cascade');

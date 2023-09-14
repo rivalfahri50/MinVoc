@@ -312,48 +312,27 @@
                             <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown"
                                 href="#" data-toggle="dropdown">
                                 <i class="mdi mdi-bell"></i>
-                                <span class="count bg-danger"></span>
+                                @if (count($notifs) > 0)
+                                    <span class="count bg-danger"></span>
+                                @endif
                             </a>
                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                                 aria-labelledby="notificationDropdown">
-                                <a href="#" class="dropdown-item preview-item">
-                                    <div class="preview-thumbnail">
-                                        <div class="preview-icon rounded-circle">
-                                            <img src="/user/assets/images/faces/face12.jpg">
-                                        </div>
-                                    </div>
-                                    <div class="preview-item-content">
-                                        <p class="preview-subject mb-1">Gajah</p>
-                                        <p class="text-muted ellipsis mb-0"> Tulus </p>
-                                    </div>
-                                </a>
-                                <a href="#" class="dropdown-item preview-item">
-                                    <div class="preview-thumbnail">
-                                        <div class="preview-icon rounded-circle">
-                                            <img src="/user/assets/images/faces/face12.jpg">
-                                        </div>
-                                    </div>
-                                    <div class="preview-item-content">
-                                        <p class="preview-subject mb-1">Gajah</p>
-                                        <p class="text-muted ellipsis mb-0"> Tulus </p>
-                                    </div>
-                                </a>
-                                <a href="#" class="dropdown-item preview-item">
-                                    <div class="preview-thumbnail">
-                                        <div class="preview-icon rounded-circle">
-                                            <img src="/user/assets/images/faces/face12.jpg">
-                                        </div>
-                                    </div>
-                                    <div class="preview-item-content">
-                                        <p class="preview-subject mb-1">Gajah</p>
-                                        <p class="text-muted ellipsis mb-0"> Tulus </p>
-                                    </div>
-                                </a>
+                                @foreach ($notifs as $item)
+                                    @if ($item)
+                                        <a href="#" class="dropdown-item preview-item">
+                                            <div class="preview-item-content">
+                                                <p class="preview-subject mb-1">{{ $item->title }}</p>
+                                                <p class="text-muted ellipsis mb-0">{{ $item->message }}</p>
+                                            </div>
+                                        </a>
+                                    @endif
+                                @endforeach
                             </div>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
-                                <div class="navbar-profile">
+                                <div class="navbar-profile profile-picture">
                                     <img class="img-xs rounded-circle"
                                         src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
                                 </div>
@@ -362,7 +341,7 @@
                                 aria-labelledby="profileDropdown">
                                 <div class="p-3 mb-0 gap-3"
                                     style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
-                                    <img class="img-xs rounded-circle"
+                                    <img class="img-xs rounded-circle" style="object-fit: cover;"
                                         src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
                                     <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ auth()->user()->name }}
                                     </p>

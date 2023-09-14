@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -27,30 +28,34 @@ class AdminController extends Controller
     protected function index(): Response
     {
         $title = "MusiCave";
-        $totalPengguna = User::count();
+        $totalPengguna = User::whereNotIn('id', [1, 2, 3])->count();
         $totalLagu = song::count();
         $totalArtist = artist::count();
         $songs = song::all();
-        return response()->view('admin.dashboard', compact('title', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('admin.dashboard', compact('title', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'notifs'));
     }
     protected function persetujuan(): Response
     {
         $title = "MusiCave";
         $persetujuan = song::where('is_approved', false)->get();
-        return response()->view('admin.persetujuan', compact('title', 'persetujuan'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('admin.persetujuan', compact('title', 'persetujuan', 'notifs'));
     }
     protected function show($id): Response
     {
         $title = "MusiCave";
         $show = song::findOrFail($id);
-        return response()->view('admin.persetujuan', compact('title', 'show'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('admin.persetujuan', compact('title', 'show', 'notifs'));
     }
 
     protected function kategori(): Response
     {
         $title = "MusiCave";
         $genres = genre::all();
-        return response()->view('admin.kategori', compact('title', 'genres'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('admin.kategori', compact('title', 'genres', 'notifs'));
     }
 
     protected function iklan(): Response
@@ -58,21 +63,31 @@ class AdminController extends Controller
         $title = "MusiCave";
         $billboards = billboard::all();
         $artist = artist::where('is_verified', 1)->get();
-        return response()->view('admin.iklan', compact('title', 'artist', 'billboards'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('admin.iklan', compact('title', 'artist', 'billboards', 'notifs'));
     }
 
     protected function riwayat(): Response
     {
         $title = "MusiCave";
         $songs = song::all();
-        return response()->view('admin.riwayat', compact('title', 'songs'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('admin.riwayat', compact('title', 'songs', 'notifs'));
+    }
+
+    protected function pencairan(): Response
+    {
+        $title = "MusiCave";
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('admin.pencairan', compact('title', 'notifs'));
     }
 
     protected function verifikasi(): Response
     {
         $title = "MusiCave";
         $artist = artist::where('is_verified', 0)->get();
-        return response()->view('admin.verifikasi', compact('title', 'artist'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('admin.verifikasi', compact('title', 'artist', 'notifs'));
     }
 
     protected function setujuMusic(string $code)
@@ -84,12 +99,13 @@ class AdminController extends Controller
             $song->is_approved = true;
             $song->update();
             $persetujuan = song::all();
+            $notifs = notif::where('user_id', auth()->user()->id)->get();
         } catch (\Throwable $th) {
             Alert::error('message', 'Lagu Gagal Dalam Perizinan Publish');
-            return response()->redirectTo('/admin/persetujuan')->with(['persetujuan' => $persetujuan, 'title' => $title]);
+            return response()->redirectTo('/admin/persetujuan')->with(['persetujuan' => $persetujuan, 'title' => $title, 'notifs' => $notifs]);
         }
         Alert::success('message', 'Lagu Berhasil Publish');
-        return response()->redirectTo('/admin/persetujuan')->with(['persetujuan' => $persetujuan, 'title' => $title]);
+        return response()->redirectTo('/admin/persetujuan')->with(['persetujuan' => $persetujuan, 'title' => $title, 'notifs' => $notifs]);
     }
 
     protected function buatBillboard(Request $request)
@@ -110,6 +126,7 @@ class AdminController extends Controller
         $title = "MusiCave";
         $artist = artist::where('is_verified', 1)->get();
         $billboards = billboard::all();
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
         try {
             if ($request->hasFile('image_background') && $request->hasFile('image_artis')) {
                 $backgroundBillboard = $request->file('image_background')->store('backgorund_billboard', 'public');
@@ -125,56 +142,61 @@ class AdminController extends Controller
             ]);
         } catch (\Throwable $th) {
             Alert::error('message', 'Gagal Untuk Menambah Billboard');
-            return response()->view('admin.iklan', compact('artist', 'title'));
+            return response()->view('admin.iklan', compact('artist', 'title', 'notifs'));
         }
         Alert::success('message', 'Berhasil Untuk Menambah Billboard');
-        return response()->view('admin.iklan', compact('artist', 'title', 'billboards'));
+        return response()->view('admin.iklan', compact('artist', 'title', 'billboards', 'notifs'));
     }
-    public function editBillboard(Request $request)
-    {
-        $validator = Validator::make(
-            $request->only('artis_id'),
-            [
-                'artis_id' => 'required',
-            ]
-        );
 
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
+    public function updatebillboard(Request $request, string $code)
+{
+    
+    $billboard = billboard::find($code);
+
+    if (!$billboard) {
+        return redirect()->back()->with('error', 'Genre not found.');
+    }
+    // Validasi input sesuai kebutuhan
+    $this->validate($request, [
+        'nama_artis' => 'required|string|max:255',
+        'deskripsi' => 'required|string|max:500',
+        'image_background' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+        'image_artis' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
+
+
+    // Update nama artis dan deskripsi
+    $billboard->artis->user->name = $request->input('nama_artis');
+    $billboard->deskripsi = $request->input('deskripsi');
+
+    // Handle gambar background baru jika diunggah
+    if ($request->hasFile('image_background')) {
+        // Hapus gambar lama jika ada
+        if ($billboard->image_background) {
+            Storage::delete('public/' . $billboard->image_background);
         }
 
-        $title = "MusiCave";
-        $artist = artist::where('is_verified', 1)->get();
-        $billboards = billboard::all();
+        // Simpan gambar baru
+        $imagePath = $request->file('image_background')->store('public');
+        $billboard->image_background = str_replace('public/', '', $imagePath);
+    }
 
-        try {
-            // Cari billboard yang akan diedit berdasarkan ID
-            $billboard = billboard::find($billboards->id);
-
-            if (!$billboard) {
-                return redirect()->back()->with('error', 'Billboard not found.');
-            }
-
-            if ($request->hasFile('image_background') && $request->hasFile('image_artis')) {
-                $backgroundBillboard = $request->file('image_background')->store('background_billboard', 'public');
-                $backgroundArtis = $request->file('image_artis')->store('image_artis', 'public');
-                $billboard->image_background = $backgroundBillboard;
-                $billboard->image_artis = $backgroundArtis;
-            }
-
-            $billboard->artis_id = $request->input('artis_id');
-            $billboard->deskripsi = $request->input('deskripsi');
-            $billboard->save();
-        } catch (\Throwable $th) {
-            Alert::error('message', 'Gagal Untuk Mengedit Billboard');
-            return response()->view('admin.iklan', compact('artist', 'title', 'billboards'));
+    // Handle gambar artis baru jika diunggah
+    if ($request->hasFile('image_artis')) {
+        // Hapus gambar lama jika ada
+        if ($billboard->image_artis) {
+            Storage::delete('public/' . $billboard->image_artis);
         }
 
-        Alert::success('message', 'Berhasil Untuk Mengedit Billboard');
-        return response()->view('admin.iklan', compact('artist', 'title', 'billboards'));
+        // Simpan gambar baru
+        $imagePath = $request->file('image_artis')->store('public');
+        $billboard->image_artis = str_replace('public/', '', $imagePath);
     }
+
+    $billboard->save();
+
+    return redirect()->back()->with('success', 'Billboard updated successfully.');
+}
 
     protected function buatGenre(Request $request)
     {
@@ -221,60 +243,39 @@ class AdminController extends Controller
             }
         }
     }
-    public function editGenre(Request $request,$genres)
-{
-    $validator = Validator::make(
-        $request->only('name', 'images'),
-        [
-            'name' => 'required|string|max:50', // Hapus validasi unik jika diperlukan
-            'images' => 'mimes:jpeg,jpg,png,gif|required|max:10000',
-        ]
-    );
+    public function editGenre(Request $request,string $code)
+    {
+        $genre = genre::find($code);
 
-    if ($validator->fails()) {
-        return redirect()->back()
-            ->withErrors($validator)
-            ->withInput();
-    } else {
+        if (!$genre) {
+            return redirect()->back()->with('error', 'Genre not found.');
+        }
+
+        $validator = $request->validate([
+            'name' => 'required|string|max:50',
+            'images' => 'image|mimes:jpeg,jpg,png,gif|max:10000', // Menggunakan "image" sebagai aturan validasi
+        ]);
+
         try {
-
-
-            DB::beginTransaction();
-            $genre = genre::find($genres->id);
-
-
-            if (!$genre) {
-                // Genre tidak ditemukan, mungkin berikan pesan kesalahan
-                return redirect()->back()->with('error', 'Genre not found.');
-            }
-
-            // Update data genre sesuai dengan input form
-            $genre->name = $request->input('name');
-
-            // Handle file upload jika ada
             if ($request->hasFile('images')) {
+
+                if ($genre->images) {   
+                    Storage::disk('public')->delete($genre->images);
+                }
+
                 $imagePath = $request->file('images')->store('genre_images', 'public');
                 $genre->images = $imagePath;
             }
 
+            $genre->name = $request->input('name');
             $genre->save();
 
-            // Commit the transaction
-            DB::commit();
-
-            Alert::success('message', 'Success Mengedit Genre');
             return redirect()->back()->with('success', 'Genre updated successfully.');
         } catch (\Throwable $th) {
-            DB::rollBack();
             Log::error('Error editing genre: ' . $th->getMessage());
 
-            Alert::error('message', 'Gagal Mengedit');
             return redirect()->back()->with('error', 'Failed to edit genre.');
-        }
-    }
-}
-
-
+        }}
     protected function setujuVerified(Request $request, string $code)
     {
         $artis = artist::where('code', $code)->first();
@@ -301,13 +302,15 @@ class AdminController extends Controller
         try {
             notif::create([
                 'artis_id' => $artis->id,
-                'title' => "Verifikasi Account Reject",
-                'message' => $request->input('alasan')
+                'title' => "Pengajuan verifikasi akun ditolak",
+                'message' => $request->input('alasan'),
+                'user_id' => $artis->user_id,
+                'is_reject' => false
             ]);
 
             $artis->image = "none";
             $artis->pengajuan_verified_at = null;
-            $artis->verification_status = "failed";
+            $artis->verification_status = "none";
             $artis->update();
         } catch (\Throwable $th) {
             Alert::error('message', 'Gagal Menghapus Artis Verified');

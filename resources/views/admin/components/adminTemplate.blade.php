@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{{ $title }}</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="assets/vendors/mdi/css/materialdesignicons.min.css">
@@ -17,19 +17,6 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        /* Style dropdown sidebar--Mengatur tampilan menu dropdown */
-        .menu-items .nav-link {
-            position: relative;
-        }
-
-        .menu-arrow {
-            color: inherit;
-            position: absolute;
-            left: 185px;
-            top: 185px;
-            transform: translateY(-50%);
-        }
-
         .search-container {
             position: relative;
             display: flex;
@@ -125,33 +112,56 @@
                     </a>
                 </li>
                 <li class="nav-item menu-items">
-                    <a class="nav-link" href="/admin/persetujuan">
+                    <a class="nav-link" data-toggle="collapse" href="#persetujuan" aria-expanded="false"
+                        aria-controls="persetujuan">
                         <span class="menu-icon">
                             <i class="mdi mdi-check-circle-outline"></i>
                         </span>
                         <span class="menu-title">Persetujuan</span>
+                        <i class="menu-arrow"></i>
                     </a>
+                    <div class="collapse" id="persetujuan">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/admin/persetujuan">
+                                    <span class="menu-icon mr-0">
+                                        <i class="mdi mdi-check-circle-outline submenu" style="font-size: 20px;"></i>
+                                    </span>Persetujuan
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/admin/pencairan">
+                                    <span class="menu-icon mr-0">
+                                        <i class="mdi mdi-check-circle-outline submenu" style="font-size: 20px;"></i>
+                                    </span>Pencairan
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
                 <li class="nav-item menu-items">
-                    <a class="nav-link" href="/admin/kategori">
+                    <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false"
+                        aria-controls="ui-basic">
                         <span class="menu-icon">
                             <i class="mdi mdi-music"></i>
                         </span>
                         <span class="menu-title">Kategori</span>
-                        <a href="#ui-basic" data-toggle="collapse" aria-expanded="false" aria-controls="ui-basic">
-                            <span class="menu-arrow">
-                                <i class="mdi mdi-chevron-right"></i>
-                            </span>
-                        </a>
+                        <i class="menu-arrow"></i>
                     </a>
                     <div class="collapse" id="ui-basic">
                         <ul class="nav flex-column sub-menu">
                             <li class="nav-item">
+                                <a class="nav-link" href="/admin/kategori">
+                                    <span class="menu-icon mr-0">
+                                        <i class="mdi mdi-plus-circle-outline submenu" style="font-size: 20px;"></i>
+                                    </span>Kategori
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="/admin/iklan">
-                                    <span class="menu-icon">
-                                        <i class="mdi mdi-plus-circle-outline"></i>
-                                    </span>
-                                    <span class="menu-title">Papan iklan</span>
+                                    <span class="menu-icon mr-0">
+                                        <i class="mdi mdi-plus-circle-outline submenu" style="font-size: 20px;"></i>
+                                    </span>Papan Iklan
                                 </a>
                             </li>
                         </ul>
@@ -236,24 +246,23 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
                                 data-toggle="dropdown">
-                                <div class="notification-panel">
-                                    <i class="mdi mdi-bell"></i>
-                                </div>
-                                <span class="count bg-danger"></span>
+                                <i class="mdi mdi-bell"></i>
+                                @if (count($notifs) > 0)
+                                    <span class="count bg-danger"></span>
+                                @endif
                             </a>
                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                                 aria-labelledby="notificationDropdown">
-                                <a href="verifikasi" class="dropdown-item preview-item">
-                                    <div class="preview-thumbnail">
-                                        <div class="preview-icon">
-                                            <img src="assets/images/faces/face12.jpg">
-                                        </div>
-                                    </div>
-                                    <div class="preview-item-content">
-                                        <p class="preview-subject mb-1">Pengajuan Verified Akun</p>
-                                        <p class="text-muted ellipsis mb-0"> Kiki </p>
-                                    </div>
-                                </a>
+                                @foreach ($notifs as $item)
+                                    @if ($item)
+                                        <a href="#" class="dropdown-item preview-item">
+                                            <div class="preview-item-content">
+                                                <p class="preview-subject mb-1">{{ $item->title }}</p>
+                                                <p class="text-muted ellipsis mb-0">{{ $item->message }}</p>
+                                            </div>
+                                        </a>
+                                    @endif
+                                @endforeach
                             </div>
                         </li>
                         <li class="nav-item dropdown">

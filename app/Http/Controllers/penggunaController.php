@@ -6,6 +6,7 @@ use App\Models\album;
 use App\Models\artist;
 use App\Models\billboard;
 use App\Models\genre;
+use App\Models\notif;
 use App\Models\playlist;
 use App\Models\Riwayat;
 use App\Models\song;
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
+use Mockery\Undefined;
 use Throwable;
 
 class penggunaController extends Controller
@@ -31,7 +33,8 @@ class penggunaController extends Controller
         $playlists = playlist::all();
         $artist = artist::with('user')->get();
         $billboards = billboard::all();
-        return response()->view('users.index', compact('title', 'songs', 'artist', 'genres', 'playlists', 'billboards'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('users.index', compact('title', 'songs', 'artist', 'genres', 'playlists', 'billboards', 'notifs'));
     }
 
     protected function pencarian(): Response
@@ -39,7 +42,8 @@ class penggunaController extends Controller
         $title = "MusiCave";
         $songs = song::all();
         $artist = artist::with('user')->get();
-        return response()->view('users.pencarian', compact('title', 'artist', 'songs'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('users.pencarian', compact('title', 'artist', 'songs', 'notifs'));
     }
 
     protected function playlist(): Response
@@ -47,7 +51,8 @@ class penggunaController extends Controller
         $title = "MusiCave";
         $albums = album::all();
         $playlists = playlist::all();
-        return response()->view('users.playlist', compact('title', 'playlists', 'albums'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('users.playlist', compact('title', 'playlists', 'albums', 'notifs'));
     }
 
     protected function riwayat(): Response
@@ -60,42 +65,60 @@ class penggunaController extends Controller
             return $item->user_id . $item->song_id . $item->play_date;
         });
 
-        return response()->view('users.riwayat', compact('title', 'uniqueRows'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+
+        return response()->view('users.riwayat', compact('title', 'uniqueRows', 'notifs'));
     }
 
     protected function profile(): Response
     {
         $title = "MusiCave";
-        return response()->view('users.profile.profile', compact('title'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('users.profile.profile', compact('title', 'notifs'));
     }
 
     protected function profile_ubah(Request $request, string $code): Response
     {
         $title = "MusiCave";
         $user = User::where('code', $code)->get();
-        return response()->view('users.profile.profile_ubah', compact('title', 'user'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('users.profile.profile_ubah', compact('title', 'user', 'notifs'));
     }
 
     protected function album(): Response
     {
         $title = "MusiCave";
-        return response()->view('users.billboard.album', compact('title'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('users.billboard.album', compact('title', 'notifs'));
     }
 
     protected function kategori(string $code): Response
     {
         $title = "MusiCave";
         $genre = genre::where('code', $code)->first();
+        if (!$genre) {
+            abort(404);
+        }
         $playlists = playlist::all();
         $songs = song::where('genre_id', $genre->id)->get();
-        return response()->view('users.kategori.kategori', compact('title', 'genre', 'songs', 'playlists'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+
+        try {
+            if ($title && $playlists && $songs) {
+                return response()->view('users.kategori.kategori', compact('title', 'genre', 'songs', 'playlists', 'notifs'));
+            }
+        } catch (\Throwable $th) {
+            abort(404);
+        }
+        return response()->view('users.kategori.kategori', compact('title', 'genre', 'songs', 'playlists', 'notifs'));
     }
 
     protected function buatPlaylist(): Response
     {
         $title = "MusiCave";
         $songs = song::all();
-        return response()->view('users.playlist.buat', compact('title', 'songs'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('users.playlist.buat', compact('title', 'songs', 'notifs'));
     }
 
     protected function tambah_playlist(string $code, Request $request)
@@ -105,7 +128,7 @@ class penggunaController extends Controller
             $song->playlist_id = $request->input('playlist_id');
             $song->update();
         } catch (\Throwable $th) {
-            return back();
+            return abort(404);
         }
         return back();
     }
@@ -135,16 +158,18 @@ class penggunaController extends Controller
             }
             playlist::create($values);
             $playlists = playlist::all();
+            $notifs = notif::where('user_id', auth()->user()->id)->get();
         } catch (\Throwable $th) {
-            return response()->view('users.playlist', compact('title'));
+            return abort(404);
         }
-        return response()->view('users.playlist', compact('title', 'playlists'));
+        return response()->view('users.playlist', compact('title', 'playlists', 'notifs'));
     }
 
     protected function ubahPlaylist(Request $request, string $code)
     {
         $title = "MusiCave";
         $playlists = playlist::where('code', $code)->first();
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
         try {
             if (!$request->file()) {
                 $values =
@@ -172,9 +197,9 @@ class penggunaController extends Controller
             playlist::where('code', $code)->update($values);
             $playlists = playlist::all();
         } catch (\Throwable $th) {
-            return response()->view('users.playlist', compact('title'));
+            return abort(404);
         }
-        return response()->view('users.playlist', compact('title', 'playlists'));
+        return response()->view('users.playlist', compact('title', 'playlists', 'notifs'));
     }
 
     protected function hapusSongPlaylist(string $code)
@@ -184,7 +209,7 @@ class penggunaController extends Controller
             $song->playlist_id = null;
             $song->save();
         } catch (\Throwable $th) {
-            return redirect()->back();
+            return abort(404);
         }
         return redirect()->back();
     }
@@ -203,14 +228,17 @@ class penggunaController extends Controller
         $song = song::where('code', $code)->first();
         $user = user::where('code', $code)->first();
         $playlists = playlist::all();
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
 
         if ($song) {
             $songs = song::all();
-            return view('users.search.songSearch', compact('song', 'title', 'songs', 'playlists'));
+            return view('users.search.songSearch', compact('song', 'title', 'songs', 'playlists', 'notifs'));
         } else if ($user) {
             $artis = artist::where('user_id', $user->id)->first();
             $songs = song::where('artis_id', $artis->id)->get();
-            return view('users.search.artisSearch', compact('user', 'title', 'songs', 'playlists'));
+            return view('users.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs'));
+        } else {
+            return abort(404);
         }
     }
 
@@ -220,60 +248,81 @@ class penggunaController extends Controller
         $playlists = playlist::all();
         $song = song::where('judul', 'like', '%' .  $request->input('search') . '%')->first();
         $user = user::where('name', 'like', '%' .  $request->input('search') . '%')->first();
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
 
         if ($song) {
             $songs = song::all();
-            return view('users.search.songSearch', compact('song', 'title', 'songs', 'playlists'));
+            return view('users.search.songSearch', compact('song', 'title', 'songs', 'playlists', 'notifs'));
         } else if ($user) {
             $artis = artist::where('user_id', $user->id)->first();
             $songs = song::where('artis_id', $artis->id)->get();
-            return view('users.search.artisSearch', compact('user', 'title', 'songs', 'playlists'));
+            return view('users.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs'));
         } else {
-            return "not found";
+            return abort(404);
         }
     }
 
     protected function billboard(string $code): Response
     {
-        $title = "MusiCave";
-        $billboard = billboard::where('code', $code)->first();
-        $albums = album::where('artis_id', $billboard->artis_id)->get();
-        $songs = song::where('artis_id', $billboard->artis_id)->get();
-        $playlists = playlist::all();
-        return response()->view('users.billboard.billboard', compact('title', 'billboard', 'albums', 'songs', 'playlists'));
+        try {
+            $title = "MusiCave";
+            $billboard = billboard::where('code', $code)->first();
+            $albums = album::where('artis_id', $billboard->artis_id)->get();
+            $songs = song::where('artis_id', $billboard->artis_id)->get();
+            $playlists = playlist::all();
+            $notifs = notif::where('user_id', auth()->user()->id)->get();
+        } catch (Throwable) {
+            return abort(404);
+        }
+        return response()->view('users.billboard.billboard', compact('title', 'billboard', 'albums', 'songs', 'playlists', 'notifs'));
     }
 
     protected function detailPlaylist(string $code): Response
     {
-        $title = "MusiCave";
-        $playlistDetail = playlist::where('code', $code)->first();
-        $songs = song::where('playlist_id', $playlistDetail->id)->get();
-        $playlists = playlist::all();
-        return response()->view('users.playlist.contoh', compact('title', 'playlistDetail', 'songs', 'playlists'));
+        try {
+            $title = "MusiCave";
+            $playlistDetail = playlist::where('code', $code)->first();
+            $songs = song::where('playlist_id', $playlistDetail->id)->get();
+            $playlists = playlist::all();
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
+        return response()->view('users.playlist.contoh', compact('title', 'playlistDetail', 'songs', 'playlists', 'notifs'));
     }
 
     protected function albumBillboard(string $code): Response
     {
-        $title = "MusiCave";
-        $album = album::where('code', $code)->first();
-        $songs = song::where('album_id', $album->id)->get();
-        $playlists = playlist::all();
-        return response()->view('artis.billboard.album', compact('title', 'album', 'songs', 'playlists'));
+        try {
+            $title = "MusiCave";
+            $album = album::where('code', $code)->first();
+            $songs = song::where('album_id', $album->id)->get();
+            $playlists = playlist::all();
+            $notifs = notif::where('user_id', auth()->user()->id)->get();
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
+        return response()->view('artis.billboard.album', compact('title', 'album', 'songs', 'playlists', 'notifs'));
     }
 
     function detailAlbum(string $code): Response
     {
-        $title = "MusiCave";
-        $albumDetail = album::where('code', $code)->first();
-        $songs = song::all();
-        $playlists = playlist::all();
-        return response()->view('users.playlist.contohAlbum', compact('title', 'albumDetail', 'songs', 'playlists'));
+        try {
+            $title = "MusiCave";
+            $albumDetail = album::where('code', $code)->first();
+            $songs = song::all();
+            $playlists = playlist::all();
+            $notifs = notif::where('user_id', auth()->user()->id)->get();
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
+        return response()->view('users.playlist.contohAlbum', compact('title', 'albumDetail', 'songs', 'playlists', 'notifs'));
     }
 
     protected function disukaiPlaylist(): Response
     {
         $title = "MusiCave";
-        return response()->view('users.playlist.disukai', compact('title'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('users.playlist.disukai', compact('title', 'notifs'));
     }
 
     protected function updateProfile(string $code, Request $request)
@@ -385,7 +434,7 @@ class penggunaController extends Controller
         try {
             User::where('code', $code)->update($value);
         } catch (Throwable $e) {
-            return redirect()->back();
+            return abort(404);
         }
         return redirect()->back();
     }
@@ -397,10 +446,14 @@ class penggunaController extends Controller
 
         $artists = User::where('name', 'LIKE', '%' . $query . '%')->get();
 
-        $results = [
-            'songs' => $songs,
-            'artists' => $artists,
-        ];
+        try {
+            $results = [
+                'songs' => $songs,
+                'artists' => $artists,
+            ];
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
         return response()->json(['results' => $results]);
     }
 
@@ -420,8 +473,7 @@ class penggunaController extends Controller
                 $playlist->delete();
             }
         } catch (\Throwable $th) {
-            Log::error('Error deleting playlist: ' . $th->getMessage());
-            return response()->redirectTo('pengguna/playlist');
+            return abort(404);
         }
 
         return response()->redirectTo('pengguna/playlist');
@@ -438,18 +490,24 @@ class penggunaController extends Controller
         $bulan = $request->input('bulan');
         $tahun = $request->input('tahun');
 
-        // Lakukan filter data berdasarkan tanggal, bulan, dan tahun
-        $filteredData = song::where('tanggal', $tanggal)
-            ->where('bulan', $bulan)
-            ->where('tahun', $tahun)
-            ->get();
-
+        try {
+            $filteredData = song::where('tanggal', $tanggal)
+                ->where('bulan', $bulan)
+                ->where('tahun', $tahun)
+                ->get();
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
         return response()->json(['data' => $filteredData]);
     }
 
     protected function logout(Request $request)
     {
-        Auth::logout();
+        try {
+            Auth::logout();
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
         return response()->redirectTo("/masuk");
     }
 }

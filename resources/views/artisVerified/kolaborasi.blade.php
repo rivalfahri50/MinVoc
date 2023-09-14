@@ -61,37 +61,12 @@
                 background: none;
             }
 
-            .table-container {
-                margin-bottom: 20px;
-            }
-
-            .table-sortable th {
-                cursor: pointer;
-                border-radius: 10px;
-            }
-
-            .table-sortable .th-sort-asc::after {
-                content: "\25b4";
-            }
-
-            .table-sortable .th-sort-desc::after {
-                content: "\25be";
-            }
-
-            .table-sortable .th-sort-asc::after,
-            .table-sortable .th-sort-desc::after {
-                margin-left: 10px;
-            }
-
             /*---- style untuk table ----*/
-            .table-body {
-                padding: 20px;
-            }
-
-
             .table-container {
-                max-width: 100%;
-                overflow-x: auto;
+                max-height: 200px;
+                overflow-y: auto;
+                position: relative;
+                margin-bottom: 20px;
             }
 
             .table {
@@ -103,6 +78,14 @@
                 margin-bottom: 10px;
                 background-color: #957DAD;
                 overflow: hidden;
+            }
+
+            /* Style for the fixed header */
+            .fixed-header {
+                position: sticky;
+                top: 0;
+                z-index: 1;
+                background-color: #f3f3f3;
             }
 
             .table-cell {
@@ -121,11 +104,6 @@
                 padding-top: 10px;
                 padding-bottom: 10px;
                 color: white;
-            }
-
-            .avatar {
-                width: 40px;
-                margin-right: 10px;
             }
 
             .table td img {
@@ -205,6 +183,7 @@
                 position: absolute;
                 top: 10px;
                 right: 10px;
+                font-size: 15px;
             }
 
             .chat-box {
@@ -258,6 +237,34 @@
                 border-radius: 4px;
                 cursor: pointer;
             }
+
+            .scrollbar-down::-webkit-scrollbar-track {
+                -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+                background-color: #ffffff;
+                border-radius: 10px;
+            }
+
+            .scrollbar-down::-webkit-scrollbar {
+                width: 12px;
+                background-color: #f5f5f5;
+            }
+
+            .scrollbar-down::-webkit-scrollbar-thumb {
+                border-radius: 10px;
+                -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+                background-color: #957dad;
+            }
+
+            .thin::-webkit-scrollbar {
+                width: 6px;
+            }
+
+            .judul {
+                padding: 5px;
+                color: #957DAD;
+                font-weight: 600;
+                font-size: 20px;
+            }
         </style>
         <div class="content-wrapper">
             <div class="row ">
@@ -273,10 +280,10 @@
                         </div>
                     </div>
                     <div class="card rounded-4">
-                        <div class="card-body">
-                            <div class="table-container">
-                                <table class="table custom-table mt-3" style="">
-                                    <thead class="table-header">
+                        <div class="card-body pt-3">
+                            <div class="table-container scrollbar-down thin">
+                                <table class="table custom-table" style="">
+                                    <thead class="table-header fixed-header">
                                         <tr class="table-row header headerlengkung">
                                             <th class="table-cell"> Nama Proyek </th>
                                             <th class="table-cell"> Tanggal </th>
@@ -284,7 +291,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($datas as $item)
+                                        @foreach ($datas->reverse() as $item)
                                             @if ($item->artist_id === $artisUser->id)
                                                 @if (!$item->is_reject && $item->judul == 'none' && $item->audio == 'none' && $item->request_project_artis_id == null)
                                                     <tr class="table-row">
@@ -324,10 +331,10 @@
                 <div class="col-12 grid-margin">
                     <h3 style="color: #957DAD">Undangan Kolaborasi</h3>
                     <div class="card rounded-4">
-                        <div class="card-body">
-                            <div class="table-container">
-                                <table class="table custom-table mt-3" style="">
-                                    <thead class="table-header">
+                        <div class="card-body pt-3">
+                            <div class="table-container scrollbar-down thin">
+                                <table class="table custom-table" style="">
+                                    <thead class="table-header fixed-header">
                                         <tr class="table-row header headerlengkung">
                                             <th class="table-cell"> Artis </th>
                                             <th class="table-cell"> Nama Proyek </th>
@@ -337,7 +344,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($datas as $item)
+                                        @foreach ($datas->reverse() as $item)
                                             {{-- @if ($item->status == 'pending' && $item->request_project_artis_id !== null) --}}
                                             @if (
                                                 ($item->request_project_artis_id !== null && $item->artist_id === $artisUser->id) ||
@@ -345,14 +352,14 @@
                                                 <tr class="table-row">
                                                     <td class="table-cell">{{ $item->artis->user->name }}</td>
                                                     <td class="table-cell">{{ $item->name }}</td>
-                                                    <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
+                                                    <td class="table-cell">{{ $item->created_at->diffForHumans() }}</td>
                                                     <td class="table-cell text-warning">Pending</td>
                                                     <td class="d-flex align-items-center">
-                                                        <a href="" class="btn-unstyled" data-bs-toggle="modal"
-                                                            data-bs-target="#chat-{{ $item->code }}">
-                                                            <i
-                                                                class="fa-regular fa-comment-dots text-primary fs-5 ml-1"></i>
-                                                        </a>
+                                                        <form action="{{ route('lirikAndChat.artisVerified', $item->code) }}" method="GET">
+                                                            <button type="submit" class="btn-unstyled">
+                                                                <i class="far fa-check-circle fs-5 text-success ml-1"></i>
+                                                            </button>
+                                                        </form>
                                                         <form action="{{ route('reject.project.artisVerified') }}"
                                                             method="post" class="m-0">
                                                             @csrf
@@ -360,7 +367,7 @@
                                                                 <input type="hidden" name="code"
                                                                     value="{{ $item->code }}">
                                                                 <input type="hidden" name="is_reject" value="true">
-                                                                <i class="mdi mdi-close-circle-outline btn-icon text-danger"
+                                                                <i class="far fa-times-circle btn-icon text-danger"
                                                                     style="font-size: 20px"></i>
                                                             </button>
                                                         </form>
@@ -414,8 +421,8 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h3 class="modal-title" id="exampleModalLabel">Tambah Kolaborasi</h3>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h3 class="modal-title judul" id="exampleModalLabel">Tambah Kolaborasi</h3>
+                        <button type="button" class="close-button far fa-times-circle" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form action="{{ route('createProject.artisVerified') }}" method="POST"
@@ -515,7 +522,7 @@
                                                 @endforeach
                                             </div>
                                             <div class="input-with-icon chat-input">
-                                                <input type="text" class="form-control rounded-4"
+                                                <input type="text" class="form-control rounded-4" maxlength="50"
                                                     placeholder="Ketik di sini untuk admin" name="message"
                                                     style="background-color: white;">
                                                 <button type="submit" class="send-button ml-2 mr-1">

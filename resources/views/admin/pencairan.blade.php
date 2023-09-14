@@ -3,50 +3,75 @@
     <link rel="stylesheet" href="/admin/assets/css/riwayat.css">
     <!-- partial | ISI -->
     <div class="main-panel">
+        <style>
+            button {
+                background: none;
+                border: none;
+            }
+        </style>
         <div class="content-wrapper">
             <div class="col-lg-12 grid-margin stretch-card">
-                <h3 class="judul mb-3">Riwayat Persetujuan Unggah Lagu</h3>
+                <h3 class="judul mb-3">Pencairan Penghasilan</h3>
                 <div class="table-container">
                     <table class="table table-sortable">
                         <thead>
                             <tr class="table-row table-header">
-                                <th class="table-cell">Nama<i class="fas fa-sort" data-order="asc"></th>
+                                <th class="table-cell">Artis<i class="fas fa-sort" data-order="asc"></th>
                                 <th class="table-cell">Tanggal<i class="fas fa-sort" data-order="asc"></th>
-                                <th class="table-cell">Status</th>
+                                <th class="table-cell">Jumlah</th>
                                 <th class="table-cell">Aksi</th>
                             </tr>
                         </thead>
-                        @if (count($songs) > 0)
-                            <tbody>
-                                @foreach ($songs->reverse() as $item)
-                                    @if ($item->is_approved)
-                                        <tr class="table-row baris">
-                                            <td class="table-cell">
-                                                <div class="cell-content">
-                                                    <!-- Isi data pengguna di sini -->
-                                                </div>
-                                            </td>
-                                            <td class="table-cell">03/12/2023</td>
-                                            <td class="table-cell text-success">Selesai</td>
-                                            <td class="table-cell">
-                                                <button class="btn btnicon">
-                                                    <i class="far fa-trash-alt text-danger"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    @endif
-                                @endforeach
-                            </tbody>
-                        @else
-                            <div>
-                                <img width="200" height="200" src="/icon-notFound/adminIcon.svg" alt=""
-                                    srcset="">
-                            </div>
-                        @endif
-
+                        <tbody>
+                                    <tr class="table-row baris">
+                                        <td class="table-cell">
+                                                    <p>Tulus</p>
+                                        </td>
+                                        <td class="table-cell">03/12/2023</td>
+                                        <td class="table-cell text-success">Rp 500.000</td>
+                                        <td class="table-cell">
+                                            <button class="btn btnicon" data-bs-toggle="modal" data-bs-target="#detail">
+                                                <i class="far fa-eye text-info"></i>
+                                            </button>
+                                            <button class="btn btnicon" onclick="">
+                                                <i class="far fa-times-circle text-danger"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                        </tbody>
                     </table>
                 </div>
-
+                <div class="modal fade" id="detail" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content border-0" style="background-color: white">
+                            <div class="modal-header border-0">
+                                <h1 class="modal-title fs-5 judul" id="staticBackdropLabel">Detail</h1>
+                                <button type="button" class="btn-unstyled" data-bs-dismiss="modal" aria-label="Close">
+                                    <i class="mdi mdi-close-circle-outline btn-icon" style="color: #957DAD; font-size: 20px;"></i>
+                                </button>
+                            </div>
+                            <div class="modal-body border-0">
+                                <div class="col-md-12" style="font-size: 13px">
+                                    <div class="mb-3">
+                                        <p for="namakategori" class="form-label judulnottebal">Total Penghasilan</p>
+                                        <h3 class="judul">Rp20.000.000</h3>
+                                    </div>
+                                    <div class="mb-3">
+                                        <p for="konsep" class="form-label judulnottebal">Jumlah Pencairan</p>
+                                        <p class="muted">Rp 20.000.000</p>
+                                    </div>
+                                </div>
+            
+                            </div>
+                            <div class="modal-footer border-0">
+                                <button type="button" class="btn rounded-3">
+                                    <a href="" class="btn-link"
+                                        style="color: inherit; text-decoration: none;">Setujui</a></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="text-center">
                     <div class="text-center">

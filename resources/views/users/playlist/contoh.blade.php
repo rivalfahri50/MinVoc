@@ -151,6 +151,12 @@
         .judul {
             font-size: 20px;
         }
+
+        .iconminus {
+            border: none;
+            padding: 0 0 0 5px;
+            font-size: 17px;
+        }
     </style>
     <div class="main-panel">
         <div class="content-wrapper">
@@ -200,7 +206,7 @@
                         <div class="row" style="margin-top: -20px">
                             <div class="col-12">
                                 <div class="preview-list">
-                                    @foreach ($songs as $item)
+                                    @foreach ($songs->reverse() as $item)
                                         @if ($item->is_approved)
                                             <div class="preview-item">
                                                 <div class="preview-thumbnail">
@@ -231,7 +237,7 @@
                                                                 </svg>
                                                             </a>
                                                             <form action="{{ route('hapusSongPlaylist', $item->code) }}" method="get">
-                                                                <button type="submit">
+                                                                <button type="submit" class="iconminus">
                                                                     <i class="far fa-minus-square text-danger"
                                                                         style="font-size: 19px"></i>
                                                                 </button>
@@ -284,7 +290,7 @@
                             <div class="card cobai">
                                 <label for="gambar" id="tampil_gambar">
                                     <img src="{{ asset('storage/' . $playlistDetail->images) }}"
-                                        style="background-size: cover; background-repeat: no-repeat" width="150"
+                                        style="height: 100%; object-fit: cover;" width="150"
                                         alt="Gambar">
                                 </label>
                                 <input type="file" id="gambar" name="images" accept="image/png,image/jpg"

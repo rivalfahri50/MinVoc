@@ -38,7 +38,8 @@ class ArtistController extends Controller
         $artist = artist::with('user')->get();
         $playlists = playlist::all();
         $billboards = billboard::all();
-        return response()->view('artis.dashboard', compact('title', 'songs', 'genres', 'artist', 'billboards', 'playlists'));
+        $notifs = notif::with('artis.user')->where('user_id', auth()->user()->id)->get();
+        return response()->view('artis.dashboard', compact('title', 'songs', 'genres', 'artist', 'billboards', 'playlists', 'notifs'));
     }
 
     protected function playlist(): Response
@@ -46,7 +47,8 @@ class ArtistController extends Controller
         $title = "MusiCave";
         $playlists = playlist::all();
         $albums = album::all();
-        return response()->view('artis.playlist', compact('title', 'playlists', 'albums'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('artis.playlist', compact('title', 'playlists', 'albums', 'notifs'));
     }
 
     protected function penghasilan(): Response
@@ -58,33 +60,30 @@ class ArtistController extends Controller
         $totalArtist = artist::count();
         $songs = song::all();
         $penghasilan = artist::where('user_id', auth()->user()->id)->first();
-        // return response()->json(['success' => true, 'artist'=> $penghasilan->penghasilan ]);
-        return response()->view('artis.penghasilan', compact('title', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'penghasilan', 'projects'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('artis.penghasilan', compact('title', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'penghasilan', 'projects', 'notifs'));
     }
 
     protected function riwayat(): Response
     {
         $title = "MusiCave";
-
-        $riwayat = Riwayat::all();
-
-        $uniqueRows = $riwayat->unique(function($item){
-            return $item->user_id . $item->song_id . $item->play_date;
-        });
-        return response()->view('users.riwayat', compact('title', 'uniqueRows'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('artis.riwayat', compact('title', 'notifs'));
     }
 
     protected function profile(): Response
     {
         $title = "MusiCave";
-        return response()->view('artis.profile.profile', compact('title'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('artis.profile.profile', compact('title', 'notifs'));
     }
 
     protected function profile_ubah(string $code): Response
     {
         $title = "MusiCave";
         $user = User::where('code', $code)->get();
-        return response()->view('artis.profile.profile_ubah', compact('title', 'user'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('artis.profile.profile_ubah', compact('title', 'user', 'notifs'));
     }
 
     protected function tambah_playlist(string $code, Request $request)
@@ -94,7 +93,7 @@ class ArtistController extends Controller
             $song->playlist_id = $request->input('playlist_id');
             $song->update();
         } catch (\Throwable $th) {
-            return response()->redirectTo('/artis/playlist');
+            return abort(404);
         }
         return response()->redirectTo('/artis/playlist');
     }
@@ -142,10 +141,11 @@ class ArtistController extends Controller
             $title = "MusiCave";
             $playlists = playlist::all();
             $albums = album::all();
+            $notifs = notif::where('user_id', auth()->user()->id)->get();
         } catch (\Throwable $th) {
-            return response()->view('artis.playlist', compact('title', 'playlists', 'albums'));
+            return abort(404);
         }
-        return response()->view('artis.playlist', compact('title', 'playlists', 'albums'));
+        return response()->view('artis.playlist', compact('title', 'playlists', 'albums', 'notifs'));
     }
 
     protected function verifiedAccount(string $code, Request $request)
@@ -176,6 +176,7 @@ class ArtistController extends Controller
         try {
             $imagePath = $request->file('foto')->store('images', 'public');
             $artist->pengajuan_verified_at = now()->toDateString();
+            $artist->verification_status = "pending";
             $msg = 'Pengajuan Verifikasi';
             $artist->image = $imagePath;
             $artist->update();
@@ -183,7 +184,7 @@ class ArtistController extends Controller
             Alert::error('message', 'Gagal Mengirim Request Verification Account');
             return response()->redirectTo('/artis/verified')->with('failed', "failed");
         }
-        Alert::info('message', 'Success Mengirim Request Verification Account, Mohon Tunggu!!')->autoClose(2000);
+        Alert::success('message', 'Success Mengirim Request Verification Account, Mohon Tunggu!!')->autoClose(2000);
         return response()->redirectTo('/artis/verified')->with('message', "success");
     }
 
@@ -289,7 +290,7 @@ class ArtistController extends Controller
         try {
             User::where('code', $code)->update($value);
         } catch (Throwable $e) {
-            return redirect()->back()->withErrors($validate)->withInput();
+            return abort(404);
         }
         return redirect()->back()->withErrors($validate)->withInput();
     }
@@ -310,8 +311,7 @@ class ArtistController extends Controller
                 $playlist->delete();
             }
         } catch (\Throwable $th) {
-            Log::error('Error deleting playlist: ' . $th->getMessage());
-            return response()->redirectTo('artis/playlist');
+            return abort(404);
         }
         return response()->redirectTo('artis/playlist');
     }
@@ -323,7 +323,7 @@ class ArtistController extends Controller
             $song->playlist_id = null;
             $song->save();
         } catch (\Throwable $th) {
-            return redirect()->back();
+            return abort(404);
         }
         return redirect()->back();
     }
@@ -342,8 +342,7 @@ class ArtistController extends Controller
             song::where('album_id', $album->id)->update(['album_id' => null]);
             $album->delete();
         } catch (\Throwable $th) {
-            Log::error('Error deleting playlist: ' . $th->getMessage());
-            return response()->redirectTo('/artis/playlist');
+            return abort(404);
         }
 
         return response()->redirectTo('/artis/playlist');
@@ -356,7 +355,8 @@ class ArtistController extends Controller
         $artis = artist::where('user_id', auth()->user()->id)->first();
         $genres = genre::all();
         $albums = album::all();
-        return response()->view('artis.unggahAudio', compact('title', 'datas', 'genres', 'albums', 'artis'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('artis.unggahAudio', compact('title', 'datas', 'genres', 'albums', 'artis', 'notifs'));
     }
 
     protected function unggahAudio(Request $request)
@@ -387,6 +387,15 @@ class ArtistController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
+
+        $artis = artist::where('user_id', Auth::user()->id)->first();
+        $data = [
+            'artis_id' => $artis->id,
+            'title' => $request->input('judul'),
+            'user_id' => auth()->user()->id,
+            'is_reject' => false
+        ];
+        notif::create($data);
 
         try {
             DB::beginTransaction();
@@ -423,9 +432,7 @@ class ArtistController extends Controller
             return redirect('/artis/unggahAudio')->with('success', 'Song uploaded successfully.');
         } catch (\Throwable $e) {
             DB::rollBack();
-            Log::error('Error uploading song: ' . $e->getMessage());
-            // Alert::error('message', 'Gagal Mengunggah Lagu');
-            return redirect('/artis/unggahAudio')->with('error', 'Failed to upload song. Please try again later.');
+            return abort(404);
         }
     }
 
@@ -437,7 +444,8 @@ class ArtistController extends Controller
         $albums = album::where('artis_id', $billboard->artis_id)->get();
         $songs = song::all();
         $playlists = playlist::all();
-        return response()->view('artis.billboard.billboard', compact('title', 'billboard', 'albums', 'songs', 'playlists'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('artis.billboard.billboard', compact('title', 'billboard', 'albums', 'songs', 'playlists', 'notifs'));
     }
 
     protected function albumBillboard(string $code): Response
@@ -446,13 +454,15 @@ class ArtistController extends Controller
         $album = album::where('code', $code)->first();
         $songs = song::where('album_id', $album->id)->get();
         $playlists = playlist::all();
-        return response()->view('artis.billboard.album', compact('title', 'album', 'songs', 'playlists'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('artis.billboard.album', compact('title', 'album', 'songs', 'playlists', 'notifs'));
     }
 
     protected function album(): Response
     {
         $title = "MusiCave";
-        return response()->view('artis.billboard.album', compact('title'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('artis.billboard.album', compact('title', 'notifs'));
     }
 
     protected function kategori(string $code): Response
@@ -461,14 +471,16 @@ class ArtistController extends Controller
         $genre = genre::where('code', $code)->first();
         $playlists = playlist::all();
         $songs = song::where('genre_id', $genre->id)->get();
-        return response()->view('artis.kategori.kategori', compact('title', 'genre', 'songs', 'playlists'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('artis.kategori.kategori', compact('title', 'genre', 'songs', 'playlists', 'notifs'));
     }
 
     protected function buatPlaylist(): Response
     {
         $title = "MusiCave";
         $songs = song::all();
-        return response()->view('artis.playlist.buat', compact('title', 'songs'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('artis.playlist.buat', compact('title', 'songs', 'notifs'));
     }
 
     public function search(Request $request)
@@ -478,11 +490,14 @@ class ArtistController extends Controller
 
         $artists = User::where('name', 'LIKE', '%' . $query . '%')->get();
 
-        $results = [
-            'songs' => $songs,
-            'artists' => $artists,
-        ];
-        // $results = User::where('name', 'LIKE', '%' . $query . '%')->get();
+        try {
+            $results = [
+                'songs' => $songs,
+                'artists' => $artists,
+            ];
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
         return response()->json(['results' => $results]);
     }
 
@@ -503,13 +518,15 @@ class ArtistController extends Controller
 
         if ($song) {
             $songs = song::all();
-            return view('artis.search.songSearch', compact('song', 'title', 'songs', 'playlists'));
+            $notifs = notif::where('user_id', auth()->user()->id)->get();
+            return view('artis.search.songSearch', compact('song', 'title', 'songs', 'playlists', 'notifs'));
         } else if ($user) {
             $artis = artist::where('user_id', $user->id)->first();
             $songs = song::where('artis_id', $artis->id)->get();
-            return view('artis.search.artisSearch', compact('user', 'title', 'songs', 'playlists'));
+            $notifs = notif::where('user_id', auth()->user()->id)->get();
+            return view('artis.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs'));
         } else {
-            return "not found";
+            return abort(404);
         }
     }
 
@@ -522,18 +539,25 @@ class ArtistController extends Controller
 
         if ($song) {
             $songs = song::all();
-            return view('artis.search.songSearch', compact('song', 'title', 'songs', 'playlists'));
+            $notifs = notif::where('user_id', auth()->user()->id)->get();
+            return view('artis.search.songSearch', compact('song', 'title', 'songs', 'playlists', 'notifs'));
         } else if ($user) {
             $artis = artist::where('user_id', $user->id)->first();
             $songs = song::where('artis_id', $artis->id)->get();
-            return view('artis.search.artisSearch', compact('user', 'title', 'songs', 'playlists'));
+            $notifs = notif::where('user_id', auth()->user()->id)->get();
+            return view('artis.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs'));
+        } else {
+            return abort(404);
         }
     }
 
     public function verified(Request $request)
     {
         $title = "MusiCave";
-        return response()->view('artis.verified', compact('title'));
+        $artis = artist::where('user_id', auth()->user()->id)->first();
+        $notif = notif::where('artis_id', $artis->id)->first();
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('artis.verified', compact('title', 'artis', 'notifs'));
     }
 
     protected function storePlaylist(Request $request): Response
@@ -560,11 +584,12 @@ class ArtistController extends Controller
                     ];
             }
             playlist::create($values);
+            $notifs = notif::where('user_id', auth()->user()->id)->get();
             $playlists = playlist::all();
         } catch (\Throwable $th) {
-            return response()->view('artis.playlist', compact('title'));
+            return abort(404);
         }
-        return response()->view('artis.playlist', compact('title', 'playlists'));
+        return response()->view('artis.playlist', compact('title', 'playlists', 'notifs'));
     }
 
     protected function ubahPlaylist(Request $request, string $code)
@@ -598,9 +623,10 @@ class ArtistController extends Controller
             playlist::where('code', $code)->update($values);
             $playlists = playlist::all();
         } catch (\Throwable $th) {
-            return response()->view('artis.playlist', compact('title'));
+            return abort(404);
         }
-        return response()->view('artis.playlist', compact('title', 'playlists'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('artis.playlist', compact('title', 'playlists', 'notifs'));
     }
 
     protected function ubahAlbum(Request $request, string $code)
@@ -629,10 +655,11 @@ class ArtistController extends Controller
             }
             $album->update($values);
             $album = album::all();
+            $notifs = notif::where('user_id', auth()->user()->id)->get();
         } catch (\Throwable $th) {
-            return response()->view('artis.playlist', compact('title'));
+            return abort(404);
         }
-        return response()->view('artis.playlist', compact('title', 'album'));
+        return response()->view('artis.playlist', compact('title', 'album', 'notifs'));
     }
 
     protected function detailPlaylist(string $code): Response
@@ -641,7 +668,8 @@ class ArtistController extends Controller
         $songs = song::where('playlist_id', $playlistDetail->id)->get();
         $playlists = playlist::all();
         $title = "MusiCave";
-        return response()->view('artis.playlist.contoh', compact('title', 'playlistDetail', 'songs', 'playlists'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('artis.playlist.contoh', compact('title', 'playlistDetail', 'songs', 'playlists', 'notifs'));
     }
 
     protected function detailAlbum(string $code): Response
@@ -650,27 +678,30 @@ class ArtistController extends Controller
         $songs = song::all();
         $playlists = playlist::all();
         $title = "MusiCave";
-        // dd($songs);
-        return response()->view('artis.playlist.contohAlbum', compact('title', 'albumDetail', 'songs', 'playlists'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('artis.playlist.contohAlbum', compact('title', 'albumDetail', 'songs', 'playlists', 'notifs'));
     }
 
     protected function contohPlaylist(): Response
     {
         $title = "MusiCave";
-        return response()->view('artis.playlist.contoh', compact('title'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('artis.playlist.contoh', compact('title', 'notifs'));
     }
 
     protected function disukaiPlaylist(): Response
     {
         $title = "MusiCave";
-        return response()->view('artis.playlist.disukai', compact('title'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('artis.playlist.disukai', compact('title', 'notifs'));
     }
 
     protected function viewKolaborasi(Request $request)
     {
         $title = "Kolaborasi";
         $datas = projects::all();
-        return response()->view('artis.kolaborasi', compact('title', 'datas'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('artis.kolaborasi', compact('title', 'datas', 'notifs'));
     }
 
     protected function viewLirikAndChat(Request $request, string $code)
@@ -679,18 +710,20 @@ class ArtistController extends Controller
         $project = DB::table('projects')->where('code', $code)->first();
         $artis = artist::where('user_id', auth()->user()->id)->first();
         $datas = messages::with('messages')->get();
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
         try {
             projects::where('code', $project->code)->update(['penerima_project' => $artis->id]);
         } catch (\Throwable $th) {
-            return response()->view('artis.lirikAndChat', compact('title', 'project', 'datas'));
+            return abort(404);
         }
-        return response()->view('artis.lirikAndChat', compact('title', 'project', 'datas'));
+        return response()->view('artis.lirikAndChat', compact('title', 'project', 'datas', 'notifs'));
     }
 
     protected function showData(string $id)
     {
         $data = DB::table('projects')->where('code', $id)->get();
-        return response()->view('artis.kolaborasi', compact('data'));
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('artis.kolaborasi', compact('data', 'notifs'));
     }
 
     protected function logout(Request $request)
@@ -744,7 +777,7 @@ class ArtistController extends Controller
         try {
             $project->update($data);
         } catch (Throwable $e) {
-            return response()->redirectTo('/artis/kolaborasi')->with('message', "Gagal untuk register!!");
+            return abort(404);
         }
         return response()->redirectTo('/artis/kolaborasi')->with('message', 'User created successfully.');
     }
@@ -753,7 +786,6 @@ class ArtistController extends Controller
     {
         $project = projects::where('id', $request->input('id_project'))->first();
         $user = artist::where('user_id', auth()->user()->id)->first();
-        // dd($user);
         $message = messages::create([
             'code' => Str::uuid(),
             'sender_id' => $project->pembuat_project,
@@ -761,12 +793,11 @@ class ArtistController extends Controller
             'project_id' => $project->id,
             'message' => $request->input('message')
         ]);
-        $data = messages::with('messages')->get();
         try {
+            $data = messages::with('messages')->get();
         } catch (\Throwable $th) {
-            return redirect()->back();
+            return abort(404);
         }
-
         return redirect()->back()->with([
             'message' => $message->message,
             'datas' => $data
@@ -776,7 +807,6 @@ class ArtistController extends Controller
     protected function rejectProject(Request $request)
     {
         $project = projects::where('code', $request->input('code'))->first();
-        // dd($project);
         try {
             $data = [
                 'code' => $project->code,
@@ -792,7 +822,7 @@ class ArtistController extends Controller
             ];
             $project->update($data);
         } catch (\Throwable $th) {
-            return redirect()->back();
+            return abort(404);
         }
         return redirect()->back();
     }
@@ -839,7 +869,7 @@ class ArtistController extends Controller
                 ]
             );
         } catch (Throwable $e) {
-            return response()->redirectTo('/artis/kolaborasi')->with('message', "Gagal untuk register!!");
+            return abort(404);
         }
         return response()->redirectTo('/artis/kolaborasi')->with('message', 'User created successfully.');
     }

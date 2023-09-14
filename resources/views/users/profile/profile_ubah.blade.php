@@ -65,6 +65,11 @@
                         <div class="p-5">
                             <input type="file" id="gambar" accept="image/png,image/jpg" name="avatar"
                                 class="form-control" onchange="previewImage()">
+                            @if ($errors->has('avatar'))
+                                <div class="text-danger mt-1 my-1" style="width: 200px">
+                                    {{ $errors->first('avatar') }}
+                                </div>
+                            @endif
                         </div>
                     </div>
 

@@ -125,6 +125,27 @@
             top: 10px;
             right: 10px;
         }
+        .closebutton {
+            display: block;
+            color: #957DAD;
+            position: absolute;
+            right: 10px;
+        }
+
+        .navbar .navbar-menu-wrapper .navbar-nav .nav-item.dropdown .dropdown-menu.navbar-dropdown .dropdown-item:hover {
+            color: inherit;
+        }
+
+        .dropdown-item:hover,
+        .dropdown-item:focus {
+            color: inherit;
+            text-decoration: none;
+            background-color: inherit;
+        }
+
+        .popupalasan:hover {
+            color: #957DAD
+        }
     </style>
     <script>
         // INI SCRIPT UNTUK HASIL SEARCH TAMPIL/TIDAK
@@ -329,45 +350,43 @@
                             <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown"
                                 href="#" data-toggle="dropdown">
                                 <i class="mdi mdi-bell"></i>
-                                <span class="count bg-danger"></span>
+                                @if (count($notifs) > 0)
+                                    <span class="count bg-danger"></span>
+                                @endif
                             </a>
                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                                 aria-labelledby="notificationDropdown">
-                                <a href="#" class="dropdown-item preview-item">
-                                    <div class="preview-thumbnail">
-                                        <div class="preview-icon rounded-circle">
-                                            <img src="/user/assets/images/faces/face12.jpg">
+                                @foreach ($notifs->reverse() as $item)
+                                    @if ($item)
+                                        <div class="dropdown-item preview-item" style="gap: 15px; cursor: auto;">
+                                            @if ($item->message == null)
+                                                <div>
+                                                    <img src="{{ asset('storage/' . $item->artis->user->avatar) }}"
+                                                        width="40" style="border-radius: 100%" alt=""
+                                                        srcset="">
+                                                </div>
+                                            @endif
+                                            <div class="preview-item-content">
+                                                <p class="preview-subject mb-1">{{ $item->title }}</p>
+                                                @if ($item->message !== null)
+                                                    <p class="text-muted ellipsis mb-0" style="font-size: 12px">Klik
+                                                        ketika melihat alasan</p>
+                                                @else
+                                                    <p class="text-muted ellipsis mb-0">{{ $item->artis->user->name }}
+                                                    </p>
+                                                @endif
+                                            </div>
+                                            <button class="btn btnicon p-0" style="background: none; border: none; margin-bottom: 20px;"
+                                                onclick="">
+                                                <i class="far fa-times-circle text-danger"
+                                                    style="font-size: 11px;"></i>
+                                            </button>
                                         </div>
-                                    </div>
-                                    <div class="preview-item-content">
-                                        <p class="preview-subject mb-1">Gajah</p>
-                                        <p class="text-muted ellipsis mb-0"> Tulus </p>
-                                    </div>
-                                </a>
-                                <a href="#" class="dropdown-item preview-item">
-                                    <div class="preview-thumbnail">
-                                        <div class="preview-icon rounded-circle">
-                                            <img src="/user/assets/images/faces/face12.jpg">
-                                        </div>
-                                    </div>
-                                    <div class="preview-item-content">
-                                        <p class="preview-subject mb-1">Gajah</p>
-                                        <p class="text-muted ellipsis mb-0"> Tulus </p>
-                                    </div>
-                                </a>
-                                <a href="#" class="dropdown-item preview-item">
-                                    <div class="preview-thumbnail">
-                                        <div class="preview-icon rounded-circle">
-                                            <img src="/user/assets/images/faces/face12.jpg">
-                                        </div>
-                                    </div>
-                                    <div class="preview-item-content">
-                                        <p class="preview-subject mb-1">Gajah</p>
-                                        <p class="text-muted ellipsis mb-0"> Tulus </p>
-                                    </div>
-                                </a>
+                                    @endif
+                                @endforeach
                             </div>
                         </li>
+
                         <li class="nav-item dropdown">
                             <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                                 <div class="navbar-profile profile-picture">
@@ -379,7 +398,7 @@
                                 aria-labelledby="profileDropdown">
                                 <div class="p-3 mb-0 gap-3"
                                     style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
-                                    <img class="img-xs rounded-circle"
+                                    <img class="img-xs rounded-circle" style="object-fit: cover;"
                                         src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
                                     <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ auth()->user()->name }}
                                     </p>
@@ -443,6 +462,28 @@
                                 <button class="btn" type="submit">Tambah</button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="alasan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header pb-0">
+                            <h3 class="modal-title judul" id="exampleModalLabel">Pengajuan verifikasi akun ditolak</h3>
+                            {{-- <button type="button" style="background: none; border: none;" class="close-button far fa-times-circle" data-bs-dismiss="modal" aria-label="Close"></button> --}}
+                            <button type="button" class="closebutton far fa-times-circle" data-dismiss="modal" aria-label="Close" style="background: none; border: none;">
+                                <span aria-hidden="true" class=""></span>
+                            </button>
+                        </div>
+                        <div class="modal-body pt-1">
+                            <p style="padding: 5px;">
+                                Setelah mempertimbangkan dengan seksama, kami harus menolak pengajuan verifikasi akun anda. Verifikasi akun memerlukan persyaratan tertentu yang saat ini belum terpenuhi oleh akun anda.
+                            </p>
+                            <p style="padding: 5px;">
+                                Terima kasih atas pengertian Anda
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>

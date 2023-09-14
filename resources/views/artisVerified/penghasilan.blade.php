@@ -101,50 +101,98 @@
                 border-top-right-radius: 10px;
                 border-bottom-right-radius: 10px;
             }
+
+            .judul {
+                padding: 5px;
+                color: #957DAD;
+                font-weight: 600;
+                font-size: 20px;
+            }
+
+            .jarak {
+                gap: 10px;
+            }
+
+            .pcard {
+                padding: 15px 10px;
+            }
+
+            .link {
+                color: #85BAD9;
+                border: none;
+                background: none;
+                text-align: left;
+            }
         </style>
         <div class="content-wrapper">
             <div class="row">
                 <div class="col-md-12 mb-3">
                     <div class="row">
-                        <div class="col-2">
-                            <div class="card coba">
-                                <h3 class="angka m-0">{{ $totalPengguna }} <span class="fas fa-user fa-sm ikon"></span></h3>
-                                <h4 class="judul mb-3">Pengguna</h4>
-                                <p class="teks">Sejak 2023</p>
+                        <div class="col-4">
+                            <div class="card pcard jarak">
+                                <h3 class="angka m-0">Rp 20.000.000</h3>
+                                <h4 class="judulnottebal mb-0">Total penghasilan</h4>
+                                <button class="btn-unstyled mr-2 link mb-0" data-bs-toggle="modal" data-bs-target="#caripenghasilan">Cairkan Penghasilan</a>
                             </div>
                         </div>
-                        <div class="col-2">
-                            <div class="card coba">
-                                <h3 class="angka m-0">{{ $totalLagu }}<span
-                                        class="fas fa-microphone-alt fa-sm ikon"></span></h3>
-                                <h4 class="judul mb-3">Lagu</h4>
-                                <p class="teks">Sejak 2023</p>
+                        <div class="modal fade" id="caripenghasilan" data-bs-backdrop="static" data-bs-keyboard="false"
+                            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content border-0" style="background-color: white">
+                                    <div class="modal-header border-0">
+                                        <h1 class="modal-title fs-5 judul" id="staticBackdropLabel">Detail</h1>
+                                        <button type="button" class="btn-unstyled link" data-bs-dismiss="modal"
+                                            aria-label="Close">
+                                            <i class="mdi mdi-close-circle-outline btn-icon"
+                                                style="color: #957DAD; font-size: 20px;"></i>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body border-0">
+                                        <div class="col-md-12" style="font-size: 13px">
+                                            <div class="mb-3">
+                                                <p for="namakategori" class="form-label judulnottebal">Total Penghasilan</p>
+                                                <h3 class="judul">Rp20.000.000</h3>
+                                            </div>
+                                            <div class="mb-3">
+                                                <p for="konsep" class="form-label judulnottebal">Jumlah Pencairan</p>
+                                                <input type="text" id="harga" class="form-control">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="modal-footer border-0">
+                                        <button type="button" class="btn rounded-3">
+                                            <a href="" class="btn-link"
+                                                style="color: inherit; text-decoration: none;">Setujui</a></button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-2">
-                            <div class="card coba">
-                                <h3 class="angka m-0">{{ $totalArtist }} <span class="fas fa-music fa-sm ikon"></span></h3>
-                                <h4 class="judul mb-3">Artis</h4>
-                                <p class="teks">Sejak 2023</p>
+                        <div class="col-4">
+                            <div class="card pcard jarak" style="height: 100%;">
+                                <h3 class="angka m-0">Rp 10.000.000</h3>
+                                <h4 class="judulnottebal">Sisa Penghasilan</h4>
                             </div>
                         </div>
-                        <div class="col-6 row no-gutters">
-                            <div class="card coba">
+                        <div class="col-4 row no-gutters">
+                            <div class="card">
                                 <img src="/assets/images/logo.svg" width="80%" height="100%" alt="logo"
-                                    class="ml-5 md-3" />
+                                    class="ml-4 md-3" />
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-12 mb-3">
+                    <h3 class="judul">Grafik total penghasilan</h3>
                     <div class="card coba">
                         <canvas id="myChart" width="800" height="300"></canvas>
                     </div>
                 </div>
 
+                {{-- @dd($projects) --}}
 
                 <div class="col-md-12">
-                    <h3 class="judul">Riwayat Persetujuan </h3>
+                    <h3 class="judul">Riwayat Penghasilan Masuk</h3>
                     <div class="card mb-3">
                         <div class="table-body">
                             <div class="table-container">
@@ -157,7 +205,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($songs as $item)
+                                        @foreach ($projects->reverse() as $item)
                                             <tr class="table-row">
                                                 <td class="table-cell">
                                                     <div class="cell-content">
@@ -165,11 +213,11 @@
                                                             class="avatar">
                                                         <div>
                                                             <h6>{{ $item->judul }}</h6>
-                                                            <p class="text-muted m-0">{{ $item->artist->user->name }}</p>
+                                                            <p class="text-muted m-0">{{ $item->artis->user->name }}</p>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td class="table-cell">{{ $item->genre }}</td>
+                                                <td class="table-cell">{{ $item->harga }}</td>
                                                 <td class="table-cell">{{ $item->created_at->toDateString() }}</td>
                                             </tr>
                                         @endforeach
@@ -185,6 +233,36 @@
 
 
     <script src="/user/assets/js/tablesort.js"></script>
+    <script>
+        function myFunction(x) {
+            x.classList.toggle("far"); // Menghapus kelas "fa fa-heart"
+            x.classList.toggle("fas"); // Menambahkan kelas "fas fa-heart"
+            x.classList.toggle("warna-kostum-like"); // Menambahkan kelas warna merah
+        }
+
+        /* ============Dengan Rupiah=========== */
+        var harga = document.getElementById('harga');
+        harga.addEventListener('keyup', function(e) {
+            harga.value = formatRupiah(this.value, 'Rp. ');
+        });
+
+        /* Fungsi */
+        function formatRupiah(angka, prefix) {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         var ctx = document.getElementById('myChart').getContext('2d');

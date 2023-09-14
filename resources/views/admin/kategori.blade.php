@@ -20,7 +20,7 @@
                             <div class="text-lg-end mb-3">
                                 <a href="#popuptambah" class="btn full-width-btn" type="button">
                                     <i class="fas fa-plus"></i>
-                                    Tambah kategori
+                                    Tambah Genre
                                 </a>
                             </div>
                         </div>
@@ -38,7 +38,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($genres as $item)
+                                                @foreach ($genres->reverse() as $item)
                                                     <tr class="table-row">
                                                         <td class="table-cell">
                                                             <div class="cell-content">
@@ -50,7 +50,7 @@
                                                         <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
                                                         <td class="table-cell">
                                                             <button type="button" class="btn btnicon" data-toggle="modal"data-target="#exampleModalCenter{{ $item->id }}">
-                                                                <i class="fas fa-pencil-alt text-warning"></i>
+                                                                <i class="fas fa-pencil-alt" style="color: #5b6b89"></i>
                                                             </button>
                                                             <button class="btn btnicon"
                                                                 onclick="deleteGenre('{{ $item->code }}')">
@@ -113,14 +113,13 @@
                 </div>
                 <!-- page-body-wrapper ends -->
             </div>
-            @foreach ( $genres as $item)
-
+            @foreach ( $genres->reverse() as $item)
             <div class="modal fade" id="exampleModalCenter{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="card window">
                     <div class="card-body">
                         <a href="" class="close-button far fa-times-circle"></a>
                         <h3 class="judul">Edit Kategori</h3>
-                        <form class="row" action="{{ route('buat.genre', $item->id) }}" method="POST" enctype="multipart/form-data">
+                        <form class="row" action="{{ route('edit.genre', $item->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
                             <div class="col-md-12">
