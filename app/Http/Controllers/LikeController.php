@@ -25,7 +25,7 @@ class LikeController extends Controller
 
     public function likeArtist(Request $request, artist $artist)
     {
-       
+
         $user = Auth::user();
         if (!$user) {
             return response()->json(['error' => 'Pengguana tidak diotentifikasi'], 401);
@@ -40,7 +40,12 @@ class LikeController extends Controller
             ]);
             $artist->increment('likes');
         }
-        return response()->json(['success' => true]);
+        return response()->json(['success' => true, 'likes'=> $artist->likes]);
+    }
+
+    public function likeCount(artist $artist) {
+        $artist = artist::all();
+        return response()->json($artist);
     }
 
 }

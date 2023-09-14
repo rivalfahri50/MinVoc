@@ -16,17 +16,18 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($collection as $item)
-
-                                @endforeach
+                                @foreach ($uniqueRows as $item)
                                 <tr class="table-row baris">
                                     <td class="table-cell">
-                                        <h6>Cindy</h6>
-                                        <p class="text-muted m-0">Atulus</p>
+                                        <h6>{{ $item->code}}</h6>
+                                        <p class="text-muted m-0">{{ $item->song->artist->user->name}}</p>
                                     </td>
-                                    <td class="table-cell">Dangdut</td>
-                                    <td class="table-cell">04/09/2023</td>
+                                    <td class="table-cell">{{ $item->song->genre->name}}</td>
+                                    <td class="table-cell">
+                                        {{ \Carbon\Carbon::parse($item->play_date)->isoFormat('D MMMM Y')}}
+                                    </td>
                                 </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

@@ -11,6 +11,9 @@ class Riwayat extends Model
     protected $table = 'riwayat';
     protected $fillable = ['user_id','song_id', 'play_date'];
 
+    public function user(){
+        return $this->belongsTo(song::class, 'user_id');
+    }
     public function song(){
         return $this->belongsTo(song::class, 'song_id');
     }

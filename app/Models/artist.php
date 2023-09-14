@@ -16,6 +16,7 @@ class artist extends Model
         'likes',
         'is_verified',
         'verification_status',
+        'penghasilan',
         'pengajuan_verified_at',
     ];
     public function likedByUsers()

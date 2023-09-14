@@ -12,6 +12,7 @@ use App\Models\notif;
 use App\Models\Notifikasi;
 use App\Models\playlist;
 use App\Models\projects;
+use App\Models\Riwayat;
 use App\Models\song;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -57,13 +58,20 @@ class ArtistController extends Controller
         $totalArtist = artist::count();
         $songs = song::all();
         $penghasilan = artist::where('user_id', auth()->user()->id)->first();
+        // return response()->json(['success' => true, 'artist'=> $penghasilan->penghasilan ]);
         return response()->view('artis.penghasilan', compact('title', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'penghasilan', 'projects'));
     }
 
     protected function riwayat(): Response
     {
         $title = "MusiCave";
-        return response()->view('artis.riwayat', compact('title'));
+
+        $riwayat = Riwayat::all();
+
+        $uniqueRows = $riwayat->unique(function($item){
+            return $item->user_id . $item->song_id . $item->play_date;
+        });
+        return response()->view('users.riwayat', compact('title', 'uniqueRows'));
     }
 
     protected function profile(): Response
@@ -409,6 +417,8 @@ class ArtistController extends Controller
             ]);
             DB::commit();
 
+            $penghasilanArtist = (int) $artis->penghasilan + 35;
+            $artis->update(['penghasilan' => $penghasilanArtist]);
             // Alert::success('message', 'Berhasil Mengunggah Lagu');
             return redirect('/artis/unggahAudio')->with('success', 'Song uploaded successfully.');
         } catch (\Throwable $e) {

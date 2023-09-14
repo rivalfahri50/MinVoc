@@ -102,14 +102,6 @@
         <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->
-
-    <script>
-        function myFunction(x) {
-            x.classList.toggle("far"); // Menghapus kelas "fa fa-heart"
-            x.classList.toggle("fas"); // Menambahkan kelas "fas fa-heart"
-            x.classList.toggle("warna-kostum-like"); // Menambahkan kelas warna merah
-        }
-    </script>
     <script>
         // Kode JavaScript untuk membuat grafik
         var ctx = document.getElementById('myChart').getContext('2d');

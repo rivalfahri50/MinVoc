@@ -74,7 +74,7 @@
                                                         <div class="text-group align-items-center">
                                                             <i id="like{{ $item->id }}" data-id="{{ $item->id }}"
                                                                 onclick="toggleLike(this, {{ $item->id }})"
-                                                                class="shared-icon-like {{ $item->likes > 0 ? 'fas' : 'far' }} fa-heart pr-2"></i>
+                                                                class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                             <p style="pointer-events: none;">{{ $item->waktu }}</p>
                                                             <a data-bs-toggle="modal"
                                                                 data-bs-target="#staticBackdrop-{{ $item->code }}"
@@ -114,7 +114,7 @@
                                                     <div class="preview-item-content d-sm-flex flex-grow">
                                                         <div class="flex-grow">
                                                             <h6 class="preview-subject">{{ $item->user->name }}</h6>
-                                                            <p class="text-muted mb-0">{{ $item->likes }} suka</p>
+                                                            <p class="text-muted mb-0" id="likeCount">{{ number_format($item->likes, 0,',','.')}}<p>suka</p></p>
                                                         </div>
                                                         <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                             <i id="like-artist{{$item->id}}" data-id="{{ $item->id }}"

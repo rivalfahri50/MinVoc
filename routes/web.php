@@ -214,10 +214,11 @@ Route::controller(SongController::class)->group(function () {
 Route::controller(LikeController::class)->group(function () {
     Route::post('/artist/{artist}/like', 'likeArtist');
     Route::get('/artist/check', 'likeCheck');
-    // Route::post('/artist/{artist}/like', 'like');
+    Route::get('/artist/count', 'likeCount');
 });
 
 Route::post('/simpan-riwayat', [RiwayatController::class, 'simpanRiwayat']);
+Route::post('/hitung/penghasilan', [RiwayatController::class, 'penghasilanArtist']);
 
 Route::get('/kebijakan-privasi', function () {
     return view('auth.kebijakanprivasi');
