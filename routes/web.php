@@ -55,6 +55,7 @@ Route::prefix('admin')->middleware('admin')->controller(AdminController::class)-
     Route::get('/iklan', 'iklan');
     Route::get('/riwayat', 'riwayat');
     Route::get('/verifikasi', 'verifikasi');
+    Route::get('/pencairan', 'pencairan');
     Route::get('/show', 'show');
     Route::get('/hapus-billboard/{code}', 'hapusBillboard')->name('hapus.billoard');
     Route::get('/hapus-music/{code}', 'hapusMusic')->name('hapus.music');

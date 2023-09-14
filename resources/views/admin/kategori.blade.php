@@ -38,7 +38,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($genres as $item)
+                                                @foreach ($genres->reverse() as $item)
                                                     <tr class="table-row">
                                                         <td class="table-cell">
                                                             <div class="cell-content">
@@ -113,8 +113,7 @@
                 </div>
                 <!-- page-body-wrapper ends -->
             </div>
-            @foreach ( $genres as $item)
-
+            @foreach ( $genres->reverse() as $item)
             <div class="modal fade" id="exampleModalCenter{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="card window">
                     <div class="card-body">

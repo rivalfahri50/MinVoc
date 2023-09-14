@@ -37,7 +37,7 @@ class ArtistController extends Controller
         $artist = artist::with('user')->get();
         $playlists = playlist::all();
         $billboards = billboard::all();
-        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        $notifs = notif::with('artis.user')->where('user_id', auth()->user()->id)->get();
         return response()->view('artis.dashboard', compact('title', 'songs', 'genres', 'artist', 'billboards', 'playlists', 'notifs'));
     }
 
@@ -183,7 +183,7 @@ class ArtistController extends Controller
             Alert::error('message', 'Gagal Mengirim Request Verification Account');
             return response()->redirectTo('/artis/verified')->with('failed', "failed");
         }
-        Alert::info('message', 'Success Mengirim Request Verification Account, Mohon Tunggu!!')->autoClose(2000);
+        Alert::success('message', 'Success Mengirim Request Verification Account, Mohon Tunggu!!')->autoClose(2000);
         return response()->redirectTo('/artis/verified')->with('message', "success");
     }
 
@@ -386,6 +386,15 @@ class ArtistController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
+
+        $artis = artist::where('user_id', Auth::user()->id)->first();
+        $data = [
+            'artis_id' => $artis->id,
+            'title' => $request->input('judul'),
+            'user_id' => auth()->user()->id,
+            'is_reject' => false
+        ];
+        notif::create($data);
 
         try {
             DB::beginTransaction();

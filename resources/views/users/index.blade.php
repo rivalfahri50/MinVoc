@@ -10,7 +10,7 @@
                 <div class="col-md-12 grid-margin stretch-card">
                     <h3 class="card-title mt-2 judul" style="font-size: 20px; font-weight: 600">Kategori</h3>
                     <div class="cards">
-                        @foreach ($genres as $item)
+                        @foreach ($genres->reverse() as $item)
                             <a href="/pengguna/kategori/{{ $item->code }}" class="card cardi card-scroll rounded-4">
                                 <img src="{{ asset('storage/' . $item->images) }}" class="img-fluid rounded-4 fit"
                                     width="100%" height="100%">
@@ -57,7 +57,7 @@
                                         @php
                                             $index_no = 0;
                                         @endphp
-                                        @foreach ($songs as $item)
+                                        @foreach ($songs->reverse() as $item)
                                             @if ($item->is_approved)
                                                 <div class="preview-item">
                                                     <div class="preview-thumbnail">
@@ -112,7 +112,7 @@
                             <div class="row" style="margin-top: -20px">
                                 <div class="col-12">
                                     <div class="preview-list">
-                                        @foreach ($artist as $item)
+                                        @foreach ($artist->reverse() as $item)
                                         @if ($item->user_id !== auth()->user()->id)
                                             <div class="preview-item">
                                                 <div class="preview-thumbnail">

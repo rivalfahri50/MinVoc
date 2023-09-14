@@ -335,12 +335,25 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                                 aria-labelledby="notificationDropdown">
-                                @foreach ($notifs as $item)
+                                @foreach ($notifs->reverse() as $item)
                                     @if ($item)
                                         <a href="#" class="dropdown-item preview-item">
+                                            @if ($item->message == null)
+                                                <div>
+                                                    <img src="{{ asset('storage/' . $item->artis->user->avatar) }}"
+                                                        width="40" style="border-radius: 100%" alt=""
+                                                        srcset="">
+                                                </div>
+                                            @endif
                                             <div class="preview-item-content">
                                                 <p class="preview-subject mb-1">{{ $item->title }}</p>
-                                                <p class="text-muted ellipsis mb-0">{{ $item->message }}</p>
+                                                @if ($item->message !== null)
+                                                    <p class="text-muted ellipsis mb-0" style="font-size: 12px">Klik
+                                                        ketika melihat alasan</p>
+                                                @else
+                                                    <p class="text-muted ellipsis mb-0">{{ $item->artis->user->name }}
+                                                    </p>
+                                                @endif
                                             </div>
                                         </a>
                                     @endif

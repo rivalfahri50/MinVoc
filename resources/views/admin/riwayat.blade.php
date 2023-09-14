@@ -16,30 +16,34 @@
                                 <th class="table-cell">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach ($songs as $item)
-                                @if ($item->is_approved)
-                                    <tr class="table-row baris">
-                                        <td class="table-cell">
-                                            <div class="cell-content">
-                                                <img src="../assets/images/faces/face1.jpg" alt="Face" class="avatar">
-                                                <div>
-                                                    <h6>Ada Saja</h6>
-                                                    <p class="text-muted m-0">tulus</p>
+                        @if (count($songs) > 0)
+                            <tbody>
+                                @foreach ($songs->reverse() as $item)
+                                    @if ($item->is_approved)
+                                        <tr class="table-row baris">
+                                            <td class="table-cell">
+                                                <div class="cell-content">
+                                                    <!-- Isi data pengguna di sini -->
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td class="table-cell">03/12/2023</td>
-                                        <td class="table-cell text-success">Selesai</td>
-                                        <td class="table-cell">
-                                            <button class="btn btnicon">
-                                                <i class="far fa-trash-alt text-danger"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                @endif
-                            @endforeach
-                        </tbody>
+                                            </td>
+                                            <td class="table-cell">03/12/2023</td>
+                                            <td class="table-cell text-success">Selesai</td>
+                                            <td class="table-cell">
+                                                <button class="btn btnicon">
+                                                    <i class="far fa-trash-alt text-danger"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            </tbody>
+                        @else
+                            <div>
+                                <img width="200" height="200" src="/icon-notFound/adminIcon.svg" alt=""
+                                    srcset="">
+                            </div>
+                        @endif
+
                     </table>
                 </div>
 

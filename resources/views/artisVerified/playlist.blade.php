@@ -10,7 +10,7 @@
                     <h3 class="judul" style="font-size: 20px; font-weight: 600">Rekomendasi Playlist</h3>
                     <div class="cards">
                         @if (!empty($playlists))
-                            @foreach ($playlists as $item)
+                            @foreach ($playlists->reverse() as $item)
                                 @if ($item->user_id !== auth()->user()->id)
                                     <a href="{{ route('detailPlaylistArtisVerified', $item->code) }}"
                                         class="card card-scroll coba text-decoration-none">
@@ -33,7 +33,7 @@
                     <h3 class="judul" style="font-size: 20px; font-weight: 600">Album</h3>
                     <div class="cards">
                         @if (!empty($albums))
-                            @foreach ($albums as $item)
+                            @foreach ($albums->reverse() as $item)
                                 {{-- @if ($item->artis->user_id == auth()->user()->id) --}}
                                     <a href="{{ route('detailAlbumArtisVerified', $item->code) }}"
                                         class="card card-scroll coba text-decoration-none">

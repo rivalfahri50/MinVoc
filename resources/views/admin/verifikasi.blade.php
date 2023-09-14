@@ -40,8 +40,7 @@
                                 <h5 class="judul mb-3">Foto KTP :</h5>
                                 <td class="table-cell">
                                     <div class="cell-content">
-                                        <img src="{{ asset('storage/' . $item->image) }}" alt="Face"
-                                            class="ktp">
+                                        <img src="{{ asset('storage/' . $item->image) }}" alt="Face" class="ktp">
                                     </div>
                                 </td>
                             </div>
@@ -75,7 +74,8 @@
                         <form id="hapus" action="{{ route('hapus.verified', $item->code) }}" method="GET">
                             @csrf
                             <div class="form-group" style="margin-top: -20px">
-                                <textarea class="form-control mt-3 " id="alasan" name="alasan" maxlength="200" rows="4" placeholder="Tulis alasan anda"></textarea>
+                                <textarea class="form-control mt-3 " id="alasan" name="alasan" maxlength="200" rows="4"
+                                    placeholder="Tulis alasan anda"></textarea>
                             </div>
                             <div class="text-md-right">
                                 <button type="submit" class="btn">Kirim</button>
@@ -233,32 +233,40 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($artist as $item)
-                                            @if ($item->pengajuan_verified_at)
-                                                <tr class="table-row ">
-                                                    <td class="table-cell">
-                                                        <div class="cell-content mt-1">
-                                                            <img src="{{ asset('storage/' . $item->user->avatar) }}"
-                                                                alt="Face" class="avatar mt-1">
-                                                            <div>
-                                                                <p>{{ $item->user->name }}</p>
+                                        @if (count($artist) > 0)
+                                            @foreach ($artist as $item)
+                                                @if ($item->pengajuan_verified_at)
+                                                    <tr class="table-row ">
+                                                        <td class="table-cell">
+                                                            <div class="cell-content mt-1">
+                                                                <img src="{{ asset('storage/' . $item->user->avatar) }}"
+                                                                    alt="Face" class="avatar mt-1">
+                                                                <div>
+                                                                    <p>{{ $item->user->name }}</p>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="table-cell mt-1">{{ $item->pengajuan_verified_at }}</td>
-                                                    <td class="table-cell text-warning mt-1">
-                                                        {{ $item->verification_status }}
-                                                    </td>
-                                                    <td class="table-cell">
-                                                        <button type="button" class="btn btnicon mt-1"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#staticBackdrop-{{ $item->code }}">
-                                                            <i class="far fa-eye text-info"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            @endif
-                                        @endforeach
+                                                        </td>
+                                                        <td class="table-cell mt-1">{{ $item->pengajuan_verified_at }}
+                                                        </td>
+                                                        <td class="table-cell text-warning mt-1">
+                                                            {{ $item->verification_status }}
+                                                        </td>
+                                                        <td class="table-cell">
+                                                            <button type="button" class="btn btnicon mt-1"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#staticBackdrop-{{ $item->code }}">
+                                                                <i class="far fa-eye text-info"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                @endif
+                                            @endforeach
+                                        @else
+                                            <div>
+                                                <img width="100" src="/icon-notFound/adminIcon.svg" alt=""
+                                                    srcset="">
+                                            </div>
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>

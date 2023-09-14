@@ -291,7 +291,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($datas as $item)
+                                        @foreach ($datas->reverse() as $item)
                                             @if ($item->artist_id === $artisUser->id)
                                                 @if (!$item->is_reject && $item->judul == 'none' && $item->audio == 'none' && $item->request_project_artis_id == null)
                                                     <tr class="table-row">
@@ -344,7 +344,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($datas as $item)
+                                        @foreach ($datas->reverse() as $item)
                                             {{-- @if ($item->status == 'pending' && $item->request_project_artis_id !== null) --}}
                                             @if (
                                                 ($item->request_project_artis_id !== null && $item->artist_id === $artisUser->id) ||

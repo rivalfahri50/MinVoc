@@ -205,7 +205,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($projects as $item)
+                                        @foreach ($projects->reverse() as $item)
                                             <tr class="table-row">
                                                 <td class="table-cell">
                                                     <div class="cell-content">

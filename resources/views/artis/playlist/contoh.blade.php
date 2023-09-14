@@ -203,7 +203,7 @@
                         <div class="row" style="margin-top: -20px">
                             <div class="col-12">
                                 <div class="preview-list">
-                                    @foreach ($songs as $item)
+                                    @foreach ($songs->reverse() as $item)
                                         @if ($item->is_approved)
                                             <div class="preview-item">
                                                 <div class="preview-thumbnail">

@@ -92,7 +92,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($datas as $item)
+                                @foreach ($datas->reverse() as $item)
                                     @if ($item->artis_id === $artis->id)
                                         <tr class="table-row">
                                             <td class="table-cell">

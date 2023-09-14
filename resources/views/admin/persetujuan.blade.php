@@ -17,7 +17,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($persetujuan as $item)
+                            @foreach ($persetujuan->reverse() as $item)
                                 @if (!$item->is_approved)
                                     <tr class="table-row">
                                         <td class="table-cell">
@@ -64,7 +64,7 @@
     </div>
 
     <!-- popup -->
-    @foreach ($persetujuan as $item)
+    @foreach ($persetujuan->reverse() as $item)
         <div class="modal fade" id="staticBackdrop-{{ $item->code }}" data-bs-backdrop="static" data-bs-keyboard="false"
             tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">

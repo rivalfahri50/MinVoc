@@ -76,7 +76,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($songs as $item)
+                                        @foreach ($songs->reverse() as $item)
                                             @if ($item->is_approved)
                                                 <tr class="table-row">
                                                     <td class="table-cell">

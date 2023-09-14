@@ -78,7 +78,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($billboards as $item)
+                                                @foreach ($billboards->reverse() as $item)
                                                 <tr class="table-row">
                                                     <td class="table-cell">
                                                         <div class="cell-content">
@@ -159,7 +159,7 @@
                         </div>
                     </div>
 
-                    @foreach ($billboards as $item)
+                    @foreach ($billboards->reverse() as $item)
                         <div id="staticBackdrop-{{ $item->code }}" class="modal">
                             <div class="card window">
                                 <div class="card-body">
@@ -211,7 +211,7 @@
                 <!-- page-body-wrapper ends -->
             </div>
             <!-- container-scroller -->
-            @foreach ($billboards as $item)
+            @foreach ($billboards->reverse() as $item)
             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="card window">
                     <div class="card-body">

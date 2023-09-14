@@ -206,7 +206,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($datas as $item)
+                                        @foreach ($datas->reverse() as $item)
                                             {{-- @if (!$item->is_reject && $item->judul == 'none' && $item->lirik == 'none') --}}
                                                 <tr class="table-row">
                                                     <td class="table-cell">

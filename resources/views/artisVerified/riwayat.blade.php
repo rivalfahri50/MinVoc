@@ -56,7 +56,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($uniqueRows as $item)
+                                @foreach ($uniqueRows->reverse() as $item)
                                     @if ($item->user_id === auth()->user()->id)
                                         <tr class="table-row baris">
                                             <td class="table-cell">

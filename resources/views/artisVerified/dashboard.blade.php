@@ -57,7 +57,7 @@
                                         @php
                                             $i = 0;
                                         @endphp
-                                        @foreach ($songs as $item)
+                                        @foreach ($songs->reverse() as $item)
                                             @if ($item->is_approved)
                                                 <div class="preview-item">
                                                     <div class="preview-thumbnail">
@@ -105,7 +105,7 @@
                             <div class="row" style="margin-top: -20px">
                                 <div class="col-12">
                                     <div class="preview-list">
-                                        @foreach ($artist as $item)
+                                        @foreach ($artist->reverse() as $item)
                                         @if ($item->user_id !== auth()->user()->id)
                                                 <div class="preview-item">
                                                     <div class="preview-thumbnail">
