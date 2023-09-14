@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -239,59 +240,39 @@ class AdminController extends Controller
             }
         }
     }
-    public function editGenre(Request $request, $genres)
+    public function editGenre(Request $request,string $code)
     {
-        $validator = Validator::make(
-            $request->only('name', 'images'),
-            [
-                'name' => 'required|string|max:50', // Hapus validasi unik jika diperlukan
-                'images' => 'mimes:jpeg,jpg,png,gif|required|max:10000',
-            ]
-        );
+        $genre = genre::find($code);
 
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-        } else {
-            try {
-
-
-                DB::beginTransaction();
-                $genre = genre::find($genres->id);
-
-
-                if (!$genre) {
-                    // Genre tidak ditemukan, mungkin berikan pesan kesalahan
-                    return redirect()->back()->with('error', 'Genre not found.');
-                }
-
-                // Update data genre sesuai dengan input form
-                $genre->name = $request->input('name');
-
-                // Handle file upload jika ada
-                if ($request->hasFile('images')) {
-                    $imagePath = $request->file('images')->store('genre_images', 'public');
-                    $genre->images = $imagePath;
-                }
-
-                $genre->save();
-
-                // Commit the transaction
-                DB::commit();
-
-                Alert::success('message', 'Success Mengedit Genre');
-                return redirect()->back()->with('success', 'Genre updated successfully.');
-            } catch (\Throwable $th) {
-                DB::rollBack();
-                Log::error('Error editing genre: ' . $th->getMessage());
-
-                Alert::error('message', 'Gagal Mengedit');
-                return redirect()->back()->with('error', 'Failed to edit genre.');
-            }
+        if (!$genre) {
+            return redirect()->back()->with('error', 'Genre not found.');
         }
-    }
 
+        $validator = $request->validate([
+            'name' => 'required|string|max:50',
+            'images' => 'image|mimes:jpeg,jpg,png,gif|max:10000', // Menggunakan "image" sebagai aturan validasi
+        ]);
+
+        try {
+            if ($request->hasFile('images')) {
+
+                if ($genre->images) {
+                    Storage::disk('public')->delete($genre->images);
+                }
+
+                $imagePath = $request->file('images')->store('genre_images', 'public');
+                $genre->images = $imagePath;
+            }
+
+            $genre->name = $request->input('name');
+            $genre->save();
+
+            return redirect()->back()->with('success', 'Genre updated successfully.');
+        } catch (\Throwable $th) {
+            Log::error('Error editing genre: ' . $th->getMessage());
+
+            return redirect()->back()->with('error', 'Failed to edit genre.');
+        }}
     protected function setujuVerified(Request $request, string $code)
     {
         $artis = artist::where('code', $code)->first();

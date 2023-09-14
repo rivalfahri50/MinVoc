@@ -21638,7 +21638,7 @@ a.text-dark:focus {
 
 .text-muted,
 .preview-list .preview-item .preview-item-content p .content-category {
-  color: #6c7293 !important;
+  color: #8E8E8E !important;
 }
 
 .text-black-50 {
@@ -25632,6 +25632,7 @@ div.tagsinput {
 .preview-list .preview-item .preview-item-content p {
   margin-bottom: 10px;
   line-height: 1;
+  font-weight: 600;
 }
 
 .preview-list .preview-item .preview-item-content p .content-category {

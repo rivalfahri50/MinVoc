@@ -125,6 +125,27 @@
             top: 10px;
             right: 10px;
         }
+        .closebutton {
+            display: block;
+            color: #957DAD;
+            position: absolute;
+            right: 10px;
+        }
+
+        .navbar .navbar-menu-wrapper .navbar-nav .nav-item.dropdown .dropdown-menu.navbar-dropdown .dropdown-item:hover {
+            color: inherit;
+        }
+
+        .dropdown-item:hover,
+        .dropdown-item:focus {
+            color: inherit;
+            text-decoration: none;
+            background-color: inherit;
+        }
+
+        .popupalasan:hover {
+            color: #957DAD
+        }
     </style>
     <script>
         // INI SCRIPT UNTUK HASIL SEARCH TAMPIL/TIDAK
@@ -337,7 +358,7 @@
                                 aria-labelledby="notificationDropdown">
                                 @foreach ($notifs->reverse() as $item)
                                     @if ($item)
-                                        <a href="#" class="dropdown-item preview-item">
+                                        <div class="dropdown-item preview-item" style="gap: 15px; cursor: auto;">
                                             @if ($item->message == null)
                                                 <div>
                                                     <img src="{{ asset('storage/' . $item->artis->user->avatar) }}"
@@ -355,7 +376,12 @@
                                                     </p>
                                                 @endif
                                             </div>
-                                        </a>
+                                            <button class="btn btnicon p-0" style="background: none; border: none; margin-bottom: 20px;"
+                                                onclick="">
+                                                <i class="far fa-times-circle text-danger"
+                                                    style="font-size: 11px;"></i>
+                                            </button>
+                                        </div>
                                     @endif
                                 @endforeach
                             </div>
@@ -436,6 +462,28 @@
                                 <button class="btn" type="submit">Tambah</button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="alasan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header pb-0">
+                            <h3 class="modal-title judul" id="exampleModalLabel">Pengajuan verifikasi akun ditolak</h3>
+                            {{-- <button type="button" style="background: none; border: none;" class="close-button far fa-times-circle" data-bs-dismiss="modal" aria-label="Close"></button> --}}
+                            <button type="button" class="closebutton far fa-times-circle" data-dismiss="modal" aria-label="Close" style="background: none; border: none;">
+                                <span aria-hidden="true" class=""></span>
+                            </button>
+                        </div>
+                        <div class="modal-body pt-1">
+                            <p style="padding: 5px;">
+                                Setelah mempertimbangkan dengan seksama, kami harus menolak pengajuan verifikasi akun anda. Verifikasi akun memerlukan persyaratan tertentu yang saat ini belum terpenuhi oleh akun anda.
+                            </p>
+                            <p style="padding: 5px;">
+                                Terima kasih atas pengertian Anda
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
