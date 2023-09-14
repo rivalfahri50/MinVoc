@@ -125,6 +125,7 @@
             top: 10px;
             right: 10px;
         }
+
         .closebutton {
             display: block;
             color: #957DAD;
@@ -356,7 +357,7 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                                 aria-labelledby="notificationDropdown">
-                                @foreach ($notifs->reverse() as $item)
+                                @foreach ($notifs as $item)
                                     @if ($item)
                                         <div class="dropdown-item preview-item" style="gap: 15px; cursor: auto;">
                                             @if ($item->message == null)
@@ -367,16 +368,21 @@
                                                 </div>
                                             @endif
                                             <div class="preview-item-content">
-                                                <p class="preview-subject mb-1">{{ $item->title }}</p>
+                                                <p class="preview-subject mb-1" style="font-weight: bold">
+                                                    {{ $item->title }}</p>
                                                 @if ($item->message !== null)
-                                                    <p class="text-muted ellipsis mb-0" style="font-size: 12px">Klik
-                                                        ketika melihat alasan</p>
+                                                    <button class="text-muted ellipsis mb-0"
+                                                        style="font-size: 12px; font-weight: normal"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#alasan-{{ $item->code }}">Klik
+                                                        untuk melihat alasan</button>
                                                 @else
                                                     <p class="text-muted ellipsis mb-0">{{ $item->artis->user->name }}
                                                     </p>
                                                 @endif
                                             </div>
-                                            <button class="btn btnicon p-0" style="background: none; border: none; margin-bottom: 20px;"
+                                            <button class="btn btnicon p-0"
+                                                style="background: none; border: none; margin-bottom: 20px;"
                                                 onclick="">
                                                 <i class="far fa-times-circle text-danger"
                                                     style="font-size: 11px;"></i>
@@ -466,27 +472,29 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="alasan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header pb-0">
-                            <h3 class="modal-title judul" id="exampleModalLabel">Pengajuan verifikasi akun ditolak</h3>
-                            {{-- <button type="button" style="background: none; border: none;" class="close-button far fa-times-circle" data-bs-dismiss="modal" aria-label="Close"></button> --}}
-                            <button type="button" class="closebutton far fa-times-circle" data-dismiss="modal" aria-label="Close" style="background: none; border: none;">
-                                <span aria-hidden="true" class=""></span>
-                            </button>
-                        </div>
-                        <div class="modal-body pt-1">
-                            <p style="padding: 5px;">
-                                Setelah mempertimbangkan dengan seksama, kami harus menolak pengajuan verifikasi akun anda. Verifikasi akun memerlukan persyaratan tertentu yang saat ini belum terpenuhi oleh akun anda.
-                            </p>
-                            <p style="padding: 5px;">
-                                Terima kasih atas pengertian Anda
-                            </p>
+            @foreach ($notifs as $item)
+                <div class="modal fade" id="alasan-{{ $item->code }}" tabindex="-1"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header pb-0">
+                                <h3 class="modal-title judul" id="exampleModalLabel">Pengajuan verifikasi
+                                    akun ditolak
+                                </h3>
+                                <button type="button" style="background: none; border: none;"
+                                    class="close-button far fa-times-circle" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                                </button>
+                            </div>
+                            <div class="modal-body pt-1">
+                                <p style="padding: 5px;">
+                                    {{ $item->message }}
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            @endforeach
 
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 

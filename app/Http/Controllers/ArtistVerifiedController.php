@@ -681,12 +681,18 @@ class ArtistVerifiedController extends Controller
         $title = "Kolaborasi";
         $datas = projects::with('artis')->get();
         $artisUser = artist::where('user_id', auth()->user()->id)->first();
-        $artis = artist::all();
         $messages = messages::with(['sender.user', 'receiver', 'project'])->get();
         $notifs = notif::where('user_id', auth()->user()->id)->get();
 
-        return response()->view('artisVerified.kolaborasi', compact('title', 'datas', 'artis', 'artisUser', 'messages', 'notifs'));
+        return response()->view('artisVerified.kolaborasi', compact('title', 'datas', 'artisUser', 'messages', 'notifs'));
     }
+
+    protected function artisSelect()
+    {
+        $artis = artist::with('user')->get();
+        return response()->json($artis);
+    }
+
 
     protected function viewLirikAndChat(Request $request, string $code)
     {

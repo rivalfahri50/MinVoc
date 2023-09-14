@@ -4,6 +4,14 @@
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include Select2 CSS via CDN -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet">
+
+<!-- Include Select2 JavaScript via CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{{ $title }}</title>
@@ -23,7 +31,6 @@
         body {
             font-family: 'Poppins', sans-serif;
         }
-
 
         .search-container {
             position: relative;
@@ -318,14 +325,37 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                                 aria-labelledby="notificationDropdown">
-                                @foreach ($notifs as $item)
+                                @foreach ($notifs->reverse() as $item)
                                     @if ($item)
-                                        <a href="#" class="dropdown-item preview-item">
+                                        <div class="dropdown-item preview-item" style="gap: 15px; cursor: auto;">
+                                            @if ($item->message == null)
+                                                <div>
+                                                    <img src="{{ asset('storage/' . $item->artis->user->avatar) }}"
+                                                        width="40" style="border-radius: 100%" alt=""
+                                                        srcset="">
+                                                </div>
+                                            @endif
                                             <div class="preview-item-content">
-                                                <p class="preview-subject mb-1">{{ $item->title }}</p>
-                                                <p class="text-muted ellipsis mb-0">{{ $item->message }}</p>
+                                                <p class="preview-subject mb-1" style="font-weight: bold">
+                                                    {{ $item->title }}</p>
+                                                @if ($item->message !== null)
+                                                    <button class="text-muted ellipsis mb-0"
+                                                        style="font-size: 12px; font-weight: normal"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#alasan-{{ $item->code }}">Klik
+                                                        untuk melihat alasan</button>
+                                                @else
+                                                    <p class="text-muted ellipsis mb-0">{{ $item->artis->user->name }}
+                                                    </p>
+                                                @endif
                                             </div>
-                                        </a>
+                                            <button class="btn btnicon p-0"
+                                                style="background: none; border: none; margin-bottom: 20px;"
+                                                onclick="">
+                                                <i class="far fa-times-circle text-danger"
+                                                    style="font-size: 11px;"></i>
+                                            </button>
+                                        </div>
                                     @endif
                                 @endforeach
                             </div>
@@ -407,6 +437,30 @@
                     </div>
                 </div>
             </div>
+
+            @foreach ($notifs->reverse() as $item)
+                <div class="modal fade" id="alasan-{{ $item->code }}" tabindex="-1"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header pb-0">
+                                <h3 class="modal-title judul" id="exampleModalLabel">Pengajuan verifikasi
+                                    akun ditolak
+                                </h3>
+                                <button type="button" style="background: none; border: none;"
+                                    class="close-button far fa-times-circle" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                                </button>
+                            </div>
+                            <div class="modal-body pt-1">
+                                <p style="padding: 5px;">
+                                    {{ $item->message }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
 
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
@@ -779,9 +833,6 @@
                         }
                     });
                 }
-
-
-
 
                 // pause song
                 function pausesong() {

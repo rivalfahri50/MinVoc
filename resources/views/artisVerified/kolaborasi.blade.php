@@ -266,6 +266,9 @@
                 font-size: 20px;
             }
         </style>
+        </script>
+
+
         <div class="content-wrapper">
             <div class="row ">
                 <div class="col-12 grid-margin">
@@ -355,7 +358,9 @@
                                                     <td class="table-cell">{{ $item->created_at->diffForHumans() }}</td>
                                                     <td class="table-cell text-warning">Pending</td>
                                                     <td class="d-flex align-items-center">
-                                                        <form action="{{ route('lirikAndChat.artisVerified', $item->code) }}" method="GET">
+                                                        <form
+                                                            action="{{ route('lirikAndChat.artisVerified', $item->code) }}"
+                                                            method="GET">
                                                             <button type="submit" class="btn-unstyled">
                                                                 <i class="far fa-check-circle fs-5 text-success ml-1"></i>
                                                             </button>
@@ -422,7 +427,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3 class="modal-title judul" id="exampleModalLabel">Tambah Kolaborasi</h3>
-                        <button type="button" class="close-button far fa-times-circle" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="close-button far fa-times-circle" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form action="{{ route('createProject.artisVerified') }}" method="POST"
@@ -545,6 +551,10 @@
             </div>
         @endforeach
 
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
         {{-- untuk undang kolab --}}
         @foreach ($datas as $item)
             <div class="modal fade" id="undang-{{ $item->code }}" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -570,15 +580,25 @@
                                         fdprocessedid="piymoo">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="namakategori" class="form-label judulnottebal">Nama artis</label>
-                                    <select name="kolaborator" class="form-select" id="namakolaborator">
+                                    {{-- <label for="namakategori" class="form-label judulnottebal">Nama artis</label> --}}
+                                    {{-- <select class="select2" name="kolaborator[]" multiple="multiple">
+                                        <!-- Opsi di sini -->
                                         <option style="display: none;" selected disabled>artis verified</option>
-                                        @foreach ($artis as $item)
-                                            @if ($item->is_verified && $item->user_id !== auth()->user()->id)
-                                                <option value="{{ $item->id }}">{{ $item->user->name }}</option>
-                                            @endif
-                                        @endforeach
+                                    </select> --}}
+
+                                    {{-- <select class="js-example-basic-multiple" id="kategori" name="kolabolator[]">
+                                        <option value="">awfwe</option>
                                     </select>
+                                    
+ --}}
+
+                                    <select class="js-example-basic-multiple" id="kategori" name="nama_field">
+                                        <option value="1">Pilihan 1</option>
+                                        <option value="2">Pilihan 2</option>
+                                        <option value="3">Pilihan 3</option>
+                                    </select>
+
+
                                 </div>
                             </div>
                         </div>
@@ -591,6 +611,32 @@
             </div>
         @endforeach
 
+        <script>
+            $(document).ready(function() {
+                $('.select2').select2();
+            });
+        </script>
+
+        <script>
+            $(document).ready(function() {
+                $('.js-example-basic-multiple').select2();
+            });
+
+            $(document).ready(function() {
+                let opt = $('#kategori');
+                $.ajax({
+                    url: `/artis-verified/artis-kolaborasi`,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        response.forEach(function(item) {
+                            opt.append(`<select>${item.user.name}</select>`)
+                            console.log("hasil nya " + item.user.name);
+                        })
+                    }
+                });
+            });
+        </script>
 
     </div>
 @endsection
