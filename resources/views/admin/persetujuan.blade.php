@@ -41,7 +41,7 @@
                                                 <i class="far fa-times-circle text-danger"></i>
                                             </button>
                                             <a href="#lagu-diputar" class="flex-grow text-decoration-none link btn"
-                                            onclick="putar({{ $item->id }})">Putar Lagu</a>
+                                                onclick="putar({{ $item->id }})">Putar Lagu</a>
                                         </td>
                                     </tr>
                                 @endif
@@ -82,7 +82,8 @@
                                 <div class="col-md-12 mb-4">
                                     <h5 class="judul">Judul Lagu</h5>
                                     <div class="cell-content">
-                                        <img src="{{ asset('storage/' . $item->image) }}" alt="Face" class="avatar" style="width: 40px">
+                                        <img src="{{ asset('storage/' . $item->image) }}" alt="Face" class="avatar"
+                                            style="width: 40px">
                                         <div>
                                             <h6>{{ $item->judul }}</h6>
                                             <p class="text-muted m-0">{{ $item->artist->user->name }}</p>
@@ -107,8 +108,8 @@
     <script src="/user/assets/js/tablesort.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
 
+    <script>
         $(document).ready(function() {
 
             $('.view-button').click(function() {
@@ -136,7 +137,6 @@
             });
         });
 
-        /*===================================*/
 
         $(document).ready(function() {
             var itemsPerPage = 5;

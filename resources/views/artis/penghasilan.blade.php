@@ -274,16 +274,16 @@
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: labels,
+                labels: ['januari','februari','maret','april','mei','juni','juli','agustus','september','oktober','november','desember'],
                 datasets: [{
                     label: 'Pendapatan',
                     data: pendapatanBulanan,
                     backgroundColor: [
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(153, 102, 255, 0.2)'
+                        'rgba(153, 102, 255, 2)',
+                        'rgba(153, 102, 255, 2)',
+                        'rgba(153, 102, 255, 2)',
+                        'rgba(153, 102, 255, 2)',
+                        'rgba(153, 102, 255, 2)'
                     ],
                     borderColor: [
                         'rgba(153, 102, 255, 1)',
@@ -292,7 +292,8 @@
                         'rgba(153, 102, 255, 1)',
                         'rgba(153, 102, 255, 1)'
                     ],
-                    borderWidth: 1
+                    borderWidth: 1,
+                    barPercentage: 0.7
                 }]
             },
             options: {

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\artist;
 use App\Models\Riwayat;
+use App\Models\song;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +20,10 @@ class RiwayatController extends Controller
         $user_id = Auth::user()->id;
         $song_id = $request->song_id;
         $play_date = Carbon::now()->format('Y-m-d H:i:s');
+
+        $penghasilanArtist = (int) song::findOrFail($song_id)->artist->penghasilan + 35;
+        $artist_id =  song::findOrFail($song_id)->artist->id;
+        artist::findOrFail($artist_id)->update(['penghasilan' => $penghasilanArtist]);
 
         Log::info("Mencoba menyimpan riwayat: user_id=$user_id, song_id=$song_id, play_date=$play_date");
 

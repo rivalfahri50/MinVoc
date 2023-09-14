@@ -179,3 +179,20 @@
 .judul {
     font-size: 20px;
 }
+
+.fa-play:before {
+    content: "\f144";
+    font-size: 33px;
+    color: #957dad;
+}
+
+.fa-heart:before {
+    content: "\f004";
+    color: #957DAD;
+}
+
+.fa-pause:before {
+    content: "\f04c";
+    margin-left: 20%;
+    color: #957DAD;
+}

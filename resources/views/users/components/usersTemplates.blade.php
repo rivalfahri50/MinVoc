@@ -162,6 +162,11 @@
         #buatplaylist:target {
             visibility: visible;
         }
+
+        .fa-heart:before {
+            content: "\f004";
+            color: #957DAD;
+        }
     </style>
     <script>
         // INI SCRIPT UNTUK HASIL SEARCH TAMPIL/TIDAK
@@ -303,6 +308,8 @@
                     <div class="progress-controller">
                         <div class="control-buttons">
                             <div id="controls">
+                                <button onclick="shuffle_song()" id="shuffle"><i class="fa fa-random"
+                                        aria-hidden="true"></i></button>
                                 <button onclick="previous_song()" id="pre"><i class="fa fa-step-backward"
                                         aria-hidden="true"></i></button>
                                 <button onclick="justplay()" id="play"><i class="far fa-play-circle fr"
@@ -579,17 +586,34 @@
                                 const like = document.getElementById(`like-artist${item.artist_id}`);
                                 like.classList.toggle('fas');
                             })
+
                         },
                         error: function(response) {
                             console.log(response)
                         }
                     });
+                    $.ajax({
+                        url: `/artist/count`,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(response) {
+                            let totalLikes = 0;
+                            response.forEach(function(item) {
+                                totalLikes += item.likes;
+                                const artistId = item.artist_id;
+                            })
+                            const count = document.getElementById('likeCount');
+                            if (count) {
+                                count.textContent = totalLikes;
+                            }
+                        },
+                        error: function(response) {
+
+                        }
+                    })
                 });
 
                 function likeArtist(iconElement, artistId) {
-                    iconElement.classList.toggle('fas');
-                    iconElement.classList.toggle('far');
-
                     const isLiked = iconElement.classList.contains('fas');
 
                     $.ajax({
@@ -599,7 +623,7 @@
                         success: function(response) {
                             console.log(response);
                         },
-                        error: function(response) {
+                        error:function(response){
                             console.log(response);
                         }
 
@@ -607,7 +631,7 @@
                 }
 
 
-                function updateSongLikeStatus(artistId, isLiked) {
+                function updateLikeStatus(artistId, isLiked) {
                     const likeIcons = document.querySelectorAll(`.like[data-id="${artistId}"]`);
                     likeIcons.forEach(likeIcon => {
                         likeIcon.classList.toggle('fas', isLiked);
@@ -635,26 +659,24 @@
                 });
 
                 function toggleLike(iconElement, songId) {
-                    iconElement.classList.toggle('fas');
-                    iconElement.classList.toggle('far');
-
                     const isLiked = iconElement.classList.contains('fas');
 
-                    fetch(`/song/${songId}/like`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': csrfToken
-                            },
-                            body: JSON.stringify({
-                                isLiked: iconElement.classList.contains('fas')
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-
-                        })
-                        .catch(error => {});
+                    $.ajax({
+                        url: `/song/${songId}/like`,
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.success) {
+                                if (isLiked) {
+                                    iconElement.classList.remove('fas');
+                                    iconElement.classList.add('far');
+                                } else {
+                                    iconElement.classList.remove('far');
+                                    iconElement.classList.add('fas');
+                                }
+                            }
+                        }
+                    })
                 }
 
 
@@ -681,7 +703,7 @@
                 let slider = document.querySelector('#duration_slider');
                 let show_duration = document.querySelector('#show_duration');
                 let track_image = document.querySelector('#track_image');
-
+                let shuffleButton = document.querySelector('#shuffle_button');
                 let auto_play = document.querySelector('#auto');
 
                 let timer;
@@ -698,10 +720,38 @@
 
                 let All_song = [];
 
-                async function ambilDataLagu() {
-                    await fetch('/ambil-lagu')
-                        .then(response => response.json())
-                        .then(data => {
+                // async function ambilDataLagu() {
+                //     await fetch('/ambil-lagu')
+                //         .then(response => response.json())
+                //         .then(data => {
+                //             All_song = data.map(lagu => {
+                //                 return {
+                //                     id: lagu.id,
+                //                     judul: lagu.judul,
+                //                     audio: lagu.audio,
+                //                     image: lagu.image,
+                //                     artistId: lagu.artist.user.name
+                //                 };
+                //             });
+                //             console.log(All_song);
+                //             if (All_song.length > 0) {
+                //                 // Memanggil load_track dengan indeks 0 sebagai lagu pertama
+                //                 load_track(0);
+                //             } else {
+                //                 console.error("Data lagu kosong.");
+                //             }
+                //         })
+                //         .catch(error => {
+                //             console.error('Error fetching data:', error);
+                //         });
+                // }
+
+                function ambilDataLagu() {
+                    $.ajax({
+                        url: '/ambil-lagu',
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
                             All_song = data.map(lagu => {
                                 return {
                                     id: lagu.id,
@@ -718,14 +768,14 @@
                             } else {
                                 console.error("Data lagu kosong.");
                             }
-                        })
-                        .catch(error => {
+                        },
+                        error: function(error) {
                             console.error('Error fetching data:', error);
-                        });
+                        }
+                    });
                 }
 
-                ambilDataLagu();
-                // semua function
+
 
                 // function load the track
                 function load_track(index_no) {
@@ -743,7 +793,8 @@
                         console.error("Index_no tidak valid.");
                     }
                 }
-                load_track(0);
+                ambilDataLagu();
+                // semua function
 
                 // fungsi mute sound
                 function mute_sound() {
@@ -840,7 +891,31 @@
                     });
                 }
 
+                shuffleButton.addEventListener('click', function() {
+                    shuffle_songs();
+                });
 
+
+                function shuffle_song() {
+                    let currentIndex = All_song.length,
+                        randomIndex, temporaryValue;
+
+                    // Selama masih ada elemen untuk diacak
+                    while (currentIndex !== 0) {
+                        // Pilih elemen yang tersisa secara acak
+                        randomIndex = Math.floor(Math.random() * currentIndex);
+                        currentIndex--;
+
+                        // Tukar elemen terpilih dengan elemen saat ini
+                        temporaryValue = All_song[currentIndex];
+                        All_song[currentIndex] = All_song[randomIndex];
+                        All_song[randomIndex] = temporaryValue;
+                    }
+                    // Setel ulang indeks lagu saat ini ke 0
+                    index_no = 0;
+                    // Memuat lagu yang diacak
+                    load_track(index_no);
+                }
 
 
                 // pause song
@@ -914,12 +989,9 @@
                 // ubah posisi slider
                 // Fungsi untuk mengubah posisi slider
                 function change_duration() {
-                    if (!isNaN(track.duration) && isFinite(slider_value)) {
-                        let slider_value = parseInt(slider.value);
-                        track.currentTime = track.duration * (slider_value / 100);
-                        console.log(track.duration * (slider_value / 100), slider_value, track.currentTime)
-
-                    }
+                    slider_position = track.duration * (slider.value / 100);
+                    track.currentTime = slider_position;
+                    console.log(currentTime);
                 }
 
                 slider.addEventListener('input', function() {

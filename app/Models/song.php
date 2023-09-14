@@ -40,6 +40,6 @@ class song extends Model
     }
 
     public function riwayat() {
-        return $this->hasMany(Riwayat::class)->withTimestamps();
+        return $this->hasMany(Riwayat::class, 'song_id')->withTimestamps();
     }
 }

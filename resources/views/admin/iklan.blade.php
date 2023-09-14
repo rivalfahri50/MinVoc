@@ -91,7 +91,7 @@
                                                         <button class="btn btnicon" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ $item->code }}">
                                                             <i class="far fa-eye text-info"></i>
                                                         </button>
-                                                        <button type="button" class="btn btnicon" data-toggle="modal" data-target="#exampleModalCenter">
+                                                        <button type="button" class="btn btnicon" data-toggle="modal" data-target="#exampleModalCenter{{ $item->id }}">
                                                             <i class="fas fa-pencil-alt text-warning"></i>
                                                         </button>
                                                         <button class="btn btnicon" onclick="deleteBillboard('{{ $item->code }}')">
@@ -212,24 +212,23 @@
             </div>
             <!-- container-scroller -->
             @foreach ($billboards->reverse() as $item)
-            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal fade" id="exampleModalCenter{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="card window">
                     <div class="card-body">
                         <a href="" class="close-button far fa-times-circle"></a>
                         <h3 class="judul">Edit Iklan</h3>
-                        <form class="row" action="{{ route('uploadBillboard' ,$item->id) }}" method="POST" enctype="multipart/form-data" >
+                        <form class="row" action="{{ route('updateBillboard', $item->code) }}" method="POST" enctype="multipart/form-data">
                             @csrf
-
+                           
+            
                             <div class="col-md-12">
                                 <div class="mb-3">
-                                    <label for="namakategori" class="form-label judulnottebal">Nama
-                                        artis</label>
-                                    <input type="text" class="form-control form-i" id="namaproyek"
-                                        value="{{ $item->artis->user->name }}" >
-                                    </div>
+                                    <label for="namakategori" class="form-label judulnottebal">Nama artis</label>
+                                    <input type="text" class="form-control form-i" id="namaproyek" name="nama_artis" value="{{ $item->artis->user->name }}">
+                                </div>
                                 <div class="mb-3">
                                     <label for="deskripsi" class="form-label judulnottebal">Deskripsi</label>
-                                    <textarea id="deskripsi" class="form-control" maxlength="500" rows="4" >{{ $item->deskripsi }}</textarea>
+                                    <textarea id="deskripsi" class="form-control" maxlength="500" rows="4" name="deskripsi">{{ $item->deskripsi }}</textarea>
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
@@ -240,7 +239,7 @@
                                         @if ($item->image_background)
                                         <div class="mb-3">
                                             <label for="fotoLamaBackground" class="form-label col-12" style="color: #676767">Foto Background Iklan Lama</label>
-                                            <img src="{{ asset('storage/' . $item->image_background) }}" alt="Foto Lama"  class="gambarbg">
+                                            <img src="{{ asset('storage/' . $item->image_background) }}" alt="Foto Lama" class="gambarbg">
                                         </div>
                                         @endif
                                     </div>
@@ -259,16 +258,14 @@
                                 </div>
                             </div>
                             <div class="text-md-right">
-                                <button class="btn" href="#" type="submit">Simpan</button>
+                                <button class="btn" type="submit">Simpan</button>
                             </div>
                         </form>
                     </div>
                 </div>
-                @endforeach
-
-
-
-
+            </div>
+            @endforeach
+            
             <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
             <script>

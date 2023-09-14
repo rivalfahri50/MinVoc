@@ -573,17 +573,34 @@
                                 const like = document.getElementById(`like-artist${item.artist_id}`);
                                 like.classList.toggle('fas');
                             })
+
                         },
                         error: function(response) {
                             console.log(response)
                         }
                     });
+                    $.ajax({
+                        url: `/artist/count`,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(response) {
+                            let totalLikes = 0;
+                            response.forEach(function(item) {
+                                totalLikes += item.likes;
+                                const artistId = item.artist_id;
+                            })
+                            const count = document.getElementById('likeCount');
+                            if (count) {
+                                count.textContent = totalLikes;
+                            }
+                        },
+                        error: function(response) {
+
+                        }
+                    })
                 });
 
                 function likeArtist(iconElement, artistId) {
-                    iconElement.classList.toggle('fas');
-                    iconElement.classList.toggle('far');
-
                     const isLiked = iconElement.classList.contains('fas');
 
                     $.ajax({
@@ -592,6 +609,17 @@
                         dataType: 'json',
                         success: function(response) {
                             console.log(response);
+                            if (response.success) {
+                                $('#likeCount').text(response.likes);
+                                if (isLiked) {
+                                    iconElement.classList.remove('fas');
+                                    iconElement.classList.add('far');
+                                } else {
+                                    iconElement.classList.remove('far');
+                                    iconElement.classList.add('fas');
+                                }
+                                updateLikeStatus(artistId, !isLiked);
+                            }
                         },
                         error: function(response) {
                             console.log(response);
@@ -601,7 +629,7 @@
                 }
 
 
-                function updateSongLikeStatus(artistId, isLiked) {
+                function updateLikeStatus(artistId, isLiked) {
                     const likeIcons = document.querySelectorAll(`.like[data-id="${artistId}"]`);
                     likeIcons.forEach(likeIcon => {
                         likeIcon.classList.toggle('fas', isLiked);
@@ -629,26 +657,28 @@
                 });
 
                 function toggleLike(iconElement, songId) {
-                    iconElement.classList.toggle('fas');
-                    iconElement.classList.toggle('far');
-
                     const isLiked = iconElement.classList.contains('fas');
-
-                    fetch(`/song/${songId}/like`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': csrfToken
-                            },
-                            body: JSON.stringify({
-                                isLiked: iconElement.classList.contains('fas')
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-
-                        })
-                        .catch(error => {});
+                    $.ajax({
+                        url: `/song/${songId}/like`,
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function(response) {
+                            console.log(response);
+                            if (response.success) {
+                                if (isLiked) {
+                                    iconElement.classList.remove('fas');
+                                    iconElement.classList.add('far');
+                                } else {
+                                    iconElement.classList.remove('far');
+                                    iconElement.classList.add('fas');
+                                }
+                                updateSongLikeStatus(songId, !isLiked);
+                            }
+                        },
+                        error: function(response) {
+                            console.log(response);
+                        }
+                    })
                 }
 
 

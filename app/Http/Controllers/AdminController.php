@@ -148,52 +148,55 @@ class AdminController extends Controller
         return response()->view('admin.iklan', compact('artist', 'title', 'billboards', 'notifs'));
     }
 
-    public function editBillboard(Request $request)
-    {
-        $validator = Validator::make(
-            $request->only('artis_id'),
-            [
-                'artis_id' => 'required',
-            ]
-        );
+    public function updatebillboard(Request $request, string $code)
+{
+    
+    $billboard = billboard::find($code);
 
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        $title = "MusiCave";
-        $artist = artist::where('is_verified', 1)->get();
-        $billboards = billboard::all();
-        $notifs = notif::where('user_id', auth()->user()->id)->get();
-
-        try {
-            // Cari billboard yang akan diedit berdasarkan ID
-            $billboard = billboard::find($billboards->id);
-
-            if (!$billboard) {
-                return redirect()->back()->with('error', 'Billboard not found.');
-            }
-
-            if ($request->hasFile('image_background') && $request->hasFile('image_artis')) {
-                $backgroundBillboard = $request->file('image_background')->store('background_billboard', 'public');
-                $backgroundArtis = $request->file('image_artis')->store('image_artis', 'public');
-                $billboard->image_background = $backgroundBillboard;
-                $billboard->image_artis = $backgroundArtis;
-            }
-
-            $billboard->artis_id = $request->input('artis_id');
-            $billboard->deskripsi = $request->input('deskripsi');
-            $billboard->save();
-        } catch (\Throwable $th) {
-            Alert::error('message', 'Gagal Untuk Mengedit Billboard');
-            return response()->view('admin.iklan', compact('artist', 'title', 'billboards', 'notifs'));
-        }
-
-        Alert::success('message', 'Berhasil Untuk Mengedit Billboard');
-        return response()->view('admin.iklan', compact('artist', 'title', 'billboards', 'notifs'));
+    if (!$billboard) {
+        return redirect()->back()->with('error', 'Genre not found.');
     }
+    // Validasi input sesuai kebutuhan
+    $this->validate($request, [
+        'nama_artis' => 'required|string|max:255',
+        'deskripsi' => 'required|string|max:500',
+        'image_background' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+        'image_artis' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
+
+
+    // Update nama artis dan deskripsi
+    $billboard->artis->user->name = $request->input('nama_artis');
+    $billboard->deskripsi = $request->input('deskripsi');
+
+    // Handle gambar background baru jika diunggah
+    if ($request->hasFile('image_background')) {
+        // Hapus gambar lama jika ada
+        if ($billboard->image_background) {
+            Storage::delete('public/' . $billboard->image_background);
+        }
+
+        // Simpan gambar baru
+        $imagePath = $request->file('image_background')->store('public');
+        $billboard->image_background = str_replace('public/', '', $imagePath);
+    }
+
+    // Handle gambar artis baru jika diunggah
+    if ($request->hasFile('image_artis')) {
+        // Hapus gambar lama jika ada
+        if ($billboard->image_artis) {
+            Storage::delete('public/' . $billboard->image_artis);
+        }
+
+        // Simpan gambar baru
+        $imagePath = $request->file('image_artis')->store('public');
+        $billboard->image_artis = str_replace('public/', '', $imagePath);
+    }
+
+    $billboard->save();
+
+    return redirect()->back()->with('success', 'Billboard updated successfully.');
+}
 
     protected function buatGenre(Request $request)
     {
@@ -256,7 +259,7 @@ class AdminController extends Controller
         try {
             if ($request->hasFile('images')) {
 
-                if ($genre->images) {
+                if ($genre->images) {   
                     Storage::disk('public')->delete($genre->images);
                 }
 

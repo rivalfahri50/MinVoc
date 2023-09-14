@@ -63,9 +63,13 @@ Route::prefix('admin')->middleware('admin')->controller(AdminController::class)-
     Route::get('/hapus-verified/{code}', 'hapusVerified')->name('hapus.verified');
     Route::get('/setuju-music/{code}', 'setujuMusic')->name('setuju.upload.music');
     Route::get('/admin/pencairan', 'AdminController@pencairan')->name('admin.pencairan');
+  
+
+
 
     Route::POST('/setuju-verified/{code}', 'setujuVerified')->name('tambah.verified');
     Route::post('/uploadBillboard', 'buatBillboard')->name('uploadBillboard');
+    Route::post('/edit-billboard/{code}', 'updatebillboard')->name('updateBillboard');
     Route::post('/genre', 'buatGenre')->name('buat.genre');
     Route::post('/edit-genre/{code}', 'editGenre')->name('edit.genre');
 
@@ -223,10 +227,11 @@ Route::controller(SongController::class)->group(function () {
 Route::controller(LikeController::class)->group(function () {
     Route::post('/artist/{artist}/like', 'likeArtist');
     Route::get('/artist/check', 'likeCheck');
-    // Route::post('/artist/{artist}/like', 'like');
+    Route::get('/artist/count', 'likeCount');
 });
 
 Route::post('/simpan-riwayat', [RiwayatController::class, 'simpanRiwayat']);
+Route::post('/hitung/penghasilan', [RiwayatController::class, 'penghasilanArtist']);
 
 Route::get('/kebijakan-privasi', function () {
     return view('auth.kebijakanprivasi');

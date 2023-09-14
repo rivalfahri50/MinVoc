@@ -12,6 +12,7 @@ use App\Models\notif;
 use App\Models\Notifikasi;
 use App\Models\playlist;
 use App\Models\projects;
+use App\Models\Riwayat;
 use App\Models\song;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -425,6 +426,9 @@ class ArtistController extends Controller
             ]);
             DB::commit();
 
+            $penghasilanArtist = (int) $artis->penghasilan + 35;
+            $artis->update(['penghasilan' => $penghasilanArtist]);
+            // Alert::success('message', 'Berhasil Mengunggah Lagu');
             return redirect('/artis/unggahAudio')->with('success', 'Song uploaded successfully.');
         } catch (\Throwable $e) {
             DB::rollBack();
