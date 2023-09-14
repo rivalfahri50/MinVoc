@@ -129,7 +129,7 @@
                             <div class="card pcard jarak">
                                 <h3 class="angka m-0">Rp 20.000.000</h3>
                                 <h4 class="judulnottebal mb-0">Total penghasilan</h4>
-                                <a href="" class="link mb-0">Cairkan Penghasilan</a>
+                                <span href="" class="link mb-0"><a style="color: #d291bc" href="">Cairkan Penghasilan</a></span>
                             </div>
                         </div>
                         <div class="col-4">

@@ -656,11 +656,11 @@ class ArtistVerifiedController extends Controller
 
     protected function viewLirikAndChat(Request $request, string $code)
     {
-        $title = "Kolaborasi";
-        $project = DB::table('projects')->where('code', $code)->first();
-        $artis = artist::where('user_id', auth()->user()->id)->first();
-        $messages = messages::with(['sender', 'project'])->where('project_id', $project->id)->get();
         try {
+            $title = "Kolaborasi";
+            $project = DB::table('projects')->where('code', $code)->first();
+            $artis = artist::where('user_id', auth()->user()->id)->first();
+            $messages = messages::with(['sender', 'project'])->where('project_id', $project->id)->get();
             projects::where('code', $project->code)->update(['penerima_project' => $artis->id]);
         } catch (\Throwable $th) {
             return abort(404);
@@ -758,33 +758,32 @@ class ArtistVerifiedController extends Controller
 
     protected function message(Request $request, string $code)
     {
-        $project = projects::where('code', $code)->first();
-        $sender = artist::where('user_id', auth()->user()->id)->first();
-        if ($sender->id === $project->artist_id) {
-            $data = [
-                'code' => Str::uuid(),
-                'sender_id' => $sender->id,
-                'receiver_id' => $project->request_project_artis_id,
-                'project_id' => $project->id,
-                'message' => $request->input('message')
-            ];
-        } else {
-            $data = [
-                'code' => Str::uuid(),
-                'sender_id' => $sender->id,
-                'receiver_id' => $project->artist_id,
-                'project_id' => $project->id,
-                'message' => $request->input('message')
-            ];
-        }
 
         try {
+            $project = projects::where('code', $code)->first();
+            $sender = artist::where('user_id', auth()->user()->id)->first();
+            if ($sender->id === $project->artist_id) {
+                $data = [
+                    'code' => Str::uuid(),
+                    'sender_id' => $sender->id,
+                    'receiver_id' => $project->request_project_artis_id,
+                    'project_id' => $project->id,
+                    'message' => $request->input('message')
+                ];
+            } else {
+                $data = [
+                    'code' => Str::uuid(),
+                    'sender_id' => $sender->id,
+                    'receiver_id' => $project->artist_id,
+                    'project_id' => $project->id,
+                    'message' => $request->input('message')
+                ];
+            }
             $message = messages::create($data);
             $data = messages::with(['sender', 'receiver', 'project'])->get();
         } catch (\Throwable $th) {
             return abort(404);
         }
-
         return redirect()->back()->with([
             'message' => $message->message,
             'datas' => $data

@@ -355,9 +355,11 @@
                                                     <td class="table-cell">{{ $item->created_at->diffForHumans() }}</td>
                                                     <td class="table-cell text-warning">Pending</td>
                                                     <td class="d-flex align-items-center">
-                                                        <a href="" class="btn-unstyled">
-                                                            <i class="far fa-check-circle fs-5 text-success ml-1"></i>
-                                                        </a>
+                                                        <form action="{{ route('lirikAndChat.artisVerified', $item->code) }}" method="GET">
+                                                            <button type="submit" class="btn-unstyled">
+                                                                <i class="far fa-check-circle fs-5 text-success ml-1"></i>
+                                                            </button>
+                                                        </form>
                                                         <form action="{{ route('reject.project.artisVerified') }}"
                                                             method="post" class="m-0">
                                                             @csrf

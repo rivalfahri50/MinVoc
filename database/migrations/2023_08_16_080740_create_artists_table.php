@@ -20,7 +20,7 @@ return new class extends Migration
             $table->boolean('is_verified')->default(false);
             $table->string('verification_status')->default('none');
             $table->string('penghasilan')->default('0');
-            $table->date('pengajuan_verified_at')->nullable();
+            $table->timestamp('pengajuan_verified_at')->nullable();
             $table->timestamps();
 
             $table->index('user_id');

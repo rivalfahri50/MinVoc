@@ -161,6 +161,14 @@
                         align-items: center;
                         background-color: white;
                     }
+
+                    .chat-message.sent {
+                        align-items: flex-end;
+                    }
+
+                    .chat-message.received {
+                        align-self: flex-start;
+                    }
                 </style>
                 <div class="col-md-6">
                     <div class="card kanan scrollbar-dusty-grass square thin rounded-4">
@@ -183,23 +191,24 @@
                                                     <div style="height: 415px">
                                                         <div class="card-body chat-box" style="height: 355px;">
                                                             @foreach ($messages as $key => $item)
-                                                                    <div class="chat-message mt-1">
-                                                                        @if ($key == 0 || $item->sender->user->name != $messages[$key - 1]->sender->user->name)
-                                                                            <div class="chat-name">
-                                                                                {{ $item->sender->user->name }}
-                                                                            </div>
-                                                                        @endif
-                                                                        <div class="chat-text">{{ $item->message }}</div>
-                                                                    </div>
+                                                                <div
+                                                                    class="chat-message mt-1 {{ $item->sender->user->id === auth()->user()->id ? 'sent' : 'received' }}">
+                                                                    @if ($key == 0 || $item->sender->user->name != $messages[$key - 1]->sender->user->name)
+                                                                        <div class="chat-name">
+                                                                            {{ $item->sender->user->name }}
+                                                                        </div>
+                                                                    @endif
+                                                                    <div class="chat-text">{{ $item->message }}</div>
+                                                                </div>
                                                             @endforeach
                                                         </div>
                                                         <div class="input-with-icon chat-input">
                                                             <input type="text" class="form-control rounded-4"
-                                                                placeholder="Ketik di sini untuk admin" name="message">
+                                                                placeholder="Ketik di sini untuk admin" maxlength="250" name="message">
                                                             <button type="submit" class="send-button ml-2 mr-1">
                                                                 <i class="fas fa-paper-plane"></i>
                                                             </button>
-                                                        </div>  
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </form>
@@ -273,7 +282,8 @@
                                     Kolaborasi</h3>
                                 <div class="col-12">
                                     <div class="preview-list">
-                                        <form action="{{ route('create.project.artisVerified', $project->code) }}" method="POST" enctype="multipart/form-data">
+                                        <form action="{{ route('create.project.artisVerified', $project->code) }}"
+                                            method="POST" enctype="multipart/form-data">
                                             @csrf
                                             <div class="row">
                                                 <div class="col-5 pr-0">
@@ -286,29 +296,24 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-7">
-                                                    <div class="mb-3">
-                                                        <input type="text" class="form-control form-i inputcolor" name="name"
-                                                            id="nama" placeholder="Judul Lagu">
+                                                    <div class="mb-4">
+                                                        <input type="text" class="form-control form-i inputcolor"
+                                                            name="name" id="nama" placeholder="Judul Lagu">
                                                     </div>
-                                                    <div class="mb-5">
+                                                    <div class="mb-4">
                                                         <input type="file" name="audio" class="form-control inputcolor"
                                                             id="namaproyek" required>
                                                     </div>
                                                     <div>
-                                                        <button class="btn kirim rounded-3 full-width-button" type="button"
-                                                            data-bs-toggle="modal" data-bs-target="#kirimkolaborasi">
+                                                        <button class="btn pl-3 kirim rounded-3 full-width-button"
+                                                            type="button" data-bs-toggle="modal"
+                                                            data-bs-target="#kirimkolaborasi-{{ $project->code }}">
                                                             Unggah
                                                         </button>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="mt-3">
-                                                <button class="btn pl-3 kirim rounded-3 full-width-button" type="button"
-                                                    data-bs-toggle="modal" data-bs-target="#kirimkolaborasi-{{ $project->code }}">
-                                                    Unggah
-                                                </button>
-                                            </div>
-                                        {{-- </form> --}}
+                                            {{-- </form> --}}
                                     </div>
                                 </div>
                             </div>
@@ -317,39 +322,39 @@
                 </div>
             </div>
             <!-- Modal -->
-            <div class="modal fade" id="kirimkolaborasi-{{ $project->code }}" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
+            <div class="modal fade" id="kirimkolaborasi-{{ $project->code }}" tabindex="-1"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
                 {{-- <form action="{{ route('bayar', $project->code) }}" method="post"> --}}
-                    {{-- @csrf --}}
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content border-0" style="background-color: white">
-                            <div class="modal-header border-0">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel" style="color: #957DAD">Pembayaran</h1>
-                                <button type="button" class="btn-unstyled" data-bs-dismiss="modal" aria-label="Close">
-                                    <i class="mdi mdi-close-circle-outline btn-icon" style="color: #957DAD"></i>
-                                </button>
-                            </div>
-                            <div class="modal-body border-0">
-                                <div class="col-md-12" style="font-size: 13px">
-                                    <h5 class="judulnottebal mb-4">Persentase Pembayaran</h5>
-                                    <div class="mb-3">
-                                        <div class="range-wrap">
-                                            <div class="range-value" id="rangeV">0%</div>
-                                            <input class="slider mb-4" id="range" name="range" type="range"
-                                                min="0" max="100" value="40" step="1">
-                                            <output for="range" class="output">Rp. 0</output>
-                                        </div>
+                {{-- @csrf --}}
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border-0" style="background-color: white">
+                        <div class="modal-header border-0">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel" style="color: #957DAD">Pembayaran</h1>
+                            <button type="button" class="btn-unstyled" data-bs-dismiss="modal" aria-label="Close">
+                                <i class="mdi mdi-close-circle-outline btn-icon" style="color: #957DAD"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body border-0">
+                            <div class="col-md-12" style="font-size: 13px">
+                                <h5 class="judulnottebal mb-4">Persentase Pembayaran</h5>
+                                <div class="mb-3">
+                                    <div class="range-wrap">
+                                        <div class="range-value" id="rangeV">0%</div>
+                                        <input class="slider mb-4" id="range" name="range" type="range"
+                                            min="0" max="100" value="40" step="1">
+                                        <output for="range" class="output">Rp. 0</output>
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal-footer border-0">
-                                <button type="submit" class="btn rounded-3 full-width-button">
-                                    <a href="" class="btn-link"
-                                        style="color: inherit; text-decoration: none;">Bayar</a>
-                                </button>
-                            </div>
+                        </div>
+                        <div class="modal-footer border-0">
+                            <button type="submit" class="btn rounded-3 full-width-button">
+                                <a href="" class="btn-link"
+                                    style="color: inherit; text-decoration: none;">Bayar</a>
+                            </button>
                         </div>
                     </div>
+                </div>
                 </form>
             </div>
         </div>

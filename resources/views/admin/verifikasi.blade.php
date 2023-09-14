@@ -74,8 +74,8 @@
                         {{-- @dd($item) --}}
                         <form id="hapus" action="{{ route('hapus.verified', $item->code) }}" method="GET">
                             @csrf
-                            <div class="form-group">
-                                <textarea class="form-control mt-3 " id="alasan" name="alasan" rows="10" placeholder="Tulis alasan anda"></textarea>
+                            <div class="form-group" style="margin-top: -20px">
+                                <textarea class="form-control mt-3 " id="alasan" name="alasan" maxlength="200" rows="4" placeholder="Tulis alasan anda"></textarea>
                             </div>
                             <div class="text-md-right">
                                 <button type="submit" class="btn">Kirim</button>

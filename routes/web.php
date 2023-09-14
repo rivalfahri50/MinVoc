@@ -16,6 +16,7 @@ use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\penggunaController;
 use App\Http\Controllers\ArtistVerifiedController;
 use App\Http\Controllers\LikeController;
+use App\Models\notif;
 
 /*
 |--------------------------------------------------------------------------
@@ -99,7 +100,8 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
     Route::get('/search/{code}', 'search_result');
     Route::get('/hapusSongPlaylist/{code}', 'hapusSongPlaylist')->name('hapusSongPlaylist.artis');
     Route::get('/peraturan', function () {
-        return view('artis.peraturan', ['title' => 'MusiCave']);
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return view('artis.peraturan', ['title' => 'MusiCave', 'notifs' => $notifs]);
     })->name('peraturan.artis');
 
     Route::post('/search', 'pencarian_input')->name('pencarian.artis');
@@ -147,7 +149,8 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
     Route::get('/search_song', 'search_song')->name('search.song.artisVerified');
     Route::get('/search/{code}', 'search_result');
     Route::get('/peraturan', function () {
-        return view('artisVerified.peraturan', ['title' => 'MusiCave']);
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return view('artisVerified.peraturan', ['title' => 'MusiCave', 'notifs' => $notifs]);
     })->name('peraturan.artisVerified');
 
     Route::post('/undangColab/{code}', 'undangColab')->name('undangColab');
@@ -193,7 +196,8 @@ Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(pengguna
     Route::get('/search/{code}', 'search_result');
     Route::get('/hapusSongPlaylist/{code}', 'hapusSongPlaylist')->name('hapusSongPlaylist');
     Route::get('/peraturan', function () {
-        return view('users.peraturan', ['title' => 'MusiCave']);
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return view('users.peraturan', ['title' => 'MusiCave', 'notifs' => $notifs]);
     })->name('peraturan.pengguna');
 
     Route::post('/search', 'pencarian_input')->name('pencarian');
