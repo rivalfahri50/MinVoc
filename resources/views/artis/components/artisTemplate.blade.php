@@ -125,6 +125,27 @@
             top: 10px;
             right: 10px;
         }
+        .closebutton {
+            display: block;
+            color: #957DAD;
+            position: absolute;
+            right: 10px;
+        }
+
+        .navbar .navbar-menu-wrapper .navbar-nav .nav-item.dropdown .dropdown-menu.navbar-dropdown .dropdown-item:hover {
+            color: inherit;
+        }
+
+        .dropdown-item:hover,
+        .dropdown-item:focus {
+            color: inherit;
+            text-decoration: none;
+            background-color: inherit;
+        }
+
+        .popupalasan:hover {
+            color: #957DAD
+        }
     </style>
     <script>
         // INI SCRIPT UNTUK HASIL SEARCH TAMPIL/TIDAK
@@ -337,12 +358,17 @@
                                 aria-labelledby="notificationDropdown">
                                 @foreach ($notifs as $item)
                                     @if ($item)
-                                        <a href="#" class="dropdown-item preview-item">
+                                        <div class="dropdown-item preview-item" style="gap: 15px; cursor: auto;">
                                             <div class="preview-item-content">
                                                 <p class="preview-subject mb-1">{{ $item->title }}</p>
-                                                <p class="text-muted ellipsis mb-0">{{ $item->message }}</p>
+                                                <a href="#alasan" data-toggle="modal" class="popupalasan mb-0" style="font-size: 10px">Ketuk untuk melihat alasan</a>
                                             </div>
-                                        </a>
+                                            <button class="btn btnicon p-0" style="background: none; border: none; margin-bottom: 20px;"
+                                                onclick="">
+                                                <i class="far fa-times-circle text-danger"
+                                                    style="font-size: 11px;"></i>
+                                            </button>
+                                        </div>
                                     @endif
                                 @endforeach
                             </div>
@@ -423,6 +449,28 @@
                                 <button class="btn" type="submit">Tambah</button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="alasan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header pb-0">
+                            <h3 class="modal-title judul" id="exampleModalLabel">Pengajuan verifikasi akun ditolak</h3>
+                            {{-- <button type="button" style="background: none; border: none;" class="close-button far fa-times-circle" data-bs-dismiss="modal" aria-label="Close"></button> --}}
+                            <button type="button" class="closebutton far fa-times-circle" data-dismiss="modal" aria-label="Close" style="background: none; border: none;">
+                                <span aria-hidden="true" class=""></span>
+                            </button>
+                        </div>
+                        <div class="modal-body pt-1">
+                            <p style="padding: 5px;">
+                                Setelah mempertimbangkan dengan seksama, kami harus menolak pengajuan verifikasi akun anda. Verifikasi akun memerlukan persyaratan tertentu yang saat ini belum terpenuhi oleh akun anda.
+                            </p>
+                            <p style="padding: 5px;">
+                                Terima kasih atas pengertian Anda
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
