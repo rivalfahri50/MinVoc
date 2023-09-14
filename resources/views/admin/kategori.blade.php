@@ -120,7 +120,7 @@
                     <div class="card-body">
                         <a href="" class="close-button far fa-times-circle"></a>
                         <h3 class="judul">Edit Kategori</h3>
-                        <form class="row" action="{{ route('buat.genre', $item->id) }}" method="POST" enctype="multipart/form-data">
+                        <form class="row" action="{{ route('edit.genre', $item->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
                             <div class="col-md-12">

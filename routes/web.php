@@ -61,10 +61,13 @@ Route::prefix('admin')->middleware('admin')->controller(AdminController::class)-
     Route::get('/hapus-genre/{code}', 'hapusGenre')->name('hapus.genre');
     Route::get('/hapus-verified/{code}', 'hapusVerified')->name('hapus.verified');
     Route::get('/setuju-music/{code}', 'setujuMusic')->name('setuju.upload.music');
+    Route::get('/admin/pencairan', 'AdminController@pencairan')->name('admin.pencairan');
 
     Route::POST('/setuju-verified/{code}', 'setujuVerified')->name('tambah.verified');
     Route::post('/uploadBillboard', 'buatBillboard')->name('uploadBillboard');
     Route::post('/genre', 'buatGenre')->name('buat.genre');
+    Route::post('/edit-genre/{code}', 'editGenre')->name('edit.genre');
+
 });
 
 Route::post('/validationSIgnInAdmin', [AdminController::class, 'storeSignIn'])->name('storeSignIn.admin');
