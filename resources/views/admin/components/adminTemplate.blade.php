@@ -137,7 +137,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">
+                                <a class="nav-link" href="{{ route('admin.pencairan') }}">
                                     <span class="menu-icon mr-0">
                                         <i class="mdi mdi-check-circle-outline submenu" style="font-size: 20px;"></i>
                                     </span>Pencairan

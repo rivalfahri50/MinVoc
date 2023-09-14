@@ -119,6 +119,9 @@
 
             .link {
                 color: #85BAD9;
+                border: none;
+                background: none;
+                text-align: left;
             }
         </style>
         <div class="content-wrapper">
@@ -129,7 +132,40 @@
                             <div class="card pcard jarak">
                                 <h3 class="angka m-0">Rp 20.000.000</h3>
                                 <h4 class="judulnottebal mb-0">Total penghasilan</h4>
-                                <a href="" class="link mb-0">Cairkan Penghasilan</a>
+                                <button class="btn-unstyled mr-2 link mb-0" data-bs-toggle="modal" data-bs-target="#caripenghasilan">Cairkan Penghasilan</a>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="caripenghasilan" data-bs-backdrop="static" data-bs-keyboard="false"
+                            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content border-0" style="background-color: white">
+                                    <div class="modal-header border-0">
+                                        <h1 class="modal-title fs-5 judul" id="staticBackdropLabel">Detail</h1>
+                                        <button type="button" class="btn-unstyled link" data-bs-dismiss="modal"
+                                            aria-label="Close">
+                                            <i class="mdi mdi-close-circle-outline btn-icon"
+                                                style="color: #957DAD; font-size: 20px;"></i>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body border-0">
+                                        <div class="col-md-12" style="font-size: 13px">
+                                            <div class="mb-3">
+                                                <p for="namakategori" class="form-label judulnottebal">Total Penghasilan</p>
+                                                <h3 class="judul">Rp20.000.000</h3>
+                                            </div>
+                                            <div class="mb-3">
+                                                <p for="konsep" class="form-label judulnottebal">Jumlah Pencairan</p>
+                                                <input type="text" id="harga" class="form-control">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="modal-footer border-0">
+                                        <button type="button" class="btn rounded-3">
+                                            <a href="" class="btn-link"
+                                                style="color: inherit; text-decoration: none;">Setujui</a></button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-4">
@@ -202,6 +238,29 @@
             x.classList.toggle("far"); // Menghapus kelas "fa fa-heart"
             x.classList.toggle("fas"); // Menambahkan kelas "fas fa-heart"
             x.classList.toggle("warna-kostum-like"); // Menambahkan kelas warna merah
+        }
+
+        /* ============Dengan Rupiah=========== */
+        var harga = document.getElementById('harga');
+        harga.addEventListener('keyup', function(e) {
+            harga.value = formatRupiah(this.value, 'Rp. ');
+        });
+
+        /* Fungsi */
+        function formatRupiah(angka, prefix) {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
         }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

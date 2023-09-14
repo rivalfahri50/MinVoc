@@ -14,6 +14,12 @@
                 margin-right: 10px;
                 border-radius: 0;
             }
+
+            .small {
+                font-size: .875em;
+                vertical-align: 0.05357em;
+                font-weight: 900;
+            }
         </style>
         <div class="content-wrapper">
             <div class="row">
@@ -21,7 +27,7 @@
                     <div class="row">
                         <div class="col-2">
                             <div class="card coba">
-                                <h3 class="angka m-0">{{ $totalPengguna }} <span class="fas fa-user fa-sm ikon"></span></h3>
+                                <h3 class="angka m-0">{{ $totalPengguna }} <span class="fas fa-user small ikon"></span></h3>
                                 <h4 class="judul mb-3">Pengguna</h4>
                                 <p class="teks">Sejak 2023</p>
                             </div>
@@ -29,14 +35,14 @@
                         <div class="col-2">
                             <div class="card coba">
                                 <h3 class="angka m-0">{{ $totalLagu }}<span
-                                        class="fas fa-microphone-alt fa-sm ikon"></span></h3>
+                                        class="fas fa-microphone-alt small ikon"></span></h3>
                                 <h4 class="judul mb-3">Lagu</h4>
                                 <p class="teks">Sejak 2023</p>
                             </div>
                         </div>
                         <div class="col-2">
                             <div class="card coba">
-                                <h3 class="angka m-0">{{ $totalArtist }} <span class="fas fa-music fa-sm ikon"></span></h3>
+                                <h3 class="angka m-0">{{ $totalArtist }} <span class="fas fa-music small ikon"></span></h3>
                                 <h4 class="judul mb-3">Artis</h4>
                                 <p class="teks">Sejak 2023</p>
                             </div>
