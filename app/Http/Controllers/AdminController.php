@@ -27,7 +27,7 @@ class AdminController extends Controller
     protected function index(): Response
     {
         $title = "MusiCave";
-        $totalPengguna = User::count();
+        $totalPengguna = User::whereNotIn('id', [1,2,3])->count();
         $totalLagu = song::count();
         $totalArtist = artist::count();
         $songs = song::all();
@@ -130,6 +130,7 @@ class AdminController extends Controller
         Alert::success('message', 'Berhasil Untuk Menambah Billboard');
         return response()->view('admin.iklan', compact('artist', 'title', 'billboards'));
     }
+
     public function editBillboard(Request $request)
     {
         $validator = Validator::make(
@@ -302,12 +303,14 @@ class AdminController extends Controller
             notif::create([
                 'artis_id' => $artis->id,
                 'title' => "Verifikasi Account Reject",
-                'message' => $request->input('alasan')
+                'message' => $request->input('alasan'),
+                'user_id' => $artis->user_id,
+                'is_reject' => false
             ]);
 
             $artis->image = "none";
             $artis->pengajuan_verified_at = null;
-            $artis->verification_status = "failed";
+            $artis->verification_status = "none";
             $artis->update();
         } catch (\Throwable $th) {
             Alert::error('message', 'Gagal Menghapus Artis Verified');

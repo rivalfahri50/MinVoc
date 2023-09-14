@@ -13,5 +13,7 @@ class notif extends Model
         'artis_id',
         'message',
         'title',
+        'user_id',
+        'is_reject',
     ];
 }

@@ -329,45 +329,25 @@
                             <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown"
                                 href="#" data-toggle="dropdown">
                                 <i class="mdi mdi-bell"></i>
-                                <span class="count bg-danger"></span>
+                                @if (count($notifs) > 0)
+                                    <span class="count bg-danger"></span>
+                                @endif
                             </a>
                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                                 aria-labelledby="notificationDropdown">
-                                <a href="#" class="dropdown-item preview-item">
-                                    <div class="preview-thumbnail">
-                                        <div class="preview-icon rounded-circle">
-                                            <img src="/user/assets/images/faces/face12.jpg">
-                                        </div>
-                                    </div>
-                                    <div class="preview-item-content">
-                                        <p class="preview-subject mb-1">Gajah</p>
-                                        <p class="text-muted ellipsis mb-0"> Tulus </p>
-                                    </div>
-                                </a>
-                                <a href="#" class="dropdown-item preview-item">
-                                    <div class="preview-thumbnail">
-                                        <div class="preview-icon rounded-circle">
-                                            <img src="/user/assets/images/faces/face12.jpg">
-                                        </div>
-                                    </div>
-                                    <div class="preview-item-content">
-                                        <p class="preview-subject mb-1">Gajah</p>
-                                        <p class="text-muted ellipsis mb-0"> Tulus </p>
-                                    </div>
-                                </a>
-                                <a href="#" class="dropdown-item preview-item">
-                                    <div class="preview-thumbnail">
-                                        <div class="preview-icon rounded-circle">
-                                            <img src="/user/assets/images/faces/face12.jpg">
-                                        </div>
-                                    </div>
-                                    <div class="preview-item-content">
-                                        <p class="preview-subject mb-1">Gajah</p>
-                                        <p class="text-muted ellipsis mb-0"> Tulus </p>
-                                    </div>
-                                </a>
+                                @foreach ($notifs as $item)
+                                    @if ($item)
+                                        <a href="#" class="dropdown-item preview-item">
+                                            <div class="preview-item-content">
+                                                <p class="preview-subject mb-1">{{ $item->title }}</p>
+                                                <p class="text-muted ellipsis mb-0">{{ $item->message }}</p>
+                                            </div>
+                                        </a>
+                                    @endif
+                                @endforeach
                             </div>
                         </li>
+
                         <li class="nav-item dropdown">
                             <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                                 <div class="navbar-profile profile-picture">
@@ -555,7 +535,7 @@
                                 like.classList.toggle('fas');
                             })
                         },
-                        error:function(response) {
+                        error: function(response) {
                             console.log(response)
                         }
                     });
@@ -571,10 +551,10 @@
                         url: `/artist/${artistId}/like`,
                         type: 'POST',
                         dataType: 'json',
-                        success: function(response){
+                        success: function(response) {
                             console.log(response);
                         },
-                        error:function(response){
+                        error: function(response) {
                             console.log(response);
                         }
 
