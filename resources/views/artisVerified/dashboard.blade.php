@@ -7,7 +7,94 @@
 
     <div class="main-panel">
         <div class="content-wrapper">
+            <style>
+                .judul {
+                    padding: 5px;
+                    color: #957DAD;
+                    font-weight: 600;
+                    font-size: 20px;
+                }
+
+                .jarak {
+                    gap: 10px;
+                }
+
+                .pcard {
+                    padding: 15px 10px;
+                }
+
+                .link {
+                    color: #85BAD9;
+                    border: none;
+                    background: none;
+                    text-align: left;
+                }
+
+                .angka {
+                    color: #A86C93;
+                    font-weight: 500;
+                    display: inline-block;
+                }
+            </style>
             <div class="row">
+                <div class="col-md-12 grid-margin stretch-card">
+                    <h3 class="card-title mt-2 judul" style="font-size: 20px; font-weight: 600">Penghasilan</h3>
+                    <div class="row">
+                        <div style="width: 30%">
+                            <div class="card pcard jarak" style="height: 100%;">
+                                <h3 class="angka m-0">Rp 20.000.000</h3>
+                                <h4 class="judulnottebal mb-0">Total penghasilan</h4>
+                                <button class="btn-unstyled mr-2 link mb-0" data-bs-toggle="modal"
+                                    data-bs-target="#caripenghasilan">Cairkan Penghasilan</a>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="caripenghasilan" data-bs-backdrop="static" data-bs-keyboard="false"
+                            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content border-0" style="background-color: white">
+                                    <div class="modal-header border-0">
+                                        <h1 class="modal-title fs-5 judul" id="staticBackdropLabel">Detail</h1>
+                                        <button type="button" class="btn-unstyled link" data-bs-dismiss="modal"
+                                            aria-label="Close">
+                                            <i class="mdi mdi-close-circle-outline btn-icon"
+                                                style="color: #957DAD; font-size: 20px;"></i>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body border-0">
+                                        <div class="col-md-12" style="font-size: 13px">
+                                            <div class="mb-3">
+                                                <p for="namakategori" class="form-label judulnottebal">Total Penghasilan</p>
+                                                <h3 class="judul">Rp20.000.000</h3>
+                                            </div>
+                                            <div class="mb-3">
+                                                <p for="konsep" class="form-label judulnottebal">Jumlah Pencairan</p>
+                                                <input type="text" id="harga" class="form-control">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="modal-footer border-0">
+                                        <button type="button" class="btn rounded-3">
+                                            <a href="" class="btn-link"
+                                                style="color: inherit; text-decoration: none;">Setujui</a></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width: 30%">
+                            <div class="card pcard jarak" style="height: 100%;">
+                                <h3 class="angka m-0">Rp 10.000.000</h3>
+                                <h4 class="judulnottebal">Sisa Penghasilan</h4>
+                            </div>
+                        </div>
+                        <div style="width: 40%">
+                            <div class="card pcard">
+                                <h5 class="angka">Hi, Johan Smutmacher !</h5>
+                                <p class="judulnottebal">Selamat bergabung sebagai artis ter verifikasi. Nikmati pengalaman istimewa dalam mengakses berbagai informasi dan fitur yang telah kami siapkan</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-md-12 grid-margin stretch-card">
                     <h3 class="card-title mt-2 judul" style="font-size: 20px; font-weight: 600">Kategori</h3>
                     <div class="cards">
@@ -64,7 +151,8 @@
                                                         <img src="{{ asset('storage/' . $item->image) }}" width="10%">
                                                     </div>
                                                     <div class="preview-item-content d-sm-flex flex-grow">
-                                                        <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
+                                                        <a href="#lagu-diputar"
+                                                            class="flex-grow text-decoration-none link"
                                                             onclick="putar({{ $item->id }})">
                                                             <h6 class="preview-subject">{{ $item->judul }}</h6>
                                                             <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
@@ -106,21 +194,24 @@
                                 <div class="col-12">
                                     <div class="preview-list">
                                         @foreach ($artist->reverse() as $item)
-                                        @if ($item->likes >= 1000   )
+                                            @if ($item->likes >= 1000)
                                                 <div class="preview-item">
                                                     <div class="preview-thumbnail">
-                                                        <img src="{{ asset('storage/' . $item->user->avatar) }}" width="10%">
+                                                        <img src="{{ asset('storage/' . $item->user->avatar) }}"
+                                                            width="10%">
                                                     </div>
                                                     <div class="preview-item-content d-sm-flex flex-grow">
                                                         <div class="flex-grow">
                                                             <h6 class="preview-subject">{{ $item->user->name }}</h6>
                                                             <p class="text-muted mb-0">
-                                                                <span id="likeCount{{ $item->id }}">{{ number_format($item->likes, 0, ',', '.') }}</span>
+                                                                <span
+                                                                    id="likeCount{{ $item->id }}">{{ number_format($item->likes, 0, ',', '.') }}</span>
                                                                 suka
                                                             </p>
                                                         </div>
                                                         <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                            <i id="like-artist{{$item->id}}" data-id="{{ $item->id }}"
+                                                            <i id="like-artist{{ $item->id }}"
+                                                                data-id="{{ $item->id }}"
                                                                 onclick="likeArtist(this, {{ $item->id }})"
                                                                 class="like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                         </div>
