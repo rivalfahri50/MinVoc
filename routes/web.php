@@ -132,6 +132,7 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
     Route::get('/lirik-chat/{code}', 'viewLirikAndChat')->name('lirikAndChat.artisVerified');
     Route::get('/show/{code}', 'showData')->name('project.show.artisVerified');
     Route::get('/logout', 'logout')->name('logout.artisVerified');
+    Route::get('/artis-kolaborasi', 'artisSelect');
 
     Route::get('/dashboard', 'index')->name('artist-verified.dashboard');
     Route::get('/detail-playlist/{code}', 'detailPlaylist')->name('detailPlaylistArtisVerified');

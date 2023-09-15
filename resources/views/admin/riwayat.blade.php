@@ -38,7 +38,7 @@
                                 @endforeach
                             </tbody>
                         @else
-                            <div>
+                            <div style="justify-content: center; display: flex; padding: 50px 0;">
                                 <img width="200" height="200" src="/icon-notFound/adminIcon.svg" alt=""
                                     srcset="">
                             </div>
