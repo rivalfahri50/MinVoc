@@ -154,8 +154,8 @@
                                                         <a href="#lagu-diputar"
                                                             class="flex-grow text-decoration-none link"
                                                             onclick="putar({{ $item->id }})">
-                                                            <h6 class="preview-subject">{{ $item->judul }}</h6>
-                                                            <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
+                                                            <h6 class="preview-subject text-black">{{ $item->judul }}</h6>
+                                                            <p class="text-muted mb-0" style="font-weight: 400">{{ $item->artist->user->name }}</p>
                                                         </a>
                                                     </div>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
@@ -203,7 +203,7 @@
                                                     <div class="preview-item-content d-sm-flex flex-grow">
                                                         <div class="flex-grow">
                                                             <h6 class="preview-subject">{{ $item->user->name }}</h6>
-                                                            <p class="text-muted mb-0">
+                                                            <p class="text-muted mb-0" style="font-weight: 400">
                                                                 <span
                                                                     id="likeCount{{ $item->id }}">{{ number_format($item->likes, 0, ',', '.') }}</span>
                                                                 suka

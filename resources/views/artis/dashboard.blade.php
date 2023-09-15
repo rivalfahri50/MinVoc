@@ -67,14 +67,13 @@
                                                         <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
                                                             onclick="putar({{ $item->id }})">
                                                             <h6 class="preview-subject">{{ $item->judul }}</h6>
-                                                            <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
+                                                            <p class="text-muted mb-0" style="font-weight: 400">{{ $item->artist->user->name }}</p>
                                                         </a>
                                                     </div>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group align-items-center">
                                                             <i onclick="toggleLike(this, {{ $item->id }}, '{{ Auth::check() == (Auth::user()->hasLikedSong($item->id) ? 'true' : 'false') }}')"
                                                                 class="{{ Auth::check() && Auth::user()->hasLikedSong($item->id) ? 'fas' : 'far' }} fa-heart pr-2"></i>
-
                                                             <p style="pointer-events: none;">{{ $item->waktu }}</p>
                                                             <a data-bs-toggle="modal"
                                                                 data-bs-target="#staticBackdrop-{{ $item->code }}"
@@ -109,20 +108,22 @@
                                             @if ($item->likes >= 0)
                                                 <div class="preview-item">
                                                     <div class="preview-thumbnail">
-                                                        <img src="{{ asset('storage/' . $item->user->avatar) }}" width="10%"
-                                                            class="fit">
+                                                        <img src="{{ asset('storage/' . $item->user->avatar) }}"
+                                                            width="10%" class="fit">
                                                     </div>
                                                     <div class="preview-item-content d-sm-flex flex-grow">
                                                         <div class="flex-grow">
                                                             <h6 class="preview-subject">{{ $item->user->name }}</h6>
-                                                            <p class="text-muted mb-0">
-                                                                <span id="likeCount{{ $item->id }}">{{ number_format($item->likes, 0, ',', '.') }}</span>
+                                                            <p class="text-muted mb-0" style="font-weight: 400">
+                                                                <span
+                                                                    id="likeCount{{ $item->id }}">{{ number_format($item->likes, 0, ',', '.') }}</span>
                                                                 suka
                                                             </p>
                                                         </div>
                                                         <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                            <i id="like-artist{{$item->id}}" data-id="{{ $item->id }}"
-                                                                onclick="likeArtist(this, {{ $item->id }}, {{ $item->isLiked ? 'true' : 'false'}})"
+                                                            <i id="like-artist{{ $item->id }}"
+                                                                data-id="{{ $item->id }}"
+                                                                onclick="likeArtist(this, {{ $item->id }}, {{ $item->isLiked ? 'true' : 'false' }})"
                                                                 class="like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                         </div>
                                                     </div>

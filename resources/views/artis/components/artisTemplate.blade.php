@@ -220,20 +220,6 @@
                         <span class="menu-title">Unggah</span>
                     </a>
                 </li>
-                {{-- <li class="nav-item menu-items">
-                    <a class="nav-link" href="/artis/kolaborasi">
-                        @if ($title === 'kolaborasi')
-                            <span class="menu-icon">
-                                <i class="mdi mdi-account-group-outline"></i>
-                            </span>
-                        @else
-                            <span class="menu-icon">
-                                <i class="mdi mdi-account-group-outline"></i>
-                            </span>
-                            <span class="menu-title">Kolaborasi</span>
-                        @endif
-                    </a>
-                </li> --}}
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="/artis/penghasilan">
                         <span class="menu-icon">
@@ -365,37 +351,54 @@
                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                                 aria-labelledby="notificationDropdown">
                                 @foreach ($notifs as $item)
-                                    @if ($item)
-                                        <div class="dropdown-item preview-item" style="gap: 15px; cursor: auto;">
-                                            @if ($item->message == null)
-                                                <div>
-                                                    <img src="{{ asset('storage/' . $item->artis->user->avatar) }}"
-                                                        width="40" style="border-radius: 100%" alt=""
-                                                        srcset="">
-                                                </div>
-                                            @endif
-                                            <div class="preview-item-content">
-                                                <p class="preview-subject mb-1" style="font-weight: bold">
-                                                    {{ $item->title }}</p>
-                                                @if ($item->message !== null)
-                                                    <a class="text-muted ellipsis mb-0"
-                                                        style="font-size: 12px; font-weight: normal; cursor: pointer"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#alasan-{{ $item->code }}">Klik
-                                                        untuk melihat alasan</a>
-                                                @else
-                                                    <p class="text-muted ellipsis mb-0">{{ $item->artis->user->name }}
-                                                    </p>
+                                    @if (count($notifs) > 0)
+                                        @if ($item)
+                                            <div class="dropdown-item preview-item" style="gap: 15px; cursor: auto;">
+                                                @if ($item->message == null)
+                                                    <div>
+                                                        <img src="{{ asset('storage/' . $item->artis->user->avatar) }}"
+                                                            width="40" style="border-radius: 100%" alt=""
+                                                            srcset="">
+                                                    </div>
                                                 @endif
+                                                <div class="preview-item-content">
+                                                    <p class="preview-subject mb-1" style="font-weight: bold">
+                                                        {{ $item->title }}</p>
+                                                    @if ($item->message !== null)
+                                                        <a class="text-muted ellipsis mb-0"
+                                                            style="font-size: 12px; font-weight: normal; cursor: pointer"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#alasan-{{ $item->code }}">Klik
+                                                            untuk melihat alasan</a>
+                                                    @else
+                                                        <p class="text-muted ellipsis mb-0">
+                                                            {{ $item->artis->user->name }}
+                                                        </p>
+                                                    @endif
+                                                </div>
+                                                <button type="submit" class="btn btnicon p-0"
+                                                    style="background: none; border: none; margin-bottom: 20px;"
+                                                    onclick="">
+                                                    <a href="/artis/delete-notif/{{ $item->id }}">
+                                                        <i class="far fa-times-circle text-danger"
+                                                            style="font-size: 11px;"></i>
+                                                    </a>
+                                                </button>
                                             </div>
-                                            <button type="submit" class="btn btnicon p-0"
-                                                style="background: none; border: none; margin-bottom: 20px;"
-                                                onclick="">
-                                                <a href="/artis/delete-notif/{{ $item->id }}">
-                                                    <i class="far fa-times-circle text-danger"
-                                                        style="font-size: 11px;"></i>
-                                                </a>
-                                            </button>
+                                        @endif
+                                    @else
+                                        <div class="dropdown-item preview-item" style="gap: 15px; cursor: auto;">
+                                            <div class="preview-item-content">
+                                                <p class="preview-subject mb-1" style="font-weight: bold">None</p>
+                                                <a class="text-muted ellipsis mb-0"
+                                                    style="font-size: 12px; font-weight: normal; cursor: pointer"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#alasan-{{ $item->code }}">Klik
+                                                    untuk melihat alasan</a>
+                                                <p class="text-muted ellipsis mb-0">
+                                                    {{ $item->artis->user->name }}
+                                                </p>
+                                            </div>
                                         </div>
                                     @endif
                                 @endforeach
@@ -426,7 +429,7 @@
                                         </div>
                                     </div>
                                     <div class="preview-item-content">
-                                        <p class="preview-subject mb-1">Profile</p>
+                                        <p class="preview-subject mb-1 fw-light">Profile</p>
                                     </div>
                                 </a>
                                 <a class="dropdown-item preview-item" href="{{ route('logout.users') }}">
@@ -436,7 +439,7 @@
                                         </div>
                                     </div>
                                     <div class="preview-item-content">
-                                        <p class="preview-subject mb-1">Log out</p>
+                                        <p class="preview-subject mb-1 fw-light">Log out</p>
                                     </div>
                                 </a>
                             </div>
@@ -757,10 +760,10 @@
 
                 async function ambilDataLagu() {
                     await fetch('/ambil-lagu')
-                    .then(response => response.json())
-                    .then(data => {
-                        All_song = data.map(lagu => {
-                            return {
+                        .then(response => response.json())
+                        .then(data => {
+                            All_song = data.map(lagu => {
+                                return {
                                     id: lagu.id,
                                     judul: lagu.judul,
                                     audio: lagu.audio,
