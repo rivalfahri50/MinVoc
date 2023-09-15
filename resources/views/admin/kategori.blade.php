@@ -81,6 +81,7 @@
 
                     <!-- popup -->
                     <!-- Modal -->
+                    <!-- Form HTML -->
                     <div id="popuptambah">
                         <div class="card window">
                             <div class="card-body">
@@ -91,16 +92,15 @@
                                     @csrf
                                     <div class="col-md-12">
                                         <div class="mb-3">
-                                            <label for="namakategori" class="form-label judulnottebal">Nama
-                                                Kategori</label>
+                                            <label for="namakategori" class="form-label judulnottebal">Nama Kategori</label>
                                             <input type="text" name="name" class="form-control form-i" id="namaproyek"
                                                 required>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="upload" class="form-label judulnottebal">Upload
-                                                Foto</label>
-                                            <input type="file" name="images" class="form-control form-i" id="namaproyek"
-                                                required>
+                                            <label for="upload" class="form-label judulnottebal">Upload Foto</label>
+                                            <input type="file" name="images" class="form-control form-i" id="images"
+                                                accept=".jpeg, .jpg, .png, .gif" required>
+                                            <span id="image-error" style="color: red;"></span>
                                         </div>
                                     </div>
                                     <div class="text-md-right">
@@ -111,115 +111,125 @@
                         </div>
                     </div>
 
-                </div>
-                <!-- page-body-wrapper ends -->
-            </div>
-            @foreach ($genres->reverse() as $item)
-                <div class="modal fade" id="exampleModalCenter{{ $item->id }}" tabindex="-1" role="dialog"
-                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="card window">
-                        <div class="card-body">
-                            <a href="" class="close-button far fa-times-circle"></a>
-                            <h3 class="judul">Edit Kategori</h3>
-                            <form class="row" action="{{ route('edit.genre', $item->id) }}" method="POST"
-                                enctype="multipart/form-data">
-                                @csrf
+                    <!-- JavaScript untuk validasi jenis file -->
+                    <script>
+                        document.getElementById('images').addEventListener('change', function() {
+                            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+                            const file = this.files[0];
+                            if (file && !allowedTypes.includes(file.type)) {
+                                document.getElementById('image-error').innerText =
+                                    'Jenis file tidak valid. Pilih file gambar (JPEG, JPG, PNG, GIF).';
+                                this.value = ''; // Mengosongkan input file
+                            } else {
+                                document.getElementById('image-error').innerText = '';
+                            }
+                        });
+                    </script>
 
-                                <div class="col-md-12">
-                                    <div class="mb-3">
-                                        <label for="namakategori" class="form-label judulnottebal">Nama Kategori</label>
-                                        <input type="text" name="name" class="form-control form-i" id="namaproyek"
-                                            value="{{ $item->name }}" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="upload" class="form-label judulnottebal">Upload Foto</label>
-                                        <input type="file" name="images" class="form-control form-i"
-                                            id="namaproyek">
-                                        @if (isset($item->images))
-                                            <img src="{{ asset('storage/' . $item->images) }}" alt="Foto Lama"
-                                                width="100">
-                                        @endif
-                                    </div>
+@foreach ($genres->reverse() as $item)
+<div class="modal fade" id="exampleModalCenter{{ $item->id }}" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="card window">
+        <div class="card-body">
+            <a href="" class="close-button far fa-times-circle"></a>
+            <h3 class="judul">Edit Kategori</h3>
+            <form class="row" action="{{ route('edit.genre', $item->id) }}" method="POST"
+                enctype="multipart/form-data">
+                @csrf
 
-                                </div>
-                                <div class="text-md-right">
-                                    <button type="submit" class="btn" type="submit">Simpan</button>
-                                </div>
-                            </form>
-                        </div>
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <label for="namakategori" class="form-label judulnottebal">Nama Kategori</label>
+                        <input type="text" name="name" class="form-control form-i" id="namaproyek"
+                            value="{{ $item->name }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="upload" class="form-label judulnottebal">Upload Foto</label>
+                        <input type="file" name="images" class="form-control form-i" id="namaproyek" accept=".jpeg, .jpg, .png, .gif">
+                        @if (isset($item->images))
+                            <img src="{{ asset('storage/' . $item->images) }}" alt="Foto Lama" width="50" >
+                        @endif
+                        @if ($errors->has('images'))
+                        <span class="text-danger">{{ $errors->first('images','File gambar  harus berupa JPEG, JPG, PNG, atau GIF.') }}</span>
+                    @endif
                     </div>
                 </div>
-            @endforeach
+                <div class="text-md-right">
+                    <button type="submit" class="btn" type="submit">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endforeach
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+                    <script>
+                        /* ============Dengan Rupiah=========== */
+                        var harga = document.getElementById('harga');
+                        harga.addEventListener('keyup', function(e) {
+                            harga.value = formatRupiah(this.value, 'Rp. ');
+                        });
 
+                        /* Fungsi */
+                        function formatRupiah(angka, prefix) {
+                            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                                split = number_string.split(','),
+                                sisa = split[0].length % 3,
+                                rupiah = split[0].substr(0, sisa),
+                                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
 
-            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-            <script>
-                /* ============Dengan Rupiah=========== */
-                var harga = document.getElementById('harga');
-                harga.addEventListener('keyup', function(e) {
-                    harga.value = formatRupiah(this.value, 'Rp. ');
-                });
+                            if (ribuan) {
+                                separator = sisa ? '.' : '';
+                                rupiah += separator + ribuan.join('.');
+                            }
 
-                /* Fungsi */
-                function formatRupiah(angka, prefix) {
-                    var number_string = angka.replace(/[^,\d]/g, '').toString(),
-                        split = number_string.split(','),
-                        sisa = split[0].length % 3,
-                        rupiah = split[0].substr(0, sisa),
-                        ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-
-                    if (ribuan) {
-                        separator = sisa ? '.' : '';
-                        rupiah += separator + ribuan.join('.');
-                    }
-
-                    rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-                    return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
-                }
-
-
-                /*================Pagination===================*/
-
-                $(document).ready(function() {
-                    var itemsPerPage = 5;
-
-                    $(".table-row").hide();
-
-
-                    $(".table-row").slice(0, itemsPerPage).show();
-
-
-                    var numPages = Math.ceil($(".table-row").length / itemsPerPage);
-
-
-                    for (var i = 1; i <= numPages; i++) {
-                        $(".pagination").append("<li class='page-item'><a class='page-link' href='#'>" + i + "</a></li>");
-                    }
-
-                    if (numPages <= 1) {
-                        $(".pagination").hide();
-                    }
-
-                    $(".pagination a").click(function(e) {
-                        e.preventDefault();
-                        var page = $(this).text();
-                        var start = (page - 1) * itemsPerPage;
-                        var end = start + itemsPerPage;
-                        $(".table-row").hide();
-                        $(".table-row").slice(start, end).show();
-                        $(".pagination a").removeClass("active");
-                        $(this).addClass("active");
-                    });
-
-                    $(".pagination .prev").click(function(e) {
-                        e.preventDefault();
-                        var activePage = $(".pagination .active").text();
-                        var prevPage = parseInt(activePage) - 1;
-                        if (prevPage >= 1) {
-                            $(".pagination a").eq(prevPage - 1).click();
+                            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+                            return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
                         }
-                    });
-                });
-            </script>
-        @endsection
+
+
+                        /*================Pagination===================*/
+
+                        $(document).ready(function() {
+                            var itemsPerPage = 5;
+
+                            $(".table-row").hide();
+
+
+                            $(".table-row").slice(0, itemsPerPage).show();
+
+
+                            var numPages = Math.ceil($(".table-row").length / itemsPerPage);
+
+
+                            for (var i = 1; i <= numPages; i++) {
+                                $(".pagination").append("<li class='page-item'><a class='page-link' href='#'>" + i + "</a></li>");
+                            }
+
+                            if (numPages <= 1) {
+                                $(".pagination").hide();
+                            }
+
+                            $(".pagination a").click(function(e) {
+                                e.preventDefault();
+                                var page = $(this).text();
+                                var start = (page - 1) * itemsPerPage;
+                                var end = start + itemsPerPage;
+                                $(".table-row").hide();
+                                $(".table-row").slice(start, end).show();
+                                $(".pagination a").removeClass("active");
+                                $(this).addClass("active");
+                            });
+
+                            $(".pagination .prev").click(function(e) {
+                                e.preventDefault();
+                                var activePage = $(".pagination .active").text();
+                                var prevPage = parseInt(activePage) - 1;
+                                if (prevPage >= 1) {
+                                    $(".pagination a").eq(prevPage - 1).click();
+                                }
+                            });
+                        });
+                    </script>
+                @endsection

@@ -152,8 +152,7 @@
                             <div class="card-body">
                                 <a href="#" class="close-button far fa-times-circle"></a>
                                 <h3 class="judul">Tambah Iklan</h3>
-                                <form class="row" action="{{ route('uploadBillboard') }}" enctype="multipart/form-data"
-                                    method="POST">
+                                <form class="row" action="{{ route('uploadBillboard') }}" enctype="multipart/form-data" method="POST" id="billboardForm">
                                     @csrf
                                     <div class="col-md-12">
                                         <div class="mb-3">
@@ -167,16 +166,17 @@
                                         </div>
                                         <div class="mb-3">
                                             <label for="deskripsi" class="form-label judulnottebal">Deskripsi</label>
-                                            <textarea id="deskripsi" name="deskripsi" class="form-control" maxlength="500" rows="6"
-                                                placeholder="Masukkan deskripsi" required></textarea>
+                                            <textarea id="deskripsi" name="deskripsi" class="form-control" maxlength="500" rows="6" placeholder="Masukkan deskripsi" required></textarea>
                                         </div>
                                         <div class="mb-3">
                                             <label for="uploadlatar" class="form-label judulnottebal">Upload Background Iklan</label>
-                                            <input type="file" name="image_background" class="form-control form-i" id="uploadlatar" required>
+                                            <input type="file" name="image_background" class="form-control form-i" id="uploadlatar" accept=".jpeg, .jpg, .png, .gif" required>
+                                            <span id="image-background-error" style="color: red;"></span>
                                         </div>
                                         <div class="mb-3">
                                             <label for="uploadartis" class="form-label judulnottebal">Upload Foto Artis</label>
-                                            <input type="file" name="image_artis" class="form-control form-i" id="uploadartis" required>
+                                            <input type="file" name="image_artis" class="form-control form-i" id="uploadartis" accept=".jpeg, .jpg, .png, .gif" required>
+                                            <span id="image-artis-error" style="color: red;"></span>
                                         </div>
                                     </div>
                                     <div class="text-md-right">
@@ -186,6 +186,33 @@
                             </div>
                         </div>
                     </div>
+
+                    <script>
+                        // Validasi jenis file saat formulir dikirim
+                        document.getElementById('billboardForm').addEventListener('submit', function(event) {
+                            const backgroundInput = document.getElementById('uploadlatar');
+                            const artisInput = document.getElementById('uploadartis');
+                            const backgroundError = document.getElementById('image-background-error');
+                            const artisError = document.getElementById('image-artis-error');
+                            const validExtensions = ['.jpeg', '.jpg', '.png', '.gif'];
+
+                            function validateFile(input, errorElement) {
+                                if (input.files.length > 0) {
+                                    const fileName = input.files[0].name;
+                                    const fileExtension = '.' + fileName.split('.').pop().toLowerCase();
+                                    if (!validExtensions.includes(fileExtension)) {
+                                        errorElement.textContent = 'Foto harus berupa JPEG, JPG, PNG, atau GIF.';
+                                        event.preventDefault();
+                                    } else {
+                                        errorElement.textContent = '';
+                                    }
+                                }
+                            }
+
+                            validateFile(backgroundInput, backgroundError);
+                            validateFile(artisInput, artisError);
+                        });
+                    </script>
 
                     @foreach ($billboards->reverse() as $item)
                         <div id="staticBackdrop-{{ $item->code }}" class="modal">
@@ -239,67 +266,97 @@
                 <!-- page-body-wrapper ends -->
             </div>
             <!-- container-scroller -->
-            @foreach ($billboards->reverse() as $item)
-            <div class="modal fade" id="exampleModalCenter{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="card window">
-                    <div class="card-body">
-                        <a href="" class="close-button far fa-times-circle"></a>
-                        <h3 class="judul">Edit Iklan</h3>
-                        <form class="row" action="{{ route('updateBillboard', $item->code) }}" method="POST" enctype="multipart/form-data">
-                            @csrf
+@foreach ($billboards->reverse() as $item)
+<div class="modal fade" id="exampleModalCenter{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="card window">
+        <div class="card-body">
+            <a href="" class="close-button far fa-times-circle"></a>
+            <h3 class="judul">Edit Iklan</h3>
+            <form class="row" action="{{ route('updateBillboard', $item->code) }}" method="POST" enctype="multipart/form-data" id="editBillboardForm{{ $item->id }}">
+                @csrf
 
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <label for="namaartis" class="form-label judulnottebal">Nama artis</label>
+                        <select required name="artis_id" class="form-select" id="namaartis{{ $item->id }}">
+                            @foreach ($artist as $artis)
+                                <option value="{{ $artis->id }}" {{ $artis->id == $item->artis_id ? 'selected' : '' }}>
+                                    {{ $artis->user->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <label for="namaartis" class="form-label judulnottebal">Nama artis</label>
-                                    <select required name="artis_id" class="form-select" id="namaartis">
-                                        @foreach ($artist as $artis)
-                                            <option value="{{ $artis->id }}" {{ $artis->id == $item->artis_id ? 'selected' : '' }}>
-                                                {{ $artis->user->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="deskripsi" class="form-label judulnottebal">Deskripsi</label>
-                                    <textarea id="deskripsi"  class="form-control" maxlength="500" rows="4" name="deskripsi">{{ $item->deskripsi }}</textarea>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="mb-3">
-                                            <label for="uploadlatar" class="form-label judulnottebal">Upload Background Iklan</label>
-                                            <input type="file" name="image_background" class="form-control form-i" id="uploadlatar">
-                                        </div>
-                                        @if ($item->image_background)
-                                        <div class="mb-3">
-                                            <label for="fotoLamaBackground" class="form-label col-12" style="color: #676767">Foto Background Iklan Lama</label>
-                                            <img src="{{ asset('storage/' . $item->image_background) }}" alt="Foto Lama" class="gambarbg">
-                                        </div>
-                                        @endif
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="mb-3">
-                                            <label for="uploadartis" class="form-label judulnottebal">Upload Foto Artis</label>
-                                            <input type="file" name="image_artis" class="form-control form-i" id="uploadartis">
-                                        </div>
-                                        @if ($item->image_artis)
-                                        <div class="mb-3">
-                                            <label for="fotoLamaArtis" class="form-label col-12" style="color: #676767">Foto Artis Lama</label>
-                                            <img src="{{ asset('storage/' . $item->image_artis) }}" alt="Foto Lama" class="avatar">
-                                        </div>
-                                        @endif
-                                    </div>
-                                </div>
+                    <div class="mb-3">
+                        <label for="deskripsi" class="form-label judulnottebal">Deskripsi</label>
+                        <textarea id="deskripsi" class="form-control" maxlength="500" rows="4" name="deskripsi">{{ $item->deskripsi }}</textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="uploadlatar" class="form-label judulnottebal">Upload Background Iklan</label>
+                                <input type="file" name="image_background" class="form-control form-i" id="uploadlatar{{ $item->id }}">
+                                <span id="image-background-error{{ $item->id }}" style="color: red;"></span>
                             </div>
-                            <div class="text-md-right">
-                                <button class="btn" type="submit">Simpan</button>
+                            @if ($item->image_background)
+                            <div class="mb-3">
+                                <label for="fotoLamaBackground" class="form-label col-12" style="color: #676767">Foto Background Iklan Lama</label>
+                                <img src="{{ asset('storage/' . $item->image_background) }}" alt="Foto Lama" class="gambarbg">
                             </div>
-                        </form>
+                            @endif
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="uploadartis" class="form-label judulnottebal">Upload Foto Artis</label>
+                                <input type="file" name="image_artis" class="form-control form-i" id="uploadartis{{ $item->id }}">
+                                <span id="image-artis-error{{ $item->id }}" style="color: red;"></span>
+                            </div>
+                            @if ($item->image_artis)
+                            <div class="mb-3">
+                                <label for="fotoLamaArtis" class="form-label col-12" style="color: #676767">Foto Artis Lama</label>
+                                <img src="{{ asset('storage/' . $item->image_artis) }}" alt="Foto Lama" class="avatar">
+                            </div>
+                            @endif
+                        </div>
                     </div>
                 </div>
-            </div>
-            @endforeach
+                <div class="text-md-right">
+                    <button class="btn" type="submit">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endforeach
+
+<script>
+@foreach ($billboards as $item)
+    document.getElementById('editBillboardForm{{ $item->id }}').addEventListener('submit', function(event) {
+        const backgroundInput = document.getElementById('uploadlatar{{ $item->id }}');
+        const artisInput = document.getElementById('uploadartis{{ $item->id }}');
+        const backgroundError = document.getElementById('image-background-error{{ $item->id }}');
+        const artisError = document.getElementById('image-artis-error{{ $item->id }}');
+        const validExtensions = ['.jpeg', '.jpg', '.png', '.gif'];
+
+        function validateFile(input, errorElement) {
+            if (input.files.length > 0) {
+                const fileName = input.files[0].name;
+                const fileExtension = '.' + fileName.split('.').pop().toLowerCase();
+                if (!validExtensions.includes(fileExtension)) {
+                    errorElement.textContent = 'Foto harus berupa JPEG, JPG, PNG, atau GIF.';
+                    event.preventDefault();
+                } else {
+                    errorElement.textContent = '';
+                }
+            }
+        }
+
+        validateFile(backgroundInput, backgroundError);
+        validateFile(artisInput, artisError);
+    });
+@endforeach
+</script>
+
 
             <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
