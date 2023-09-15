@@ -120,7 +120,7 @@
                                                             <i class="far fa-eye text-info"></i>
                                                         </button>
                                                         <button type="button" class="btn btnicon" data-toggle="modal" data-target="#exampleModalCenter{{ $item->id }}">
-                                                            <i class="fas fa-pencil-alt text-warning"></i>
+                                                            <i class="fas fa-pencil-alt " style="color: #5b6b89"></i>
                                                         </button>
                                                         <button class="btn btnicon" onclick="deleteBillboard('{{ $item->code }}')">
                                                             <i class="far fa-times-circle text-danger"></i>
