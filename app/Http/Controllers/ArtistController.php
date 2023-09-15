@@ -389,13 +389,6 @@ class ArtistController extends Controller
         }
 
         $artis = artist::where('user_id', Auth::user()->id)->first();
-        $data = [
-            'artis_id' => $artis->id,
-            'title' => $request->input('judul'),
-            'user_id' => auth()->user()->id,
-            'is_reject' => false
-        ];
-        notif::create($data);
 
         try {
             DB::beginTransaction();
@@ -488,12 +481,14 @@ class ArtistController extends Controller
         $query = $request->input('query');
         $songs = Song::where('judul', 'LIKE', '%' . $query . '%')->get();
 
-        $artists = User::where('name', 'LIKE', '%' . $query . '%')->get();
+        $users = User::where('name', 'LIKE', '%' . $query . '%')
+            ->where('role_id', '!=', 3)
+            ->get();
 
         try {
             $results = [
                 'songs' => $songs,
-                'artists' => $artists,
+                'artists' => $users,
             ];
         } catch (\Throwable $th) {
             return abort(404);
@@ -507,6 +502,17 @@ class ArtistController extends Controller
         $results = song::with('artist.user')->where('judul', 'like', '%' . $query . '%')->get();
 
         return response()->json(['results' => $results]);
+    }
+
+    protected function deleteNotif(Request $request, string $code)
+    {
+        try {
+            $notif = notif::where('id', $code)->first();
+            $notif->delete();
+        } catch (\Throwable $th) {
+            abort(404);
+        }
+        return redirect()->back();
     }
 
     protected function pencarian_input(Request $request)
@@ -535,17 +541,16 @@ class ArtistController extends Controller
         $title = "MusiCave";
         $song = song::where('code', $code)->first();
         $user = user::where('code', $code)->first();
+        $artis = artist::with('user')->where('user_id', $user->id)->first();
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
         $playlists = playlist::all();
 
         if ($song) {
             $songs = song::all();
-            $notifs = notif::where('user_id', auth()->user()->id)->get();
             return view('artis.search.songSearch', compact('song', 'title', 'songs', 'playlists', 'notifs'));
-        } else if ($user) {
-            $artis = artist::where('user_id', $user->id)->first();
+        } else if ($artis) {
             $songs = song::where('artis_id', $artis->id)->get();
-            $notifs = notif::where('user_id', auth()->user()->id)->get();
-            return view('artis.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs'));
+            return view('artis.search.artisSearch', compact('artis', 'title', 'songs', 'playlists', 'notifs'));
         } else {
             return abort(404);
         }

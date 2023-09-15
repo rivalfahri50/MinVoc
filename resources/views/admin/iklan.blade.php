@@ -79,27 +79,31 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($billboards->reverse() as $item)
-                                                <tr class="table-row">
-                                                    <td class="table-cell">
-                                                        <div class="cell-content">
-                                                            <img src="{{ asset('storage/' . $item->artis->user->avatar) }}" alt="Face" class="avatar" width="60">
-                                                        </div>
-                                                    </td>
-                                                    <td class="table-cell">{{ $item->artis->user->name }}</td>
-                                                    <td class="table-cell">{{ $item->deskripsi }}</td>
-                                                    <td class="table-cell">
-                                                        <button class="btn btnicon" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ $item->code }}">
-                                                            <i class="far fa-eye text-info"></i>
-                                                        </button>
-                                                        <button type="button" class="btn btnicon" data-toggle="modal" data-target="#exampleModalCenter{{ $item->id }}">
-                                                            <i class="fas fa-pencil-alt text-warning"></i>
-                                                        </button>
-                                                        <button class="btn btnicon" onclick="deleteBillboard('{{ $item->code }}')">
-                                                            <i class="far fa-times-circle text-danger"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
+                                                    <tr class="table-row">
+                                                        <td class="table-cell">
+                                                            <div class="cell-content">
+                                                                <img src="{{ asset('storage/' . $item->artis->user->avatar) }}"
+                                                                    alt="Face" class="avatar" width="60">
+                                                            </div>
+                                                        </td>
+                                                        <td class="table-cell">{{ $item->artis->user->name }}</td>
+                                                        <td class="table-cell">{{ $item->deskripsi }}</td>
+                                                        <td class="table-cell">
+                                                            <button class="btn btnicon" data-bs-toggle="modal"
+                                                                data-bs-target="#staticBackdrop-{{ $item->code }}">
+                                                                <i class="far fa-eye text-info"></i>
+                                                            </button>
+                                                            <button type="button" class="btn btnicon" data-toggle="modal"
+                                                                data-target="#exampleModalCenter{{ $item->id }}">
+                                                                <i class="fas fa-pencil-alt text-warning"></i>
+                                                            </button>
+                                                            <button class="btn btnicon"
+                                                                onclick="deleteBillboard('{{ $item->code }}')">
+                                                                <i class="far fa-times-circle text-danger"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
 
                                             </tbody>
                                         </table>
@@ -117,6 +121,13 @@
                         </div>
                         <!-- partial -->
                     </div>
+
+                    @if (count($billboards) === 0)
+                        <div style="justify-content: center; display: flex; padding: 50px 0;">
+                            <img width="400" height="200" src="/icon-notFound/adminIcon.svg" alt=""
+                                srcset="">
+                        </div>
+                    @endif
 
                     <!-- popup -->
                     <div id="popuptambah">
@@ -143,12 +154,16 @@
                                                 placeholder="Masukkan deskripsi" required></textarea>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="uploadlatar" class="form-label judulnottebal">Upload Background Iklan</label>
-                                            <input type="file" name="image_background" class="form-control form-i" id="uploadlatar" required>
+                                            <label for="uploadlatar" class="form-label judulnottebal">Upload Background
+                                                Iklan</label>
+                                            <input type="file" name="image_background" class="form-control form-i"
+                                                id="uploadlatar" required>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="uploadartis" class="form-label judulnottebal">Upload Foto Artis</label>
-                                            <input type="file" name="image_artis" class="form-control form-i" id="uploadartis" required>
+                                            <label for="uploadartis" class="form-label judulnottebal">Upload Foto
+                                                Artis</label>
+                                            <input type="file" name="image_artis" class="form-control form-i"
+                                                id="uploadartis" required>
                                         </div>
                                     </div>
                                     <div class="text-md-right">
@@ -212,60 +227,71 @@
             </div>
             <!-- container-scroller -->
             @foreach ($billboards->reverse() as $item)
-            <div class="modal fade" id="exampleModalCenter{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="card window">
-                    <div class="card-body">
-                        <a href="" class="close-button far fa-times-circle"></a>
-                        <h3 class="judul">Edit Iklan</h3>
-                        <form class="row" action="{{ route('updateBillboard', $item->code) }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                           
-            
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <label for="namakategori" class="form-label judulnottebal">Nama artis</label>
-                                    <input type="text" class="form-control form-i" id="namaproyek" name="nama_artis" value="{{ $item->artis->user->name }}">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="deskripsi" class="form-label judulnottebal">Deskripsi</label>
-                                    <textarea id="deskripsi" class="form-control" maxlength="500" rows="4" name="deskripsi">{{ $item->deskripsi }}</textarea>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="mb-3">
-                                            <label for="uploadlatar" class="form-label judulnottebal">Upload Background Iklan</label>
-                                            <input type="file" name="image_background" class="form-control form-i" id="uploadlatar">
-                                        </div>
-                                        @if ($item->image_background)
-                                        <div class="mb-3">
-                                            <label for="fotoLamaBackground" class="form-label col-12" style="color: #676767">Foto Background Iklan Lama</label>
-                                            <img src="{{ asset('storage/' . $item->image_background) }}" alt="Foto Lama" class="gambarbg">
-                                        </div>
-                                        @endif
+                <div class="modal fade" id="exampleModalCenter{{ $item->id }}" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="card window">
+                        <div class="card-body">
+                            <a href="" class="close-button far fa-times-circle"></a>
+                            <h3 class="judul">Edit Iklan</h3>
+                            <form class="row" action="{{ route('updateBillboard', $item->code) }}" method="POST"
+                                enctype="multipart/form-data">
+                                @csrf
+
+
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label for="namakategori" class="form-label judulnottebal">Nama artis</label>
+                                        <input type="text" class="form-control form-i" id="namaproyek"
+                                            name="nama_artis" value="{{ $item->artis->user->name }}">
                                     </div>
-                                    <div class="col-6">
-                                        <div class="mb-3">
-                                            <label for="uploadartis" class="form-label judulnottebal">Upload Foto Artis</label>
-                                            <input type="file" name="image_artis" class="form-control form-i" id="uploadartis">
+                                    <div class="mb-3">
+                                        <label for="deskripsi" class="form-label judulnottebal">Deskripsi</label>
+                                        <textarea id="deskripsi" class="form-control" maxlength="500" rows="4" name="deskripsi">{{ $item->deskripsi }}</textarea>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="mb-3">
+                                                <label for="uploadlatar" class="form-label judulnottebal">Upload
+                                                    Background Iklan</label>
+                                                <input type="file" name="image_background" class="form-control form-i"
+                                                    id="uploadlatar">
+                                            </div>
+                                            @if ($item->image_background)
+                                                <div class="mb-3">
+                                                    <label for="fotoLamaBackground" class="form-label col-12"
+                                                        style="color: #676767">Foto Background Iklan Lama</label>
+                                                    <img src="{{ asset('storage/' . $item->image_background) }}"
+                                                        alt="Foto Lama" class="gambarbg">
+                                                </div>
+                                            @endif
                                         </div>
-                                        @if ($item->image_artis)
-                                        <div class="mb-3">
-                                            <label for="fotoLamaArtis" class="form-label col-12" style="color: #676767">Foto Artis Lama</label>
-                                            <img src="{{ asset('storage/' . $item->image_artis) }}" alt="Foto Lama" class="avatar">
+                                        <div class="col-6">
+                                            <div class="mb-3">
+                                                <label for="uploadartis" class="form-label judulnottebal">Upload Foto
+                                                    Artis</label>
+                                                <input type="file" name="image_artis" class="form-control form-i"
+                                                    id="uploadartis">
+                                            </div>
+                                            @if ($item->image_artis)
+                                                <div class="mb-3">
+                                                    <label for="fotoLamaArtis" class="form-label col-12"
+                                                        style="color: #676767">Foto Artis Lama</label>
+                                                    <img src="{{ asset('storage/' . $item->image_artis) }}"
+                                                        alt="Foto Lama" class="avatar">
+                                                </div>
+                                            @endif
                                         </div>
-                                        @endif
                                     </div>
                                 </div>
-                            </div>
-                            <div class="text-md-right">
-                                <button class="btn" type="submit">Simpan</button>
-                            </div>
-                        </form>
+                                <div class="text-md-right">
+                                    <button class="btn" type="submit">Simpan</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
             @endforeach
-            
+
             <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
             <script>

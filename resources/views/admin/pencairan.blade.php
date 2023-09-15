@@ -23,25 +23,30 @@
                             </tr>
                         </thead>
                         <tbody>
-                                    <tr class="table-row baris">
-                                        <td class="table-cell">
-                                                    <p>Tulus</p>
-                                        </td>
-                                        <td class="table-cell">03/12/2023</td>
-                                        <td class="table-cell text-success">Rp 500.000</td>
-                                        <td class="table-cell">
-                                            <button class="btn btnicon" data-bs-toggle="modal" data-bs-target="#detail">
-                                                <i class="far fa-eye text-info"></i>
-                                            </button>
-                                            <button class="btn btnicon" onclick="">
-                                                <i class="far fa-times-circle text-danger"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
+                            <tr class="table-row baris">
+                                <td class="table-cell">
+                                    <p>Tulus</p>
+                                </td>
+                                <td class="table-cell">03/12/2023</td>
+                                <td class="table-cell text-success">Rp 500.000</td>
+                                <td class="table-cell">
+                                    <button class="btn btnicon" data-bs-toggle="modal" data-bs-target="#detail">
+                                        <i class="far fa-eye text-info"></i>
+                                    </button>
+                                    <button class="btn btnicon" onclick="">
+                                        <i class="far fa-times-circle text-danger"></i>
+                                    </button>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="modal fade" id="detail" data-bs-backdrop="static" data-bs-keyboard="false"
+                {{-- @if (count($persetujuan) === 0) --}}
+                <div style="justify-content: center; display: flex; padding: 50px 0;">
+                    <img width="400" height="200" src="/icon-notFound/adminIcon.svg" alt="" srcset="">
+                </div>
+                {{-- @endif --}}
+                {{-- <div class="modal fade" id="detail" data-bs-backdrop="static" data-bs-keyboard="false"
                     tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content border-0" style="background-color: white">
@@ -71,7 +76,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
                 <div class="text-center">
                     <div class="text-center">

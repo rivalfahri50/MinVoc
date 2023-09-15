@@ -21,7 +21,8 @@ return new class extends Migration
             $table->string('audio')->default("none");
             $table->string('harga')->default('0');
             $table->foreignId("artist_id")->nullable()->constrained("artists");
-            $table->foreignId("request_project_artis_id")->nullable()->constrained("artists");
+            $table->foreignId("request_project_artis_id_1")->nullable()->constrained("artists");
+            $table->foreignId("request_project_artis_id_2")->nullable()->constrained("artists");
             $table->enum('status', ['pending', 'accept', 'reject'])->nullable();
             $table->timestamp('pengajuan_project')->nullable();
             $table->integer('pembuat_project')->default(0);

@@ -114,7 +114,7 @@
                                                     <div class="preview-item-content d-sm-flex flex-grow">
                                                         <div class="flex-grow">
                                                             <h6 class="preview-subject">{{ $item->user->name }}</h6>
-                                                            <p class="text-muted mb-0" id="likeCount">{{ number_format($item->likes, 0,',','.')}}<p>suka</p></p>
+                                                            <p class="text-muted mb-0" style="font-weight: 500" id="likeCount">{{ number_format($item->likes, 0,',','.')}} suka</p>
                                                         </div>
                                                         <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                             <i id="like-artist{{$item->id}}" data-id="{{ $item->id }}"

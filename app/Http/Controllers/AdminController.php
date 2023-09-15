@@ -94,7 +94,16 @@ class AdminController extends Controller
     {
         $title = "MusiCave";
         $song = song::where('code', $code)->first();
+        $artis = artist::where('user_id', $song->artis_id)->first();
+        $user = User::where('id', $artis->user_id)->first();
 
+        $data = [
+            'artis_id' => $song->artis_id,
+            'title' => $song->judul,
+            'user_id' => $user->id,
+            'is_reject' => false
+        ];
+        notif::create($data);
         try {
             $song->is_approved = true;
             $song->update();
@@ -125,21 +134,21 @@ class AdminController extends Controller
 
         $title = "MusiCave";
         $artist = artist::where('is_verified', 1)->get();
-        $billboards = billboard::all();
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-        try {
-            if ($request->hasFile('image_background') && $request->hasFile('image_artis')) {
-                $backgroundBillboard = $request->file('image_background')->store('backgorund_billboard', 'public');
-                $backgroundArtis = $request->file('image_artis')->store('image_artis', 'public');
-            }
+        if ($request->hasFile('image_background') && $request->hasFile('image_artis')) {
+            $backgroundBillboard = $request->file('image_background')->store('backgorund_billboard', 'public');
+            $backgroundArtis = $request->file('image_artis')->store('image_artis', 'public');
+        }
 
-            billboard::create([
-                'code' => Str::uuid(),
-                'artis_id' => $request->input('artis_id'),
-                'deskripsi' => $request->input('deskripsi'),
-                'image_background' => $backgroundBillboard,
-                'image_artis' => $backgroundArtis,
-            ]);
+        billboard::create([
+            'code' => Str::uuid(),
+            'artis_id' => $request->input('artis_id'),
+            'deskripsi' => $request->input('deskripsi'),
+            'image_background' => $backgroundBillboard,
+            'image_artis' => $backgroundArtis,
+        ]);
+        try {
+            $billboards = billboard::all();
         } catch (\Throwable $th) {
             Alert::error('message', 'Gagal Untuk Menambah Billboard');
             return response()->view('admin.iklan', compact('artist', 'title', 'notifs'));
@@ -149,54 +158,54 @@ class AdminController extends Controller
     }
 
     public function updatebillboard(Request $request, string $code)
-{
-    
-    $billboard = billboard::find($code);
+    {
 
-    if (!$billboard) {
-        return redirect()->back()->with('error', 'Genre not found.');
-    }
-    // Validasi input sesuai kebutuhan
-    $this->validate($request, [
-        'nama_artis' => 'required|string|max:255',
-        'deskripsi' => 'required|string|max:500',
-        'image_background' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-        'image_artis' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-    ]);
+        $billboard = billboard::find($code);
+
+        if (!$billboard) {
+            return redirect()->back()->with('error', 'Genre not found.');
+        }
+        // Validasi input sesuai kebutuhan
+        $this->validate($request, [
+            'nama_artis' => 'required|string|max:255',
+            'deskripsi' => 'required|string|max:500',
+            'image_background' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image_artis' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
 
-    // Update nama artis dan deskripsi
-    $billboard->artis->user->name = $request->input('nama_artis');
-    $billboard->deskripsi = $request->input('deskripsi');
+        // Update nama artis dan deskripsi
+        $billboard->artis->user->name = $request->input('nama_artis');
+        $billboard->deskripsi = $request->input('deskripsi');
 
-    // Handle gambar background baru jika diunggah
-    if ($request->hasFile('image_background')) {
-        // Hapus gambar lama jika ada
-        if ($billboard->image_background) {
-            Storage::delete('public/' . $billboard->image_background);
+        // Handle gambar background baru jika diunggah
+        if ($request->hasFile('image_background')) {
+            // Hapus gambar lama jika ada
+            if ($billboard->image_background) {
+                Storage::delete('public/' . $billboard->image_background);
+            }
+
+            // Simpan gambar baru
+            $imagePath = $request->file('image_background')->store('public');
+            $billboard->image_background = str_replace('public/', '', $imagePath);
         }
 
-        // Simpan gambar baru
-        $imagePath = $request->file('image_background')->store('public');
-        $billboard->image_background = str_replace('public/', '', $imagePath);
-    }
+        // Handle gambar artis baru jika diunggah
+        if ($request->hasFile('image_artis')) {
+            // Hapus gambar lama jika ada
+            if ($billboard->image_artis) {
+                Storage::delete('public/' . $billboard->image_artis);
+            }
 
-    // Handle gambar artis baru jika diunggah
-    if ($request->hasFile('image_artis')) {
-        // Hapus gambar lama jika ada
-        if ($billboard->image_artis) {
-            Storage::delete('public/' . $billboard->image_artis);
+            // Simpan gambar baru
+            $imagePath = $request->file('image_artis')->store('public');
+            $billboard->image_artis = str_replace('public/', '', $imagePath);
         }
 
-        // Simpan gambar baru
-        $imagePath = $request->file('image_artis')->store('public');
-        $billboard->image_artis = str_replace('public/', '', $imagePath);
+        $billboard->save();
+
+        return redirect()->back()->with('success', 'Billboard updated successfully.');
     }
-
-    $billboard->save();
-
-    return redirect()->back()->with('success', 'Billboard updated successfully.');
-}
 
     protected function buatGenre(Request $request)
     {
@@ -243,7 +252,7 @@ class AdminController extends Controller
             }
         }
     }
-    public function editGenre(Request $request,string $code)
+    public function editGenre(Request $request, string $code)
     {
         $genre = genre::find($code);
 
@@ -259,7 +268,7 @@ class AdminController extends Controller
         try {
             if ($request->hasFile('images')) {
 
-                if ($genre->images) {   
+                if ($genre->images) {
                     Storage::disk('public')->delete($genre->images);
                 }
 
@@ -275,7 +284,8 @@ class AdminController extends Controller
             Log::error('Error editing genre: ' . $th->getMessage());
 
             return redirect()->back()->with('error', 'Failed to edit genre.');
-        }}
+        }
+    }
     protected function setujuVerified(Request $request, string $code)
     {
         $artis = artist::where('code', $code)->first();

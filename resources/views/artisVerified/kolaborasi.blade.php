@@ -296,7 +296,12 @@
                                     <tbody>
                                         @foreach ($datas->reverse() as $item)
                                             @if ($item->artist_id === $artisUser->id)
-                                                @if (!$item->is_reject && $item->judul == 'none' && $item->audio == 'none' && $item->request_project_artis_id == null)
+                                                @if (
+                                                    !$item->is_reject &&
+                                                        $item->judul == 'none' &&
+                                                        $item->audio == 'none' &&
+                                                        $item->request_project_artis_id_1 == null &&
+                                                        $item->request_project_artis_id_2 == null)
                                                     <tr class="table-row">
                                                         <td class="table-cell">
                                                             <span class="pl-2">{{ $item->name }}</span>
@@ -350,34 +355,43 @@
                                         @foreach ($datas->reverse() as $item)
                                             {{-- @if ($item->status == 'pending' && $item->request_project_artis_id !== null) --}}
                                             @if (
-                                                ($item->request_project_artis_id !== null && $item->artist_id === $artisUser->id) ||
-                                                    $item->request_project_artis_id === $artisUser->id)
-                                                <tr class="table-row">
-                                                    <td class="table-cell">{{ $item->artis->user->name }}</td>
-                                                    <td class="table-cell">{{ $item->name }}</td>
-                                                    <td class="table-cell">{{ $item->created_at->diffForHumans() }}</td>
-                                                    <td class="table-cell text-warning">Pending</td>
-                                                    <td class="d-flex align-items-center">
-                                                        <form
-                                                            action="{{ route('lirikAndChat.artisVerified', $item->code) }}"
-                                                            method="GET">
-                                                            <button type="submit" class="btn-unstyled">
-                                                                <i class="far fa-check-circle fs-5 text-success ml-1"></i>
-                                                            </button>
-                                                        </form>
-                                                        <form action="{{ route('reject.project.artisVerified') }}"
-                                                            method="post" class="m-0">
-                                                            @csrf
-                                                            <button type="submit">
-                                                                <input type="hidden" name="code"
-                                                                    value="{{ $item->code }}">
-                                                                <input type="hidden" name="is_reject" value="true">
-                                                                <i class="far fa-times-circle btn-icon text-danger"
-                                                                    style="font-size: 20px"></i>
-                                                            </button>
-                                                        </form>
-                                                    </td>
-                                                </tr>
+                                                $item->request_project_artis_id_1 !== null ||
+                                                    ($item->request_project_artis_id_2 !== null && $item->artist_id === $artisUser->id) ||
+                                                    $item->request_project_artis_id_1 === $artisUser->id ||
+                                                    $item->request_project_artis_id_2 === $artisUser->id)
+                                                @if (empty($item->harga))
+                                                    @if (!$item->is_reject)
+                                                        <tr class="table-row">
+                                                            <td class="table-cell">{{ $item->artis->user->name }}</td>
+                                                            <td class="table-cell">{{ $item->name }}</td>
+                                                            <td class="table-cell">{{ $item->created_at->format('d F Y') }}
+                                                            </td>
+                                                            <td class="table-cell text-warning">Pending</td>
+                                                            <td class="d-flex align-items-center">
+                                                                <form
+                                                                    action="{{ route('lirikAndChat.artisVerified', $item->code) }}"
+                                                                    method="GET">
+                                                                    <button type="submit" class="btn-unstyled">
+                                                                        <i
+                                                                            class="far fa-check-circle fs-5 text-success ml-1"></i>
+                                                                    </button>
+                                                                </form>
+                                                                <form action="{{ route('reject.project.artisVerified') }}"
+                                                                    method="post" class="m-0">
+                                                                    @csrf
+                                                                    <button type="submit">
+                                                                        <input type="hidden" name="code"
+                                                                            value="{{ $item->code }}">
+                                                                        <input type="hidden" name="is_reject"
+                                                                            value="true">
+                                                                        <i class="far fa-times-circle btn-icon text-danger"
+                                                                            style="font-size: 20px"></i>
+                                                                    </button>
+                                                                </form>
+                                                            </td>
+                                                        </tr>
+                                                    @endif
+                                                @endif
                                             @endif
                                         @endforeach
 
@@ -436,8 +450,8 @@
                             @csrf
                             <div class="mb-3">
                                 <label for="namakategori" class="form-label judulnottebal">Nama Proyek</label>
-                                <input type="text" name="name" class="form-control form-i" id="namaproyek"
-                                    required>
+                                <input type="text" name="name" class="form-control form-i" maxlength="30"
+                                    id="namaproyek" required>
                             </div>
                             <div class="mb-3">
                                 <label for="konsep" class="form-label judulnottebal">Deskripsi</label>
@@ -472,7 +486,7 @@
                                     <label for="namakategori" class="form-label judulnottebal">Nama
                                         Proyek</label>
                                     <input type="text" name="name" class="form-control form-i" id="namaproyek"
-                                        required="" readonly="" value="{{ $item->name }}"
+                                        required="" readonly="" value="{{ $item->name }}" maxlength="30"
                                         fdprocessedid="piymoo">
                                 </div>
                                 <div class="mb-3">
@@ -553,9 +567,6 @@
 
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-
-        {{-- untuk undang kolab --}}
         @foreach ($datas as $item)
             <div class="modal fade" id="undang-{{ $item->code }}" data-bs-backdrop="static" data-bs-keyboard="false"
                 tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -580,24 +591,31 @@
                                         fdprocessedid="piymoo">
                                 </div>
                                 <div class="mb-3">
-                                    {{-- <label for="namakategori" class="form-label judulnottebal">Nama artis</label> --}}
+                                    <label for="namakategori" class="form-label judulnottebal">Nama artis</label>
                                     {{-- <select class="select2" name="kolaborator[]" multiple="multiple">
                                         <!-- Opsi di sini -->
                                         <option style="display: none;" selected disabled>artis verified</option>
+                                    </select> 
+
+                                    <select class="js-example-basic-multiple" id="kategori" name="kolabolator[]">
+                                        <option value="">awfwe</option>
+                                    </select> --}}
+                                    {{-- <select name="kolabolator" id="kategori" class="kategori">
                                     </select> --}}
 
-                                    {{-- <select class="js-example-basic-multiple" id="kategori" name="kolabolator[]">
-                                        <option value="">awfwe</option>
-                                    </select>
-                                    
- --}}
+                                    {{-- <select class="js-example-basic-multiple form-select" id="kategori" name="states[]" multiple="multiple">
+                                    </select> --}}
+                                    <div class="form-group">
 
-                                    <select class="js-example-basic-multiple" id="kategori" name="nama_field">
-                                        <option value="1">Pilihan 1</option>
-                                        <option value="2">Pilihan 2</option>
-                                        <option value="3">Pilihan 3</option>
-                                    </select>
-
+                                        <select class="js-example-basic-multiple" style="width: 100%" id="kategori"
+                                            name="kolaborator[]" multiple="multiple">
+                                            @foreach ($artis as $item)
+                                                @if ($item->user_id !== auth()->user()->id && $item->is_verified === 1)
+                                                    <option value="{{ $item->id }}">{{ $item->user->name }}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
 
                                 </div>
                             </div>
@@ -613,30 +631,42 @@
 
         <script>
             $(document).ready(function() {
-                $('.select2').select2();
-            });
-        </script>
-
-        <script>
-            $(document).ready(function() {
                 $('.js-example-basic-multiple').select2();
             });
-
+        </script>
+        {{-- <script>
             $(document).ready(function() {
-                let opt = $('#kategori');
+                // Initialize Select2
+                // $('.js-example-basic-multiple').select2();
+
+                // Get a reference to the select element
+                let selectElement = $('#kategori');
+
+                // Make an AJAX request to fetch data
                 $.ajax({
                     url: `/artis-verified/artis-kolaborasi`,
                     type: 'GET',
                     dataType: 'json',
                     success: function(response) {
+                        // Clear existing options (if any)
+                        selectElement.empty();
+
+                        // Add a placeholder option (if needed)
+                        selectElement.append('<option value="">Select an option</option>');
+
+                        // Iterate through the response data and add options
                         response.forEach(function(item) {
-                            opt.append(`<select>${item.user.name}</select>`)
+                            selectElement.append(
+                                `<option value="${item.user.name}">${item.user.name}</option>`);
                             console.log("hasil nya " + item.user.name);
-                        })
+                        });
+
+                        // Update Select2 after modifying the options
+                        selectElement.trigger('change');
                     }
                 });
             });
-        </script>
+        </script> --}}
 
     </div>
 @endsection

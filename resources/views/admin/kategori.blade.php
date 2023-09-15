@@ -49,7 +49,8 @@
                                                         <td class="table-cell">{{ $item->name }}</td>
                                                         <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
                                                         <td class="table-cell">
-                                                            <button type="button" class="btn btnicon" data-toggle="modal"data-target="#exampleModalCenter{{ $item->id }}">
+                                                            <button type="button" class="btn btnicon"
+                                                                data-toggle="modal"data-target="#exampleModalCenter{{ $item->id }}">
                                                                 <i class="fas fa-pencil-alt" style="color: #5b6b89"></i>
                                                             </button>
                                                             <button class="btn btnicon"
@@ -64,7 +65,6 @@
                                     </div>
 
 
-
                                     <div class="text-center">
                                         <div class="text-center">
                                             <ul class="pagination justify-content-center">
@@ -77,6 +77,11 @@
                         </div>
                         <!-- partial -->
                     </div>
+                    @if (count($genres) === 0)
+                    <div style="justify-content: center; display: flex; padding: 50px 0;">
+                        <img width="400" height="200" src="/icon-notFound/adminIcon.svg" alt="" srcset="">
+                    </div>
+                    @endif
 
                     <!-- popup -->
                     <!-- Modal -->
@@ -113,37 +118,41 @@
                 </div>
                 <!-- page-body-wrapper ends -->
             </div>
-            @foreach ( $genres->reverse() as $item)
-            <div class="modal fade" id="exampleModalCenter{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="card window">
-                    <div class="card-body">
-                        <a href="" class="close-button far fa-times-circle"></a>
-                        <h3 class="judul">Edit Kategori</h3>
-                        <form class="row" action="{{ route('edit.genre', $item->id) }}" method="POST" enctype="multipart/form-data">
-                            @csrf
+            @foreach ($genres->reverse() as $item)
+                <div class="modal fade" id="exampleModalCenter{{ $item->id }}" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="card window">
+                        <div class="card-body">
+                            <a href="" class="close-button far fa-times-circle"></a>
+                            <h3 class="judul">Edit Kategori</h3>
+                            <form class="row" action="{{ route('edit.genre', $item->id) }}" method="POST"
+                                enctype="multipart/form-data">
+                                @csrf
 
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <label for="namakategori" class="form-label judulnottebal">Nama Kategori</label>
-                                    <input type="text" name="name" class="form-control form-i" id="namaproyek" value="{{ $item->name }}" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="upload" class="form-label judulnottebal">Upload Foto</label>
-                                    <input type="file" name="images" class="form-control form-i" id="namaproyek">
-                                    @if(isset($item->images))
-                                    <img src="{{ asset('storage/' . $item->images) }}" alt="Foto Lama" width="100">
-                                    @endif
-                                </div>
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label for="namakategori" class="form-label judulnottebal">Nama Kategori</label>
+                                        <input type="text" name="name" class="form-control form-i" id="namaproyek"
+                                            value="{{ $item->name }}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="upload" class="form-label judulnottebal">Upload Foto</label>
+                                        <input type="file" name="images" class="form-control form-i"
+                                            id="namaproyek">
+                                        @if (isset($item->images))
+                                            <img src="{{ asset('storage/' . $item->images) }}" alt="Foto Lama"
+                                                width="100">
+                                        @endif
+                                    </div>
 
-                            </div>
-                            <div class="text-md-right">
-                                <button type="submit" class="btn" type="submit">Simpan</button>
-                            </div>
-                        </form>
+                                </div>
+                                <div class="text-md-right">
+                                    <button type="submit" class="btn" type="submit">Simpan</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-
             @endforeach
 
 

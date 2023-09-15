@@ -16,35 +16,33 @@
                                 <th class="table-cell">Aksi</th>
                             </tr>
                         </thead>
-                        @if (count($songs) > 0)
-                            <tbody>
-                                @foreach ($songs->reverse() as $item)
-                                    @if ($item->is_approved)
-                                        <tr class="table-row baris">
-                                            <td class="table-cell">
-                                                <div class="cell-content">
-                                                    <!-- Isi data pengguna di sini -->
-                                                </div>
-                                            </td>
-                                            <td class="table-cell">03/12/2023</td>
-                                            <td class="table-cell text-success">Selesai</td>
-                                            <td class="table-cell">
-                                                <button class="btn btnicon">
-                                                    <i class="far fa-trash-alt text-danger"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    @endif
-                                @endforeach
-                            </tbody>
-                        @else
-                            <div style="justify-content: center; display: flex; padding: 50px 0;">
-                                <img width="200" height="200" src="/icon-notFound/adminIcon.svg" alt=""
-                                    srcset="">
-                            </div>
-                        @endif
-
+                        <tbody>
+                            @foreach ($songs->reverse() as $item)
+                                @if ($item->is_approved)
+                                    <tr class="table-row baris">
+                                        <td class="table-cell">
+                                            <div class="cell-content">
+                                                <!-- Isi data pengguna di sini -->
+                                            </div>
+                                        </td>
+                                        <td class="table-cell">03/12/2023</td>
+                                        <td class="table-cell text-success">Selesai</td>
+                                        <td class="table-cell">
+                                            <button class="btn btnicon">
+                                                <i class="far fa-trash-alt text-danger"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endif
+                            @endforeach
+                        </tbody>
                     </table>
+                    @if (count($songs) === 0)
+                        <div style="justify-content: center; display: flex; padding: 50px 0;">
+                            <img width="400" height="200" src="/icon-notFound/adminIcon.svg" alt=""
+                                srcset="">
+                        </div>
+                    @endif
                 </div>
 
 
