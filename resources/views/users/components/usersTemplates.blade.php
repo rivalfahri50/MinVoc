@@ -568,15 +568,28 @@
 
                 function likeArtist(iconElement, artistId) {
                     const isLiked = iconElement.classList.contains('fas');
-
                     $.ajax({
                         url: `/artist/${artistId}/like`,
                         type: 'POST',
                         dataType: 'json',
                         success: function(response) {
                             console.log(response);
+                            if (response.success) {
+                                const likeCountElement = document.getElementById(`likeCount${artistId}`);
+                                if (likeCountElement) {
+                                    likeCountElement.textContent = response.likes;
+                                }
+                                if (isLiked) {
+                                    iconElement.classList.remove('fas');
+                                    iconElement.classList.add('far');
+                                } else {
+                                    iconElement.classList.remove('far');
+                                    iconElement.classList.add('fas');
+                                }
+                                updateLikeStatus(artistId, !isLiked);
+                            }
                         },
-                        error:function(response){
+                        error: function(response) {
                             console.log(response);
                         }
 
@@ -672,6 +685,7 @@
                 let track = document.createElement('audio');
 
                 let All_song = [];
+                console.log("iki lhoooooooooooo", All_song);
 
                 // async function ambilDataLagu() {
                 //     await fetch('/ambil-lagu')
@@ -714,7 +728,7 @@
                                     artistId: lagu.artist.user.name
                                 };
                             });
-                            console.log(All_song);
+                            console.log("data lagu yang diambil:", All_song);
                             if (All_song.length > 0) {
                                 // Memanggil load_track dengan indeks 0 sebagai lagu pertama
                                 load_track(0);
@@ -733,7 +747,8 @@
                 // function load the track
                 function load_track(index_no) {
                     if (index_no >= 0 && index_no < All_song.length) {
-                        console.log("tester " + index_no);
+                        console.log("Index_no sebelum pemanggilan load_track:", index_no);
+
                         track.src = '{{ asset('storage') }}' + '/' + All_song[index_no].audio;
                         title.innerHTML = All_song[index_no].judul;
                         artist.innerHTML = All_song[index_no].artistId;
@@ -741,7 +756,7 @@
                         track.load();
 
                         timer = setInterval(range_slider, 1000);
-
+                        console.log("Index_no sebelum pemanggilan load_track:", index_no);
                     } else {
                         console.error("Index_no tidak valid.");
                     }
@@ -761,6 +776,10 @@
                     }
                     updateMuteButtonIcon();
                 }
+                track.addEventListener('loadedmetadata', function() {
+                    slider.max = track.duration;
+                });
+
 
                 // fungsi untuk memeriksa lagu diputar atau tidak
                 function justplay() {
@@ -944,7 +963,7 @@
                 function change_duration() {
                     slider_position = track.duration * (slider.value / 100);
                     track.currentTime = slider_position;
-                    console.log(currentTime);
+                    console.log( slider_position = track.duration * (slider.value / 100));
                 }
 
                 slider.addEventListener('input', function() {

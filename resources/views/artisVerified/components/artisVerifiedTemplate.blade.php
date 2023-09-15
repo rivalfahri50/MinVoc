@@ -110,6 +110,11 @@
             top: 10px;
             right: 10px;
         }
+
+        .fa-heart:before {
+            content: "\f004";
+            color: #957DAD;
+        }
     </style>
     <script>
         // INI SCRIPT UNTUK HASIL SEARCH TAMPIL/TIDAK
@@ -556,7 +561,10 @@
                         success: function(response) {
                             console.log(response);
                             if (response.success) {
-                                $('#likeCount').text(response.likes);
+                                const likeCountElement = document.getElementById(`likeCount${artistId}`);
+                                if (likeCountElement) {
+                                    likeCountElement.textContent = response.likes;
+                                }
                                 if (isLiked) {
                                     iconElement.classList.remove('fas');
                                     iconElement.classList.add('far');

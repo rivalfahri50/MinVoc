@@ -130,7 +130,7 @@
                     <div class="row">
                         <div class="col-4">
                             <div class="card pcard jarak">
-                                <h3 class="angka m-0">Rp {{ number_format($totalpenghasilan, 0,',','.')}}</h3>
+                                <h3 class="angka m-0">Rp {{ number_format($totalpenghasilan, 2,',','.')}}</h3>
                                 <h4 class="judulnottebal mb-0">Total penghasilan</h4>
                                 <button class="btn-unstyled mr-2 link mb-0" data-bs-toggle="modal" data-bs-target="#caripenghasilan">Cairkan Penghasilan</a>
                             </div>
@@ -151,7 +151,7 @@
                                         <div class="col-md-12" style="font-size: 13px">
                                             <div class="mb-3">
                                                 <p for="namakategori" class="form-label judulnottebal">Total Penghasilan</p>
-                                                <h3 class="judul">Rp20.000.000</h3>
+                                                <h3 class="judul">Rp {{ number_format($totalpenghasilan, 2,',','.')}}</h3>
                                             </div>
                                             <div class="mb-3">
                                                 <p for="konsep" class="form-label judulnottebal">Jumlah Pencairan</p>
@@ -170,7 +170,7 @@
                         </div>
                         <div class="col-4">
                             <div class="card pcard jarak" style="height: 100%;">
-                                <h3 class="angka m-0">Rp 10.000.000</h3>
+                                <h3 class="angka m-0">Rp 10.000.000,00</h3>
                                 <h4 class="judulnottebal">Sisa Penghasilan</h4>
                             </div>
                         </div>

@@ -229,6 +229,7 @@ class penggunaController extends Controller
         $user = user::where('code', $code)->first();
         $playlists = playlist::all();
         $notifs = notif::where('user_id', auth()->user()->id)->get();
+        $totalDidengar = DB::table('riwayat')->where('user_id', auth()->user()->id)->sum('song_id');
 
         if ($song) {
             $songs = song::all();
@@ -236,7 +237,7 @@ class penggunaController extends Controller
         } else if ($user) {
             $artis = artist::where('user_id', $user->id)->first();
             $songs = song::where('artis_id', $artis->id)->get();
-            return view('users.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs'));
+            return view('users.search.artisSearch', compact('user', 'title','totalDidengar', 'songs', 'playlists', 'notifs'));
         } else {
             return abort(404);
         }
