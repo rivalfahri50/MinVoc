@@ -106,7 +106,7 @@
                                 <div class="col-12">
                                     <div class="preview-list">
                                         @foreach ($artist->reverse() as $item)
-                                        @if ($item->user_id !== auth()->user()->id)
+                                        @if ($item->likes >= 1000   )
                                                 <div class="preview-item">
                                                     <div class="preview-thumbnail">
                                                         <img src="{{ asset('storage/' . $item->user->avatar) }}" width="10%">

@@ -845,7 +845,7 @@
                 }
 
                 shuffleButton.addEventListener('click', function() {
-                    shuffle_songs();
+                    shuffle_song();
                 });
 
 

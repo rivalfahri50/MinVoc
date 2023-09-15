@@ -130,7 +130,7 @@
                     <div class="row">
                         <div class="col-4">
                             <div class="card pcard jarak">
-                                <h3 class="angka m-0">Rp 20.000.000</h3>
+                                <h3 class="angka m-0">Rp {{ number_format($totalpenghasilan, 0,',','.')}}</h3>
                                 <h4 class="judulnottebal mb-0">Total penghasilan</h4>
                                 <button class="btn-unstyled mr-2 link mb-0" data-bs-toggle="modal" data-bs-target="#caripenghasilan">Cairkan Penghasilan</a>
                             </div>
@@ -234,12 +234,6 @@
 
     <script src="/user/assets/js/tablesort.js"></script>
     <script>
-        function myFunction(x) {
-            x.classList.toggle("far"); // Menghapus kelas "fa fa-heart"
-            x.classList.toggle("fas"); // Menambahkan kelas "fas fa-heart"
-            x.classList.toggle("warna-kostum-like"); // Menambahkan kelas warna merah
-        }
-
         /* ============Dengan Rupiah=========== */
         var harga = document.getElementById('harga');
         harga.addEventListener('keyup', function(e) {
@@ -265,19 +259,19 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         var ctx = document.getElementById('myChart').getContext('2d');
-
-        var dataPendapatan = <?php echo json_encode($penghasilan->penghasilan); ?>;
+        var dataPendapatan = @json($penghasilan);
 
         var labels = Object.keys(dataPendapatan);
+        console.log(labels);
         var pendapatanBulanan = Object.values(dataPendapatan);
-
+        console.log(pendapatanBulanan);
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['januari','februari','maret','april','mei','juni','juli','agustus','september','oktober','november','desember'],
+                labels: ['Januari','Februari','Maret','April','mei','juni','Juli','Agustus','september','oktober','november','desember'],
                 datasets: [{
                     label: 'Pendapatan',
-                    data: pendapatanBulanan,
+                    data: @json($month),
                     backgroundColor: [
                         'rgba(153, 102, 255, 2)',
                         'rgba(153, 102, 255, 2)',

@@ -125,6 +125,7 @@
             top: 10px;
             right: 10px;
         }
+
         .closebutton {
             display: block;
             color: #957DAD;
@@ -145,6 +146,11 @@
 
         .popupalasan:hover {
             color: #957DAD
+        }
+
+        .fa-heart:before {
+            content: "\f004";
+            color: #957DAD;
         }
     </style>
     <script>
@@ -282,6 +288,8 @@
                     <div class="progress-controller">
                         <div class="control-buttons">
                             <div id="controls">
+                                <button onclick="shuffle_song()" id="shuffle_button"><i class="fa fa-shuffle"
+                                        aria-hidden="true"></i></button>
                                 <button onclick="previous_song()" id="pre"><i class="fa fa-step-backward"
                                         aria-hidden="true"></i></button>
                                 <button onclick="justplay()" id="play"><i class="far fa-play-circle fr"
@@ -376,7 +384,8 @@
                                                     </p>
                                                 @endif
                                             </div>
-                                            <button class="btn btnicon p-0" style="background: none; border: none; margin-bottom: 20px;"
+                                            <button class="btn btnicon p-0"
+                                                style="background: none; border: none; margin-bottom: 20px;"
                                                 onclick="">
                                                 <i class="far fa-times-circle text-danger"
                                                     style="font-size: 11px;"></i>
@@ -466,19 +475,24 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="alasan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="alasan" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header pb-0">
-                            <h3 class="modal-title judul" id="exampleModalLabel">Pengajuan verifikasi akun ditolak</h3>
+                            <h3 class="modal-title judul" id="exampleModalLabel">Pengajuan verifikasi akun ditolak
+                            </h3>
                             {{-- <button type="button" style="background: none; border: none;" class="close-button far fa-times-circle" data-bs-dismiss="modal" aria-label="Close"></button> --}}
-                            <button type="button" class="closebutton far fa-times-circle" data-dismiss="modal" aria-label="Close" style="background: none; border: none;">
+                            <button type="button" class="closebutton far fa-times-circle" data-dismiss="modal"
+                                aria-label="Close" style="background: none; border: none;">
                                 <span aria-hidden="true" class=""></span>
                             </button>
                         </div>
                         <div class="modal-body pt-1">
                             <p style="padding: 5px;">
-                                Setelah mempertimbangkan dengan seksama, kami harus menolak pengajuan verifikasi akun anda. Verifikasi akun memerlukan persyaratan tertentu yang saat ini belum terpenuhi oleh akun anda.
+                                Setelah mempertimbangkan dengan seksama, kami harus menolak pengajuan verifikasi akun
+                                anda. Verifikasi akun memerlukan persyaratan tertentu yang saat ini belum terpenuhi oleh
+                                akun anda.
                             </p>
                             <p style="padding: 5px;">
                                 Terima kasih atas pengertian Anda
@@ -677,22 +691,22 @@
                 function toggleLike(iconElement, songId) {
                     const isLiked = iconElement.classList.contains('fas');
 
-                 $.ajax({
-                    url: `/song/${songId}/like`,
-                    type: 'POST',
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.success) {
-                            if (isLiked) {
-                                iconElement.classList.remove('fas');
-                                iconElement.classList.add('far');
-                            } else {
-                                iconElement.classList.remove('far');
-                                iconElement.classList.add('fas');
+                    $.ajax({
+                        url: `/song/${songId}/like`,
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.success) {
+                                if (isLiked) {
+                                    iconElement.classList.remove('fas');
+                                    iconElement.classList.add('far');
+                                } else {
+                                    iconElement.classList.remove('far');
+                                    iconElement.classList.add('fas');
+                                }
                             }
                         }
-                    }
-                 })
+                    })
                 }
 
 
@@ -718,7 +732,7 @@
                 let slider = document.querySelector('#duration_slider');
                 let show_duration = document.querySelector('#show_duration');
                 let track_image = document.querySelector('#track_image');
-
+                let shuffleButton = document.querySelector('#shuffle_button');
                 let auto_play = document.querySelector('#auto');
 
                 let timer;
@@ -873,22 +887,39 @@
                         error: function(xhr, status, error) {
                             console.error('Error saat mengirim riwayat:', error);
 
-                            // Tambahkan ini untuk mencetak pesan kesalahan dari respons server
-                            // console.log('Pesan Kesalahan Server:', xhr.responseText);
                         }
                     });
                 }
 
-                function putarByGenre(genre) {
-                    fetch(`pengguna/kategori/${genre}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log(data);
-                            alert("kontooool");
-                        })
-                        .catch(error => {
-                            console.log('error data kategori tidak ada')
-                        });
+                shuffleButton.addEventListener('click', function() {
+                    shuffle_song();
+                });
+
+
+                function shuffle_song() {
+                    let currentIndex = All_song.length,
+                        randomIndex, temporaryValue;
+
+                    if (track.paused === false) {
+                        track.pause();
+                    }
+
+                    // Selama masih ada elemen untuk diacak
+                    while (currentIndex !== 0) {
+                        // Pilih elemen yang tersisa secara acak
+                        randomIndex = Math.floor(Math.random() * currentIndex);
+                        currentIndex--;
+
+                        // Tukar elemen terpilih dengan elemen saat ini
+                        temporaryValue = All_song[currentIndex];
+                        All_song[currentIndex] = All_song[randomIndex];
+                        All_song[randomIndex] = temporaryValue;
+                    }
+                    // Setel ulang indeks lagu saat ini ke 0
+                    index_no = 0;
+                    // Memuat lagu yang diacak
+                    load_track(index_no);
+                    playsong();
                 }
                 // pause song
                 function pausesong() {

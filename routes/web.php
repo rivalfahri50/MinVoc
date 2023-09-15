@@ -63,7 +63,7 @@ Route::prefix('admin')->middleware('admin')->controller(AdminController::class)-
     Route::get('/hapus-verified/{code}', 'hapusVerified')->name('hapus.verified');
     Route::get('/setuju-music/{code}', 'setujuMusic')->name('setuju.upload.music');
     Route::get('/admin/pencairan', 'AdminController@pencairan')->name('admin.pencairan');
-  
+
 
 
 
@@ -235,3 +235,4 @@ Route::post('/hitung/penghasilan', [RiwayatController::class, 'penghasilanArtist
 Route::get('/kebijakan-privasi', function () {
     return view('auth.kebijakanprivasi');
 });
+Route::post('/simpan-penghasilan', [penggunaController::class, 'simpanPenghasilan']);

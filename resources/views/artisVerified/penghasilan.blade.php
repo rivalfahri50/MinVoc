@@ -234,11 +234,6 @@
 
     <script src="/user/assets/js/tablesort.js"></script>
     <script>
-        function myFunction(x) {
-            x.classList.toggle("far"); // Menghapus kelas "fa fa-heart"
-            x.classList.toggle("fas"); // Menambahkan kelas "fas fa-heart"
-            x.classList.toggle("warna-kostum-like"); // Menambahkan kelas warna merah
-        }
 
         /* ============Dengan Rupiah=========== */
         var harga = document.getElementById('harga');
@@ -266,25 +261,25 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         var ctx = document.getElementById('myChart').getContext('2d');
-
-        var dataPendapatan = <?php echo json_encode($penghasilan->penghasilan); ?>;
+        var dataPendapatan = @json($penghasilan);
 
         var labels = Object.keys(dataPendapatan);
+        console.log(labels);
         var pendapatanBulanan = Object.values(dataPendapatan);
-
+        console.log(pendapatanBulanan);
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: labels,
+                labels: ['Januari','Februari','Maret','April','mei','juni','Juli','Agustus','september','oktober','november','desember'],
                 datasets: [{
                     label: 'Pendapatan',
-                    data: pendapatanBulanan,
+                    data: @json($month),
                     backgroundColor: [
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(153, 102, 255, 0.2)'
+                        'rgba(153, 102, 255, 2)',
+                        'rgba(153, 102, 255, 2)',
+                        'rgba(153, 102, 255, 2)',
+                        'rgba(153, 102, 255, 2)',
+                        'rgba(153, 102, 255, 2)'
                     ],
                     borderColor: [
                         'rgba(153, 102, 255, 1)',
@@ -293,7 +288,8 @@
                         'rgba(153, 102, 255, 1)',
                         'rgba(153, 102, 255, 1)'
                     ],
-                    borderWidth: 1
+                    borderWidth: 1,
+                    barPercentage: 0.7
                 }]
             },
             options: {
