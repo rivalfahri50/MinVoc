@@ -50,6 +50,35 @@
                 max-width: 150px;
                 /* Sesuaikan dengan lebar maksimum yang Anda inginkan */
             }
+            .image {
+    width: 100%; /* Mengatur lebar elemen div agar mengisi lebar kontainer */
+}
+
+.wide-image {
+    width: 100%; /* Mengatur lebar gambar agar mengisi lebar elemen div */
+    height: auto; /* Mengatur ketinggian gambar agar mengikuti aspek rasio asli */
+    max-width: none; /* Menghilangkan pembatasan lebar maksimum jika ada */
+}
+
+            .combined-image {
+        position: relative;
+    }
+
+    .combined-image .background {
+
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    .combined-image .artis {
+
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 10%;
+        height: auto;
+    }
         </style>
         <div class="content-wrapper">
             <div class="row">
@@ -81,9 +110,8 @@
                                                 @foreach ($billboards->reverse() as $item)
                                                 <tr class="table-row">
                                                     <td class="table-cell">
-                                                        <div class="cell-content">
-                                                            <img src="{{ asset('storage/' . $item->artis->user->avatar) }}" alt="Face" class="avatar" width="60">
-                                                        </div>
+                                                        <div class="image">
+                                                            <img src="{{ asset('storage/' . $item->image_background) }}" alt="image_background" class="wide-image">
                                                     </td>
                                                     <td class="table-cell">{{ $item->artis->user->name }}</td>
                                                     <td class="table-cell">{{ $item->deskripsi }}</td>
@@ -219,16 +247,23 @@
                         <h3 class="judul">Edit Iklan</h3>
                         <form class="row" action="{{ route('updateBillboard', $item->code) }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                           
-            
+
+
                             <div class="col-md-12">
                                 <div class="mb-3">
-                                    <label for="namakategori" class="form-label judulnottebal">Nama artis</label>
-                                    <input type="text" class="form-control form-i" id="namaproyek" name="nama_artis" value="{{ $item->artis->user->name }}">
+                                    <label for="namaartis" class="form-label judulnottebal">Nama artis</label>
+                                    <select required name="artis_id" class="form-select" id="namaartis">
+                                        @foreach ($artist as $artis)
+                                            <option value="{{ $artis->id }}" {{ $artis->id == $item->artis_id ? 'selected' : '' }}>
+                                                {{ $artis->user->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
+
                                 <div class="mb-3">
                                     <label for="deskripsi" class="form-label judulnottebal">Deskripsi</label>
-                                    <textarea id="deskripsi" class="form-control" maxlength="500" rows="4" name="deskripsi">{{ $item->deskripsi }}</textarea>
+                                    <textarea id="deskripsi"  class="form-control" maxlength="500" rows="4" name="deskripsi">{{ $item->deskripsi }}</textarea>
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
@@ -265,7 +300,7 @@
                 </div>
             </div>
             @endforeach
-            
+
             <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
             <script>

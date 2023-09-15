@@ -145,58 +145,62 @@ class AdminController extends Controller
             return response()->view('admin.iklan', compact('artist', 'title', 'notifs'));
         }
         Alert::success('message', 'Berhasil Untuk Menambah Billboard');
-        return response()->view('admin.iklan', compact('artist', 'title', 'billboards', 'notifs'));
+      return redirect()->back();
     }
 
-    public function updatebillboard(Request $request, string $code)
-{
-    
-    $billboard = billboard::find($code);
+    public function updateBillboard(Request $request, string $code)
+    {
+        $billboard = billboard::where('code', $code)->first();
 
-    if (!$billboard) {
-        return redirect()->back()->with('error', 'Genre not found.');
-    }
-    // Validasi input sesuai kebutuhan
-    $this->validate($request, [
-        'nama_artis' => 'required|string|max:255',
-        'deskripsi' => 'required|string|max:500',
-        'image_background' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-        'image_artis' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-    ]);
-
-
-    // Update nama artis dan deskripsi
-    $billboard->artis->user->name = $request->input('nama_artis');
-    $billboard->deskripsi = $request->input('deskripsi');
-
-    // Handle gambar background baru jika diunggah
-    if ($request->hasFile('image_background')) {
-        // Hapus gambar lama jika ada
-        if ($billboard->image_background) {
-            Storage::delete('public/' . $billboard->image_background);
+        if (!$billboard) {
+            return redirect()->back()->with('error', 'Billboard not found.');
         }
 
-        // Simpan gambar baru
-        $imagePath = $request->file('image_background')->store('public');
-        $billboard->image_background = str_replace('public/', '', $imagePath);
-    }
+        // Validasi input sesuai kebutuhan
+        $this->validate($request, [
+            'artis_id' => 'required|exists:artists,id',
+            'deskripsi' => 'required|string|max:250',
+            'image_background' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image_artis' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-    // Handle gambar artis baru jika diunggah
-    if ($request->hasFile('image_artis')) {
-        // Hapus gambar lama jika ada
-        if ($billboard->image_artis) {
-            Storage::delete('public/' . $billboard->image_artis);
+        // Update nama artis dan deskripsi
+        $billboard->artis_id = $request->input('artis_id');
+        $billboard->deskripsi = $request->input('deskripsi');
+
+        // Handle gambar background baru jika diunggah
+        if ($request->hasFile('image_background')) {
+            // Hapus gambar lama jika ada
+            if ($billboard->image_background) {
+                Storage::delete('public/' . $billboard->image_background);
+            }
+
+            // Simpan gambar baru
+            $imagePath = $request->file('image_background')->store('public');
+            $billboard->image_background = str_replace('public/', '', $imagePath);
         }
 
-        // Simpan gambar baru
-        $imagePath = $request->file('image_artis')->store('public');
-        $billboard->image_artis = str_replace('public/', '', $imagePath);
+        // Handle gambar artis baru jika diunggah
+        if ($request->hasFile('image_artis')) {
+            // Hapus gambar lama jika ada
+            if ($billboard->image_artis) {
+                Storage::delete('public/' . $billboard->image_artis);
+            }
+
+            // Simpan gambar baru
+            $imagePath = $request->file('image_artis')->store('public');
+            $billboard->image_artis = str_replace('public/', '', $imagePath);
+        }
+
+        if ($billboard->save()) {
+            dd($billboard);
+            Alert::success('message', 'Berhasil Untuk Memperbarui Billboard');
+            return redirect()->back()->with('success', 'Billboard updated successfully.');
+        } else {
+            Alert::error('message', 'Gagal Untuk Memperbarui Billboard');
+            return redirect()->back()->with('error', 'Failed to update billboard.');
+        }
     }
-
-    $billboard->save();
-
-    return redirect()->back()->with('success', 'Billboard updated successfully.');
-}
 
     protected function buatGenre(Request $request)
     {
@@ -259,7 +263,7 @@ class AdminController extends Controller
         try {
             if ($request->hasFile('images')) {
 
-                if ($genre->images) {   
+                if ($genre->images) {
                     Storage::disk('public')->delete($genre->images);
                 }
 
