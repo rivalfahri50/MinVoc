@@ -19,7 +19,8 @@
                                     <h5 class="judul mb-3">Nama :</h5>
                                     <td class="table-cell">
                                         <div class="cell-content">
-                                            <img src="{{ asset('storage/' . $item->user->avatar) }}" alt="Face" class="avatar">
+                                            <img src="{{ asset('storage/' . $item->user->avatar) }}" alt="Face"
+                                                class="avatar">
                                             <div>
                                                 <p class="teksbiasa">{{ $item->user->name }}</p>
                                             </div>
