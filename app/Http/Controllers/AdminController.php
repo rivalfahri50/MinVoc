@@ -120,9 +120,19 @@ class AdminController extends Controller
     protected function buatBillboard(Request $request)
     {
         $validator = Validator::make(
-            $request->only('artis_id'),
+            $request->all(),
             [
                 'artis_id' => 'required',
+                'image_background' => 'image|mimes:jpeg,jpg,png,gif|max:10000',
+                'image_artis' => 'image|mimes:jpeg,jpg,png,gif|max:10000',
+            ],
+            [
+                'image_background.image' => 'File latar belakang harus berupa gambar.',
+                'image_background.mimes' => 'File latar belakang harus berupa JPEG, JPG, PNG, atau GIF.',
+                'image_background.max' => 'Ukuran file latar belakang tidak boleh melebihi 10MB.',
+                'image_artis.image' => 'File gambar artis harus berupa gambar.',
+                'image_artis.mimes' => 'File gambar artis harus berupa JPEG, JPG, PNG, atau GIF.',
+                'image_artis.max' => 'Ukuran file gambar artis tidak boleh melebihi 10MB.',
             ]
         );
 
@@ -153,29 +163,36 @@ class AdminController extends Controller
             Alert::error('message', 'Gagal Untuk Menambah Billboard');
             return response()->view('admin.iklan', compact('artist', 'title', 'notifs'));
         }
+
         Alert::success('message', 'Berhasil Untuk Menambah Billboard');
-        return response()->view('admin.iklan', compact('artist', 'title', 'billboards', 'notifs'));
+        return redirect()->back();
     }
 
-    public function updatebillboard(Request $request, string $code)
+    public function updateBillboard(Request $request, string $code)
     {
-
-        $billboard = billboard::find($code);
+        $billboard = billboard::where('code', $code)->first();
 
         if (!$billboard) {
-            return redirect()->back()->with('error', 'Genre not found.');
+            return redirect()->back()->with('error', 'Billboard not found.');
         }
+
         // Validasi input sesuai kebutuhan
         $this->validate($request, [
-            'nama_artis' => 'required|string|max:255',
-            'deskripsi' => 'required|string|max:500',
+            'artis_id' => 'required|exists:artists,id',
+            'deskripsi' => 'required|string|max:250',
             'image_background' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'image_artis' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+        ], [
+            'image_background.image' => 'File latar belakang harus berupa gambar.',
+            'image_background.mimes' => 'File latar belakang harus berupa JPEG, JPG, PNG, atau GIF.',
+            'image_background.max' => 'Ukuran file latar belakang tidak boleh melebihi 10MB.',
+            'image_artis.image' => 'File gambar artis harus berupa gambar.',
+            'image_artis.mimes' => 'File gambar artis harus berupa JPEG, JPG, PNG, atau GIF.',
+            'image_artis.max' => 'Ukuran file gambar artis tidak boleh melebihi 10MB.',
         ]);
 
-
         // Update nama artis dan deskripsi
-        $billboard->artis->user->name = $request->input('nama_artis');
+        $billboard->artis_id = $request->input('artis_id');
         $billboard->deskripsi = $request->input('deskripsi');
 
         // Handle gambar background baru jika diunggah
@@ -202,9 +219,14 @@ class AdminController extends Controller
             $billboard->image_artis = str_replace('public/', '', $imagePath);
         }
 
-        $billboard->save();
-
-        return redirect()->back()->with('success', 'Billboard updated successfully.');
+        if ($billboard->save()) {
+         
+            Alert::success('message', 'Berhasil Untuk Memperbarui Billboard');
+            return redirect()->back()->with('success', 'Billboard updated successfully.');
+        } else {
+            Alert::error('message', 'Gagal Untuk Memperbarui Billboard');
+            return redirect()->back()->with('error', 'Failed to update billboard.');
+        }
     }
 
     protected function buatGenre(Request $request)
@@ -214,6 +236,11 @@ class AdminController extends Controller
             [
                 'name' => 'required|unique:admins,name|string|max:50',
                 'images' => 'mimes:jpeg,jpg,png,gif|required|max:10000',
+            ],
+            [
+                'images.mimes' => 'File gambar harus berupa JPEG, JPG, PNG, atau GIF.',
+                'images.required' => 'File gambar harus diunggah.',
+                'images.max' => 'Ukuran file gambar tidak boleh melebihi 10MB.',
             ]
         );
 
@@ -226,7 +253,7 @@ class AdminController extends Controller
                 // Start a database transaction
                 DB::beginTransaction();
 
-                $genre = new Genre();
+                $genre = new genre();
                 $genre->code = Str::uuid();
                 $genre->name = $request->input('name');
 
@@ -243,13 +270,14 @@ class AdminController extends Controller
 
                 Alert::success('message', 'Berhasil Membuat Genre');
                 return redirect()->back()->with('success', 'Genre created successfully.');
-            } catch (\Throwable $th) {
+            } catch (\Throwable $genre) {
                 DB::rollBack();
-                Log::error('Error creating genre: ' . $th->getMessage());
+                Log::error('Terjadi kesalahan saat membuat genre: ' . $genre->getMessage());
 
-                Alert::success('message', 'Gagal Membuat Genre');
-                return redirect()->back()->with('error', 'Failed to create genre.');
+                Alert::error('message', 'Gagal Membuat Genre');
+                return redirect()->back()->with('error', 'Gagal membuat genre.');
             }
+
         }
     }
     public function editGenre(Request $request, string $code)
@@ -263,6 +291,10 @@ class AdminController extends Controller
         $validator = $request->validate([
             'name' => 'required|string|max:50',
             'images' => 'image|mimes:jpeg,jpg,png,gif|max:10000', // Menggunakan "image" sebagai aturan validasi
+        ],
+        [
+            'images.mimes' => 'File gambar harus berupa JPEG, JPG, PNG, atau GIF.',
+            'images.max' => 'Ukuran file gambar tidak boleh melebihi 10MB.',
         ]);
 
         try {
@@ -278,11 +310,11 @@ class AdminController extends Controller
 
             $genre->name = $request->input('name');
             $genre->save();
-
+            Alert::success('success','Berhasil Mengedit Genre');
             return redirect()->back()->with('success', 'Genre updated successfully.');
         } catch (\Throwable $th) {
             Log::error('Error editing genre: ' . $th->getMessage());
-
+            Alert::error('error','Gagal Mengedit Genre');
             return redirect()->back()->with('error', 'Failed to edit genre.');
         }
     }

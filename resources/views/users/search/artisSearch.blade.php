@@ -19,9 +19,9 @@
                             <div class="col-9 text-xxl-end">
                                 <div class="bottom-left-text">
                                     <h3 class="judul">{{ $user->name }}</h3>
-                                    <p class="m-0" style="color: #957dad; font-weight: 400;">{{ $user->code }} didengar
+                                    <p class="m-0" style="color: #957dad; font-weight: 400;">{{$totalDidengar}} didengar
                                         <span class="fas fa-circle mr-2 ml-2"
-                                            style="color: #cccccc; font-size: 8px;"></span> 145,534 disukai
+                                            style="color: #cccccc; font-size: 8px;"></span> {{ number_format($user->artist->likes, 0, ',', '.') }} disukai
                                     </p>
                                 </div>
                             </div>
@@ -32,7 +32,7 @@
                     <hr class="divider">
                 </div>
                 <div class="col-md-12 grid-margin stretch-card">
-                    <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
+                    <a href="#lagu-diputar" class="flex-grow text-decoration-none link mb-5"
                         onclick="putar({{ 'id' }})">
                         <button onclick="togglePlayPause()" id="play" style="border: none; background:none">
                             <i id="playIcon" class="far fa-play-circle ukuraniconplay" style="color: #957DAD;"></i>
@@ -59,8 +59,10 @@
                                                     </a>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group">
-                                                            <i onclick="myFunction(this)" class="far fa-heart pr-2">
-                                                            </i>
+                                                            <i id="like-artist{{ $item->id }}"
+                                                                data-id="{{ $item->id }}"
+                                                                onclick="likeArtist(this, {{ $item->id }})"
+                                                                class="like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                             <p>{{ $item->waktu }}</p>
                                                             <a data-bs-toggle="modal"
                                                                 data-bs-target="#staticBackdrop-{{ $item->code }}"

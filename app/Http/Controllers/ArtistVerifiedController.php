@@ -9,6 +9,7 @@ use App\Models\billboard;
 use App\Models\genre;
 use App\Models\messages;
 use App\Models\notif;
+use App\Models\penghasilan;
 use App\Models\playlist;
 use App\Models\projects;
 use App\Models\Riwayat;
@@ -52,7 +53,7 @@ class ArtistVerifiedController extends Controller
         return response()->view('artisVerified.playlist', compact('title', 'playlists', 'albums', 'notifs'));
     }
 
-    protected function penghasilan(): Response
+    protected function penghasilan(Request $request): Response
     {
         $title = "MusiCave";
         $totalPengguna = User::count();
@@ -60,9 +61,31 @@ class ArtistVerifiedController extends Controller
         $totalArtist = artist::count();
         $songs = song::all();
         $projects = projects::where('status', 'accept')->get();
-        $penghasilan = artist::where('user_id', auth()->user()->id)->first();
+        $artistid = (int) artist::where('user_id', auth()->user()->id)->first()->id;
+        $penghasilan = penghasilan::where('artist_id', $artistid)->pluck('penghasilan')->toArray();
+        // $month = penghasilan::where('artist_id', $artistid)->pluck('bulan')->toArray();
+        $month = [];
+        if ($request->has("bulan")) {
+            $bulan = $request->bulan;
+            for ($i = 1; $i <= 12; $i++) {
+                $totalPendapatan = DB::table('penghasilan')
+                    ->where('bulan', $bulan)
+                    ->whereYear('created_at', date('Y'))
+                    ->whereMonth('created_at', $i)
+                    ->sum('penghasilan');
+                $month[] = $totalPendapatan;
+            }
+        } else {
+            for ($i = 1; $i <= 12; $i++) {
+                $totalPendapatan = DB::table('penghasilan')
+                    ->whereYear('created_at', date('Y'))
+                    ->whereMonth('created_at', $i)
+                    ->sum('penghasilan');
+                $month[] = $totalPendapatan;
+            }
+        }
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('artisVerified.penghasilan', compact('title', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'penghasilan', 'projects', 'notifs'));
+        return response()->view('artisVerified.penghasilan', compact('title','month', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'penghasilan', 'projects', 'notifs'));
     }
 
     protected function riwayat(): Response

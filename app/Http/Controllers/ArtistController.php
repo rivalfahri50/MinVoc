@@ -10,6 +10,7 @@ use App\Models\Like;
 use App\Models\messages;
 use App\Models\notif;
 use App\Models\Notifikasi;
+use App\Models\penghasilan;
 use App\Models\playlist;
 use App\Models\projects;
 use App\Models\Riwayat;
@@ -25,6 +26,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use getID3;
+use Illuminate\Support\Facades\Date;
 use RealRashid\SweetAlert\Facades\Alert;
 use Throwable;
 
@@ -51,24 +53,49 @@ class ArtistController extends Controller
         return response()->view('artis.playlist', compact('title', 'playlists', 'albums', 'notifs'));
     }
 
-    protected function penghasilan(): Response
+    protected function penghasilan(Request $request): Response
     {
         $title = "MusiCave";
         $projects = projects::all();
-        $totalPengguna = User::count();
-        $totalLagu = song::count();
-        $totalArtist = artist::count();
+        $totalpenghasilan = penghasilan::sum('penghasilan');
         $songs = song::all();
-        $penghasilan = artist::where('user_id', auth()->user()->id)->first();
+        $artistid = (int) artist::where('user_id', auth()->user()->id)->first()->id;
+        $penghasilan = penghasilan::where('artist_id', $artistid)->pluck('penghasilan')->toArray();
+        // $month = penghasilan::where('artist_id', $artistid)->pluck('bulan')->toArray();
+        $month = [];
+        if ($request->has("bulan")) {
+            $bulan = $request->bulan;
+            for ($i = 1; $i <= 12; $i++) {
+                $totalPendapatan = DB::table('penghasilan')
+                    ->where('bulan', $bulan)
+                    ->whereYear('created_at', date('Y'))
+                    ->whereMonth('created_at', $i)
+                    ->sum('penghasilan');
+                $month[] = $totalPendapatan;
+            }
+        } else {
+            for ($i = 1; $i <= 12; $i++) {
+                $totalPendapatan = DB::table('penghasilan')
+                    ->whereYear('created_at', date('Y'))
+                    ->whereMonth('created_at', $i)
+                    ->sum('penghasilan');
+                $month[] = $totalPendapatan;
+            }
+        }
+
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('artis.penghasilan', compact('title', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'penghasilan', 'projects', 'notifs'));
+        return response()->view('artis.penghasilan', compact('title', 'month', 'totalpenghasilan', 'songs', 'penghasilan', 'projects', 'notifs'));
     }
 
     protected function riwayat(): Response
     {
         $title = "MusiCave";
+        $riwayat = Riwayat::all();
+        $uniqueRows = $riwayat->unique(function ($item) {
+            return $item->user_id . $item->song_id . $item->play_date;
+        });
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('artis.riwayat', compact('title', 'notifs'));
+        return response()->view('artis.riwayat', compact('title', 'notifs', 'uniqueRows'));
     }
 
     protected function profile(): Response
@@ -419,7 +446,7 @@ class ArtistController extends Controller
             ]);
             DB::commit();
 
-            $penghasilanArtist = (int) $artis->penghasilan + 35;
+            $penghasilanArtist = (int) $artis->penghasilan + 35000;
             $artis->update(['penghasilan' => $penghasilanArtist]);
             // Alert::success('message', 'Berhasil Mengunggah Lagu');
             return redirect('/artis/unggahAudio')->with('success', 'Song uploaded successfully.');

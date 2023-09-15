@@ -236,3 +236,4 @@ Route::post('/hitung/penghasilan', [RiwayatController::class, 'penghasilanArtist
 Route::get('/kebijakan-privasi', function () {
     return view('auth.kebijakanprivasi');
 });
+Route::post('/simpan-penghasilan', [penggunaController::class, 'simpanPenghasilan']);

@@ -33,4 +33,8 @@ class artist extends Model
     {
         return $this->hasOne(Song::class, 'artis_id', 'id');
     }
+
+    public function penghasilan() {
+        return $this->hasMany(penghasilan::class,'id');
+    }
 }

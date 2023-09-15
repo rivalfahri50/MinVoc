@@ -113,27 +113,31 @@
                                 <div class="col-12">
                                     <div class="preview-list">
                                         @foreach ($artist->reverse() as $item)
-                                        @if ($item->user_id !== auth()->user()->id)
-                                            <div class="preview-item">
-                                                <div class="preview-thumbnail">
-                                                    <img src="{{ asset('storage/' . $item->user->avatar) }}"
-                                                        width="10%">
-                                                </div>  
-                                                <div class="preview-item-content d-sm-flex flex-grow">
+                                            @if ($item->user_id !== auth()->user()->id)
+                                                <div class="preview-item">
+                                                    <div class="preview-thumbnail">
+                                                        <img src="{{ asset('storage/' . $item->user->avatar) }}"
+                                                            width="10%">
+                                                    </div>
                                                     <div class="preview-item-content d-sm-flex flex-grow">
-                                                        <div class="flex-grow">
-                                                            <h6 class="preview-subject">{{ $item->user->name }}</h6>
-                                                            <p class="text-muted mb-0" style="font-weight: 500" id="likeCount">{{ number_format($item->likes, 0,',','.')}} suka</p>
-                                                        </div>
-                                                        <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                            <i id="like-artist{{ $item->id }}"
-                                                                data-id="{{ $item->id }}"
-                                                                onclick="likeArtist(this, {{ $item->id }})"
-                                                                class="like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
+                                                        <div class="preview-item-content d-sm-flex flex-grow">
+                                                            <div class="flex-grow">
+                                                                <h6 class="preview-subject">{{ $item->user->name }}</h6>
+                                                                <p class="text-muted mb-0">
+                                                                    <span id="likeCount{{ $item->id }}">{{ number_format($item->likes, 0, ',', '.') }}</span>
+                                                                    suka
+                                                                </p>
+                                                            </div>
+
+                                                            <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                                                <i id="like-artist{{ $item->id }}"
+                                                                    data-id="{{ $item->id }}"
+                                                                    onclick="likeArtist(this, {{ $item->id }})"
+                                                                    class="like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
                                             @endif
                                         @endforeach
                                     </div>

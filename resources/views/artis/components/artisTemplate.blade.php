@@ -147,6 +147,11 @@
         .popupalasan:hover {
             color: #957DAD
         }
+
+        .fa-heart:before {
+            content: "\f004";
+            color: #957DAD;
+        }
     </style>
     <script>
         // INI SCRIPT UNTUK HASIL SEARCH TAMPIL/TIDAK
@@ -283,6 +288,8 @@
                     <div class="progress-controller">
                         <div class="control-buttons">
                             <div id="controls">
+                                <button onclick="shuffle_song()" id="shuffle_button"><i class="fa fa-shuffle"
+                                        aria-hidden="true"></i></button>
                                 <button onclick="previous_song()" id="pre"><i class="fa fa-step-backward"
                                         aria-hidden="true"></i></button>
                                 <button onclick="justplay()" id="play"><i class="far fa-play-circle fr"
@@ -637,7 +644,10 @@
                         success: function(response) {
                             console.log(response);
                             if (response.success) {
-                                $('#likeCount').text(response.likes);
+                                const likeCountElement = document.getElementById(`likeCount${artistId}`);
+                                if (likeCountElement) {
+                                    likeCountElement.textContent = response.likes;
+                                }
                                 if (isLiked) {
                                     iconElement.classList.remove('fas');
                                     iconElement.classList.add('far');
@@ -726,7 +736,7 @@
                 let slider = document.querySelector('#duration_slider');
                 let show_duration = document.querySelector('#show_duration');
                 let track_image = document.querySelector('#track_image');
-
+                let shuffleButton = document.querySelector('#shuffle_button');
                 let auto_play = document.querySelector('#auto');
 
                 let timer;
@@ -881,22 +891,39 @@
                         error: function(xhr, status, error) {
                             console.error('Error saat mengirim riwayat:', error);
 
-                            // Tambahkan ini untuk mencetak pesan kesalahan dari respons server
-                            // console.log('Pesan Kesalahan Server:', xhr.responseText);
                         }
                     });
                 }
 
-                function putarByGenre(genre) {
-                    fetch(`pengguna/kategori/${genre}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log(data);
-                            alert("kontooool");
-                        })
-                        .catch(error => {
-                            console.log('error data kategori tidak ada')
-                        });
+                shuffleButton.addEventListener('click', function() {
+                    shuffle_song();
+                });
+
+
+                function shuffle_song() {
+                    let currentIndex = All_song.length,
+                        randomIndex, temporaryValue;
+
+                    if (track.paused === false) {
+                        track.pause();
+                    }
+
+                    // Selama masih ada elemen untuk diacak
+                    while (currentIndex !== 0) {
+                        // Pilih elemen yang tersisa secara acak
+                        randomIndex = Math.floor(Math.random() * currentIndex);
+                        currentIndex--;
+
+                        // Tukar elemen terpilih dengan elemen saat ini
+                        temporaryValue = All_song[currentIndex];
+                        All_song[currentIndex] = All_song[randomIndex];
+                        All_song[randomIndex] = temporaryValue;
+                    }
+                    // Setel ulang indeks lagu saat ini ke 0
+                    index_no = 0;
+                    // Memuat lagu yang diacak
+                    load_track(index_no);
+                    playsong();
                 }
                 // pause song
                 function pausesong() {

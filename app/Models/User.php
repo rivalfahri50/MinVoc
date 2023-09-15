@@ -43,6 +43,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(artist::class, 'likes', 'user_id', 'artist_id')->withTimestamps();
     }
+    public function artist() {
+        return $this->hasOne(artist::class);
+    }
     /**
      * The attributes that should be hidden for serialization.
      *
