@@ -65,10 +65,11 @@ class ArtistVerifiedController extends Controller
         $penghasilan = penghasilan::where('artist_id', $artistid)->pluck('penghasilan')->toArray();
         // $month = penghasilan::where('artist_id', $artistid)->pluck('bulan')->toArray();
         $month = [];
-        if ($request->has("bulan")) {
+        if ($request->has("artist_id")) {
+            $artistId = (int) $request->artist_id;
             $bulan = $request->bulan;
             for ($i = 1; $i <= 12; $i++) {
-                $totalPendapatan = DB::table('penghasilan')
+                $totalPendapatan = penghasilan::where('artist_id', $artistId)
                     ->where('bulan', $bulan)
                     ->whereYear('created_at', date('Y'))
                     ->whereMonth('created_at', $i)
@@ -76,8 +77,9 @@ class ArtistVerifiedController extends Controller
                 $month[] = $totalPendapatan;
             }
         } else {
+            $artistId = (int) auth()->user()->artist->id;
             for ($i = 1; $i <= 12; $i++) {
-                $totalPendapatan = DB::table('penghasilan')
+                $totalPendapatan = penghasilan::where('artist_id', $artistId)
                     ->whereYear('created_at', date('Y'))
                     ->whereMonth('created_at', $i)
                     ->sum('penghasilan');
@@ -436,6 +438,9 @@ class ArtistVerifiedController extends Controller
                 'artis_id' => $artis->id,
             ]);
             DB::commit();
+
+            $penghasilanArtist = (int) $artis->penghasilan + 35000;
+            $artis->update(['penghasilan' => $penghasilanArtist]);
 
             return redirect('/artis-verified/unggahAudio')->with('success', 'Song uploaded successfully.');
         } catch (\Throwable $e) {
