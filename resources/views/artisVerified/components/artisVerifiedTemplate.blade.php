@@ -734,7 +734,8 @@
                 let autoplay = 1;
                 let playCount = 0;
                 let prevVolume;
-                let currentTime = 1;
+                let slider_value = 0;
+
 
                 let index_no = 0;
                 let Playing_song = false;
@@ -958,7 +959,6 @@
                 // Fungsi untuk mengubah posisi slider
                 function change_duration() {
                     if (!isNaN(track.duration) && isFinite(slider_value)) {
-                        let slider_value = parseInt(slider.value);
                         track.currentTime = track.duration * (slider_value / 100);
                         console.log(track.duration * (slider_value / 100), slider_value, track.currentTime)
 
@@ -966,6 +966,7 @@
                 }
 
                 slider.addEventListener('input', function() {
+                    slider_value = parseInt(slider_value);
                     change_duration();
                     clearInterval(timer);
                     Playing_song = true;
