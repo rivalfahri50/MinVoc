@@ -46,8 +46,8 @@
                                                                     alt="Face" class="avatar" width="60">
                                                             </div>
                                                         </td>
-                                                        <td class="table-cell">{{ $item->name }}</td>
-                                                        <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
+                                                        <td class="table-cell" style="color: #565656">{{ $item->name }}</td>
+                                                        <td class="table-cell" style="color: #565656">{{ $item->created_at->format('d F Y') }}</td>
                                                         <td class="table-cell">
                                                             <button type="button" class="btn btnicon"
                                                                 data-toggle="modal"data-target="#exampleModalCenter{{ $item->id }}">

@@ -245,7 +245,8 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class="table-cell mt-1">{{ \Carbon\Carbon::parse($item->created_at)->format('Y-m-d') }}
+                                                    <td class="table-cell mt-1">
+                                                        {{ \Carbon\Carbon::parse($item->created_at)->format('Y-m-d') }}
                                                     </td>
                                                     <td class="table-cell text-warning mt-1">
                                                         {{ $item->verification_status }}
@@ -271,15 +272,14 @@
                                 return $item->pengajuan_verified_at === 0;
                             })
                             ->count();
+                        
                     @endphp
-
-                    @if ($count > 0)
+                    @if ($count >= 0)
                         <div style="justify-content: center; display: flex; padding: 50px 0;">
                             <img width="400" height="200" src="/icon-notFound/adminIcon.svg" alt=""
                                 srcset="">
                         </div>
                     @endif
-
 
                     <div class="text-center">
                         <div class="text-center">

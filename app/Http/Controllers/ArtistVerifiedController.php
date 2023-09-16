@@ -57,6 +57,7 @@ class ArtistVerifiedController extends Controller
     {
         $title = "MusiCave";
         $totalPengguna = User::count();
+        $totalpenghasilan = penghasilan::sum('penghasilan');
         $totalLagu = song::count();
         $totalArtist = artist::count();
         $songs = song::all();
@@ -87,7 +88,7 @@ class ArtistVerifiedController extends Controller
             }
         }
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('artisVerified.penghasilan', compact('title', 'month', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'penghasilan', 'projects', 'notifs'));
+        return response()->view('artisVerified.penghasilan', compact('title', 'month', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'penghasilan', 'projects', 'notifs', 'totalpenghasilan'));
     }
 
     protected function riwayat(): Response

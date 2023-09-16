@@ -11,9 +11,9 @@
                         <thead>
                             <tr class="table-row table-header">
                                 <th class="table-cell">Nama<i class="fas fa-sort" data-order="asc"></th>
+                                <th class="table-cell">Artis<i class="fas fa-sort" data-order="asc"></th>
                                 <th class="table-cell">Tanggal<i class="fas fa-sort" data-order="asc"></th>
-                                <th class="table-cell">Status</th>
-                                <th class="table-cell">Aksi</th>
+                                <th class="table-cell">Status<i class="fas fa-sort" data-order="asc"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -22,16 +22,13 @@
                                     <tr class="table-row baris">
                                         <td class="table-cell">
                                             <div class="cell-content">
-                                                <!-- Isi data pengguna di sini -->
+                                                {{ $item->judul }}
                                             </div>
                                         </td>
-                                        <td class="table-cell">03/12/2023</td>
-                                        <td class="table-cell text-success">Selesai</td>
-                                        <td class="table-cell">
-                                            <button class="btn btnicon">
-                                                <i class="far fa-trash-alt text-danger"></i>
-                                            </button>
+                                        <td class="table-cell">{{ $item->artist->user->name }}</td>
                                         </td>
+                                        <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
+                                        <td class="table-cell text-success">{{ $item->is_approved ? 'Publish' : 'Reject' }}
                                     </tr>
                                 @endif
                             @endforeach

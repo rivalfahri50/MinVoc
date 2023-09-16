@@ -893,7 +893,6 @@
                         },
                         error: function(xhr, status, error) {
                             console.error('Error saat mengirim riwayat:', error);
-
                         }
                     });
                 }

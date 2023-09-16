@@ -60,6 +60,7 @@ class ArtistController extends Controller
         $totalpenghasilan = penghasilan::sum('penghasilan');
         $songs = song::all();
         $artistid = (int) artist::where('user_id', auth()->user()->id)->first()->id;
+        // dd($artistid);
         $penghasilan = penghasilan::where('artist_id', $artistid)->pluck('penghasilan')->toArray();
         // $month = penghasilan::where('artist_id', $artistid)->pluck('bulan')->toArray();
         $month = [];
