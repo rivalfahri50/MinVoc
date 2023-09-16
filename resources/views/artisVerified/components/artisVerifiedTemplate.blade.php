@@ -2,16 +2,18 @@
 <html lang="en">
 
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-<!-- Include jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- Include Select2 CSS via CDN -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet">
-
-<!-- Include Select2 JavaScript via CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{{ $title }}</title>
@@ -30,6 +32,16 @@
 
         body {
             font-family: 'Poppins', sans-serif;
+        }
+
+        select {
+            width: 100%;
+            min-height: 100px;
+            border-radius: 3px;
+            border: 1px solid #444;
+            padding: 10px;
+            color: #444444;
+            font-size: 14px;
         }
 
         .search-container {
@@ -354,11 +366,13 @@
                                                     </p>
                                                 @endif
                                             </div>
-                                            <button class="btn btnicon p-0"
+                                            <button type="submit" class="btn btnicon p-0"
                                                 style="background: none; border: none; margin-bottom: 20px;"
                                                 onclick="">
-                                                <i class="far fa-times-circle text-danger"
-                                                    style="font-size: 11px;"></i>
+                                                <a href="/artis-verified/delete-notif/{{ $item->id }}">
+                                                    <i class="far fa-times-circle text-danger"
+                                                        style="font-size: 11px;"></i>
+                                                </a>
                                             </button>
                                         </div>
                                     @endif
@@ -593,6 +607,7 @@
                             response.forEach(function(item) {
                                 totalLikes += item.likes;
                                 const artistId = item.artist_id;
+                                console.log("datas" + item.likes);
                             })
                             const count = document.getElementById('likeCount');
                             if (count) {
@@ -613,7 +628,6 @@
                         type: 'POST',
                         dataType: 'json',
                         success: function(response) {
-                            console.log(response);
                             if (response.success) {
                                 const likeCountElement = document.getElementById(`likeCount${artistId}`);
                                 if (likeCountElement) {

@@ -64,9 +64,6 @@ Route::prefix('admin')->middleware('admin')->controller(AdminController::class)-
     Route::get('/setuju-music/{code}', 'setujuMusic')->name('setuju.upload.music');
     Route::get('/admin/pencairan', 'AdminController@pencairan')->name('admin.pencairan');
 
-
-
-
     Route::POST('/setuju-verified/{code}', 'setujuVerified')->name('tambah.verified');
     Route::post('/uploadBillboard', 'buatBillboard')->name('uploadBillboard');
     Route::post('/edit-billboard/{code}', 'updatebillboard')->name('updateBillboard');
@@ -111,6 +108,7 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
         $notifs = notif::where('user_id', auth()->user()->id)->get();
         return view('artis.peraturan', ['title' => 'MusiCave', 'notifs' => $notifs]);
     })->name('peraturan.artis');
+    Route::get('/delete-notif/{code}', 'deleteNotif');
 
     Route::post('/search', 'pencarian_input')->name('pencarian.artis');
     Route::post('/tambah_playlist/{code}', 'tambah_playlist')->name('tambah.playlist.artis');
@@ -161,6 +159,7 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
         $notifs = notif::where('user_id', auth()->user()->id)->get();
         return view('artisVerified.peraturan', ['title' => 'MusiCave', 'notifs' => $notifs]);
     })->name('peraturan.artisVerified');
+    Route::get('/delete-notif/{code}', 'deleteNotif');
 
     Route::post('/undangColab/{code}', 'undangColab')->name('undangColab');
     Route::post('/bayar/{code}', 'bayar')->name('bayar');
@@ -208,6 +207,7 @@ Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(pengguna
         $notifs = notif::where('user_id', auth()->user()->id)->get();
         return view('users.peraturan', ['title' => 'MusiCave', 'notifs' => $notifs]);
     })->name('peraturan.pengguna');
+    Route::get('/delete-notif/{code}', 'deleteNotif');
 
     Route::post('/search', 'pencarian_input')->name('pencarian');
     Route::post('/tambah_playlist/{code}', 'tambah_playlist')->name('tambah.playlist');

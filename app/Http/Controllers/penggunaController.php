@@ -440,17 +440,30 @@ class penggunaController extends Controller
         return redirect()->back();
     }
 
+    protected function deleteNotif(Request $request, string $code)
+    {
+        try {
+            $notif = notif::where('id', $code)->first();
+            $notif->delete();
+        } catch (\Throwable $th) {
+            abort(404);
+        }
+        return redirect()->back();
+    }
+
     public function search(Request $request)
     {
         $query = $request->input('query');
         $songs = Song::where('judul', 'LIKE', '%' . $query . '%')->get();
 
-        $artists = User::where('name', 'LIKE', '%' . $query . '%')->get();
+        $users = User::where('name', 'LIKE', '%' . $query . '%')
+            ->where('role_id', '!=', 3)
+            ->get();
 
         try {
             $results = [
                 'songs' => $songs,
-                'artists' => $artists,
+                'artists' => $users,
             ];
         } catch (\Throwable $th) {
             return abort(404);

@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string("code", 100);
             $table->foreignId("sender_id")->nullable()->constrained("artists");
-            $table->foreignId("receiver_id")->nullable()->constrained("artists");
+            $table->foreignId("receiver_id_1")->nullable()->constrained("artists");
+            $table->foreignId("receiver_id_2")->nullable()->constrained("artists");
             $table->foreignId("project_id")->nullable()->constrained("projects");
             $table->string("message");
             $table->timestamps();

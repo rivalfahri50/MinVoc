@@ -156,8 +156,8 @@
     <script>
         // INI SCRIPT UNTUK HASIL SEARCH TAMPIL/TIDAK
         document.addEventListener("DOMContentLoaded", function() {
-            const searchInput = document.getElementById("search");
-            const searchResults = document.getElementById("search-results");
+            let searchInput = document.getElementById("search");
+            let searchResults = document.getElementById("search-results");
 
             searchInput.addEventListener("input", function() {
                 if (searchInput.value.trim() !== "") {
@@ -220,20 +220,6 @@
                         <span class="menu-title">Unggah</span>
                     </a>
                 </li>
-                {{-- <li class="nav-item menu-items">
-                    <a class="nav-link" href="/artis/kolaborasi">
-                        @if ($title === 'kolaborasi')
-                            <span class="menu-icon">
-                                <i class="mdi mdi-account-group-outline"></i>
-                            </span>
-                        @else
-                            <span class="menu-icon">
-                                <i class="mdi mdi-account-group-outline"></i>
-                            </span>
-                            <span class="menu-title">Kolaborasi</span>
-                        @endif
-                    </a>
-                </li> --}}
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="/artis/penghasilan">
                         <span class="menu-icon">
@@ -365,35 +351,54 @@
                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                                 aria-labelledby="notificationDropdown">
                                 @foreach ($notifs as $item)
-                                    @if ($item)
-                                        <div class="dropdown-item preview-item" style="gap: 15px; cursor: auto;">
-                                            @if ($item->message == null)
-                                                <div>
-                                                    <img src="{{ asset('storage/' . $item->artis->user->avatar) }}"
-                                                        width="40" style="border-radius: 100%" alt=""
-                                                        srcset="">
-                                                </div>
-                                            @endif
-                                            <div class="preview-item-content">
-                                                <p class="preview-subject mb-1" style="font-weight: bold">
-                                                    {{ $item->title }}</p>
-                                                @if ($item->message !== null)
-                                                    <button class="text-muted ellipsis mb-0"
-                                                        style="font-size: 12px; font-weight: normal"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#alasan-{{ $item->code }}">Klik
-                                                        untuk melihat alasan</button>
-                                                @else
-                                                    <p class="text-muted ellipsis mb-0">{{ $item->artis->user->name }}
-                                                    </p>
+                                    @if (count($notifs) > 0)
+                                        @if ($item)
+                                            <div class="dropdown-item preview-item" style="gap: 15px; cursor: auto;">
+                                                @if ($item->message == null)
+                                                    <div>
+                                                        <img src="{{ asset('storage/' . $item->artis->user->avatar) }}"
+                                                            width="40" style="border-radius: 100%" alt=""
+                                                            srcset="">
+                                                    </div>
                                                 @endif
+                                                <div class="preview-item-content">
+                                                    <p class="preview-subject mb-1" style="font-weight: bold">
+                                                        {{ $item->title }}</p>
+                                                    @if ($item->message !== null)
+                                                        <a class="text-muted ellipsis mb-0"
+                                                            style="font-size: 12px; font-weight: normal; cursor: pointer"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#alasan-{{ $item->code }}">Klik
+                                                            untuk melihat alasan</a>
+                                                    @else
+                                                        <p class="text-muted ellipsis mb-0">
+                                                            {{ $item->artis->user->name }}
+                                                        </p>
+                                                    @endif
+                                                </div>
+                                                <button type="submit" class="btn btnicon p-0"
+                                                    style="background: none; border: none; margin-bottom: 20px;"
+                                                    onclick="">
+                                                    <a href="/artis/delete-notif/{{ $item->id }}">
+                                                        <i class="far fa-times-circle text-danger"
+                                                            style="font-size: 11px;"></i>
+                                                    </a>
+                                                </button>
                                             </div>
-                                            <button class="btn btnicon p-0"
-                                                style="background: none; border: none; margin-bottom: 20px;"
-                                                onclick="">
-                                                <i class="far fa-times-circle text-danger"
-                                                    style="font-size: 11px;"></i>
-                                            </button>
+                                        @endif
+                                    @else
+                                        <div class="dropdown-item preview-item" style="gap: 15px; cursor: auto;">
+                                            <div class="preview-item-content">
+                                                <p class="preview-subject mb-1" style="font-weight: bold">None</p>
+                                                <a class="text-muted ellipsis mb-0"
+                                                    style="font-size: 12px; font-weight: normal; cursor: pointer"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#alasan-{{ $item->code }}">Klik
+                                                    untuk melihat alasan</a>
+                                                <p class="text-muted ellipsis mb-0">
+                                                    {{ $item->artis->user->name }}
+                                                </p>
+                                            </div>
                                         </div>
                                     @endif
                                 @endforeach
@@ -424,7 +429,7 @@
                                         </div>
                                     </div>
                                     <div class="preview-item-content">
-                                        <p class="preview-subject mb-1">Profile</p>
+                                        <p class="preview-subject mb-1 fw-light">Profile</p>
                                     </div>
                                 </a>
                                 <a class="dropdown-item preview-item" href="{{ route('logout.users') }}">
@@ -434,7 +439,7 @@
                                         </div>
                                     </div>
                                     <div class="preview-item-content">
-                                        <p class="preview-subject mb-1">Log out</p>
+                                        <p class="preview-subject mb-1 fw-light">Log out</p>
                                     </div>
                                 </a>
                             </div>
@@ -580,7 +585,6 @@
                                     );
                                 });
                                 $.each(results.artists, function(index, result) {
-                                    console.log(result.code);
                                     $searchResults.append(
                                         `<li><a href='/artis/search/${result.code}'>${result.name}</a></li>`
                                     );
@@ -606,8 +610,8 @@
                         success: function(response) {
                             console.log(response);
                             response.forEach(function(item) {
-                                const artistId = item.artist_id;
-                                const like = document.getElementById(`like-artist${item.artist_id}`);
+                                let artistId = item.artist_id;
+                                let like = document.getElementById(`like-artist${item.artist_id}`);
                                 like.classList.toggle('fas');
                             })
                         },
@@ -623,9 +627,9 @@
                             let totalLikes = 0;
                             response.forEach(function(item) {
                                 totalLikes += item.likes;
-                                const artistId = item.artist_id;
+                                let artistId = item.artist_id;
                             })
-                            const count = document.getElementById('likeCount');
+                            let count = document.getElementById('likeCount');
                             if (count) {
                                 count.textContent = totalLikes;
                             }
@@ -635,7 +639,7 @@
                 });
 
                 function likeArtist(iconElement, artistId) {
-                    const isLiked = iconElement.classList.contains('fas');
+                    let isLiked = iconElement.classList.contains('fas');
                     $.ajax({
                         url: `/artist/${artistId}/like`,
                         type: 'POST',
@@ -660,13 +664,11 @@
                         error: function(response) {
                             console.log(response);
                         }
-
                     })
                 }
 
-
                 function updateLikeStatus(artistId, isLiked) {
-                    const likeIcons = document.querySelectorAll(`.like[data-id="${artistId}"]`);
+                    let likeIcons = document.querySelectorAll(`.like[data-id="${artistId}"]`);
                     likeIcons.forEach(likeIcon => {
                         likeIcon.classList.toggle('fas', isLiked);
                         likeIcon.classList.toggle('far', !isLiked);
@@ -684,8 +686,8 @@
                         success: function(response) {
                             console.log(response);
                             response.forEach(function(item) {
-                                const songId = item.song_id;
-                                const like = document.getElementById(`like${item.song_id}`);
+                                let songId = item.song_id;
+                                let like = document.getElementById(`like${item.song_id}`);
                                 like.classList.toggle('fas');
                             })
                         }
@@ -693,7 +695,7 @@
                 });
 
                 function toggleLike(iconElement, songId) {
-                    const isLiked = iconElement.classList.contains('fas');
+                    let isLiked = iconElement.classList.contains('fas');
 
                     $.ajax({
                         url: `/song/${songId}/like`,
@@ -715,13 +717,14 @@
 
 
                 function updateSongLikeStatus(songId, isLiked) {
-                    const likeIcons = document.querySelectorAll(`.shared-icon-like[data-id="${songId}"]`);
+                    let likeIcons = document.querySelectorAll(`.shared-icon-like[data-id="${songId}"]`);
                     likeIcons.forEach(likeIcon => {
                         likeIcon.classList.toggle('fas', isLiked);
                         likeIcon.classList.toggle('far', !isLiked);
                     });
                 }
             </script>
+
             <script>
                 let previous = document.querySelector('#pre');
                 let play = document.querySelector('#play');
@@ -768,7 +771,6 @@
                                     artistId: lagu.artist.user.name
                                 };
                             });
-                            console.log(All_song);
                             if (All_song.length > 0) {
                                 // Memanggil load_track dengan indeks 0 sebagai lagu pertama
                                 load_track(0);
@@ -781,8 +783,9 @@
                         });
                 }
 
+                console.log("audio media -> ", slider);
+
                 ambilDataLagu();
-                // semua function
 
                 // function load the track
                 function load_track(index_no) {
@@ -793,13 +796,13 @@
                         artist.innerHTML = All_song[index_no].artistId;
                         track_image.src = '{{ asset('storage') }}' + '/' + All_song[index_no].image;
                         track.load();
-
                         timer = setInterval(range_slider, 1000);
-
                     } else {
+                        console.log(All_song.length);
                         console.error("Index_no tidak valid.");
                     }
                 }
+
                 load_track(0);
 
                 // fungsi mute sound
@@ -844,7 +847,7 @@
                     // Periksa apakah index_no memiliki nilai yang benar
                     if (index_no >= 0 && index_no < All_song.length) {
                         // Perbarui playCount dengan songId yang sesuai
-                        const songId = All_song[index_no].id;
+                        let songId = All_song[index_no].id;
                         console.log(All_song[index_no])
                         updatePlayCount(songId);
                         history(songId);
@@ -935,10 +938,10 @@
                 function putar(id) {
                     console.log('ID yang dikirim:', id);
                     id = id - 1;
-                    const lagu = All_song[id];
+                    let lagu = All_song[id];
                     // alert(All_song.length - 1 + " " + id);
                     if (lagu) {
-                        const new_index_no = All_song.indexOf(lagu);
+                        let new_index_no = All_song.indexOf(lagu);
                         if (new_index_no >= 0) {
                             index_no = new_index_no;
                             load_track(id);
@@ -993,18 +996,17 @@
                     track.volume = recent_volume.value / 100;
                 }
 
-                // ubah posisi slider
-                // Fungsi untuk mengubah posisi slider
                 function change_duration() {
+                    let slider_value = parseInt(slider.value);
                     if (!isNaN(track.duration) && isFinite(slider_value)) {
-                        let slider_value = parseInt(slider.value);
-                        track.currentTime = track.duration * (slider_value / 100);
-                        console.log(track.duration * (slider_value / 100), slider_value, track.currentTime)
-
+                        // track.duration * (slider_value / 100);
+                        // console.log(slider);
+                        slider.currentTime = track.duration * (slider_value / 100);
+                        console.log(slider.currentTime);
                     }
                 }
 
-                slider.addEventListener('input', function() {
+                slider.addEventListener('click', function() {
                     change_duration();
                     clearInterval(timer);
                     Playing_song = true;
@@ -1016,11 +1018,9 @@
                 // range slider
                 function range_slider() {
                     let position = 0;
-                    // memperbaharui posisi slider
                     if (!isNaN(track.duration)) {
                         position = track.currentTime * (100 / track.duration);
                         slider.value = position;
-                        // console.log(track.duration);
                     }
                     if (track.ended) {
                         play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>';
@@ -1032,10 +1032,10 @@
                     }
 
                     // kalkulasi waktu dari durasi audio
-                    const durationElement = document.getElementById('duration');
-                    const durationMinutes = Math.floor(track.duration / 60);
-                    const durationSeconds = Math.floor(track.duration % 60);
-                    const formattedDuration = `${durationMinutes}:${durationSeconds < 10 ? '0' : ''}${durationSeconds}`;
+                    let durationElement = document.getElementById('duration');
+                    let durationMinutes = Math.floor(track.duration / 60);
+                    let durationSeconds = Math.floor(track.duration % 60);
+                    let formattedDuration = `${durationMinutes}:${durationSeconds < 10 ? '0' : ''}${durationSeconds}`;
                     durationElement.textContent = formattedDuration;
                 }
 
@@ -1054,13 +1054,13 @@
                 // Fungsi untuk mengupdate durasi waktu (waktu berjalan sesuai real time)
                 function updateDuration() {
                     // Menghitung durasi waktu yang telah berlalu
-                    const currentMinutes = Math.floor(track.currentTime / 60);
-                    const currentSeconds = Math.floor(track.currentTime % 60);
+                    let currentMinutes = Math.floor(track.currentTime / 60);
+                    let currentSeconds = Math.floor(track.currentTime % 60);
                     // Memformat durasi waktu yang akan ditampilkan
-                    const formattedCurrentTime = `${currentMinutes}:${currentSeconds < 10 ? '0' : ''}${currentSeconds}`;
+                    let formattedCurrentTime = `${currentMinutes}:${currentSeconds < 10 ? '0' : ''}${currentSeconds}`;
                     // console.log(formattedCurrentTime);
                     // Menampilkan durasi waktu pada elemen yang sesuai
-                    const currentTimeElement = document.getElementById('current-time');
+                    let currentTimeElement = document.getElementById('current-time');
                     currentTimeElement.textContent = formattedCurrentTime;
                 }
 
@@ -1082,11 +1082,13 @@
                     let slider_value = recent_volume.value / 100;
                     track.volume = slider_value;
 
+
                     // Update mute button icon and volume display
                     updateMuteButtonIcon();
                     volume_show.innerHTML = Math.round(slider_value * 100);
                 });
 
+                console.log("SLIDER VALUE ->" + recent_volume);
 
                 // Function to update mute button icon
                 function updateMuteButtonIcon() {

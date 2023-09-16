@@ -233,46 +233,52 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @if (count($artist) > 0)
-                                            @foreach ($artist as $item)
-                                                @if ($item->pengajuan_verified_at)
-                                                    <tr class="table-row ">
-                                                        <td class="table-cell">
-                                                            <div class="cell-content mt-1">
-                                                                <img src="{{ asset('storage/' . $item->user->avatar) }}"
-                                                                    alt="Face" class="avatar mt-1">
-                                                                <div>
-                                                                    <p>{{ $item->user->name }}</p>
-                                                                </div>
+                                        @foreach ($artist as $item)
+                                            @if ($item->pengajuan_verified_at)
+                                                <tr class="table-row ">
+                                                    <td class="table-cell">
+                                                        <div class="cell-content mt-1">
+                                                            <img src="{{ asset('storage/' . $item->user->avatar) }}"
+                                                                alt="Face" class="avatar mt-1">
+                                                            <div>
+                                                                <p>{{ $item->user->name }}</p>
                                                             </div>
-                                                        </td>
-                                                        <td class="table-cell mt-1">{{ $item->pengajuan_verified_at }}
-                                                        </td>
-                                                        <td class="table-cell text-warning mt-1">
-                                                            {{ $item->verification_status }}
-                                                        </td>
-                                                        <td class="table-cell">
-                                                            <button type="button" class="btn btnicon mt-1"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#staticBackdrop-{{ $item->code }}">
-                                                                <i class="far fa-eye text-info"></i>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                @endif
-                                            @endforeach
-                                        @else
-                                            <div>
-                                                <img width="100" src="/icon-notFound/adminIcon.svg" alt=""
-                                                    srcset="">
-                                            </div>
-                                        @endif
+                                                        </div>
+                                                    </td>
+                                                    <td class="table-cell mt-1">{{ \Carbon\Carbon::parse($item->created_at)->format('Y-m-d') }}
+                                                    </td>
+                                                    <td class="table-cell text-warning mt-1">
+                                                        {{ $item->verification_status }}
+                                                    </td>
+                                                    <td class="table-cell">
+                                                        <button type="button" class="btn btnicon mt-1"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#staticBackdrop-{{ $item->code }}">
+                                                            <i class="far fa-eye text-info"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
+                    @php
+                        $count = $artist
+                            ->filter(function ($item) {
+                                return $item->pengajuan_verified_at === 0;
+                            })
+                            ->count();
+                    @endphp
 
+                    @if ($count > 0)
+                        <div style="justify-content: center; display: flex; padding: 50px 0;">
+                            <img width="400" height="200" src="/icon-notFound/adminIcon.svg" alt=""
+                                srcset="">
+                        </div>
+                    @endif
 
 
                     <div class="text-center">

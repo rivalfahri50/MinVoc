@@ -123,13 +123,26 @@ class ArtistVerifiedController extends Controller
 
     protected function undangColab(Request $request, string $code)
     {
+        $kolaborator = $request->input('kolaborator');
+        if (empty($kolaborator[1]) === null) {
+            $data = [
+                'request_project_artis_id_1' => $kolaborator[0],
+                'request_project_artis_id_2' => null,
+                'status' => "pending",
+                'pengajuan_project' => now()
+            ];
+        } else {
+            $data = [
+                'request_project_artis_id_1' => $kolaborator[0],
+                'request_project_artis_id_2' => isset($kolaborator[1]) ? $kolaborator[1] : null,
+                'status' => "pending",
+                'pengajuan_project' => now()
+            ];
+        }
+        // dd($data);
+        projects::where('code', $code)
+            ->update($data);
         try {
-            projects::where('code', $code)
-                ->update([
-                    'request_project_artis_id' => $request->input('kolaborator'),
-                    'status' => "pending",
-                    'pengajuan_project' => now()
-                ]);
         } catch (\Throwable $th) {
             return abort(404);
         }
@@ -496,16 +509,29 @@ class ArtistVerifiedController extends Controller
         return response()->view('artisVerified.playlist.buat', compact('title', 'songs', 'notifs'));
     }
 
+    protected function deleteNotif(Request $request, string $code)
+    {
+        try {
+            $notif = notif::where('id', $code)->first();
+            $notif->delete();
+        } catch (\Throwable $th) {
+            abort(404);
+        }
+        return redirect()->back();
+    }
+
     public function search(Request $request)
     {
         $query = $request->input('query');
         $songs = Song::where('judul', 'LIKE', '%' . $query . '%')->get();
-        $artists = User::where('name', 'LIKE', '%' . $query . '%')->get();
+        $users = User::where('name', 'LIKE', '%' . $query . '%')
+            ->where('role_id', '!=', 3)
+            ->get();
 
         try {
             $results = [
                 'songs' => $songs,
-                'artists' => $artists,
+                'artists' => $users,
             ];
         } catch (\Throwable $th) {
             return abort(404);
@@ -711,8 +737,9 @@ class ArtistVerifiedController extends Controller
         $artisUser = artist::where('user_id', auth()->user()->id)->first();
         $messages = messages::with(['sender.user', 'receiver', 'project'])->get();
         $notifs = notif::where('user_id', auth()->user()->id)->get();
+        $artis = artist::with('user')->get();
 
-        return response()->view('artisVerified.kolaborasi', compact('title', 'datas', 'artisUser', 'messages', 'notifs'));
+        return response()->view('artisVerified.kolaborasi', compact('title', 'datas', 'artisUser', 'messages', 'artis', 'notifs'));
     }
 
     protected function artisSelect()
@@ -753,7 +780,6 @@ class ArtistVerifiedController extends Controller
     protected function Project(Request $request, string $code)
     {
         $statusPersetujuan = Cache::get('status_persetujuan_' . auth()->user()->id);
-        // dd($statusPersetujuan);
         $validate = Validator::make(
             $request->only('images', 'name', 'audio', 'range'),
             [
@@ -801,7 +827,7 @@ class ArtistVerifiedController extends Controller
             $persentase = 80;
         }
 
-        $uangTetap = 200000000;
+        $uangTetap = 2000000;
 
         $uangYangDiterima = ($range / 100) * $uangTetap;
 
@@ -811,15 +837,17 @@ class ArtistVerifiedController extends Controller
             'konsep' => $project->konsep,
             'judul' => $request->input('name'),
             'audio' => $request->file('audio'),
-            'harga' =>  number_format($uangYangDiterima, 2, ',', '.'),
+            'harga' =>  number_format($uangYangDiterima, 2, ',', ','),
             'status' => "accept",
             'pembuat_project' => Auth::user()->id,
-            'penerima_project' => $project->request_project_artis_id,
+            // 'penerima_project' => $project->request_project_artis_id,
             'is_approved' => true,
             'is_reject' => false,
         ];
+
+        // dd($project->request_project_artis_id_);
+        $project->update($data);
         try {
-            $project->update($data);
         } catch (Throwable $e) {
             return abort(404);
         }
@@ -828,7 +856,6 @@ class ArtistVerifiedController extends Controller
 
     protected function message(Request $request, string $code)
     {
-
         try {
             $project = projects::where('code', $code)->first();
             $sender = artist::where('user_id', auth()->user()->id)->first();
@@ -836,15 +863,26 @@ class ArtistVerifiedController extends Controller
                 $data = [
                     'code' => Str::uuid(),
                     'sender_id' => $sender->id,
-                    'receiver_id' => $project->request_project_artis_id,
+                    'receiver_id_1' => $project->request_project_artis_id_1,
+                    'receiver_id_2' => $project->request_project_artis_id_2,
                     'project_id' => $project->id,
                     'message' => $request->input('message')
                 ];
-            } else {
+            } else if ($sender->id === $project->request_project_artis_id_1) {
                 $data = [
                     'code' => Str::uuid(),
                     'sender_id' => $sender->id,
-                    'receiver_id' => $project->artist_id,
+                    'receiver_id_1' => $project->request_project_artis_id_2,
+                    'receiver_id_2' => $project->artist_id,
+                    'project_id' => $project->id,
+                    'message' => $request->input('message')
+                ];
+            } else if ($sender->id === $project->request_project_artis_id_2) {
+                $data = [
+                    'code' => Str::uuid(),
+                    'sender_id' => $sender->id,
+                    'receiver_id_1' => $project->request_project_artis_id_1,
+                    'receiver_id_2' => $project->artist_id,
                     'project_id' => $project->id,
                     'message' => $request->input('message')
                 ];
@@ -863,19 +901,38 @@ class ArtistVerifiedController extends Controller
     protected function rejectProject(Request $request)
     {
         $project = projects::where('code', $request->input('code'))->first();
+        $artis = artist::where('user_id', auth()->user()->id)->first();
+        $message = messages::where('project_id', $project->id)->get();
+        // dd($message);
         try {
-            $data = [
-                'code' => $project->code,
-                'name' => $project->name,
-                'judul' => "none",
-                'lirik' => "none",
-                'konsep' => $project->konsep,
-                'harga' => $project->harga,
-                'artist_id' => Auth::user()->id,
-                'is_approved' => false,
-                'is_reject' => true,
-            ];
-            $project->update($data);
+            if ($project->artist_id == $artis->id) {
+                $data = [
+                    'code' => $project->code,
+                    'name' => $project->name,
+                    'judul' => "none",
+                    'lirik' => "none",
+                    'konsep' => $project->konsep,
+                    'harga' => $project->harga,
+                    'artist_id' => $artis->id,
+                    'is_approved' => false,
+                    'is_reject' => true,
+                ];
+                $project->delete($data);
+            } else {
+                $data = [
+                    'code' => $project->code,
+                    'name' => $project->name,
+                    'judul' => "none",
+                    'lirik' => "none",
+                    'status' => "reject",
+                    'konsep' => $project->konsep,
+                    'harga' => $project->harga,
+                    'artist_id' => $artis->id,
+                    'is_approved' => false,
+                    'is_reject' => true,
+                ];
+                $project->update($data);
+            }
         } catch (\Throwable $th) {
             return abort(404);
         }

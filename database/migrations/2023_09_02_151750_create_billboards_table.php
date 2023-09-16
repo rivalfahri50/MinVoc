@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('code', 100);
             $table->foreignId('artis_id')->constrained('artists');
-            $table->string('deskripsi');
+            $table->text('deskripsi')->nullable();
             $table->string('image_background');
             $table->string('image_artis');
             $table->timestamps();

@@ -50,35 +50,40 @@
                 max-width: 150px;
                 /* Sesuaikan dengan lebar maksimum yang Anda inginkan */
             }
-            .image {
-    width: 100%; /* Mengatur lebar elemen div agar mengisi lebar kontainer */
-}
 
-.wide-image {
-    width: 100%; /* Mengatur lebar gambar agar mengisi lebar elemen div */
-    height: auto; /* Mengatur ketinggian gambar agar mengikuti aspek rasio asli */
-    max-width: none; /* Menghilangkan pembatasan lebar maksimum jika ada */
-}
+            .image {
+                width: 100%;
+                /* Mengatur lebar elemen div agar mengisi lebar kontainer */
+            }
+
+            .wide-image {
+                width: 100%;
+                /* Mengatur lebar gambar agar mengisi lebar elemen div */
+                height: auto;
+                /* Mengatur ketinggian gambar agar mengikuti aspek rasio asli */
+                max-width: none;
+                /* Menghilangkan pembatasan lebar maksimum jika ada */
+            }
 
             .combined-image {
-        position: relative;
-    }
+                position: relative;
+            }
 
-    .combined-image .background {
+            .combined-image .background {
 
-        width: 100%;
-        height: auto;
-        object-fit: cover;
-    }
+                width: 100%;
+                height: auto;
+                object-fit: cover;
+            }
 
-    .combined-image .artis {
+            .combined-image .artis {
 
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 10%;
-        height: auto;
-    }
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 10%;
+                height: auto;
+            }
         </style>
         <div class="content-wrapper">
             <div class="row">
@@ -108,27 +113,30 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($billboards->reverse() as $item)
-                                                <tr class="table-row">
-                                                    <td class="table-cell">
-                                                        <div class="image">
-                                                            <img src="{{ asset('storage/' . $item->image_background) }}" alt="image_background" class="wide-image">
-                                                    </td>
-                                                    <td class="table-cell">{{ $item->artis->user->name }}</td>
-                                                    <td class="table-cell">{{ $item->deskripsi }}</td>
-                                                    <td class="table-cell">
-                                                        <button class="btn btnicon" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ $item->code }}">
-                                                            <i class="far fa-eye text-info"></i>
-                                                        </button>
-                                                        <button type="button" class="btn btnicon" data-toggle="modal" data-target="#exampleModalCenter{{ $item->id }}">
-                                                            <i class="fas fa-pencil-alt " style="color: #5b6b89"></i>
-                                                        </button>
-                                                        <button class="btn btnicon" onclick="deleteBillboard('{{ $item->code }}')">
-                                                            <i class="far fa-times-circle text-danger"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-
+                                                    <tr class="table-row">
+                                                        <td class="table-cell">
+                                                            <div class="image">
+                                                                <img src="{{ asset('storage/' . $item->image_background) }}"
+                                                                    alt="image_background" class="wide-image">
+                                                        </td>
+                                                        <td class="table-cell">{{ $item->artis->user->name }}</td>
+                                                        <td class="table-cell">{{ $item->deskripsi }}</td>
+                                                        <td class="table-cell">
+                                                            <button class="btn btnicon" data-bs-toggle="modal"
+                                                                data-bs-target="#staticBackdrop-{{ $item->code }}">
+                                                                <i class="far fa-eye text-info"></i>
+                                                            </button>
+                                                            <button type="button" class="btn btnicon" data-toggle="modal"
+                                                                data-target="#exampleModalCenter{{ $item->id }}">
+                                                                <i class="fas fa-pencil-alt " style="color: #5b6b89"></i>
+                                                            </button>
+                                                            <button class="btn btnicon"
+                                                                onclick="deleteBillboard('{{ $item->code }}')">
+                                                                <i class="far fa-times-circle text-danger"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -146,13 +154,21 @@
                         <!-- partial -->
                     </div>
 
+                    @if (count($billboards) === 0)
+                        <div style="justify-content: center; display: flex; padding: 50px 0;">
+                            <img width="400" height="200" src="/icon-notFound/adminIcon.svg" alt=""
+                                srcset="">
+                        </div>
+                    @endif
+
                     <!-- popup -->
                     <div id="popuptambah">
                         <div class="card window">
                             <div class="card-body">
                                 <a href="#" class="close-button far fa-times-circle"></a>
                                 <h3 class="judul">Tambah Iklan</h3>
-                                <form class="row" action="{{ route('uploadBillboard') }}" enctype="multipart/form-data" method="POST" id="billboardForm">
+                                <form class="row" action="{{ route('uploadBillboard') }}" enctype="multipart/form-data"
+                                    method="POST" id="billboardForm">
                                     @csrf
                                     <div class="col-md-12">
                                         <div class="mb-3">
@@ -166,16 +182,21 @@
                                         </div>
                                         <div class="mb-3">
                                             <label for="deskripsi" class="form-label judulnottebal">Deskripsi</label>
-                                            <textarea id="deskripsi" name="deskripsi" class="form-control" maxlength="500" rows="6" placeholder="Masukkan deskripsi" required></textarea>
+                                            <textarea id="deskripsi" name="deskripsi" class="form-control" maxlength="500" rows="6"
+                                                placeholder="Masukkan deskripsi" required></textarea>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="uploadlatar" class="form-label judulnottebal">Upload Background Iklan</label>
-                                            <input type="file" name="image_background" class="form-control form-i" id="uploadlatar" accept=".jpeg, .jpg, .png, .gif" required>
+                                            <label for="uploadlatar" class="form-label judulnottebal">Upload Background
+                                                Iklan</label>
+                                            <input type="file" name="image_background" class="form-control form-i"
+                                                id="uploadlatar" accept=".jpeg, .jpg, .png, .gif" required>
                                             <span id="image-background-error" style="color: red;"></span>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="uploadartis" class="form-label judulnottebal">Upload Foto Artis</label>
-                                            <input type="file" name="image_artis" class="form-control form-i" id="uploadartis" accept=".jpeg, .jpg, .png, .gif" required>
+                                            <label for="uploadartis" class="form-label judulnottebal">Upload Foto
+                                                Artis</label>
+                                            <input type="file" name="image_artis" class="form-control form-i"
+                                                id="uploadartis" accept=".jpeg, .jpg, .png, .gif" required>
                                             <span id="image-artis-error" style="color: red;"></span>
                                         </div>
                                     </div>
@@ -266,96 +287,110 @@
                 <!-- page-body-wrapper ends -->
             </div>
             <!-- container-scroller -->
-@foreach ($billboards->reverse() as $item)
-<div class="modal fade" id="exampleModalCenter{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="card window">
-        <div class="card-body">
-            <a href="" class="close-button far fa-times-circle"></a>
-            <h3 class="judul">Edit Iklan</h3>
-            <form class="row" action="{{ route('updateBillboard', $item->code) }}" method="POST" enctype="multipart/form-data" id="editBillboardForm{{ $item->id }}">
-                @csrf
+            @foreach ($billboards->reverse() as $item)
+                <div class="modal fade" id="exampleModalCenter{{ $item->id }}" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="card window">
+                        <div class="card-body">
+                            <a href="" class="close-button far fa-times-circle"></a>
+                            <h3 class="judul">Edit Iklan</h3>
+                            <form class="row" action="{{ route('updateBillboard', $item->code) }}" method="POST"
+                                enctype="multipart/form-data" id="editBillboardForm{{ $item->id }}">
+                                @csrf
 
-                <div class="col-md-12">
-                    <div class="mb-3">
-                        <label for="namaartis" class="form-label judulnottebal">Nama artis</label>
-                        <select required name="artis_id" class="form-select" id="namaartis{{ $item->id }}">
-                            @foreach ($artist as $artis)
-                                <option value="{{ $artis->id }}" {{ $artis->id == $item->artis_id ? 'selected' : '' }}>
-                                    {{ $artis->user->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label for="namaartis" class="form-label judulnottebal">Nama artis</label>
+                                        <select required name="artis_id" class="form-select"
+                                            id="namaartis{{ $item->id }}">
+                                            @foreach ($artist as $artis)
+                                                <option value="{{ $artis->id }}"
+                                                    {{ $artis->id == $item->artis_id ? 'selected' : '' }}>
+                                                    {{ $artis->user->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
 
-                    <div class="mb-3">
-                        <label for="deskripsi" class="form-label judulnottebal">Deskripsi</label>
-                        <textarea id="deskripsi" class="form-control" maxlength="500" rows="4" name="deskripsi">{{ $item->deskripsi }}</textarea>
-                    </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="mb-3">
-                                <label for="uploadlatar" class="form-label judulnottebal">Upload Background Iklan</label>
-                                <input type="file" name="image_background" class="form-control form-i" id="uploadlatar{{ $item->id }}">
-                                <span id="image-background-error{{ $item->id }}" style="color: red;"></span>
-                            </div>
-                            @if ($item->image_background)
-                            <div class="mb-3">
-                                <label for="fotoLamaBackground" class="form-label col-12" style="color: #676767">Foto Background Iklan Lama</label>
-                                <img src="{{ asset('storage/' . $item->image_background) }}" alt="Foto Lama" class="gambarbg">
-                            </div>
-                            @endif
-                        </div>
-                        <div class="col-6">
-                            <div class="mb-3">
-                                <label for="uploadartis" class="form-label judulnottebal">Upload Foto Artis</label>
-                                <input type="file" name="image_artis" class="form-control form-i" id="uploadartis{{ $item->id }}">
-                                <span id="image-artis-error{{ $item->id }}" style="color: red;"></span>
-                            </div>
-                            @if ($item->image_artis)
-                            <div class="mb-3">
-                                <label for="fotoLamaArtis" class="form-label col-12" style="color: #676767">Foto Artis Lama</label>
-                                <img src="{{ asset('storage/' . $item->image_artis) }}" alt="Foto Lama" class="avatar">
-                            </div>
-                            @endif
+                                    <div class="mb-3">
+                                        <label for="deskripsi" class="form-label judulnottebal">Deskripsi</label>
+                                        <textarea id="deskripsi" class="form-control" maxlength="500" rows="4" name="deskripsi">{{ $item->deskripsi }}</textarea>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="mb-3">
+                                                <label for="uploadlatar" class="form-label judulnottebal">Upload
+                                                    Background Iklan</label>
+                                                <input type="file" name="image_background" class="form-control form-i"
+                                                    id="uploadlatar{{ $item->id }}">
+                                                <span id="image-background-error{{ $item->id }}"
+                                                    style="color: red;"></span>
+                                            </div>
+                                            @if ($item->image_background)
+                                                <div class="mb-3">
+                                                    <label for="fotoLamaBackground" class="form-label col-12"
+                                                        style="color: #676767">Foto Background Iklan Lama</label>
+                                                    <img src="{{ asset('storage/' . $item->image_background) }}"
+                                                        alt="Foto Lama" class="gambarbg">
+                                                </div>
+                                            @endif
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="mb-3">
+                                                <label for="uploadartis" class="form-label judulnottebal">Upload Foto
+                                                    Artis</label>
+                                                <input type="file" name="image_artis" class="form-control form-i"
+                                                    id="uploadartis{{ $item->id }}">
+                                                <span id="image-artis-error{{ $item->id }}"
+                                                    style="color: red;"></span>
+                                            </div>
+                                            @if ($item->image_artis)
+                                                <div class="mb-3">
+                                                    <label for="fotoLamaArtis" class="form-label col-12"
+                                                        style="color: #676767">Foto Artis Lama</label>
+                                                    <img src="{{ asset('storage/' . $item->image_artis) }}"
+                                                        alt="Foto Lama" class="avatar">
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-md-right">
+                                    <button class="btn" type="submit">Simpan</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-                <div class="text-md-right">
-                    <button class="btn" type="submit">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-@endforeach
+            @endforeach
 
-<script>
-@foreach ($billboards as $item)
-    document.getElementById('editBillboardForm{{ $item->id }}').addEventListener('submit', function(event) {
-        const backgroundInput = document.getElementById('uploadlatar{{ $item->id }}');
-        const artisInput = document.getElementById('uploadartis{{ $item->id }}');
-        const backgroundError = document.getElementById('image-background-error{{ $item->id }}');
-        const artisError = document.getElementById('image-artis-error{{ $item->id }}');
-        const validExtensions = ['.jpeg', '.jpg', '.png', '.gif'];
+            <script>
+                @foreach ($billboards as $item)
+                    document.getElementById('editBillboardForm{{ $item->id }}').addEventListener('submit', function(event) {
+                        const backgroundInput = document.getElementById('uploadlatar{{ $item->id }}');
+                        const artisInput = document.getElementById('uploadartis{{ $item->id }}');
+                        const backgroundError = document.getElementById('image-background-error{{ $item->id }}');
+                        const artisError = document.getElementById('image-artis-error{{ $item->id }}');
+                        const validExtensions = ['.jpeg', '.jpg', '.png', '.gif'];
 
-        function validateFile(input, errorElement) {
-            if (input.files.length > 0) {
-                const fileName = input.files[0].name;
-                const fileExtension = '.' + fileName.split('.').pop().toLowerCase();
-                if (!validExtensions.includes(fileExtension)) {
-                    errorElement.textContent = 'Foto harus berupa JPEG, JPG, PNG, atau GIF.';
-                    event.preventDefault();
-                } else {
-                    errorElement.textContent = '';
-                }
-            }
-        }
+                        function validateFile(input, errorElement) {
+                            if (input.files.length > 0) {
+                                const fileName = input.files[0].name;
+                                const fileExtension = '.' + fileName.split('.').pop().toLowerCase();
+                                if (!validExtensions.includes(fileExtension)) {
+                                    errorElement.textContent = 'Foto harus berupa JPEG, JPG, PNG, atau GIF.';
+                                    event.preventDefault();
+                                } else {
+                                    errorElement.textContent = '';
+                                }
+                            }
+                        }
 
-        validateFile(backgroundInput, backgroundError);
-        validateFile(artisInput, artisError);
-    });
-@endforeach
-</script>
+                        validateFile(backgroundInput, backgroundError);
+                        validateFile(artisInput, artisError);
+                    });
+                @endforeach
+            </script>
 
 
             <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
