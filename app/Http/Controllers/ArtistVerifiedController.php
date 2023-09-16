@@ -60,9 +60,11 @@ class ArtistVerifiedController extends Controller
         $totalLagu = song::count();
         $totalArtist = artist::count();
         $songs = song::all();
+        $songs = song::all();
         $projects = projects::where('status', 'accept')->get();
         $artistid = (int) artist::where('user_id', auth()->user()->id)->first()->id;
         $penghasilan = penghasilan::where('artist_id', $artistid)->pluck('penghasilan')->toArray();
+        $totalpenghasilan = penghasilan::where('artist_id', $artistid)->sum('penghasilan');
         // $month = penghasilan::where('artist_id', $artistid)->pluck('bulan')->toArray();
         $month = [];
         if ($request->has("artist_id")) {
@@ -87,7 +89,7 @@ class ArtistVerifiedController extends Controller
             }
         }
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('artisVerified.penghasilan', compact('title','month', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'penghasilan', 'projects', 'notifs'));
+        return response()->view('artisVerified.penghasilan', compact('title','totalpenghasilan','month', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'penghasilan', 'projects', 'notifs'));
     }
 
     protected function riwayat(): Response
