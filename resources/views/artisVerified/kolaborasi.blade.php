@@ -348,11 +348,12 @@
                                             <th class="table-cell"> Nama Proyek </th>
                                             <th class="table-cell"> Tanggal </th>
                                             <th class="table-cell"> Status </th>
-                                            <th class="table-cell"> Aksi </th>
+                                            <th class="table-cell pl-4"> Aksi </th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($datas->reverse() as $item)
+                                            {{-- @dd() --}}
                                             {{-- @if ($item->status == 'pending' && $item->request_project_artis_id !== null) --}}
                                             @if (
                                                 $item->request_project_artis_id_1 !== null ||
@@ -360,22 +361,26 @@
                                                     $item->request_project_artis_id_1 === $artisUser->id ||
                                                     $item->request_project_artis_id_2 === $artisUser->id)
                                                 @if (empty($item->harga))
-                                                    @if (!$item->is_reject)
+                                                    @if (!$item->is_reject || $item->artis->user_id === auth()->user()->id)
                                                         <tr class="table-row">
                                                             <td class="table-cell">{{ $item->artis->user->name }}</td>
                                                             <td class="table-cell">{{ $item->name }}</td>
                                                             <td class="table-cell">{{ $item->created_at->format('d F Y') }}
                                                             </td>
-                                                            <td class="table-cell text-warning">Pending</td>
+                                                            <td
+                                                                class="table-cell {{ $item->status === 'reject' ? 'text-danger' : 'text-warning' }}">
+                                                                {{ $item->status }}</td>
                                                             <td class="d-flex align-items-center">
-                                                                <form
-                                                                    action="{{ route('lirikAndChat.artisVerified', $item->code) }}"
-                                                                    method="GET">
-                                                                    <button type="submit" class="btn-unstyled">
-                                                                        <i
-                                                                            class="far fa-check-circle fs-5 text-success ml-1"></i>
-                                                                    </button>
-                                                                </form>
+                                                                @if ($item->status == 'pending')
+                                                                    <form
+                                                                        action="{{ route('lirikAndChat.artisVerified', $item->code) }}"
+                                                                        method="GET">
+                                                                        <button type="submit" class="btn-unstyled">
+                                                                            <i
+                                                                                class="far fa-check-circle fs-5 text-success ml-1"></i>
+                                                                        </button>
+                                                                    </form>
+                                                                @endif
                                                                 <form action="{{ route('reject.project.artisVerified') }}"
                                                                     method="post" class="m-0">
                                                                     @csrf

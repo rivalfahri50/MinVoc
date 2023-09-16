@@ -403,7 +403,7 @@
                                         </div>
                                     </div>
                                     <div class="preview-item-content">
-                                        <p class="preview-subject mb-1">Profile</p>
+                                        <p class="preview-subject mb-1 fw-light">Profile</p>
                                     </div>
                                 </a>
                                 <a class="dropdown-item preview-item" href="{{ route('logout.users') }}">
@@ -413,7 +413,7 @@
                                         </div>
                                     </div>
                                     <div class="preview-item-content">
-                                        <p class="preview-subject mb-1">Log out</p>
+                                        <p class="preview-subject mb-1 fw-light">Log out</p>
                                     </div>
                                 </a>
                             </div>

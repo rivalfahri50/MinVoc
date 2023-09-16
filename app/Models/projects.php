@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class projects extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'code',
         'name',
@@ -33,4 +32,8 @@ class projects extends Model
         return $this->hasOne(artist::class, 'id', 'artist_id');
     }
 
+    public function messages()
+    {
+        return $this->hasMany(messages::class, 'project_id');
+    }
 }

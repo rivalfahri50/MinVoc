@@ -204,7 +204,8 @@
                                                         </div>
                                                         <div class="input-with-icon chat-input">
                                                             <input type="text" class="form-control rounded-4"
-                                                                placeholder="Ketik di sini untuk admin" maxlength="250" name="message">
+                                                                placeholder="Ketik di sini untuk admin" maxlength="250"
+                                                                name="message">
                                                             <button type="submit" class="send-button ml-2 mr-1">
                                                                 <i class="fas fa-paper-plane"></i>
                                                             </button>
@@ -241,7 +242,7 @@
 
                     label {
                         display: flex;
-                        justify-content: center;
+                        /* justify-content: center; */
                         align-items: center;
                         cursor: pointer;
                         width: 100%;
@@ -274,52 +275,99 @@
                         visibility: visible;
                     }
                 </style>
-                <div class="col-md-6">
-                    <div class="card kiri scrollbar-dusty-grass square thin rounded-4">
-                        <div class="card-body">
-                            <div class="row">
-                                <h3 class="fw-semibold mb-3" style="color: #957dad; margin-top: -10px;">Unggah Musik
-                                    Kolaborasi</h3>
-                                <div class="col-12">
-                                    <div class="preview-list">
-                                        <form action="{{ route('create.project.artisVerified', $project->code) }}"
-                                            method="POST" enctype="multipart/form-data">
-                                            @csrf
-                                            <div class="row">
-                                                <div class="col-5 pr-0">
-                                                    <div class="card cobai mb-3">
-                                                        <label for="gambar" id="tampil_gambar">
-                                                            <i class="fas fa-pen fa-2x"></i>
-                                                        </label>
-                                                        <input type="file" id="gambar" name="images"
-                                                            accept="image/png,image/jpg" class="inputgambar">
+                @if ($project->artist_id === $artis->id)
+                    <div class="col-md-6">
+                        <div class="card kiri scrollbar-dusty-grass square thin rounded-4">
+                            <div class="card-body">
+                                <div class="row">
+                                    <h3 class="fw-semibold mb-3" style="color: #957dad; margin-top: -10px;">Unggah Musik
+                                        Kolaborasi</h3>
+                                    <div class="col-12">
+                                        <div class="preview-list">
+                                            <form action="{{ route('create.project.artisVerified', $project->code) }}"
+                                                method="POST" enctype="multipart/form-data">
+                                                @csrf
+                                                <div class="row">
+                                                    <div class="col-5 pr-0">
+                                                        <div class="card cobai mb-3">
+                                                            <label for="gambar" id="tampil_gambar">
+                                                                <i class="fas fa-pen fa-2x"></i>
+                                                            </label>
+                                                            <input type="file" id="gambar" name="images"
+                                                                accept="image/png,image/jpg" class="inputgambar">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-7">
+                                                        <div class="mb-4">
+                                                            <input type="text" class="form-control form-i inputcolor"
+                                                                name="name" id="nama" placeholder="Judul Lagu">
+                                                        </div>
+                                                        <div class="mb-4">
+                                                            <input type="file" name="audio"
+                                                                class="form-control inputcolor" id="namaproyek" required>
+                                                        </div>
+                                                        <div>
+                                                            <button class="btn pl-3 kirim rounded-3 full-width-button"
+                                                                type="button" data-bs-toggle="modal"
+                                                                data-bs-target="#kirimkolaborasi-{{ $project->code }}">
+                                                                Unggah
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-7">
-                                                    <div class="mb-4">
-                                                        <input type="text" class="form-control form-i inputcolor"
-                                                            name="name" id="nama" placeholder="Judul Lagu">
-                                                    </div>
-                                                    <div class="mb-4">
-                                                        <input type="file" name="audio" class="form-control inputcolor"
-                                                            id="namaproyek" required>
-                                                    </div>
-                                                    <div>
-                                                        <button class="btn pl-3 kirim rounded-3 full-width-button"
-                                                            type="button" data-bs-toggle="modal"
-                                                            data-bs-target="#kirimkolaborasi-{{ $project->code }}">
-                                                            Unggah
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            {{-- </form> --}}
+                                                {{-- </form> --}}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                @else
+                    <div class="col-md-6">
+                        <div class="card kiri scrollbar-dusty-grass square thin rounded-4">
+                            <div class="card-body">
+                                <div class="row">
+                                    <h3 class="fw-semibold mb-3" style="color: #957dad; margin-top: -10px;">Detail Kolaborasi</h3>
+                                    <div class="col-12">
+                                        <div class="preview-list">
+                                            <form action="{{ route('create.project.artisVerified', $project->code) }}"
+                                                method="POST" enctype="multipart/form-data">
+                                                @csrf
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="mb-3">
+                                                            <label for="namakategori"
+                                                                class="form-label judulnottebal fs-6">Nama Project</label>
+                                                            <input type="text"
+                                                                class="form-control form-i inputcolor bg-white"
+                                                                name="name" value="{{ $project->name }}" id="nama"
+                                                                readonly disabled>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="namakategori"
+                                                                class="form-label judulnottebal fs-6">Konsep</label>
+                                                            <textarea name="konsep" disabled class="form-control form-i inputcolor bg-white" cols="30" rows="10"
+                                                                readonly>{{ $project->konsep }}</textarea>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="namakategori"
+                                                                class="form-label judulnottebal fs-6">Harga</label>
+                                                            <input type="text" name="harga"
+                                                                class="form-control inputcolor bg-white" id="namaproyek"
+                                                                value="Rp. 2.000.000.00" readonly disabled>
+                                                            <label for="namakategori"
+                                                                class="pl-1" style="color: darkgray; font-size: 13px;">admin memiliki hak sebesar 10% dalam penghasilan kolaborasi.</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
             <!-- Modal -->
             <div class="modal fade" id="kirimkolaborasi-{{ $project->code }}" tabindex="-1"

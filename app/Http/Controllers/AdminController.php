@@ -94,7 +94,7 @@ class AdminController extends Controller
     {
         $title = "MusiCave";
         $song = song::where('code', $code)->first();
-        $artis = artist::where('user_id', $song->artis_id)->first();
+        $artis = artist::where('id', $song->artis_id)->first();
         $user = User::where('id', $artis->user_id)->first();
 
         $data = [
