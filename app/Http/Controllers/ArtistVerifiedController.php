@@ -85,7 +85,7 @@ class ArtistVerifiedController extends Controller
             }
         }
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('artisVerified.penghasilan', compact('title','month', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'penghasilan', 'projects', 'notifs'));
+        return response()->view('artisVerified.penghasilan', compact('title', 'month', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'penghasilan', 'projects', 'notifs'));
     }
 
     protected function riwayat(): Response
@@ -756,7 +756,7 @@ class ArtistVerifiedController extends Controller
         } catch (\Throwable $th) {
             return abort(404);
         }
-        return response()->view('artisVerified.lirikAndChat', compact('title', 'project', 'messages', 'notifs'));
+        return response()->view('artisVerified.lirikAndChat', compact('title', 'project', 'messages', 'notifs', 'artis'));
     }
 
     protected function showData(string $id)
@@ -895,12 +895,14 @@ class ArtistVerifiedController extends Controller
 
     protected function rejectProject(Request $request)
     {
-        $project = projects::where('code', $request->input('code'))->first();
+        $project = projects::with('messages')->where('code', $request->input('code'))->first();
         $artis = artist::where('user_id', auth()->user()->id)->first();
         $message = messages::where('project_id', $project->id)->get();
-        // dd($message);
         try {
             if ($project->artist_id == $artis->id) {
+                foreach ($message as $item) {
+                    $item->delete();
+                }
                 $data = [
                     'code' => $project->code,
                     'name' => $project->name,

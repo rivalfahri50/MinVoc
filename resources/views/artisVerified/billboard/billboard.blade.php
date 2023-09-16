@@ -74,8 +74,8 @@
                                                     </div>
                                                     <div class="preview-item-content d-sm-flex flex-grow">
                                                         <a href="" class="flex-grow text-decoration-none link">
-                                                            <h6 class="preview-subject">{{ $item->judul }}</h6>
-                                                            <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
+                                                            <h6 class="preview-subject" style="color: #4e4e4e;">{{ $item->judul }}</h6>
+                                                            <p class="text-muted mb-0 fw-light">{{ $item->artist->user->name }}</p>
                                                         </a>
                                                     </div>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">

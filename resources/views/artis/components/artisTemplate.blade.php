@@ -368,10 +368,10 @@
                                                         <a class="text-muted ellipsis mb-0"
                                                             style="font-size: 12px; font-weight: normal; cursor: pointer"
                                                             data-bs-toggle="modal"
-                                                            data-bs-target="#alasan-{{ $item->code }}">Klik
+                                                            data-bs-target="#alasan-{{ $item->code }}">Kl   ik
                                                             untuk melihat alasan</a>
                                                     @else
-                                                        <p class="text-muted ellipsis mb-0">
+                                                        <p class="text-muted ellipsis mb-0 fw-light">
                                                             {{ $item->artis->user->name }}
                                                         </p>
                                                     @endif

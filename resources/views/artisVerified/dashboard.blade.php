@@ -89,7 +89,7 @@
                         </div>
                         <div style="width: 40%">
                             <div class="card pcard">
-                                <h5 class="angka">Hi, Johan Smutmacher !</h5>
+                                <h5 class="angka">Hi, {{ auth()->user()->name }} !</h5>
                                 <p class="judulnottebal">Selamat bergabung sebagai artis ter verifikasi. Nikmati pengalaman istimewa dalam mengakses berbagai informasi dan fitur yang telah kami siapkan</p>
                             </div>
                         </div>
@@ -154,7 +154,7 @@
                                                         <a href="#lagu-diputar"
                                                             class="flex-grow text-decoration-none link"
                                                             onclick="putar({{ $item->id }})">
-                                                            <h6 class="preview-subject text-black">{{ $item->judul }}</h6>
+                                                            <h6 class="preview-subject" style="color: #4e4e4e;">{{ $item->judul }}</h6>
                                                             <p class="text-muted mb-0" style="font-weight: 400">{{ $item->artist->user->name }}</p>
                                                         </a>
                                                     </div>

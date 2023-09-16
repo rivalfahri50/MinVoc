@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use SebastianBergmann\CodeCoverage\Report\Xml\Project;
 
 class messages extends Model
 {
@@ -30,6 +31,6 @@ class messages extends Model
 
     public function project()
     {
-        return $this->hasOne(projects::class, 'id', 'project_id');
+        return $this->hasOne(projects::class, 'id' ,'project_id');
     }
 }
