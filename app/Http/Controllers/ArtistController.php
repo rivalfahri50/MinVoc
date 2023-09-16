@@ -57,17 +57,17 @@ class ArtistController extends Controller
     {
         $title = "MusiCave";
         $projects = projects::all();
-        $totalpenghasilan = penghasilan::sum('penghasilan');
         $songs = song::all();
         $artistid = (int) artist::where('user_id', auth()->user()->id)->first()->id;
-        // dd($artistid);
+        $totalpenghasilan = penghasilan::where('artist_id', $artistid)->sum('penghasilan');
         $penghasilan = penghasilan::where('artist_id', $artistid)->pluck('penghasilan')->toArray();
         // $month = penghasilan::where('artist_id', $artistid)->pluck('bulan')->toArray();
         $month = [];
-        if ($request->has("bulan")) {
+        if ($request->has("artist_id")) {
+            $artistId = (int) $request->artist_id;
             $bulan = $request->bulan;
             for ($i = 1; $i <= 12; $i++) {
-                $totalPendapatan = DB::table('penghasilan')
+                $totalPendapatan = penghasilan::where('artist_id', $artistId)
                     ->where('bulan', $bulan)
                     ->whereYear('created_at', date('Y'))
                     ->whereMonth('created_at', $i)
@@ -75,8 +75,9 @@ class ArtistController extends Controller
                 $month[] = $totalPendapatan;
             }
         } else {
+            $artistId = (int) auth()->user()->artist->id;
             for ($i = 1; $i <= 12; $i++) {
-                $totalPendapatan = DB::table('penghasilan')
+                $totalPendapatan = penghasilan::where('artist_id', $artistId)
                     ->whereYear('created_at', date('Y'))
                     ->whereMonth('created_at', $i)
                     ->sum('penghasilan');
