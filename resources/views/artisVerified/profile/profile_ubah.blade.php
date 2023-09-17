@@ -117,7 +117,16 @@
     </div>
     </div>
 
+
     <script>
+        // const inputElement = document.getElementById('nama');
+
+        // inputElement.value = 12;
+        // const event = new Event('input', {
+        //     bubbles: true
+        // });
+        // inputElement.dispatchEvent(event);
+
         // function hideElement() {
         //     var gambar = document.getElementById(
         //         'gambar');

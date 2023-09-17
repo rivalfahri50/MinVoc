@@ -110,7 +110,7 @@
             }
 
             .jarak {
-                gap: 10px;
+                gap: 5px;
             }
 
             .pcard {
@@ -130,9 +130,14 @@
                     <div class="row">
                         <div class="col-4">
                             <div class="card pcard jarak">
-                                <h3 class="angka m-0">Rp {{ number_format($totalpenghasilan, 2,',','.')}}</h3>
+                                <h3 class="angka m-0">Rp {{ number_format($totalpenghasilan, 2, ',', '.') }}</h3>
                                 <h4 class="judulnottebal mb-0">Total penghasilan</h4>
-                                <button class="btn-unstyled mr-2 link mb-0" data-bs-toggle="modal" data-bs-target="#caripenghasilan">Cairkan Penghasilan</a>
+                                <span class="btn-unstyled mr-2 link mb-0" style="cursor: pointer" data-bs-toggle="modal"
+                                    data-bs-target="#caripenghasilan">Cairkan Penghasilan</span>
+                                @if ($penghasilanData->is_take)
+                                    <span style="color: #858585">Terakhir diambil pada
+                                        {{ $penghasilanData->is_take }}</span>
+                                @endif
                             </div>
                         </div>
                         <div class="modal fade" id="caripenghasilan" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -152,7 +157,8 @@
                                             <div class="mb-3">
                                                 {{-- @dd($totalpenghasilan) --}}
                                                 <p for="namakategori" class="form-label judulnottebal">Total Penghasilan</p>
-                                                <h3 class="judul">Rp {{ number_format($totalpenghasilan, 2,',','.')}}</h3>
+                                                <h3 class="judul">Rp {{ number_format($totalpenghasilan, 2, ',', '.') }}
+                                                </h3>
                                             </div>
                                             <div class="mb-3">
                                                 <p for="konsep" class="form-label judulnottebal">Jumlah Pencairan</p>
@@ -169,13 +175,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-4">
-                            <div class="card pcard jarak" style="height: 100%;">
-                                <h3 class="angka m-0">Rp 10.000.000</h3>
-                                <h4 class="judulnottebal">Sisa Penghasilan</h4>
-                            </div>
-                        </div>
-                        <div class="col-4 row no-gutters">
+                        <div class="col-8 row no-gutters">
                             <div class="card">
                                 <img src="/assets/images/logo.svg" width="80%" height="100%" alt="logo"
                                     class="ml-4 md-3" />
@@ -207,6 +207,7 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($projects->reverse() as $item)
+                                        {{-- @dd($item) --}}
                                             <tr class="table-row">
                                                 <td class="table-cell">
                                                     <div class="cell-content">
@@ -235,7 +236,6 @@
 
     <script src="/user/assets/js/tablesort.js"></script>
     <script>
-
         /* ============Dengan Rupiah=========== */
         var harga = document.getElementById('harga');
         harga.addEventListener('keyup', function(e) {
@@ -271,7 +271,9 @@
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['Januari','Februari','Maret','April','mei','juni','Juli','Agustus','september','oktober','november','desember'],
+                labels: ['Januari', 'Februari', 'Maret', 'April', 'mei', 'juni', 'Juli', 'Agustus', 'september',
+                    'oktober', 'november', 'desember'
+                ],
                 datasets: [{
                     label: 'Pendapatan',
                     data: @json($month),

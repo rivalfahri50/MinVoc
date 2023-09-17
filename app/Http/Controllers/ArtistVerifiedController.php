@@ -41,7 +41,10 @@ class ArtistVerifiedController extends Controller
         $playlists = playlist::all();
         $billboards = billboard::all();
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('artisVerified.dashboard', compact('title', 'songs', 'genres', 'artist', 'billboards', 'playlists', 'notifs'));
+        $artistid = (int) artist::where('user_id', auth()->user()->id)->first()->id;
+        $totalpenghasilan = penghasilan::where('artist_id', $artistid)->sum('penghasilan');
+        $penghasilan = penghasilan::where('artist_id', $artistid)->first();
+        return response()->view('artisVerified.dashboard', compact('title', 'songs', 'genres', 'artist', 'billboards', 'playlists', 'notifs', 'totalpenghasilan', 'penghasilan'));
     }
 
     protected function playlist(): Response
@@ -66,6 +69,7 @@ class ArtistVerifiedController extends Controller
         $artistid = (int) artist::where('user_id', auth()->user()->id)->first()->id;
         $penghasilan = penghasilan::where('artist_id', $artistid)->pluck('penghasilan')->toArray();
         $totalpenghasilan = penghasilan::where('artist_id', $artistid)->sum('penghasilan');
+        $penghasilanData = penghasilan::where('artist_id', $artistid)->first();
         // $month = penghasilan::where('artist_id', $artistid)->pluck('bulan')->toArray();
         $month = [];
         if ($request->has("artist_id")) {
@@ -90,7 +94,7 @@ class ArtistVerifiedController extends Controller
             }
         }
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('artisVerified.penghasilan', compact('title','totalpenghasilan','month', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'penghasilan', 'projects', 'notifs'));
+        return response()->view('artisVerified.penghasilan', compact('title', 'totalpenghasilan', 'month', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'penghasilan', 'projects', 'notifs', 'penghasilanData'));
     }
 
     protected function riwayat(): Response
@@ -426,39 +430,44 @@ class ArtistVerifiedController extends Controller
         ];
 
 
+        DB::beginTransaction();
+        $code = Str::uuid();
+        $image = $request->file('image')->store('images', 'public');
+        $audioPath = $request->file('audio')->store('musics', 'public');
+        // $audio = $request->file('audio')->store('musics', 'public');
+        // $namaFile = time() . '_' . $request->file('audio')->getClientOriginalName();
+
+        // Simpan file audio dengan nama yang ditentukan di penyimpanan lokal
+        // $audioPath = $request->file('audio')->storeAs('musics', $namaFile);
+
+        $getID3 = new getID3();
+
+        $audioInfo = $getID3->analyze($request->file('audio')->path());
+        $durationInSeconds = $audioInfo['playtime_seconds'];
+        $durationMinutes = floor($durationInSeconds / 60);
+        $durationSeconds = $durationInSeconds % 60;
+        $formattedDuration = sprintf('%02d:%02d', $durationMinutes, $durationSeconds);
+
+
+        notif::create($data);
+        song::create([
+            'code' => $code,
+            'judul' => $request->input('judul'),
+            'image' => $image,
+            'audio' => $audioPath,
+            'waktu' => $formattedDuration,
+            'is_approved' => false,
+            'genre_id' => $request->input('genre'),
+            'album_id' => $request->input('album') == null ? null : $request->input('album'),
+            'artis_id' => $artis->id,
+        ]);
+        DB::commit();
+
+        $penghasilanArtist = (int) $artis->penghasilan + 35000;
+        $artis->update(['penghasilan' => $penghasilanArtist]);
+
+        return redirect('/artis-verified/unggahAudio')->with('success', 'Song uploaded successfully.');
         try {
-            DB::beginTransaction();
-            $code = Str::uuid();
-            $image = $request->file('image')->store('images', 'public');
-            $audio = $request->file('audio')->store('musics', 'public');
-
-            $getID3 = new getID3();
-
-            $audioInfo = $getID3->analyze($request->file('audio')->path());
-            $durationInSeconds = $audioInfo['playtime_seconds'];
-            $durationMinutes = floor($durationInSeconds / 60);
-            $durationSeconds = $durationInSeconds % 60;
-            $formattedDuration = sprintf('%02d:%02d', $durationMinutes, $durationSeconds);
-
-
-            notif::create($data);
-            song::create([
-                'code' => $code,
-                'judul' => $request->input('judul'),
-                'image' => $image,
-                'audio' => $audio,
-                'waktu' => $formattedDuration,
-                'is_approved' => false,
-                'genre_id' => $request->input('genre'),
-                'album_id' => $request->input('album') == null ? null : $request->input('album'),
-                'artis_id' => $artis->id,
-            ]);
-            DB::commit();
-
-            $penghasilanArtist = (int) $artis->penghasilan + 35000;
-            $artis->update(['penghasilan' => $penghasilanArtist]);
-
-            return redirect('/artis-verified/unggahAudio')->with('success', 'Song uploaded successfully.');
         } catch (\Throwable $e) {
             DB::rollBack();
             return abort(404);
@@ -833,12 +842,17 @@ class ArtistVerifiedController extends Controller
         $uangTetap = 2000000;
 
         $uangYangDiterima = ($range / 100) * $uangTetap;
+        $artisPenghasilan = penghasilan::where('artist_id', $project->artist_id)->first();
+        $harga = $artisPenghasilan->penghasilan + $uangYangDiterima;
+        $artisPenghasilan->update(['penghasilan' => $harga]);
+        $images = $request->file('images')->store('images', 'public');
 
         $data = [
             'code' => $project->code,
             'name' => $project->name,
             'konsep' => $project->konsep,
             'judul' => $request->input('name'),
+            'images' => $images,
             'audio' => $request->file('audio'),
             'harga' =>  number_format($uangYangDiterima, 2, ',', ','),
             'status' => "accept",

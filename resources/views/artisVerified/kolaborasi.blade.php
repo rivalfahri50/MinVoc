@@ -595,6 +595,13 @@
                                         required="" readonly="" value="{{ $item->name }}"
                                         fdprocessedid="piymoo">
                                 </div>
+                                <style>
+                                    #kategori {
+                                        width: 100%;
+                                        background-color: #f0f0f0;
+                                        color: #333;
+                                    }
+                                </style>
                                 <div class="mb-3">
                                     <label for="namakategori" class="form-label judulnottebal">Nama artis</label>
                                     {{-- <select class="select2" name="kolaborator[]" multiple="multiple">
@@ -616,7 +623,8 @@
                                             name="kolaborator[]" multiple="multiple">
                                             @foreach ($artis as $item)
                                                 @if ($item->user_id !== auth()->user()->id && $item->is_verified === 1)
-                                                    <option value="{{ $item->id }}">{{ $item->user->name }}</option>
+                                                    <option style="background-color: white" value="{{ $item->id }}">
+                                                        {{ $item->user->name }}</option>
                                                 @endif
                                             @endforeach
                                         </select>

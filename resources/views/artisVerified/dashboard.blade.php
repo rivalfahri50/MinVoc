@@ -42,10 +42,8 @@
                     <div class="row">
                         <div style="width: 30%">
                             <div class="card pcard jarak" style="height: 100%;">
-                                <h3 class="angka m-0">Rp 20.000.000</h3>
+                                <h3 class="angka m-0">Rp {{ number_format($totalpenghasilan, 2,',','.')}}</h3>
                                 <h4 class="judulnottebal mb-0">Total penghasilan</h4>
-                                <button class="btn-unstyled mr-2 link mb-0" data-bs-toggle="modal"
-                                    data-bs-target="#caripenghasilan">Cairkan Penghasilan</a>
                             </div>
                         </div>
                         <div class="modal fade" id="caripenghasilan" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -81,16 +79,16 @@
                                 </div>
                             </div>
                         </div>
-                        <div style="width: 30%">
+                        {{-- <div style="width: 30%">
                             <div class="card pcard jarak" style="height: 100%;">
                                 <h3 class="angka m-0">Rp 10.000.000</h3>
                                 <h4 class="judulnottebal">Sisa Penghasilan</h4>
                             </div>
-                        </div>
-                        <div style="width: 40%">
-                            <div class="card pcard">
-                                <h5 class="angka">Hi, {{ auth()->user()->name }} !</h5>
-                                <p class="judulnottebal">Selamat bergabung sebagai artis ter verifikasi. Nikmati pengalaman istimewa dalam mengakses berbagai informasi dan fitur yang telah kami siapkan</p>
+                        </div> --}}
+                        <div style="width: 70%;">
+                            <div class="card pcard" style=" padding: 10px">
+                                <h5 class="angka fs-6">Hi, {{ auth()->user()->name }} !</h5>
+                                <p class="judulnottebal">Selamat kembali, Artis Ter-Verifikasi! Nikmati pengalaman istimewa di MusiCave. Jelajahi berbagai fitur dan informasi yang telah kami persiapkan untuk membantu Anda berkembang dalam karier musik Anda. Kami siap mendukung kesuksesan karier musik Anda. Terus berkreasi dan berbagi musik terbaik Anda dengan dunia!</p>
                             </div>
                         </div>
                     </div>

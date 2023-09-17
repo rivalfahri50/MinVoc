@@ -154,7 +154,7 @@
                                 <a class="nav-link" href="/admin/kategori">
                                     <span class="menu-icon mr-0">
                                         <i class="mdi mdi-plus-circle-outline submenu" style="font-size: 20px;"></i>
-                                    </span>Kategori
+                                    </span>Genre
                                 </a>
                             </li>
                             <li class="nav-item">

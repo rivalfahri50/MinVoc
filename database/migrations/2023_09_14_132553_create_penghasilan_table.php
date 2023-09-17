@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('artist_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->bigInteger('penghasilan');
             $table->string('bulan');
+            $table->boolean('is_take')->default(false);
+            $table->timestamp("terakhir_diambil")->nullable();
             $table->timestamps();
         });
     }

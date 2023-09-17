@@ -1,5 +1,8 @@
 @extends('artisVerified.components.artisVerifiedTemplate')
 
+{{-- @extends('artis.components.artisTemplate') --}}
+
+
 @section('content')
     <link rel="stylesheet" href="/user/assets/css/unggah.css">
     <div class="main-panel">
