@@ -26,7 +26,7 @@ use Throwable;
 class AdminController extends Controller
 {
     use AuthAuthenticatable;
-    protected function index(): Response
+    protected function index(Request $request): Response
     {
         $title = "MusiCave";
         $totalPengguna = User::whereNotIn('id', [1, 2, 3])->count();
@@ -34,7 +34,18 @@ class AdminController extends Controller
         $totalArtist = artist::count();
         $songs = song::all();
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('admin.dashboard', compact('title', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'notifs'));
+
+        $adminId = admin::where('id',1)->first()->id;
+        $month = [];
+
+        for ($i = 1; $i <= 12; $i++) {
+            $totalPendapatan = admin::where('id', $adminId)
+                ->whereYear('created_at', date('Y'))
+                ->whereMonth('created_at', $i)
+                ->sum('penghasilan');
+            $month[] = $totalPendapatan;
+        }
+        return response()->view('admin.dashboard', compact('title', 'month','totalPendapatan', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'notifs'));
     }
     protected function persetujuan(): Response
     {
@@ -222,7 +233,7 @@ class AdminController extends Controller
         }
 
         if ($billboard->save()) {
-         
+
             Alert::success('message', 'Berhasil Untuk Memperbarui Billboard');
             return redirect()->back()->with('success', 'Billboard updated successfully.');
         } else {
@@ -279,7 +290,6 @@ class AdminController extends Controller
                 Alert::error('message', 'Gagal Membuat Genre');
                 return redirect()->back()->with('error', 'Gagal membuat genre.');
             }
-
         }
     }
     public function editGenre(Request $request, string $code)
@@ -290,14 +300,16 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'Genre not found.');
         }
 
-        $validator = $request->validate([
-            'name' => 'required|string|max:50',
-            'images' => 'image|mimes:jpeg,jpg,png,gif|max:10000', // Menggunakan "image" sebagai aturan validasi
-        ],
-        [
-            'images.mimes' => 'File gambar harus berupa JPEG, JPG, PNG, atau GIF.',
-            'images.max' => 'Ukuran file gambar tidak boleh melebihi 10MB.',
-        ]);
+        $validator = $request->validate(
+            [
+                'name' => 'required|string|max:50',
+                'images' => 'image|mimes:jpeg,jpg,png,gif|max:10000', // Menggunakan "image" sebagai aturan validasi
+            ],
+            [
+                'images.mimes' => 'File gambar harus berupa JPEG, JPG, PNG, atau GIF.',
+                'images.max' => 'Ukuran file gambar tidak boleh melebihi 10MB.',
+            ]
+        );
 
         try {
             if ($request->hasFile('images')) {
@@ -312,11 +324,11 @@ class AdminController extends Controller
 
             $genre->name = $request->input('name');
             $genre->save();
-            Alert::success('success','Berhasil Mengedit Genre');
+            Alert::success('success', 'Berhasil Mengedit Genre');
             return redirect()->back()->with('success', 'Genre updated successfully.');
         } catch (\Throwable $th) {
             Log::error('Error editing genre: ' . $th->getMessage());
-            Alert::error('error','Gagal Mengedit Genre');
+            Alert::error('error', 'Gagal Mengedit Genre');
             return redirect()->back()->with('error', 'Failed to edit genre.');
         }
     }

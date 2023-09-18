@@ -40,8 +40,10 @@ class ArtistVerifiedController extends Controller
         $artist = artist::with('user')->get();
         $playlists = playlist::all();
         $billboards = billboard::all();
+        $artistid = (int) artist::where('user_id', auth()->user()->id)->first()->id;
+        $totalpenghasilan = penghasilan::where('artist_id', $artistid)->sum('penghasilan');
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('artisVerified.dashboard', compact('title', 'songs', 'genres', 'artist', 'billboards', 'playlists', 'notifs'));
+        return response()->view('artisVerified.dashboard', compact('title','totalpenghasilan', 'songs', 'genres', 'artist', 'billboards', 'playlists', 'notifs'));
     }
 
     protected function playlist(): Response
@@ -67,7 +69,6 @@ class ArtistVerifiedController extends Controller
         $penghasilan = penghasilan::where('artist_id', $artistid)->pluck('penghasilan')->toArray();
         $totalpenghasilan = penghasilan::where('artist_id', $artistid)->sum('penghasilan');
         $penghasilanData = penghasilan::where('artist_id', $artistid)->first();
-        // $month = penghasilan::where('artist_id', $artistid)->pluck('bulan')->toArray();
         $month = [];
         if ($request->has("artist_id")) {
             $artistId = (int) $request->artist_id;
@@ -482,8 +483,13 @@ class ArtistVerifiedController extends Controller
         ]);
         DB::commit();
 
-            $penghasilanArtist = (int) $artis->penghasilan + 35000;
+            $penghasilanArtist = (int) $artis->penghasilan + 400000;
             $artis->update(['penghasilan' => $penghasilanArtist]);
+            penghasilan::create([
+                'artist_id' => $artis->id, // Menggunakan ID artis, bukan objek artis
+                'penghasilan' => 400000,
+                'bulan' => now()->format('m'),
+            ]);
 
         return redirect('/artis-verified/unggahAudio')->with('success', 'Song uploaded successfully.');
         try {
@@ -898,6 +904,8 @@ class ArtistVerifiedController extends Controller
                 $artisPenghasilan->update(['penghasilan' => $harga]);
             }
         }
+
+        admin::where('id',1)->update(['penghasilan' => 200000]);
 
         $images = $request->file('images')->store('images','public');
 
