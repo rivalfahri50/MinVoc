@@ -155,7 +155,7 @@
                         position: absolute;
                         bottom: 0;
                         left: 0;
-                        right: 10px;
+                        right: 0;
                         padding: 10px;
                         display: flex;
                         align-items: center;
@@ -242,7 +242,7 @@
 
                     label {
                         display: flex;
-                        /* justify-content: center; */
+                        justify-content: center;
                         align-items: center;
                         cursor: pointer;
                         width: 100%;
