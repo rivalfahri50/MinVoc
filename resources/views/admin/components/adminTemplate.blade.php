@@ -205,8 +205,6 @@
                 <div class="progress-controller">
                     <div class="control-buttons">
                         <div id="controls">
-                            <button onclick="shuffle_song()" id="shuffle"><i class="fa fa-random"
-                                aria-hidden="true"></i></button>
                             <button onclick="previous_song()" id="pre"><i class="fa fa-step-backward"
                                     aria-hidden="true"></i></button>
                             <button onclick="justplay()" id="play"><i class="far fa-play-circle fr"
@@ -476,33 +474,6 @@
                         }
                     });
                 }
-
-                shuffleButton.addEventListener('click', function() {
-                    shuffle_song();
-                });
-
-
-                function shuffle_song() {
-                    let currentIndex = All_song.length,
-                        randomIndex, temporaryValue;
-
-                    // Selama masih ada elemen untuk diacak
-                    while (currentIndex !== 0) {
-                        // Pilih elemen yang tersisa secara acak
-                        randomIndex = Math.floor(Math.random() * currentIndex);
-                        currentIndex--;
-
-                        // Tukar elemen terpilih dengan elemen saat ini
-                        temporaryValue = All_song[currentIndex];
-                        All_song[currentIndex] = All_song[randomIndex];
-                        All_song[randomIndex] = temporaryValue;
-                    }
-                    // Setel ulang indeks lagu saat ini ke 0
-                    index_no = 0;
-                    // Memuat lagu yang diacak
-                    load_track(index_no);
-                }
-
 
                 // pause song
                 function pausesong() {

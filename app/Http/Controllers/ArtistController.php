@@ -201,14 +201,14 @@ class ArtistController extends Controller
                 ->withInput();
         }
 
+        $imagePath = $request->file('foto')->store('images', 'public');
+        $artist->pengajuan_verified_at = now()->toDateString();
+        $artist->verification_status = "pending";
+        $msg = 'Pengajuan Verifikasi';
+        $artist->image = $imagePath;
+        $artist->pengajuan = true;
+        $artist->update();
         try {
-            $imagePath = $request->file('foto')->store('images', 'public');
-            $artist->pengajuan_verified_at = now()->toDateString();
-            $artist->verification_status = "pending";
-            $msg = 'Pengajuan Verifikasi';
-            $artist->image = $imagePath;
-            $artist->pengajuan = true;
-            $artist->update();
         } catch (\Throwable $th) {
             Alert::error('message', 'Gagal Mengirim Request Verification Account');
             return response()->redirectTo('/artis/verified')->with('failed', "failed");

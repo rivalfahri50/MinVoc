@@ -30,7 +30,7 @@
             z-index: 1030;
             width: 40vh;
         }
-        
+
         .search-container {
             position: relative;
             display: flex;
@@ -900,6 +900,7 @@
                     index_no = 0;
                     // Memuat lagu yang diacak
                     load_track(index_no);
+                    playsong();
                 }
 
                 // pause song

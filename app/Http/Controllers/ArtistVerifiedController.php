@@ -486,6 +486,7 @@ class ArtistVerifiedController extends Controller
         DB::commit();
 
             $penghasilanArtist = (int) $artis->penghasilan + 400000;
+            artist::findOrFail($artis->id)->update(['penghasilan'=> $penghasilanArtist]);
             $artis->update(['penghasilan' => $penghasilanArtist]);
             penghasilan::create([
                 'artist_id' => $artis->id, // Menggunakan ID artis, bukan objek artis
@@ -913,7 +914,6 @@ class ArtistVerifiedController extends Controller
         }
 
         admin::where('id', 1)->update(['penghasilan' => 200000]);
-        admin::where('id', 1)->update(['penghasilan' => 200000]);
 
         $images = $request->file('images')->store('images', 'public');
         $audio = $request->file('audio')->store('audio', 'public');
@@ -939,7 +939,7 @@ class ArtistVerifiedController extends Controller
         $formattedDuration = sprintf('%02d:%02d', $durationMinutes, $durationSeconds);
 
 
-        notif::create($data);
+        // notif::create($data);x
         song::create([
             'code' => $code,
             'judul' => $request->input('name'),
@@ -949,7 +949,8 @@ class ArtistVerifiedController extends Controller
             'is_approved' => false,
             'genre_id' => $request->input('genre'),
             'album_id' => $request->input('album') == null ? null : $request->input('album'),
-            // 'artis_id' => $artis->id,
+            $artis = artist::where('user_id', auth()->user()->id)->first(),
+            'artis_id' => $artis->id,
         ]);
 
         // dd($project->request_project_artis_id_);
