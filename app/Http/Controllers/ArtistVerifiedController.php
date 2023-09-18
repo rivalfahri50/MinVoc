@@ -861,6 +861,46 @@ class ArtistVerifiedController extends Controller
         $uangTetap = 2000000;
         $uangYangDiterima = ($range / 100) * $uangTetap;
 
+        if (isset($project->request_project_artis_id_1) && isset($project->request_project_artis_id_2)) {
+            $penghasilan_request_project_artis_id_1 = penghasilan::where('artist_id', $project->request_project_artis_id_1)->first();
+            $penghasilan_request_project_artis_id_2 = penghasilan::where('artist_id', $project->request_project_artis_id_2)->first();
+            $sisaPengasilan = 1800000 - $uangYangDiterima;
+
+            $harga_artis_1 = $penghasilan_request_project_artis_id_1->penghasilan + ($sisaPengasilan / 2);
+            $harga_artis_2 = $penghasilan_request_project_artis_id_2->penghasilan + ($sisaPengasilan / 2);
+
+            if (isset($penghasilan_request_project_artis_id_1) === false) {
+                penghasilan::create([
+                    'artist_id' => artist::where('user_id', auth()->user()->id)->first()->id,
+                    'penghasilan' => $harga_artis_1,
+                    'bulan' =>  date('n')
+                ]);
+            } else if (isset($penghasilan_request_project_artis_id_2) === false) {
+                penghasilan::create([
+                    'artist_id' => artist::where('user_id', auth()->user()->id)->first()->id,
+                    'penghasilan' => $harga_artis_2,
+                    'bulan' =>  date('n')
+                ]);
+            } else {
+                $penghasilan_request_project_artis_id_1->update(['penghasilan' => $harga_artis_1]);
+                $penghasilan_request_project_artis_id_2->update(['penghasilan' => $harga_artis_2]);
+            }
+        } else {
+            $artisPenghasilan = penghasilan::where('artist_id', $project->artist_id)->first();
+            if (isset($artisPenghasilan) === false) {
+                penghasilan::create([
+                    'artist_id' => artist::where('user_id', auth()->user()->id)->first()->id,
+                    'penghasilan' => $uangYangDiterima,
+                    'bulan' =>  date('n')
+                ]);
+            } else {
+                $harga = $artisPenghasilan->penghasilan + $uangYangDiterima;
+                $artisPenghasilan->update(['penghasilan' => $harga]);
+            }
+        }
+
+        $images = $request->file('images')->store('images','public');
+
         $data = [
             'code' => $project->code,
             'name' => $project->name,
