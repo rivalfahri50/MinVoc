@@ -130,7 +130,7 @@
                     <div class="row">
                         <div class="col-4">
                             <div class="card pcard jarak">
-                                <h3 class="angka m-0">Rp {{ number_format($totalpenghasilan, 0,',','.')}}</h3>
+                                <h3 class="angka m-0">Rp {{ number_format($totalpenghasilan, 2,',','.')}}</h3>
                                 <h4 class="judulnottebal mb-0">Total penghasilan</h4>
                                 @if (isset($penghasilanData->penghasilan) && $penghasilanData->penghasilan >= 500000 && $penghasilanData->penghasilan !== $penghasilanData->penghasilanCair)
                                     <span class="btn-unstyled mr-2 link mb-0" style="cursor: pointer" data-bs-toggle="modal"
@@ -224,7 +224,7 @@
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td class="table-cell">{{ $item->harga }}</td>
+                                                <td class="table-cell">Rp. {{ number_format($item->harga, 2, ',', '.') }}</td>
                                                 <td class="table-cell">{{ $item->created_at->toDateString() }}</td>
                                             </tr>
                                         @endforeach

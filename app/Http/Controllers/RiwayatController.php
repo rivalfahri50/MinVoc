@@ -25,7 +25,12 @@ class RiwayatController extends Controller
 
         $penghasilanArtist = (int) song::findOrFail($song_id)->artist->penghasilan + 100000;
         $artist_id =  song::findOrFail($song_id)->artist->id;
-        $cek_penghasilan = penghasilan::updateOrCreate(['artist_id'=> $artist_id, 'bulan' => Carbon::now()->format('m')],['penghasilan'=>(string)$penghasilanArtist]);
+        $cek_penghasilan = penghasilan::create([
+            'artist_id'=> $artist_id,
+            'bulan' => Carbon::now()->format('m'),
+            'penghasilan'=>(string)$penghasilanArtist,
+            'status'=>"riwayat lagu",
+        ]);
         artist::findOrFail($artist_id)->update(['penghasilan' => $penghasilanArtist]);
 
         Log::info("Mencoba menyimpan riwayat: user_id=$user_id, song_id=$song_id, play_date=$play_date");

@@ -69,6 +69,7 @@ class ArtistVerifiedController extends Controller
         $penghasilan = penghasilan::where('artist_id', $artistid)->pluck('penghasilan')->toArray();
         $totalpenghasilan = penghasilan::where('artist_id', $artistid)->sum('penghasilan');
         $penghasilanData = penghasilan::where('artist_id', $artistid)->first();
+        // $month = penghasilan::where('artist_id', $artistid)->pluck('bulan')->toArray();
         $month = [];
         if ($request->has("artist_id")) {
             $artistId = (int) $request->artist_id;
@@ -488,6 +489,7 @@ class ArtistVerifiedController extends Controller
             penghasilan::create([
                 'artist_id' => $artis->id, // Menggunakan ID artis, bukan objek artis
                 'penghasilan' => 400000,
+                'status' => "unggah lagu",
                 'bulan' => now()->format('m'),
             ]);
 

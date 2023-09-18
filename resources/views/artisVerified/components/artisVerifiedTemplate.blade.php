@@ -233,7 +233,7 @@
                         <span class="menu-icon">
                             <i class="mdi mdi-information-outline"></i>
                         </span>
-                        <span class="menu-title">Peraturan</span>
+                        <span class="menu-title">Informasi</span>
                     </a>
                 </li>
             </ul>
