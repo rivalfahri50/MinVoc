@@ -41,7 +41,9 @@ class ArtistVerifiedController extends Controller
         $playlists = playlist::all();
         $billboards = billboard::all();
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('artisVerified.dashboard', compact('title', 'songs', 'genres', 'artist', 'billboards', 'playlists', 'notifs'));
+        $artistid = (int) artist::where('user_id', auth()->user()->id)->first()->id;
+        $totalpenghasilan = penghasilan::where('artist_id', $artistid)->sum('penghasilan');
+        return response()->view('artisVerified.dashboard', compact('title', 'songs', 'genres', 'artist', 'billboards', 'playlists', 'notifs', 'totalpenghasilan'));
     }
 
     protected function playlist(): Response
@@ -482,8 +484,8 @@ class ArtistVerifiedController extends Controller
         ]);
         DB::commit();
 
-            $penghasilanArtist = (int) $artis->penghasilan + 35000;
-            $artis->update(['penghasilan' => $penghasilanArtist]);
+        $penghasilanArtist = (int) $artis->penghasilan + 35000;
+        $artis->update(['penghasilan' => $penghasilanArtist]);
 
         return redirect('/artis-verified/unggahAudio')->with('success', 'Song uploaded successfully.');
         try {
@@ -899,7 +901,9 @@ class ArtistVerifiedController extends Controller
             }
         }
 
-        $images = $request->file('images')->store('images','public');
+        admin::where('id', 1)->update(['penghasilan' => 200000]);
+
+        $images = $request->file('images')->store('images', 'public');
 
         $data = [
             'code' => $project->code,

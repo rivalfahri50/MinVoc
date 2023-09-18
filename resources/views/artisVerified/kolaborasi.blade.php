@@ -618,7 +618,6 @@
                                     {{-- <select class="js-example-basic-multiple form-select" id="kategori" name="states[]" multiple="multiple">
                                     </select> --}}
                                     <div class="form-group">
-
                                         <select class="js-example-basic-multiple" style="width: 100%" id="kategori"
                                             name="kolaborator[]" multiple="multiple">
                                             @foreach ($artis as $item)

@@ -16,6 +16,7 @@ class admin extends Model implements Authenticatable
 
     protected $fillable = [
         'user_id',
+        'penghasilan',
         'name',
         'email',
         'password',

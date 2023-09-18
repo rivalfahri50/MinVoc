@@ -207,6 +207,7 @@ class ArtistController extends Controller
             $artist->verification_status = "pending";
             $msg = 'Pengajuan Verifikasi';
             $artist->image = $imagePath;
+            $artist->pengajuan = true;
             $artist->update();
         } catch (\Throwable $th) {
             Alert::error('message', 'Gagal Mengirim Request Verification Account');

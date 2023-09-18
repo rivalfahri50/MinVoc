@@ -84,6 +84,11 @@ class AdminController extends Controller
         return response()->view('admin.pencairan', compact('title', 'notifs', 'penghasilanAll'));
     }
 
+    protected function pencairanApprove(Request $request, string $code)
+    {
+        dd($code);
+    }
+
     protected function verifikasi(): Response
     {
         $title = "MusiCave";
