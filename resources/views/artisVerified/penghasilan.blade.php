@@ -198,8 +198,8 @@
                                     <form action="{{ route('pencairan.artiVerified', auth()->user()->id) }}" method="post">
                                         @csrf
                                         <div class="modal-body border-0">
-                                            <div class="col-md-12" style="font-size: 13px">
-                                                <div class="mb-3">
+                                            <div class="col-md-12" style="font-size: 13px;">
+                                                <div class="mb-3 pcard jarak"  style="height: 100%;">
                                                     <p for="namakategori" class="form-label judulnottebal">Total Penghasilan
                                                     </p>
                                                     <h3 class="judul">Rp
@@ -224,10 +224,8 @@
                         </div>
                         <div class="col-8 row no-gutters">
                             <div class="card py-2 px-3">
-                                <p class="judulnottebal">Selamat kembali, Artis Ter-Verifikasi! Nikmati pengalaman istimewa
-                                    di MusiCave. Jelajahi berbagai fitur dan informasi yang telah kami persiapkan untuk
-                                    membantu Anda berkembang dalam karier musik Anda. Kami siap mendukung kesuksesan karier
-                                    musik Anda. Terus berkreasi dan berbagi musik terbaik Anda dengan dunia!</p>
+                                <p class="judulnottebal fs-5">Hi, {{ auth()->user()->name }}!
+                                    Anda sebagai artis ter verifikasi penghasilan dalam MusiCave didapatkan dari jumlah pendengar musik, unggah lagu, dan kolaborasi bersama artis ter verifikasi lainnya.</p>
                             </div>
                         </div>
                     </div>

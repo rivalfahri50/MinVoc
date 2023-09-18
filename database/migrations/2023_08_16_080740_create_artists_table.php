@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('image')->default("none");
             $table->bigInteger('likes')->default(0);
             $table->boolean('is_verified')->default(false);
+            $table->boolean('pengajuan')->default(false);
             $table->string('verification_status')->default('none');
             $table->string('penghasilan')->default('0');
             $table->timestamp('pengajuan_verified_at')->nullable();

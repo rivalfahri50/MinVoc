@@ -266,20 +266,19 @@
                             </div>
                         </div>
                     </div>
-                    @php
+                    {{-- @php
                         $count = $artist
                             ->filter(function ($item) {
-                                return $item->pengajuan_verified_at === 0;
+                                return $item->pengajuan === 0;
                             })
                             ->count();
-                        
                     @endphp
-                    @if ($count >= 0)
+                    @if ($count == 0)
                         <div style="justify-content: center; display: flex; padding: 50px 0;">
                             <img width="400" height="200" src="/icon-notFound/adminIcon.svg" alt=""
                                 srcset="">
                         </div>
-                    @endif
+                    @endif --}}
 
                     <div class="text-center">
                         <div class="text-center">

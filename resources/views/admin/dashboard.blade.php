@@ -111,6 +111,10 @@
     <script>
         // Kode JavaScript untuk membuat grafik
         var ctx = document.getElementById('myChart').getContext('2d');
+        var dataPendapatan = @json($totalPendapatan);
+
+        var labels = Object.keys(dataPendapatan);
+        var pendapatanBulanan = Object.values(dataPendapatan);
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
@@ -119,7 +123,7 @@
                 ],
                 datasets: [{
                     label: 'Pendapatan',
-                    data: [1, 3.5, 2.5, 0.5, 4.5, 1, 2, 5, 4, 2.5, 3, 1.5],
+                    data:@json($month),
                     backgroundColor: [
                         'rgba(153, 102, 255, 0.2)',
                         'rgba(153, 102, 255, 0.2)',
@@ -134,7 +138,8 @@
                         'rgba(153, 102, 255, 1)',
                         'rgba(153, 102, 255, 1)'
                     ],
-                    borderWidth: 1
+                    borderWidth: 1,
+                    barPercentage: 0.7,
                 }]
             },
             options: {

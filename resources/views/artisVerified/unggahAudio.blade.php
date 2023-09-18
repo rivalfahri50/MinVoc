@@ -5,6 +5,11 @@
 
 @section('content')
     <link rel="stylesheet" href="/user/assets/css/unggah.css">
+    <style>
+        select {
+            min-height: 0;
+        }
+    </style>
     <div class="main-panel">
         <div class="content-wrapper">
             <form class="row" action="{{ route('unggah.artisVerified') }}" method="POST" enctype="multipart/form-data">

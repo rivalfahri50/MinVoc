@@ -20,10 +20,10 @@ class RiwayatController extends Controller
         // Simpan riwayat pemutaran lagu ke dalam database
         $user_id = Auth::user()->id;
         $song_id = $request->song_id;
-        
+
         $play_date = Carbon::now()->format('Y-m-d H:i:s');
 
-        $penghasilanArtist = (int) song::findOrFail($song_id)->artist->penghasilan + 35000;
+        $penghasilanArtist = (int) song::findOrFail($song_id)->artist->penghasilan + 100000;
         $artist_id =  song::findOrFail($song_id)->artist->id;
         $cek_penghasilan = penghasilan::updateOrCreate(['artist_id'=> $artist_id, 'bulan' => Carbon::now()->format('m')],['penghasilan'=>(string)$penghasilanArtist]);
         artist::findOrFail($artist_id)->update(['penghasilan' => $penghasilanArtist]);

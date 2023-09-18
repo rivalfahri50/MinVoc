@@ -40,6 +40,8 @@ class ArtistVerifiedController extends Controller
         $artist = artist::with('user')->get();
         $playlists = playlist::all();
         $billboards = billboard::all();
+        $artistid = (int) artist::where('user_id', auth()->user()->id)->first()->id;
+        $totalpenghasilan = penghasilan::where('artist_id', $artistid)->sum('penghasilan');
         $notifs = notif::where('user_id', auth()->user()->id)->get();
         $artistid = (int) artist::where('user_id', auth()->user()->id)->first()->id;
         $totalpenghasilan = penghasilan::where('artist_id', $artistid)->sum('penghasilan');
@@ -69,7 +71,6 @@ class ArtistVerifiedController extends Controller
         $penghasilan = penghasilan::where('artist_id', $artistid)->pluck('penghasilan')->toArray();
         $totalpenghasilan = penghasilan::where('artist_id', $artistid)->sum('penghasilan');
         $penghasilanData = penghasilan::where('artist_id', $artistid)->first();
-        // $month = penghasilan::where('artist_id', $artistid)->pluck('bulan')->toArray();
         $month = [];
         if ($request->has("artist_id")) {
             $artistId = (int) $request->artist_id;
@@ -901,7 +902,11 @@ class ArtistVerifiedController extends Controller
             }
         }
 
-        $images = $request->file('images')->store('images','public');
+        admin::where('id',1)->update(['penghasilan' => 200000]);
+
+        admin::where('id', 1)->update(['penghasilan' => 200000]);
+
+        $images = $request->file('images')->store('images', 'public');
 
         $data = [
             'code' => $project->code,

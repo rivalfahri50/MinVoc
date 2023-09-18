@@ -207,6 +207,7 @@ class ArtistController extends Controller
             $artist->verification_status = "pending";
             $msg = 'Pengajuan Verifikasi';
             $artist->image = $imagePath;
+            $artist->pengajuan = true;
             $artist->update();
         } catch (\Throwable $th) {
             Alert::error('message', 'Gagal Mengirim Request Verification Account');
@@ -452,9 +453,14 @@ class ArtistController extends Controller
             ]);
             DB::commit();
 
-            $penghasilanArtist = (int) $artis->penghasilan + 35000;
+            $penghasilanArtist = (int) $artis->penghasilan + 200000;
             $artis->update(['penghasilan' => $penghasilanArtist]);
-            // Alert::success('message', 'Berhasil Mengunggah Lagu');
+
+            penghasilan::create([
+                'artist_id' => $artis->id, // Menggunakan ID artis, bukan objek artis
+                'penghasilan' => 200000,
+                'bulan' => now()->format('m'),
+            ]);
             return redirect('/artis/unggahAudio')->with('success', 'Song uploaded successfully.');
         } catch (\Throwable $e) {
             DB::rollBack();
