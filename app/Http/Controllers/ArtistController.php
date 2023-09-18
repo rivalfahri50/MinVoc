@@ -100,11 +100,10 @@ class ArtistController extends Controller
         return response()->view('artis.riwayat', compact('title', 'notifs', 'uniqueRows'));
     }
 
-    protected function profile(): Response
+    protected function profile(string $code)
     {
-        $title = "MusiCave";
-        $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('artis.profile.profile', compact('title', 'notifs'));
+        $user = artist::with('user')->where('user_id', $code)->first();
+        return response()->json(['user' => $user]);
     }
 
     protected function profile_ubah(string $code): Response
@@ -423,8 +422,13 @@ class ArtistController extends Controller
             DB::beginTransaction();
             $code = Str::uuid();
             $image = $request->file('image')->store('images', 'public');
-            $audio = $request->file('audio')->store('musics', 'public');
+            // $namaFile = time() . '_' . $request->file('audio')->getClientOriginalName();
 
+
+            // Simpan file audio dengan nama yang ditentukan di penyimpanan lokal
+            // $audioPath = $request->file('audio')->storeAs('public/musics', $namaFile);
+            $audioPath = $request->file('audio')->store('musics', 'public');
+            // dd($audioPath);
             $getID3 = new getID3();
 
             $audioInfo = $getID3->analyze($request->file('audio')->path());
@@ -439,7 +443,7 @@ class ArtistController extends Controller
                 'code' => $code,
                 'judul' => $request->input('judul'),
                 'image' => $image,
-                'audio' => $audio,
+                'audio' => $audioPath,
                 'waktu' => $formattedDuration,
                 'is_approved' => false,
                 'genre_id' => $request->input('genre'),

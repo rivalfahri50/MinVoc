@@ -16,7 +16,7 @@
                 <div class="col-md-12 mb-3">
                     <div class="row">
                         <div class="sejajar">
-                            <h3 class="judul">Kategori</h3>
+                            <h3 class="judul">Genre</h3>
                             <div class="text-lg-end mb-3">
                                 <a href="#popuptambah" class="btn full-width-btn" type="button">
                                     <i class="fas fa-plus"></i>

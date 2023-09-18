@@ -77,8 +77,7 @@
                         <div class="mb-3">
                             <label for="nama" class="form-label"
                                 style="font-size: 20px; font-weight: 600; color: #957dad">Nama pengguna</label>
-                            <input type="text" class="form-control" name="name" id="nama"
-                                value="{{ $user[0]->name }}" aria-describedby="validationServer03Feedback">
+                            <input type="text" class="form-control" name="name" id="nama" aria-describedby="validationServer03Feedback">
                             @if ($errors->has('name'))
                                 <div class="text-danger mt-1 my-1">
                                     {{ $errors->first('name') }}
@@ -90,8 +89,7 @@
                         <div class="mb-3">
                             <label for="email" class="form-label"
                                 style="font-size: 20px; font-weight: 600; color: #957dad">Email</label>
-                            <input type="email" class="form-control" name="email" id="email"
-                                value="{{ $user[0]->email }}" required>
+                            <input type="email" class="form-control" name="email" id="email" required>
                             @if ($errors->has('email'))
                                 <div class="text-danger mt-1 my-1">
                                     {{ $errors->first('email') }}
@@ -103,7 +101,7 @@
                         <div class="mb-3">
                             <label for="deskripsi" class="form-label"
                                 style="font-size: 20px; font-weight: 600; color: #957dad">Deskripsi</label>
-                            <textarea id="deskripsi" class="form-control" name="deskripsi" maxlength="500" rows="5">{{ $user[0]->deskripsi === 'none' ? '' : $user[0]->deskripsi }}</textarea>
+                            <textarea id="deskripsi" class="form-control" name="deskripsi" maxlength="500" rows="5"></textarea>
                             <div id="counter" class="float-right"></div>
                         </div>
                     </div>
@@ -117,7 +115,16 @@
     </div>
     </div>
 
+
     <script>
+        // const inputElement = document.getElementById('nama');
+
+        // inputElement.value = 12;
+        // const event = new Event('input', {
+        //     bubbles: true
+        // });
+        // inputElement.dispatchEvent(event);
+
         // function hideElement() {
         //     var gambar = document.getElementById(
         //         'gambar');
@@ -136,6 +143,33 @@
         // }
 
         // hideElement()
+
+        const code = "{{ auth()->user()->id }}"
+        fetch(`/artis-verified/profile/${code}`)
+            .then(response => response.json())
+            .then(data => {
+                const name = document.getElementById('nama');
+                const email = document.getElementById('email');
+                const deskripsi = document.getElementById('deskripsi');
+
+                name.value = data.user.user.name;
+                email.value = data.user.user.email;
+                if (data.user.user.deskripsi == "none") {
+                    deskripsi.innerHTML = '';
+                } else {
+                    deskripsi.innerHTML = data.user.user.deskripsi;
+                }
+
+                const event = new Event('input', {
+                    bubbles: true
+                });
+                name.dispatchEvent(event);
+                email.dispatchEvent(event);
+                deskripsi.dispatchEvent(event);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
 
         const messageEle = document.getElementById('deskripsi');
         const counterEle = document.getElementById('counter');

@@ -296,15 +296,32 @@
                                                             <input type="file" id="gambar" name="images"
                                                                 accept="image/png,image/jpg" class="inputgambar">
                                                         </div>
+                                                        @if ($errors->has('images'))
+                                                            <div class="text-danger" style="font-size: 14px">
+                                                                {{ $errors->first('images') }}
+                                                            </div>
+                                                        @endif
                                                     </div>
                                                     <div class="col-7">
                                                         <div class="mb-4">
                                                             <input type="text" class="form-control form-i inputcolor"
-                                                                name="name" id="nama" placeholder="Judul Lagu">
+                                                                name="name" id="nama" placeholder="Judul Lagu"
+                                                                value="{{ old('name') }}">
+                                                            @if ($errors->has('name'))
+                                                                <div class="text-danger" style="font-size: 14px">
+                                                                    {{ $errors->first('name') }}
+                                                                </div>
+                                                            @endif
                                                         </div>
                                                         <div class="mb-4">
                                                             <input type="file" name="audio"
-                                                                class="form-control inputcolor" id="namaproyek" required>
+                                                                class="form-control inputcolor" id="namaproyek" required
+                                                                value="{{ old('audio') }}">
+                                                            @if ($errors->has('audio'))
+                                                                <div class="text-danger" style="font-size: 14px">
+                                                                    {{ $errors->first('audio') }}
+                                                                </div>
+                                                            @endif
                                                         </div>
                                                         <div>
                                                             <button class="btn pl-3 kirim rounded-3 full-width-button"
@@ -327,7 +344,8 @@
                         <div class="card kiri scrollbar-dusty-grass square thin rounded-4">
                             <div class="card-body">
                                 <div class="row">
-                                    <h3 class="fw-semibold mb-3" style="color: #957dad; margin-top: -10px;">Detail Kolaborasi</h3>
+                                    <h3 class="fw-semibold mb-3" style="color: #957dad; margin-top: -10px;">Detail
+                                        Kolaborasi</h3>
                                     <div class="col-12">
                                         <div class="preview-list">
                                             <form action="{{ route('create.project.artisVerified', $project->code) }}"
@@ -340,8 +358,8 @@
                                                                 class="form-label judulnottebal fs-6">Nama Project</label>
                                                             <input type="text"
                                                                 class="form-control form-i inputcolor bg-white"
-                                                                name="name" value="{{ $project->name }}" id="nama"
-                                                                readonly disabled>
+                                                                name="name" value="{{ $project->name }}"
+                                                                id="nama" readonly disabled>
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="namakategori"
@@ -355,8 +373,9 @@
                                                             <input type="text" name="harga"
                                                                 class="form-control inputcolor bg-white" id="namaproyek"
                                                                 value="Rp. 2.000.000.00" readonly disabled>
-                                                            <label for="namakategori"
-                                                                class="pl-1" style="color: darkgray; font-size: 13px;">admin memiliki hak sebesar 10% dalam penghasilan kolaborasi.</label>
+                                                            <span class="pl-1"
+                                                                style="color: darkgray; font-size: 13px;">admin memiliki
+                                                                hak sebesar 10% dalam penghasilan kolaborasi.</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -369,6 +388,7 @@
                     </div>
                 @endif
             </div>
+
             <!-- Modal -->
             <div class="modal fade" id="kirimkolaborasi-{{ $project->code }}" tabindex="-1"
                 aria-labelledby="exampleModalLabel" aria-hidden="true">

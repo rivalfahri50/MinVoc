@@ -1,5 +1,8 @@
 @extends('artisVerified.components.artisVerifiedTemplate')
 
+{{-- @extends('artis.components.artisTemplate') --}}
+
+
 @section('content')
     <link rel="stylesheet" href="/user/assets/css/unggah.css">
     <div class="main-panel">
@@ -26,7 +29,7 @@
                     </div>
 
                     <div class="d-flex flex-column mb-3 col-lg-9">
-                        <div class="my-2 d-flex flex-row justify-content-around">
+                        <div class="d-flex flex-row justify-content-around">
                             <div class="col-md-8">
                                 <input type="text" class="form-control" style="border-radius: 13px"
                                     id="exampleFormControlInput1" placeholder="Judul Lagu" name="judul"
