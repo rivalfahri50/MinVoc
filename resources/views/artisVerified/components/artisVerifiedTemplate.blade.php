@@ -30,7 +30,7 @@
             z-index: 1030;
             width: 40vh;
         }
-        
+
         .search-container {
             position: relative;
             display: flex;
@@ -230,7 +230,7 @@
                         <span class="menu-icon">
                             <i class="mdi mdi-information-outline"></i>
                         </span>
-                        <span class="menu-title">Peraturan</span>
+                        <span class="menu-title">Informasi</span>
                     </a>
                 </li>
             </ul>
@@ -900,6 +900,7 @@
                     index_no = 0;
                     // Memuat lagu yang diacak
                     load_track(index_no);
+                    playsong();
                 }
 
                 // pause song

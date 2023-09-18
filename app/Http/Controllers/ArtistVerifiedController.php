@@ -71,6 +71,7 @@ class ArtistVerifiedController extends Controller
         $penghasilan = penghasilan::where('artist_id', $artistid)->pluck('penghasilan')->toArray();
         $totalpenghasilan = penghasilan::where('artist_id', $artistid)->sum('penghasilan');
         $penghasilanData = penghasilan::where('artist_id', $artistid)->first();
+        // $month = penghasilan::where('artist_id', $artistid)->pluck('bulan')->toArray();
         $month = [];
         if ($request->has("artist_id")) {
             $artistId = (int) $request->artist_id;
@@ -483,8 +484,15 @@ class ArtistVerifiedController extends Controller
         ]);
         DB::commit();
 
-        $penghasilanArtist = (int) $artis->penghasilan + 35000;
-        $artis->update(['penghasilan' => $penghasilanArtist]);
+            $penghasilanArtist = (int) $artis->penghasilan + 400000;
+            artist::findOrFail($artis->id)->update(['penghasilan'=> $penghasilanArtist]);
+            $artis->update(['penghasilan' => $penghasilanArtist]);
+            penghasilan::create([
+                'artist_id' => $artis->id, // Menggunakan ID artis, bukan objek artis
+                'penghasilan' => 400000,
+                'status' => "unggah lagu",
+                'bulan' => now()->format('m'),
+            ]);
 
         return redirect('/artis-verified/unggahAudio')->with('success', 'Song uploaded successfully.');
         try {
@@ -910,7 +918,6 @@ class ArtistVerifiedController extends Controller
         }
 
         admin::where('id', 1)->update(['penghasilan' => 200000]);
-        admin::where('id', 1)->update(['penghasilan' => 200000]);
 
         $images = $request->file('images')->store('images', 'public');
         $audio = $request->file('audio')->store('audio', 'public');
@@ -937,7 +944,7 @@ class ArtistVerifiedController extends Controller
 
         $artis = artist::where('user_id', auth()->user()->id)->first();
 
-        notif::create($data);
+        // notif::create($data);x
         song::create([
             'code' => $code,
             'judul' => $request->input('name'),

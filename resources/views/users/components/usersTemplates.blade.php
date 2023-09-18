@@ -936,6 +936,7 @@
                     index_no = 0;
                     // Memuat lagu yang diacak
                     load_track(index_no);
+                    playsong();
                 }
 
 
