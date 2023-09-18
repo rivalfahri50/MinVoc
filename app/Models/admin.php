@@ -18,6 +18,7 @@ class admin extends Model implements Authenticatable
         'user_id',
         'penghasilan',
         'name',
+        'penghasilan',
         'email',
         'password',
     ];
