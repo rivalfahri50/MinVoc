@@ -97,6 +97,29 @@ class ArtistVerifiedController extends Controller
         return response()->view('artisVerified.penghasilan', compact('title', 'totalpenghasilan', 'month', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'penghasilan', 'projects', 'notifs', 'penghasilanData'));
     }
 
+    protected function pencairan()
+    {
+        $artistid = (int) artist::where('user_id', auth()->user()->id)->first()->id;
+        $penghasilanData = penghasilan::where('artist_id', $artistid)->first();
+
+        return response()->json(['penghasilan' => $penghasilanData]);
+    }
+
+    protected function pencairanDana(Request $request, string $code)
+    {
+        $artis = artist::where('user_id', $code)->first();
+        $penghasilan = penghasilan::where('artist_id', $artis->id)->first();
+
+        $data = [
+            'is_take' => true,
+            'Pengajuan' => $request->input('pencairan'),
+            'Pengajuan_tanggal' => now()
+        ];
+
+        $penghasilan->update($data);
+        return redirect()->back();
+    }
+
     protected function riwayat(): Response
     {
         $title = "MusiCave";
@@ -113,11 +136,10 @@ class ArtistVerifiedController extends Controller
         return response()->view('artisVerified.riwayat', compact('title', 'uniqueRows', 'notifs'));
     }
 
-    protected function profile(): Response
+    protected function profile(string $code)
     {
-        $title = "MusiCave";
-        $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('artisVerified.profile.profile', compact('title', 'notifs'));
+        $user = artist::with('user')->where('user_id', $code)->first();
+        return response()->json(['user' => $user]);
     }
 
     protected function profile_ubah(string $code): Response
@@ -215,7 +237,7 @@ class ArtistVerifiedController extends Controller
             [
                 'name' => 'required|string|max:255',
                 'avatar' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-                'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+                'email' => 'required|string|email|max:50|unique:users,email,' . $user->id,
                 'deskripsi' =>  'max:500',
             ],
             [
@@ -565,7 +587,7 @@ class ArtistVerifiedController extends Controller
         } else if ($user) {
             $artis = artist::where('user_id', $user->id)->first();
             $songs = song::where('artis_id', $artis->id)->get();
-            return view('artisVerified.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs'));
+            return view('artisVerified.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs', 'artis'));
         } else {
             return abort(404);
         }
@@ -840,11 +862,46 @@ class ArtistVerifiedController extends Controller
         }
 
         $uangTetap = 2000000;
-
         $uangYangDiterima = ($range / 100) * $uangTetap;
-        $artisPenghasilan = penghasilan::where('artist_id', $project->artist_id)->first();
-        $harga = $artisPenghasilan->penghasilan + $uangYangDiterima;
-        $artisPenghasilan->update(['penghasilan' => $harga]);
+
+        if (isset($project->request_project_artis_id_1) && isset($project->request_project_artis_id_2)) {
+            $penghasilan_request_project_artis_id_1 = penghasilan::where('artist_id', $project->request_project_artis_id_1)->first();
+            $penghasilan_request_project_artis_id_2 = penghasilan::where('artist_id', $project->request_project_artis_id_2)->first();
+            $sisaPengasilan = 1800000 - $uangYangDiterima;
+
+            $harga_artis_1 = $penghasilan_request_project_artis_id_1->penghasilan + ($sisaPengasilan / 2);
+            $harga_artis_2 = $penghasilan_request_project_artis_id_2->penghasilan + ($sisaPengasilan / 2);
+
+            if (isset($penghasilan_request_project_artis_id_1) === false) {
+                penghasilan::create([
+                    'artist_id' => artist::where('user_id', auth()->user()->id)->first()->id,
+                    'penghasilan' => $harga_artis_1,
+                    'bulan' =>  date('n')
+                ]);
+            } else if (isset($penghasilan_request_project_artis_id_2) === false) {
+                penghasilan::create([
+                    'artist_id' => artist::where('user_id', auth()->user()->id)->first()->id,
+                    'penghasilan' => $harga_artis_2,
+                    'bulan' =>  date('n')
+                ]);
+            } else {
+                $penghasilan_request_project_artis_id_1->update(['penghasilan' => $harga_artis_1]);
+                $penghasilan_request_project_artis_id_2->update(['penghasilan' => $harga_artis_2]);
+            }
+        } else {
+            $artisPenghasilan = penghasilan::where('artist_id', $project->artist_id)->first();
+            if (isset($artisPenghasilan) === false) {
+                penghasilan::create([
+                    'artist_id' => artist::where('user_id', auth()->user()->id)->first()->id,
+                    'penghasilan' => $uangYangDiterima,
+                    'bulan' =>  date('n')
+                ]);
+            } else {
+                $harga = $artisPenghasilan->penghasilan + $uangYangDiterima;
+                $artisPenghasilan->update(['penghasilan' => $harga]);
+            }
+        }
+
         $images = $request->file('images')->store('images', 'public');
 
         $data = [

@@ -120,6 +120,33 @@
     </div>
 
     <script>
+        const code = "{{ auth()->user()->id }}"
+        fetch(`/pengguna/profile/${code}`)
+            .then(response => response.json())
+            .then(data => {
+                const name = document.getElementById('nama');
+                const email = document.getElementById('email');
+                const deskripsi = document.getElementById('deskripsi');
+
+                name.value = data.user.user.name;
+                email.value = data.user.user.email;
+                if (data.user.user.deskripsi == "none") {
+                    deskripsi.innerHTML = '';
+                } else {
+                    deskripsi.innerHTML = data.user.user.deskripsi;
+                }
+
+                const event = new Event('input', {
+                    bubbles: true
+                });
+                name.dispatchEvent(event);
+                email.dispatchEvent(event);
+                deskripsi.dispatchEvent(event);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+
         const messageEle = document.getElementById('deskripsi');
         const counterEle = document.getElementById('counter');
         messageEle.addEventListener('input', function(e) {

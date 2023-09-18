@@ -32,8 +32,8 @@
                                     <p class="teksbiasa">{{ $item->pengajuan_verified_at }}</p>
                                 </div>
                                 <div class="mb-4">
-                                    <h5 class="judul mb-3">Pengikut :</h5>
-                                    <p class="teksbiasa">{{ $item->Pengikut }}</p>
+                                    <h5 class="judul mb-3">Disukai :</h5>
+                                    <p class="teksbiasa">{{ $item->likes }}</p>
                                 </div>
                             </div>
                             <div class="col-6">

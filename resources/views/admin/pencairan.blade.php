@@ -23,21 +23,25 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="table-row baris">
-                                <td class="table-cell">
-                                    <p>Tulus</p>
-                                </td>
-                                <td class="table-cell">03/12/2023</td>
-                                <td class="table-cell text-success">Rp 500.000</td>
-                                <td class="table-cell">
-                                    <button class="btn btnicon" data-bs-toggle="modal" data-bs-target="#detail">
-                                        <i class="far fa-eye text-info"></i>
-                                    </button>
-                                    <button class="btn btnicon" onclick="">
-                                        <i class="far fa-times-circle text-danger"></i>
-                                    </button>
-                                </td>
-                            </tr>
+                            @foreach ($penghasilanAll as $item)
+                                @if ($item->is_take)
+                                    <tr class="table-row baris">
+                                        <td class="table-cell">
+                                            <p>{{ $item->artist->user->name }}</p>
+                                        </td>
+                                        <td class="table-cell">{{ (new DateTime($item->Pengajuan_tanggal))->format('d F Y') }}</td>
+                                        <td class="table-cell text-success">Rp. {{ number_format($item->Pengajuan, 2,',','.')}}</td>
+                                        <td class="table-cell">
+                                            <button class="btn btnicon" data-bs-toggle="modal" data-bs-target="#detail">
+                                                <i class="far fa-eye text-info"></i>
+                                            </button>
+                                            <button class="btn btnicon" onclick="">
+                                                <i class="far fa-times-circle text-danger"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endif
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

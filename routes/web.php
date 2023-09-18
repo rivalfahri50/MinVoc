@@ -69,7 +69,6 @@ Route::prefix('admin')->middleware('admin')->controller(AdminController::class)-
     Route::post('/edit-billboard/{code}', 'updatebillboard')->name('updateBillboard');
     Route::post('/genre', 'buatGenre')->name('buat.genre');
     Route::post('/edit-genre/{code}', 'editGenre')->name('edit.genre');
-
 });
 
 Route::post('/validationSIgnInAdmin', [AdminController::class, 'storeSignIn'])->name('storeSignIn.admin');
@@ -85,7 +84,7 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
     Route::get('/playlist', 'playlist');
     Route::get('/penghasilan', 'penghasilan');
     Route::get('/riwayat', 'riwayat');
-    Route::get('/profile', 'profile');
+    Route::get('/profile/{code}', 'profile');
     Route::get('/profile-ubah/{code}', 'profile_ubah')->name('ubah.profile.artis');
     Route::get('/detail-playlist/{code}', 'detailPlaylist')->name('detailPlaylistArtis');
     Route::get('/detail-album/{code}', 'detailAlbum')->name('detailAlbumArtis');
@@ -140,7 +139,7 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
     Route::get('/playlist', 'playlist');
     Route::get('/penghasilan', 'penghasilan');
     Route::get('/riwayat', 'riwayat');
-    Route::get('/profile', 'profile');
+    Route::get('/profile/{code}', 'profile');
     Route::get('/profile-ubah/{code}', 'profile_ubah')->name('ubah.profile.artisVerified');
     Route::get('/billboard/{code}', 'billboard')->name('detail.billboard.artisVerified');
     Route::get('/album', 'album');
@@ -160,7 +159,9 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
         return view('artisVerified.peraturan', ['title' => 'MusiCave', 'notifs' => $notifs]);
     })->name('peraturan.artisVerified');
     Route::get('/delete-notif/{code}', 'deleteNotif');
+    Route::get('/pencairan/{code}', 'pencairan');
 
+    Route::post('/pencairan/{code}', 'pencairanDana')->name('pencairan.artiVerified');
     Route::post('/undangColab/{code}', 'undangColab')->name('undangColab');
     Route::post('/bayar/{code}', 'bayar')->name('bayar');
     Route::post('/search', 'pencarian_input')->name('pencarian.artisVerified');
@@ -184,7 +185,7 @@ Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(pengguna
     Route::get('/pencarian', 'pencarian');
     Route::get('/playlist', 'playlist');
     Route::get('/riwayat', 'riwayat');
-    Route::get('/profile', 'profile');
+    Route::get('/profile/{code}', 'profile');
     Route::get('/artis-search', 'searchArtis');
     Route::get('/song-search', 'searchSong');
     Route::get('/profile-ubah/{code}', 'profile_ubah')->name('ubah.profile');

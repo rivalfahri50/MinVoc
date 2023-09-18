@@ -7,6 +7,7 @@ use App\Models\artist;
 use App\Models\billboard;
 use App\Models\genre;
 use App\Models\notif;
+use App\Models\penghasilan;
 use App\Models\projects;
 use App\Models\song;
 use App\Models\User;
@@ -78,8 +79,9 @@ class AdminController extends Controller
     protected function pencairan(): Response
     {
         $title = "MusiCave";
+        $penghasilanAll = penghasilan::with('artist.user')->get();
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('admin.pencairan', compact('title', 'notifs'));
+        return response()->view('admin.pencairan', compact('title', 'notifs', 'penghasilanAll'));
     }
 
     protected function verifikasi(): Response

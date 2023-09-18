@@ -14,9 +14,12 @@ return new class extends Migration
         Schema::create('penghasilan', function (Blueprint $table) {
             $table->id();
             $table->foreignId('artist_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->bigInteger('penghasilan');
-            $table->string('bulan');
+            $table->bigInteger('penghasilan')->default(0);
+            $table->bigInteger('penghasilanCair')->default(0);
+            $table->bigInteger('Pengajuan')->default(0);
             $table->boolean('is_take')->default(false);
+            $table->string('bulan');
+            $table->timestamp('Pengajuan_tanggal')->nullable();
             $table->timestamp("terakhir_diambil")->nullable();
             $table->timestamps();
         });

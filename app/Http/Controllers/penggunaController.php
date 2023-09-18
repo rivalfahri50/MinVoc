@@ -70,11 +70,10 @@ class penggunaController extends Controller
         return response()->view('users.riwayat', compact('title', 'uniqueRows', 'notifs'));
     }
 
-    protected function profile(): Response
+    protected function profile(string $code)
     {
-        $title = "MusiCave";
-        $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('users.profile.profile', compact('title', 'notifs'));
+        $user = artist::with('user')->where('user_id', $code)->first();
+        return response()->json(['user' => $user]);
     }
 
     protected function profile_ubah(Request $request, string $code): Response

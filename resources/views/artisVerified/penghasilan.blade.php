@@ -129,14 +129,16 @@
                 <div class="col-md-12 mb-3">
                     <div class="row">
                         <div class="col-4">
-                            <div class="card pcard jarak">
+                            <div class="card pcard jarak" style="height: 100%">
                                 <h3 class="angka m-0">Rp {{ number_format($totalpenghasilan, 2, ',', '.') }}</h3>
                                 <h4 class="judulnottebal mb-0">Total penghasilan</h4>
-                                <span class="btn-unstyled mr-2 link mb-0" style="cursor: pointer" data-bs-toggle="modal"
-                                    data-bs-target="#caripenghasilan">Cairkan Penghasilan</span>
-                                @if ($penghasilanData->is_take)
-                                    <span style="color: #858585">Terakhir diambil pada
-                                        {{ $penghasilanData->is_take }}</span>
+                                @if (isset($penghasilanData->penghasilan) && $penghasilanData->penghasilan >= 500000 && $penghasilanData->penghasilan !== $penghasilanData->penghasilanCair)
+                                    <span class="btn-unstyled mr-2 link mb-0" style="cursor: pointer" data-bs-toggle="modal"
+                                        data-bs-target="#caripenghasilan">Cairkan Penghasilan</span>
+                                @endif
+                                @if (isset($penghasilanData->is_take))
+                                <span style="color: #858585">Terakhir diambil pada
+                                    {{ (new DateTime($penghasilanData->terakhir_diambil))->format('d F Y') }}</span>                                
                                 @endif
                             </div>
                         </div>
@@ -152,33 +154,36 @@
                                                 style="color: #957DAD; font-size: 20px;"></i>
                                         </button>
                                     </div>
-                                    <div class="modal-body border-0">
-                                        <div class="col-md-12" style="font-size: 13px">
-                                            <div class="mb-3">
-                                                {{-- @dd($totalpenghasilan) --}}
-                                                <p for="namakategori" class="form-label judulnottebal">Total Penghasilan</p>
-                                                <h3 class="judul">Rp {{ number_format($totalpenghasilan, 2, ',', '.') }}
-                                                </h3>
-                                            </div>
-                                            <div class="mb-3">
-                                                <p for="konsep" class="form-label judulnottebal">Jumlah Pencairan</p>
-                                                <input type="text" id="harga" class="form-control">
+                                    <form action="{{ route('pencairan.artiVerified', auth()->user()->id) }}" method="post">
+                                        @csrf
+                                        <div class="modal-body border-0">
+                                            <div class="col-md-12" style="font-size: 13px">
+                                                <div class="mb-3">
+                                                    <p for="namakategori" class="form-label judulnottebal">Total Penghasilan
+                                                    </p>
+                                                    <h3 class="judul">Rp
+                                                        {{ number_format($totalpenghasilan, 2, ',', '.') }}
+                                                    </h3>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <p for="konsep" class="form-label judulnottebal">Jumlah Pencairan</p>
+                                                    <input type="text" id="harga_pencairan" class="form-control"
+                                                        name="pencairan" readonly required>
+                                                </div>
                                             </div>
                                         </div>
-
-                                    </div>
-                                    <div class="modal-footer border-0">
-                                        <button type="button" class="btn rounded-3">
-                                            <a href="" class="btn-link"
-                                                style="color: inherit; text-decoration: none;">Setujui</a></button>
-                                    </div>
+                                        <div class="modal-footer border-0">
+                                            <button type="submit" class="btn rounded-3">
+                                                <a class="btn-link"
+                                                    style="color: inherit; text-decoration: none;">Setujui</a></button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                         <div class="col-8 row no-gutters">
-                            <div class="card">
-                                <img src="/assets/images/logo.svg" width="80%" height="100%" alt="logo"
-                                    class="ml-4 md-3" />
+                            <div class="card py-2 px-3">
+                                <p class="judulnottebal">Selamat kembali, Artis Ter-Verifikasi! Nikmati pengalaman istimewa di MusiCave. Jelajahi berbagai fitur dan informasi yang telah kami persiapkan untuk membantu Anda berkembang dalam karier musik Anda. Kami siap mendukung kesuksesan karier musik Anda. Terus berkreasi dan berbagi musik terbaik Anda dengan dunia!</p>
                             </div>
                         </div>
                     </div>
@@ -207,7 +212,7 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($projects->reverse() as $item)
-                                        {{-- @dd($item) --}}
+                                            {{-- @dd($item) --}}
                                             <tr class="table-row">
                                                 <td class="table-cell">
                                                     <div class="cell-content">
@@ -236,6 +241,23 @@
 
     <script src="/user/assets/js/tablesort.js"></script>
     <script>
+        const code = "{{ auth()->user()->code }}"
+        fetch(`/artis-verified/pencairan/${code}`)
+            .then(response => response.json())
+            .then(data => {
+                const inputElement = document.getElementById('harga_pencairan');
+
+                inputElement.value = data.penghasilan.penghasilan;
+
+                const event = new Event('input', {
+                    bubbles: true
+                });
+                inputElement.dispatchEvent(event);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+
         /* ============Dengan Rupiah=========== */
         var harga = document.getElementById('harga');
         harga.addEventListener('keyup', function(e) {
