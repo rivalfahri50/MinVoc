@@ -324,7 +324,7 @@
                                 <div class="duration">
                                     <input type="range" class="progress" min="0" step="1"
                                         max="100" value="0" id="duration_slider"
-                                        onchange="change_duration()">
+                                        onchange="change_duration(this)">
                                 </div>
                             </div>
                             <span id="duration" class="durasi">00:00</span>
@@ -1009,13 +1009,16 @@
 
                 // ubah posisi slider
                 // Fungsi untuk mengubah posisi slider
-                function change_duration() {
+                function change_duration(e) {
+                    // console.log(track.curre)
                     slider_position = track.duration * (slider.value / 100);
                     track.currentTime = slider_position;
                     console.log( slider_position = track.duration * (slider.value / 100));
                 }
 
                 slider.addEventListener('input', function() {
+                    console.log("Aa")
+                    console.log($(this))
                     change_duration();
                     clearInterval(timer);
                     Playing_song = true;

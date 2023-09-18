@@ -42,7 +42,7 @@
                     <div class="row">
                         <div style="width: 30%">
                             <div class="card pcard jarak" style="height: 100%;">
-                                <h3 class="angka m-0">Rp {{ number_format($totalpenghasilan, 0,',','.')}}</h3>
+                                <h3 class="angka m-0">Rp {{ number_format($totalpenghasilan, 0, ',', '.') }}</h3>
                                 <h4 class="judulnottebal mb-0">Total penghasilan</h4>
                             </div>
                         </div>
@@ -88,7 +88,10 @@
                         <div style="width: 70%;">
                             <div class="card pcard" style=" padding: 10px">
                                 <h5 class="angka fs-6">Hi, {{ auth()->user()->name }} !</h5>
-                                <p class="judulnottebal">Selamat kembali, Artis Ter-Verifikasi! Nikmati pengalaman istimewa di MusiCave. Jelajahi berbagai fitur dan informasi yang telah kami persiapkan untuk membantu Anda berkembang dalam karier musik Anda. Kami siap mendukung kesuksesan karier musik Anda. Terus berkreasi dan berbagi musik terbaik Anda dengan dunia!</p>
+                                <p class="judulnottebal">Selamat kembali, Artis Ter-Verifikasi! Nikmati pengalaman istimewa
+                                    di MusiCave. Jelajahi berbagai fitur dan informasi yang telah kami persiapkan untuk
+                                    membantu Anda berkembang dalam karier musik Anda. Kami siap mendukung kesuksesan karier
+                                    musik Anda. Terus berkreasi dan berbagi musik terbaik Anda dengan dunia!</p>
                             </div>
                         </div>
                     </div>
@@ -152,27 +155,32 @@
                                                         <a href="#lagu-diputar"
                                                             class="flex-grow text-decoration-none link"
                                                             onclick="putar({{ $item->id }})">
-                                                            <h6 class="preview-subject" style="color: #4e4e4e;">{{ $item->judul }}</h6>
-                                                            <p class="text-muted mb-0" style="font-weight: 400">{{ $item->artist->user->name }}</p>
+                                                            <h6 class="preview-subject" style="color: #4e4e4e;">
+                                                                {{ $item->judul }}</h6>
+                                                            <p class="text-muted mb-0" style="font-weight: 400">
+                                                                {{ $item->artist->user->name }}</p>
                                                         </a>
                                                     </div>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group align-items-center">
-                                                            <i id="like{{ $item->id }}" data-id="{{ $item->id }}"
+                                                            <i id="like{{ $item->id }}"
+                                                                data-id="{{ $item->id }}"
                                                                 onclick="toggleLike(this, {{ $item->id }})"
                                                                 class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                             <p style="pointer-events: none;">{{ $item->waktu }}</p>
-                                                            <a data-bs-toggle="modal"
-                                                                data-bs-target="#staticBackdrop-{{ $item->code }}"
-                                                                style="color: #957dad cursor: pointer">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" x="0px"
-                                                                    y="0px" width="20" height="20"
-                                                                    viewBox="0 2 24 24">
-                                                                    <path fill="#957DAD"
-                                                                        d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 11 L 7 11 L 7 13 L 11 13 L 11 17 L 13 17 L 13 13 L 17 13 L 17 11 L 13 11 L 13 7 L 11 7 z">
-                                                                    </path>
-                                                                </svg>
-                                                            </a>
+                                                            @if (count($playlists) > 0)
+                                                                <a data-bs-toggle="modal"
+                                                                    data-bs-target="#staticBackdrop-{{ $item->code }}"
+                                                                    style="color: #957dad cursor: pointer">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" x="0px"
+                                                                        y="0px" width="20" height="20"
+                                                                        viewBox="0 2 24 24">
+                                                                        <path fill="#957DAD"
+                                                                            d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 11 L 7 11 L 7 13 L 11 13 L 11 17 L 13 17 L 13 13 L 17 13 L 17 11 L 13 11 L 13 7 L 11 7 z">
+                                                                        </path>
+                                                                    </svg>
+                                                                </a>
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </div>
