@@ -123,6 +123,45 @@
                 background: none;
                 text-align: left;
             }
+
+            /* CSS untuk styling pagination */
+            .pagination {
+                margin-top: 20px;
+            }
+
+            .page-item:first-child .page-link {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+                border-radius: 10px;
+            }
+
+            .page-item:last-child .page-link {
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+                border-radius: 10px;
+            }
+
+            .pagination li {
+                display: inline;
+                margin-right: 5px;
+            }
+
+            .pagination li a {
+                text-decoration: none;
+            }
+
+            .page-link.active {
+                background-color: #957DAD;
+                border: 1px solid #957DAD;
+            }
+
+            .pagination li.active a {
+                color: #fff;
+            }
+
+            .pagination li:hover {
+                background-color: #ddd;
+            }
         </style>
         <div class="content-wrapper">
             <div class="row">
@@ -130,15 +169,17 @@
                     <div class="row">
                         <div class="col-4">
                             <div class="card pcard jarak">
-                                <h3 class="angka m-0">Rp {{ number_format($totalpenghasilan, 0,',','.')}}</h3>
+                                <h3 class="angka m-0">Rp {{ number_format($totalpenghasilan, 0, ',', '.') }}</h3>
                                 <h4 class="judulnottebal mb-0">Total penghasilan</h4>
-                                @if (isset($penghasilanData->penghasilan) && $penghasilanData->penghasilan >= 500000 && $penghasilanData->penghasilan !== $penghasilanData->penghasilanCair)
+                                @if (isset($penghasilanData->penghasilan) &&
+                                        $penghasilanData->penghasilan >= 500000 &&
+                                        $penghasilanData->penghasilan !== $penghasilanData->penghasilanCair)
                                     <span class="btn-unstyled mr-2 link mb-0" style="cursor: pointer" data-bs-toggle="modal"
                                         data-bs-target="#caripenghasilan">Cairkan Penghasilan</span>
                                 @endif
                                 @if (isset($penghasilanData->is_take))
-                                <span style="color: #858585">Terakhir diambil pada
-                                    {{ (new DateTime($penghasilanData->terakhir_diambil))->format('d F Y') }}</span>
+                                    <span style="color: #858585">Terakhir diambil pada
+                                        {{ (new DateTime($penghasilanData->terakhir_diambil))->format('d F Y') }}</span>
                                 @endif
                             </div>
                         </div>
@@ -199,7 +240,20 @@
                 {{-- @dd($projects) --}}
 
                 <div class="col-md-12">
-                    <h3 class="judul">Riwayat Penghasilan Masuk</h3>
+                    <div class="row mb-2">
+                        <div class="col-md-4">
+                            <h3 class="judul">Riwayat Penghasilan Masuk</h3>
+                        </div>
+                        <div class="col-md-8">
+                            <form method="POST" action="" class="form-inline justify-content-end">
+                                <label for="date1" class="mr-2">Cari Tanggal</label>
+                                <input type="date" name="date1" id="date1" class="form-control mr-2" placeholder="Dari tanggal">
+                                <label for="date1" class="mr-2">-</label>
+                                <input type="date" name="date2" id="date2" class="form-control mr-2" placeholder="Sampai tanggal">
+                                <button type="submit" name="submit" class="btn">Cari</button>
+                            </form>
+                        </div>
+                    </div>
                     <div class="card mb-3">
                         <div class="table-body">
                             <div class="table-container">
@@ -213,8 +267,7 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($projects->reverse() as $item)
-                                            {{-- @dd($item) --}}
-                                            <tr class="table-row">
+                                            <tr class="table-row baris">
                                                 <td class="table-cell">
                                                     <div class="cell-content">
                                                         <img src="{{ asset('storage/' . $item->images) }}" alt="Face"
@@ -234,6 +287,12 @@
                             </div>
                         </div>
                     </div>
+                    <div class="text-center">
+                        <div class="text-center">
+                            <ul class="pagination justify-content-center">
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -241,6 +300,116 @@
 
 
     <script src="/user/assets/js/tablesort.js"></script>
+    <script>
+        $(document).ready(function() {
+            var itemsPerPage = 4;
+    
+            // Fungsi untuk menyimpan halaman saat ini ke local storage
+            function saveCurrentPageToLocalStorage(page) {
+                localStorage.setItem("currentPage", page);
+            }
+    
+            // Fungsi untuk mendapatkan halaman saat ini dari local storage
+            function getCurrentPageFromLocalStorage() {
+                return parseInt(localStorage.getItem("currentPage")) || 1;
+            }
+    
+            // Mendapatkan halaman saat ini dari local storage atau default ke 1
+            var currentPage = getCurrentPageFromLocalStorage();
+    
+            function showTableRows() {
+                var start = (currentPage - 1) * itemsPerPage;
+                var end = start + itemsPerPage;
+                $(".baris").hide();
+                $(".baris").slice(start, end).show();
+            }
+    
+            function updatePagination() {
+                $(".pagination").empty();
+                var numPages = Math.ceil($(".baris").length / itemsPerPage);
+    
+                var maxPaginationPages = 3; // Jumlah maksimum halaman pagination yang ditampilkan
+    
+                // Menentukan halaman pertama yang akan ditampilkan
+                var startPage = Math.max(currentPage - Math.floor(maxPaginationPages / 2), 1);
+    
+                // Menentukan halaman terakhir yang akan ditampilkan
+                var endPage = Math.min(startPage + maxPaginationPages - 1, numPages);
+    
+                // Tambahkan tombol "Previous" jika ada halaman sebelumnya
+                if (currentPage > 1) {
+                    var prevButton = $("<a>")
+                        .addClass("page-item")
+                        .addClass("page-link")
+                        .attr("href", "#");
+    
+                    var prevIcon = $("<i>").addClass("fa fa-chevron-left");
+                    prevButton.append(prevIcon);
+    
+                    prevButton.click(function(event) {
+                        event.preventDefault(); // Menghentikan tindakan default
+                        currentPage--;
+                        showTableRows();
+                        updatePagination();
+                        saveCurrentPageToLocalStorage(currentPage);
+                    });
+    
+                    $(".pagination").append($("<li>").append(prevButton));
+                }
+    
+                for (var i = startPage; i <= endPage; i++) {
+                    var activeClass = i === currentPage ? "active" : "";
+                    var button = $("<a>")
+                        .addClass("page-item " + activeClass)
+                        .addClass("page-link")
+                        .attr("href", "#");
+    
+                    button.text(i);
+    
+                    button.click(function(event) {
+                        event.preventDefault(); // Menghentikan tindakan default
+                        currentPage = parseInt($(this).text());
+                        showTableRows();
+                        updatePagination();
+                        saveCurrentPageToLocalStorage(currentPage);
+                    });
+    
+                    $(".pagination").append($("<li>").append(button));
+                }
+    
+                // Tambahkan tombol "Next" jika ada lebih banyak halaman
+                if (currentPage < numPages) {
+                    var nextButton = $("<a>")
+                        .addClass("page-item")
+                        .addClass("page-link")
+                        .attr("href", "#");
+    
+                    var nextIcon = $("<i>").addClass("fa fa-chevron-right");
+                    nextButton.append(nextIcon);
+    
+                    nextButton.click(function(event) {
+                        event.preventDefault(); // Menghentikan tindakan default
+                        currentPage++;
+                        showTableRows();
+                        updatePagination();
+                        saveCurrentPageToLocalStorage(currentPage);
+                    });
+    
+                    $(".pagination").append($("<li>").append(nextButton));
+                }
+    
+                if (numPages <= 1) {
+                    $(".pagination").hide();
+                }
+            }
+    
+            showTableRows();
+            updatePagination();
+    
+            saveCurrentPageToLocalStorage(currentPage); // Simpan halaman saat ini ke local storage
+        });
+    </script>
+
     <script>
         const code = "{{ auth()->user()->code }}"
         fetch(`/artis-verified/pencairan/${code}`)

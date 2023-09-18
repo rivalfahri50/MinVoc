@@ -425,7 +425,7 @@
                                                                         method="GET">
                                                                         <button type="submit" class="btn-unstyled">
                                                                             <i
-                                                                                class="far fa-check-circle fs-5 text-success ml-1"></i>
+                                                                                class="fa-regular fa-comment-dots fs-5 text-info ml-1"></i>
                                                                         </button>
                                                                     </form>
                                                                 @endif
@@ -669,7 +669,7 @@
                         </div>
                         <div class="modal-footer border-0">
                             <button type="submit" class="btn rounded-3 btn-link"
-                                style="color: inherit; text-decoration: none;">Undang</button>
+                                style="text-decoration: none;">Undang</button>
                         </div>
                     </div>
                 </form>
