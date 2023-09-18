@@ -236,7 +236,7 @@ class penggunaController extends Controller
         } else if ($user) {
             $artis = artist::where('user_id', $user->id)->first();
             $songs = song::where('artis_id', $artis->id)->get();
-            return view('users.search.artisSearch', compact('user', 'title','totalDidengar', 'songs', 'playlists', 'notifs'));
+            return view('users.search.artisSearch', compact('user', 'title', 'totalDidengar', 'songs', 'playlists', 'notifs'));
         } else {
             return abort(404);
         }
@@ -283,6 +283,7 @@ class penggunaController extends Controller
             $title = "MusiCave";
             $playlistDetail = playlist::where('code', $code)->first();
             $songs = song::where('playlist_id', $playlistDetail->id)->get();
+            $notifs = notif::where('user_id', auth()->user()->id)->get();
             $playlists = playlist::all();
         } catch (\Throwable $th) {
             return abort(404);
@@ -479,6 +480,10 @@ class penggunaController extends Controller
         }
 
         try {
+            foreach ($songs as $key) {
+                $key->playlist_id = null;
+                $key->update();
+            }
             if (Storage::disk('public')->exists($playlist->images) === 'images/defaultPlaylist.png') {
                 Storage::disk('public')->delete($playlist->images);
                 $playlist->delete();

@@ -12895,12 +12895,12 @@ fieldset:disabled .wizard>.actions a,
 
 .btn-link {
   font-weight: 400;
-  color: #007bff;
+  color: white;
   text-decoration: none;
 }
 
 .btn-link:hover {
-  color: #0056b3;
+  color: #957DAD;
   text-decoration: underline;
 }
 

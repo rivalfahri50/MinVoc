@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="/user/assets/css/style.css">
     <link rel="stylesheet" href="{{ asset('style.css') }}">
     <link rel="shortcut icon" href="/image/favicon.svg" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,400;0,500;1,100;1,200&display=swap');
 
@@ -24,16 +25,12 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        select {
-            width: 100%;
-            min-height: 100px;
-            border-radius: 3px;
-            border: 1px solid #444;
-            padding: 10px;
-            color: #444444;
-            font-size: 14px;
+        .fixedbar{
+            position: fixed;
+            z-index: 1030;
+            width: 40vh;
         }
-
+        
         .search-container {
             position: relative;
             display: flex;
@@ -150,7 +147,7 @@
                 <a class="sidebar-brand brand-logo" href="/artis-verified/dashboard"><img
                         src="/user/assets/images/logo.svg" alt="logo" /></a>
             </div>
-            <ul class="nav">
+            <ul class="nav fixedbar">
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="/artis-verified/dashboard">
                         <span class="menu-icon ">
@@ -418,6 +415,7 @@
                 </div>
             </nav>
 
+            @include('sweetalert::alert')
             @yield('content')
 
             <div id="buat-album">

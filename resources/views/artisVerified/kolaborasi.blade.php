@@ -42,6 +42,8 @@
 @endforeach --}}
 
 @section('content')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <div class="main-panel">
         <style>
             .modal-content {
@@ -89,15 +91,10 @@
             }
 
             .table-cell {
-
                 flex: 1;
-
                 padding-left: 10%;
-
                 text-align: left;
-
                 padding: 10px;
-
             }
 
             .table-header {
@@ -266,6 +263,56 @@
                 font-size: 20px;
             }
         </style>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const confirmButton = document.getElementById('confirmButton');
+
+                confirmButton.addEventListener('click', function(event) {
+                    event.preventDefault(); // Mencegah pengiriman formulir langsung
+
+                    Swal.fire({
+                        title: 'Konfirmasi Hapus',
+                        text: 'Apakah Anda yakin ingin menghapus project ini?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Ya, Hapus!',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Jika pengguna mengonfirmasi, kirimkan formulir
+                            const form = event.target.closest('form');
+                            if (form) {
+                                form.submit();
+                            }
+                        }
+                    });
+                });
+            });
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const confirmButtonReject = document.getElementById('confirmButtonReject');
+                confirmButtonReject.addEventListener('click', function(event) {
+                    event.preventDefault(); // Mencegah pengiriman formulir langsung
+
+                    Swal.fire({
+                        title: 'Konfirmasi Hapus',
+                        text: 'Apakah Anda yakin ingin menolak kolaborasi ini?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Ya, Hapus!',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Jika pengguna mengonfirmasi, kirimkan formulir
+                            const form = event.target.closest('form');
+                            if (form) {
+                                form.submit();
+                            }
+                        }
+                    });
+                });
+            });
         </script>
 
 
@@ -313,17 +360,18 @@
                                                                 <i class="mdi mdi-eye btn-icon text-primary"
                                                                     style="font-size: 20px; margin-right: 2px;"></i>
                                                             </a>
-                                                            <form action="{{ route('reject.project.artisVerified') }}"
-                                                                method="post" class="m-0">
-                                                                @csrf
-                                                                <button type="submit">
+
+                                                            <button type="button" id="confirmButton">
+                                                                <form action="{{ route('reject.project.artisVerified') }}"
+                                                                    method="post" class="m-0">
+                                                                    @csrf
                                                                     <input type="hidden" name="code"
                                                                         value="{{ $item->code }}">
                                                                     <input type="hidden" name="is_reject" value="true">
                                                                     <i class="mdi mdi-close-circle-outline btn-icon text-danger"
                                                                         style="font-size: 20px"></i>
-                                                                </button>
-                                                            </form>
+                                                                </form>
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                 @endif
@@ -377,22 +425,23 @@
                                                                         method="GET">
                                                                         <button type="submit" class="btn-unstyled">
                                                                             <i
-                                                                                class="far fa-check-circle fs-5 text-success ml-1"></i>
+                                                                                class="fa-regular fa-comment-dots fs-5 text-info ml-1"></i>
                                                                         </button>
                                                                     </form>
                                                                 @endif
-                                                                <form action="{{ route('reject.project.artisVerified') }}"
-                                                                    method="post" class="m-0">
-                                                                    @csrf
-                                                                    <button type="submit">
+                                                                <button type="submit" id="confirmButtonReject">
+                                                                    <form
+                                                                        action="{{ route('reject.project.artisVerified') }}"
+                                                                        method="post" class="m-0">
+                                                                        @csrf
                                                                         <input type="hidden" name="code"
                                                                             value="{{ $item->code }}">
                                                                         <input type="hidden" name="is_reject"
                                                                             value="true">
                                                                         <i class="far fa-times-circle btn-icon text-danger"
                                                                             style="font-size: 20px"></i>
-                                                                    </button>
-                                                                </form>
+                                                                    </form>
+                                                                </button>
                                                             </td>
                                                         </tr>
                                                     @endif
@@ -604,21 +653,7 @@
                                 </style>
                                 <div class="mb-3">
                                     <label for="namakategori" class="form-label judulnottebal">Nama artis</label>
-                                    {{-- <select class="select2" name="kolaborator[]" multiple="multiple">
-                                        <!-- Opsi di sini -->
-                                        <option style="display: none;" selected disabled>artis verified</option>
-                                    </select> 
-
-                                    <select class="js-example-basic-multiple" id="kategori" name="kolabolator[]">
-                                        <option value="">awfwe</option>
-                                    </select> --}}
-                                    {{-- <select name="kolabolator" id="kategori" class="kategori">
-                                    </select> --}}
-
-                                    {{-- <select class="js-example-basic-multiple form-select" id="kategori" name="states[]" multiple="multiple">
-                                    </select> --}}
                                     <div class="form-group">
-
                                         <select class="js-example-basic-multiple" style="width: 100%" id="kategori"
                                             name="kolaborator[]" multiple="multiple">
                                             @foreach ($artis as $item)
@@ -629,13 +664,12 @@
                                             @endforeach
                                         </select>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer border-0">
                             <button type="submit" class="btn rounded-3 btn-link"
-                                style="color: inherit; text-decoration: none;">Undang</button>
+                                style="text-decoration: none;">Undang</button>
                         </div>
                     </div>
                 </form>

@@ -155,7 +155,7 @@
                         position: absolute;
                         bottom: 0;
                         left: 0;
-                        right: 10px;
+                        right: 0;
                         padding: 10px;
                         display: flex;
                         align-items: center;
@@ -242,7 +242,7 @@
 
                     label {
                         display: flex;
-                        /* justify-content: center; */
+                        justify-content: center;
                         align-items: center;
                         cursor: pointer;
                         width: 100%;
@@ -289,7 +289,7 @@
                                                 @csrf
                                                 <div class="row">
                                                     <div class="col-5 pr-0">
-                                                        <div class="card cobai mb-3">
+                                                        <div class="card cobai">
                                                             <label for="gambar" id="tampil_gambar">
                                                                 <i class="fas fa-pen fa-2x"></i>
                                                             </label>
@@ -297,7 +297,7 @@
                                                                 accept="image/png,image/jpg" class="inputgambar">
                                                         </div>
                                                         @if ($errors->has('images'))
-                                                            <div class="text-danger" style="font-size: 14px">
+                                                            <div class="text-danger" style="font-size: 12px;">
                                                                 {{ $errors->first('images') }}
                                                             </div>
                                                         @endif
@@ -308,7 +308,7 @@
                                                                 name="name" id="nama" placeholder="Judul Lagu"
                                                                 value="{{ old('name') }}">
                                                             @if ($errors->has('name'))
-                                                                <div class="text-danger" style="font-size: 14px">
+                                                                <div class="text-danger" style="font-size: 12px">
                                                                     {{ $errors->first('name') }}
                                                                 </div>
                                                             @endif
@@ -318,21 +318,33 @@
                                                                 class="form-control inputcolor" id="namaproyek" required
                                                                 value="{{ old('audio') }}">
                                                             @if ($errors->has('audio'))
-                                                                <div class="text-danger" style="font-size: 14px">
+                                                                <div class="text-danger" style="font-size: 12px">
                                                                     {{ $errors->first('audio') }}
                                                                 </div>
                                                             @endif
                                                         </div>
-                                                        <div>
-                                                            <button class="btn pl-3 kirim rounded-3 full-width-button"
-                                                                type="button" data-bs-toggle="modal"
-                                                                data-bs-target="#kirimkolaborasi-{{ $project->code }}">
-                                                                Unggah
-                                                            </button>
+                                                        <div class="mb-4">
+                                                            <select name="genre" class="form-select"
+                                                                style="border-radius: 13px"
+                                                                aria-label="Default select example">
+                                                                <option value="" disabled selected>Music Genre
+                                                                </option>
+                                                                @foreach ($genre as $item)
+                                                                    <option value="{{ $item->id }}">
+                                                                        {{ $item->name }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                {{-- </form> --}}
+                                                <div>
+                                                    <button class="btn pl-3 kirim rounded-3 full-width-button"
+                                                        type="button" data-bs-toggle="modal"
+                                                        data-bs-target="#kirimkolaborasi-{{ $project->code }}">
+                                                        Unggah
+                                                    </button>
+                                                </div>
                                         </div>
                                     </div>
                                 </div>
