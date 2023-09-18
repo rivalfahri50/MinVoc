@@ -16,6 +16,7 @@ class projects extends Model
         'images',
         'audio',
         'harga',
+        'is_take',
         'artist_id',
         'request_project_artis_id_1',
         'request_project_artis_id_2',

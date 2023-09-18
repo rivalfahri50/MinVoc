@@ -223,8 +223,9 @@
                             </div>
                         </div>
                         <div class="col-8 row no-gutters">
-                            <div class="card py-2 px-3">
-                                <p class="judulnottebal fs-5">Hi, {{ auth()->user()->name }}!
+                            <div class="card px-3">
+                                <h3 class="judul" style="font-weight: 600">Informasi</h3>
+                                <p class="judulnottebal fs-6">Hi, {{ auth()->user()->name }}!
                                     Anda sebagai artis ter verifikasi penghasilan dalam MusiCave didapatkan dari jumlah pendengar musik, unggah lagu, dan kolaborasi bersama artis ter verifikasi lainnya.</p>
                             </div>
                         </div>

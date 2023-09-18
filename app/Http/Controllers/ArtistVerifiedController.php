@@ -39,7 +39,6 @@ class ArtistVerifiedController extends Controller
         $genres = genre::all();
         $playlists = playlist::all();
         $artist = artist::with('user')->get();
-        $playlists = playlist::all();
         $billboards = billboard::all();
         $artistid = (int) artist::where('user_id', auth()->user()->id)->first()->id;
         $totalpenghasilan = penghasilan::where('artist_id', $artistid)->sum('penghasilan');
@@ -787,11 +786,14 @@ class ArtistVerifiedController extends Controller
         try {
             $title = "Kolaborasi";
             $genre = genre::all();
-            $project = DB::table('projects')->where('code', $code)->first();
+            $project = projects::where('code', $code)->first();
             $artis = artist::where('user_id', auth()->user()->id)->first();
             $messages = messages::with(['sender', 'project'])->where('project_id', $project->id)->get();
             projects::where('code', $project->code)->update(['penerima_project' => $artis->id]);
             $notifs = notif::where('user_id', auth()->user()->id)->get();
+            if ($artis->id === $project->request_project_artis_id_1 || $artis->id === $project->request_project_artis_id_2) {
+                $project->update(['is_take' => true]);
+            }
         } catch (\Throwable $th) {
             return abort(404);
         }
@@ -843,6 +845,7 @@ class ArtistVerifiedController extends Controller
             ]
         );
 
+        
         setlocale(LC_MONETARY, 'id_ID');
 
         if ($validate->fails()) {
@@ -863,6 +866,7 @@ class ArtistVerifiedController extends Controller
 
         $uangTetap = 2000000;
         $uangYangDiterima = ($range / 100) * $uangTetap;
+        // dd($request->all());
 
         if (isset($project->request_project_artis_id_1) && isset($project->request_project_artis_id_2)) {
             $penghasilan_request_project_artis_id_1 = penghasilan::where('artist_id', $project->request_project_artis_id_1)->first();
@@ -931,6 +935,7 @@ class ArtistVerifiedController extends Controller
         $durationSeconds = $durationInSeconds % 60;
         $formattedDuration = sprintf('%02d:%02d', $durationMinutes, $durationSeconds);
 
+        $artis = artist::where('user_id', auth()->user()->id)->first();
 
         notif::create($data);
         song::create([
@@ -939,13 +944,12 @@ class ArtistVerifiedController extends Controller
             'image' => $images,
             'audio' => $audio,
             'waktu' => $formattedDuration,
-            'is_approved' => false,
+            'is_approved' => true,
             'genre_id' => $request->input('genre'),
             'album_id' => $request->input('album') == null ? null : $request->input('album'),
-            // 'artis_id' => $artis->id,
+            'artis_id' => $artis->id,
         ]);
 
-        // dd($project->request_project_artis_id_);
         $project->update($data);
         try {
         } catch (Throwable $e) {

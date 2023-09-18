@@ -24,6 +24,7 @@ return new class extends Migration
             $table->foreignId("request_project_artis_id_1")->nullable()->constrained("artists");
             $table->foreignId("request_project_artis_id_2")->nullable()->constrained("artists");
             $table->enum('status', ['pending', 'accept', 'reject'])->nullable();
+            $table->boolean('is_take')->default(false);
             $table->timestamp('pengajuan_project')->nullable();
             $table->integer('pembuat_project')->default(0);
             $table->integer('penerima_project')->default(0);
