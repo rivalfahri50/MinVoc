@@ -252,10 +252,11 @@ class AdminController extends Controller
         $validator = Validator::make(
             $request->only('name', 'images'),
             [
-                'name' => 'required|unique:admins,name|string|max:50',
+                'name' => 'unique:genres,name|string|max:50',
                 'images' => 'mimes:jpeg,jpg,png,gif|required|max:10000',
             ],
             [
+                'name.unique' => 'Nama genre sudah terpakai.',
                 'images.mimes' => 'File gambar harus berupa JPEG, JPG, PNG, atau GIF.',
                 'images.required' => 'File gambar harus diunggah.',
                 'images.max' => 'Ukuran file gambar tidak boleh melebihi 10MB.',
@@ -271,7 +272,7 @@ class AdminController extends Controller
                 // Start a database transaction
                 DB::beginTransaction();
 
-                $genre = new genre();
+                $genre = new Genre();
                 $genre->code = Str::uuid();
                 $genre->name = $request->input('name');
 
@@ -288,15 +289,17 @@ class AdminController extends Controller
 
                 Alert::success('message', 'Berhasil Membuat Genre');
                 return redirect()->back()->with('success', 'Genre created successfully.');
-            } catch (\Throwable $genre) {
+            } catch (\Throwable $e) {
                 DB::rollBack();
-                Log::error('Terjadi kesalahan saat membuat genre: ' . $genre->getMessage());
+                Log::error('Terjadi kesalahan saat membuat genre: ' . $e->getMessage());
 
                 Alert::error('message', 'Gagal Membuat Genre');
                 return redirect()->back()->with('error', 'Gagal membuat genre.');
             }
         }
     }
+
+
     public function editGenre(Request $request, string $code)
     {
         $genre = genre::find($code);

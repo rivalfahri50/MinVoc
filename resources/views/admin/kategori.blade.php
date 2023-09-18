@@ -95,12 +95,14 @@
                                 <form class="row" action="{{ route('buat.genre') }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf
-                                    <div class="col-md-12">
-                                        <div class="mb-3">
-                                            <label for="namakategori" class="form-label judulnottebal">Nama Kategori</label>
-                                            <input type="text" name="name" class="form-control form-i" id="namaproyek"
-                                                required>
-                                        </div>
+                                    <div class="mb-3">
+                                        <label for="namakategori" class="form-label judulnottebal">Nama Kategori</label>
+                                        <input type="text" name="name" class="form-control form-i" id="namaproyek" required>
+                                        @error('name')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
                                         <div class="mb-3">
                                             <label for="upload" class="form-label judulnottebal">Upload Foto</label>
                                             <input type="file" name="images" class="form-control form-i" id="images"
@@ -118,7 +120,7 @@
 
                     <!-- JavaScript untuk validasi jenis file -->
                     <script>
-                        document.getElementById('images').addEventListener('change', function() {
+                        document.getElementById('images').addEventListener('submit', function() {
                             const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
                             const file = this.files[0];
                             if (file && !allowedTypes.includes(file.type)) {
