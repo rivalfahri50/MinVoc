@@ -3,6 +3,11 @@
 @section('content')
     <div class="main-panel">
         <link rel="stylesheet" href="/user/assets/css/unggah.css">
+        <style>
+            .over {
+                width: 100px;
+            }
+        </style>
         <div class="content-wrapper">
             <div class="row mt-4">
                 <div class="col-12">
@@ -32,7 +37,7 @@
                                     <div class="col-md-8">
                                         <input type="text" class="form-control" style="border-radius: 13px"
                                             id="exampleFormControlInput1" placeholder="Judul Lagu" name="judul"
-                                            value="{{ old('judul') }}">
+                                            value="{{ old('judul') }}" maxlength="55">
                                         @error('judul')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
@@ -94,12 +99,12 @@
                             <tbody>
                                 @foreach ($datas->reverse() as $item)
                                     @if ($item->artis_id === $artis->id)
-                                        <tr class="table-row">
+                                        <tr class="table-row baris">
                                             <td class="table-cell">
                                                 <div class="cell-content">
                                                     <img width="50" src="{{ asset('storage/' . $item->image) }}"
                                                         alt="Face" class="avatar">
-                                                    <div>
+                                                    <div class="over">
                                                         <h6>{{ $item->judul }}</h6>
                                                         <p class="text-muted m-0">{{ $item->artist->user->name }}</p>
                                                     </div>
@@ -107,7 +112,8 @@
                                             </td>
                                             <td class="table-cell">{{ $item->genre->name }}</td>
                                             <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
-                                            <td class="table-cell fw-light {{ $item->is_approved == 0 ? "text-warning" : "text-success" }}" style="font-weight: 600">
+                                            <td class="table-cell fw-light {{ $item->is_approved == 0 ? 'text-warning' : 'text-success' }}"
+                                                style="font-weight: 600">
                                                 {{ $item->is_approved == 0 ? 'Pending' : 'Publish' }}</td>
                                         </tr>
                                     @endIf
@@ -145,41 +151,111 @@
 
 
             $(document).ready(function() {
-                var itemsPerPage = 5;
+                var itemsPerPage = 4;
 
-                $(".table-row").hide();
-
-                $(".table-row").slice(0, itemsPerPage).show();
-
-                var numPages = Math.ceil($(".table-row").length / itemsPerPage);
-
-                for (var i = 1; i <= numPages; i++) {
-                    $(".pagination").append("<li class='page-item'><a class='page-link' href='#'>" + i + "</a></li>");
+                // Fungsi untuk menyimpan halaman saat ini ke local storage
+                function saveCurrentPageToLocalStorage(page) {
+                    localStorage.setItem("currentPage", page);
                 }
 
-                if (numPages <= 1) {
-                    $(".pagination").hide();
+                // Fungsi untuk mendapatkan halaman saat ini dari local storage
+                function getCurrentPageFromLocalStorage() {
+                    return parseInt(localStorage.getItem("currentPage")) || 1;
                 }
 
-                $(".pagination a").click(function(e) {
-                    e.preventDefault();
-                    var page = $(this).text();
-                    var start = (page - 1) * itemsPerPage;
+                // Mendapatkan halaman saat ini dari local storage atau default ke 1
+                var currentPage = getCurrentPageFromLocalStorage();
+
+                function showTableRows() {
+                    var start = (currentPage - 1) * itemsPerPage;
                     var end = start + itemsPerPage;
-                    $(".table-row").hide();
-                    $(".table-row").slice(start, end).show();
-                    $(".pagination a").removeClass("active");
-                    $(this).addClass("active");
-                });
+                    $(".baris").hide();
+                    $(".baris").slice(start, end).show();
+                }
 
-                $(".pagination .prev").click(function(e) {
-                    e.preventDefault();
-                    var activePage = $(".pagination .active").text();
-                    var prevPage = parseInt(activePage) - 1;
-                    if (prevPage >= 1) {
-                        $(".pagination a").eq(prevPage - 1).click();
+                function updatePagination() {
+                    $(".pagination").empty();
+                    var numPages = Math.ceil($(".baris").length / itemsPerPage);
+
+                    var maxPaginationPages = 3; // Jumlah maksimum halaman pagination yang ditampilkan
+
+                    // Menentukan halaman pertama yang akan ditampilkan
+                    var startPage = Math.max(currentPage - Math.floor(maxPaginationPages / 2), 1);
+
+                    // Menentukan halaman terakhir yang akan ditampilkan
+                    var endPage = Math.min(startPage + maxPaginationPages - 1, numPages);
+
+                    // Tambahkan tombol "Previous" jika ada halaman sebelumnya
+                    if (currentPage > 1) {
+                        var prevButton = $("<a>")
+                            .addClass("page-item")
+                            .addClass("page-link")
+                            .attr("href", "#");
+
+                        var prevIcon = $("<i>").addClass("fa fa-chevron-left");
+                        prevButton.append(prevIcon);
+
+                        prevButton.click(function(event) {
+                            event.preventDefault(); // Menghentikan tindakan default
+                            currentPage--;
+                            showTableRows();
+                            updatePagination();
+                            saveCurrentPageToLocalStorage(currentPage);
+                        });
+
+                        $(".pagination").append($("<li>").append(prevButton));
                     }
-                });
+
+                    for (var i = startPage; i <= endPage; i++) {
+                        var activeClass = i === currentPage ? "active" : "";
+                        var button = $("<a>")
+                            .addClass("page-item " + activeClass)
+                            .addClass("page-link")
+                            .attr("href", "#");
+
+                        button.text(i);
+
+                        button.click(function(event) {
+                            event.preventDefault(); // Menghentikan tindakan default
+                            currentPage = parseInt($(this).text());
+                            showTableRows();
+                            updatePagination();
+                            saveCurrentPageToLocalStorage(currentPage);
+                        });
+
+                        $(".pagination").append($("<li>").append(button));
+                    }
+
+                    // Tambahkan tombol "Next" jika ada lebih banyak halaman
+                    if (currentPage < numPages) {
+                        var nextButton = $("<a>")
+                            .addClass("page-item")
+                            .addClass("page-link")
+                            .attr("href", "#");
+
+                        var nextIcon = $("<i>").addClass("fa fa-chevron-right");
+                        nextButton.append(nextIcon);
+
+                        nextButton.click(function(event) {
+                            event.preventDefault(); // Menghentikan tindakan default
+                            currentPage++;
+                            showTableRows();
+                            updatePagination();
+                            saveCurrentPageToLocalStorage(currentPage);
+                        });
+
+                        $(".pagination").append($("<li>").append(nextButton));
+                    }
+
+                    if (numPages <= 1) {
+                        $(".pagination").hide();
+                    }
+                }
+
+                showTableRows();
+                updatePagination();
+
+                saveCurrentPageToLocalStorage(currentPage); // Simpan halaman saat ini ke local storage
             });
         </script>
     </div>

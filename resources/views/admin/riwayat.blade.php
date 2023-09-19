@@ -1,6 +1,15 @@
 @extends('admin.components.adminTemplate')
 @section('content')
     <link rel="stylesheet" href="/admin/assets/css/riwayat.css">
+    <style>
+        .over {
+            width: 170px;
+        }
+
+        i:hover {
+            color: rebeccapurple;
+        }
+    </style>
     <!-- partial | ISI -->
     <div class="main-panel">
         <div class="content-wrapper">
@@ -13,7 +22,7 @@
                                 <th class="table-cell">Nama<i class="fas fa-sort" data-order="asc"></th>
                                 <th class="table-cell">Artis<i class="fas fa-sort" data-order="asc"></th>
                                 <th class="table-cell">Tanggal<i class="fas fa-sort" data-order="asc"></th>
-                                <th class="table-cell">Status<i class="fas fa-sort" data-order="asc"></th>
+                                <th class="table-cell">Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -21,7 +30,7 @@
                                 @if ($item->is_approved)
                                     <tr class="table-row baris">
                                         <td class="table-cell">
-                                            <div class="cell-content">
+                                            <div class="cell-content over">
                                                 {{ $item->judul }}
                                             </div>
                                         </td>
@@ -61,23 +70,21 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        /*===================================*/
-
         $(document).ready(function() {
             var itemsPerPage = 4;
-            var currentPage = 1;
 
-            function setURLParameter(page) {
-                var newURL = window.location.href.split('?')[0] + '?page=' + page;
-                window.history.replaceState({}, document.title, newURL);
+            // Fungsi untuk menyimpan halaman saat ini ke local storage
+            function saveCurrentPageToLocalStorage(page) {
+                localStorage.setItem("currentPage", page);
             }
 
-            function getURLParameter() {
-                var urlParams = new URLSearchParams(window.location.search);
-                return parseInt(urlParams.get('page')) || 1;
+            // Fungsi untuk mendapatkan halaman saat ini dari local storage
+            function getCurrentPageFromLocalStorage() {
+                return parseInt(localStorage.getItem("currentPage")) || 1;
             }
 
-            currentPage = getURLParameter();
+            // Mendapatkan halaman saat ini dari local storage atau default ke 1
+            var currentPage = getCurrentPageFromLocalStorage();
 
             function showTableRows() {
                 var start = (currentPage - 1) * itemsPerPage;
@@ -90,28 +97,74 @@
                 $(".pagination").empty();
                 var numPages = Math.ceil($(".baris").length / itemsPerPage);
 
-                for (var i = 1; i <= numPages; i++) {
-                    var activeClass = i === currentPage ? "active" : "";
-                    var buttonText = i.toString();
-                    var buttonClass = "page-link";
-                    if (i === currentPage) {
-                        buttonClass += " active";
-                    }
+                var maxPaginationPages = 3; // Jumlah maksimum halaman pagination yang ditampilkan
 
-                    var button = $("<button>")
-                        .addClass("page-item " + activeClass)
-                        .addClass(buttonClass)
-                        .text(buttonText);
+                // Menentukan halaman pertama yang akan ditampilkan
+                var startPage = Math.max(currentPage - Math.floor(maxPaginationPages / 2), 1);
 
-                    button.click(function() {
-                        var page = parseInt($(this).text());
-                        currentPage = page;
-                        setURLParameter(currentPage);
+                // Menentukan halaman terakhir yang akan ditampilkan
+                var endPage = Math.min(startPage + maxPaginationPages - 1, numPages);
+
+                // Tambahkan tombol "Previous" jika ada halaman sebelumnya
+                if (currentPage > 1) {
+                    var prevButton = $("<a>")
+                        .addClass("page-item")
+                        .addClass("page-link")
+                        .attr("href", "#");
+
+                    var prevIcon = $("<i>").addClass("fa fa-chevron-left");
+                    prevButton.append(prevIcon);
+
+                    prevButton.click(function(event) {
+                        event.preventDefault(); // Menghentikan tindakan default
+                        currentPage--;
                         showTableRows();
                         updatePagination();
+                        saveCurrentPageToLocalStorage(currentPage);
+                    });
+
+                    $(".pagination").append($("<li>").append(prevButton));
+                }
+
+                for (var i = startPage; i <= endPage; i++) {
+                    var activeClass = i === currentPage ? "active" : "";
+                    var button = $("<a>")
+                        .addClass("page-item " + activeClass)
+                        .addClass("page-link")
+                        .attr("href", "#");
+
+                    button.text(i);
+
+                    button.click(function(event) {
+                        event.preventDefault(); // Menghentikan tindakan default
+                        currentPage = parseInt($(this).text());
+                        showTableRows();
+                        updatePagination();
+                        saveCurrentPageToLocalStorage(currentPage);
                     });
 
                     $(".pagination").append($("<li>").append(button));
+                }
+
+                // Tambahkan tombol "Next" jika ada lebih banyak halaman
+                if (currentPage < numPages) {
+                    var nextButton = $("<a>")
+                        .addClass("page-item")
+                        .addClass("page-link")
+                        .attr("href", "#");
+
+                    var nextIcon = $("<i>").addClass("fa fa-chevron-right");
+                    nextButton.append(nextIcon);
+
+                    nextButton.click(function(event) {
+                        event.preventDefault(); // Menghentikan tindakan default
+                        currentPage++;
+                        showTableRows();
+                        updatePagination();
+                        saveCurrentPageToLocalStorage(currentPage);
+                    });
+
+                    $(".pagination").append($("<li>").append(nextButton));
                 }
 
                 if (numPages <= 1) {
@@ -122,7 +175,7 @@
             showTableRows();
             updatePagination();
 
-            setURLParameter(currentPage);
+            saveCurrentPageToLocalStorage(currentPage); // Simpan halaman saat ini ke local storage
         });
     </script>
 @endsection
