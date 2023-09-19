@@ -64,7 +64,7 @@ Route::prefix('admin')->middleware('admin')->controller(AdminController::class)-
     Route::get('/setuju-music/{code}', 'setujuMusic')->name('setuju.upload.music');
     Route::get('/admin/pencairan', 'AdminController@pencairan')->name('admin.pencairan');
     Route::get('/satuju-pencairan/{code}', 'pencairanApprove')->name('setuju.pencairan');
-    
+
     Route::POST('/setuju-verified/{code}', 'setujuVerified')->name('tambah.verified');
     Route::post('/uploadBillboard', 'buatBillboard')->name('uploadBillboard');
     Route::post('/edit-billboard/{code}', 'updatebillboard')->name('updateBillboard');
@@ -161,6 +161,7 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
     })->name('peraturan.artisVerified');
     Route::get('/delete-notif/{code}', 'deleteNotif');
     Route::get('/pencairan/{code}', 'pencairan');
+    Route::get('/filter', 'filterDate')->name('filter.date');
 
     Route::post('/pencairan/{code}', 'pencairanDana')->name('pencairan.artiVerified');
     Route::post('/undangColab/{code}', 'undangColab')->name('undangColab');

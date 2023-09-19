@@ -401,119 +401,116 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($datas->reverse() as $item)
-                                            @if (!$item->status === 'accept')
-                                                @if (
-                                                    $item->request_project_artis_id_1 !== null ||
-                                                        ($item->request_project_artis_id_2 !== null && $item->artist_id === $artisUser->id) ||
-                                                        $item->request_project_artis_id_1 === $artisUser->id ||
-                                                        $item->request_project_artis_id_2 === $artisUser->id)
-                                                    @if (empty($item->harga))
-                                                        @if (!$item->is_reject || $item->artis->user_id === auth()->user()->id)
-                                                            <tr class="table-row">
-                                                                <td class="table-cell">{{ $item->artis->user->name }}</td>
-                                                                <td class="table-cell">{{ $item->name }}</td>
-                                                                <td class="table-cell">
-                                                                    {{ $item->created_at->format('d F Y') }}
-                                                                </td>
-                                                                <td
-                                                                    class="table-cell {{ $item->status === 'reject' ? 'text-danger' : 'text-warning' }}">
-                                                                    {{ $item->status }}</td>
-                                                                <td class="d-flex align-items-center">
-                                                                    @if (($item->status == 'pending' && $item->is_take) || $artisUser->id == $item->artist_id)
-                                                                        <form
-                                                                            action="{{ route('lirikAndChat.artisVerified', $item->code) }}"
-                                                                            method="GET">
-                                                                            <button type="submit" class="btn-unstyled">
-                                                                                <i
-                                                                                    class="fa-regular fa-comment-dots fs-5 text-info ml-1"></i>
-                                                                            </button>
-                                                                        </form>
-                                                                    @else
-                                                                        <form
-                                                                            action="{{ route('lirikAndChat.artisVerified', $item->code) }}"
-                                                                            method="GET">
-                                                                            <button type="submit" class="btn-unstyled">
-                                                                                <i
-                                                                                    class="fa-regular fa-circle-check fs-5 text-success"></i>
-                                                                            </button>
-                                                                        </form>
-                                                                    @endif
-                                                                    <button type="submit" id="confirmButtonReject">
-                                                                        <form
-                                                                            action="{{ route('reject.project.artisVerified') }}"
-                                                                            method="post" class="m-0">
-                                                                            @csrf
-                                                                            <input type="hidden" name="code"
-                                                                                value="{{ $item->code }}">
-                                                                            <input type="hidden" name="is_reject"
-                                                                                value="true">
-                                                                            <i class="far fa-times-circle btn-icon text-danger"
-                                                                                style="font-size: 20px"></i>
-                                                                        </form>
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                        @endif
+                                            @if (
+                                                $item->request_project_artis_id_1 !== null ||
+                                                    ($item->request_project_artis_id_2 !== null && $item->artist_id === $artisUser->id) ||
+                                                    $item->request_project_artis_id_1 === $artisUser->id ||
+                                                    $item->request_project_artis_id_2 === $artisUser->id)
+                                                @if (empty($item->harga) || in_array($item->status, ['accept', 'pending']))
+                                                    @if (!$item->is_reject || $item->artis->user_id === auth()->user()->id)
+                                                        <tr class="table-row">
+                                                            <td class="table-cell">{{ $item->artis->user->name }}</td>
+                                                            <td class="table-cell">{{ $item->name }}</td>
+                                                            <td class="table-cell">
+                                                                {{ $item->created_at->format('d F Y') }}</td>
+                                                            <td
+                                                                class="table-cell text-success {{ $item->status == 'reject' ? 'text-danger' : '' }} {{ $item->status == 'pending' ? 'text-warning' : '' }}">
+                                                                {{ $item->status }}
+                                                            </td>
+                                                            <td class="d-flex align-items-center">
+                                                                @if (($item->status == 'pending' && $item->is_take) || $artisUser->id == $item->artist_id)
+                                                                    <form
+                                                                        action="{{ route('lirikAndChat.artisVerified', $item->code) }}"
+                                                                        method="GET">
+                                                                        <button type="submit" class="btn-unstyled">
+                                                                            <i
+                                                                                class="fa-regular fa-comment-dots fs-5 text-info ml-1"></i>
+                                                                        </button>
+                                                                    </form>
+                                                                @else
+                                                                    <form
+                                                                        action="{{ route('lirikAndChat.artisVerified', $item->code) }}"
+                                                                        method="GET">
+                                                                        <button type="submit" class="btn-unstyled">
+                                                                            <i
+                                                                                class="fa-regular fa-circle-check fs-5 text-success"></i>
+                                                                        </button>
+                                                                    </form>
+                                                                @endif
+                                                                <button type="submit" id="confirmButtonReject">
+                                                                    <form
+                                                                        action="{{ route('reject.project.artisVerified') }}"
+                                                                        method="post" class="m-0">
+                                                                        @csrf
+                                                                        <input type="hidden" name="code"
+                                                                            value="{{ $item->code }}">
+                                                                        <input type="hidden" name="is_reject"
+                                                                            value="true">
+                                                                        <i class="far fa-times-circle btn-icon text-danger"
+                                                                            style="font-size: 20px"></i>
+                                                                    </form>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
                                                     @endif
                                                 @endif
-                                            @else
-                                                <tr class="table-row">
-                                                    <td class="table-cell">{{ $item->artis->user->name }}</td>
-                                                    <td class="table-cell">{{ $item->name }}</td>
-                                                    <td class="table-cell">
-                                                        {{ $item->created_at->format('d F Y') }}
-                                                    </td>
-                                                    <td
-                                                        class="table-cell text-success">
-                                                        {{ $item->status }}</td>
-                                                    <td class="d-flex align-items-center">
-                                                        <button type="submit" id="confirmButtonReject">
-                                                            <form action="{{ route('reject.project.artisVerified') }}"
-                                                                method="post" class="m-0">
-                                                                @csrf
-                                                                <input type="hidden" name="code"
-                                                                    value="{{ $item->code }}">
-                                                                <input type="hidden" name="is_reject" value="true">
-                                                                <i class="far fa-times-circle btn-icon text-danger"
-                                                                    style="font-size: 20px"></i>
-                                                            </form>
-                                                        </button>
-                                                    </td>
-                                                </tr>
                                             @endif
                                         @endforeach
 
-                                        {{-- <tr class="table-row">
-                                            <td class="table-cell">Tulus</td>
-                                            <td class="table-cell">Kenangan</td>
-                                            <td class="table-cell">13123123</td>
-                                            <td class="table-cell text-success">Disetujui</td>
-                                            <td class="d-flex align-items-center">
-                                                <a href="" class="btn-unstyled" data-bs-toggle="modal"
-                                                    data-bs-target="#chat">
-                                                    <i class="fa-regular fa-comment-dots text-primary fs-5 ml-1"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
 
-                                        <tr class="table-row">
-                                            <td class="table-cell">Tulus</td>
-                                            <td class="table-cell">Kenangan</td>
-                                            <td class="table-cell">13123123</td>
-                                            <td class="table-cell text-danger">Ditolak</td>
-                                            <td class="d-flex align-items-center">
-                                                <form action="{{ route('reject.project.artisVerified') }}" method="post"
-                                                    class="m-0">
-                                                    @csrf
-                                                    <button type="submit">
-                                                        <input type="hidden" name="code" value="aa">
-                                                        <input type="hidden" name="is_reject" value="true">
-                                                        <i class="mdi mdi-close-circle-outline btn-icon text-danger"
-                                                            style="font-size: 20px"></i>
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr> --}}
+
+                                        {{-- @foreach ($datas->reverse() as $item)
+                                        //     @if ($item->request_project_artis_id_1 !== null || ($item->request_project_artis_id_2 !== null && $item->artist_id === $artisUser->id) || $item->request_project_artis_id_1 === $artisUser->id || $item->request_project_artis_id_2 === $artisUser->id)
+                                        //         @if (empty($item->harga))
+                                        //             @if (!$item->is_reject || $item->artis->user_id === auth()->user()->id)
+                                        //                 <tr class="table-row">
+                                        //                     <td class="table-cell">{{ $item->artis->user->name }}</td>
+                                        //                     <td class="table-cell">{{ $item->name }}</td>
+                                        //                     <td class="table-cell">{{ $item->created_at->format('d F Y') }}
+                                        //                     </td>
+                                        //                     <td
+                                        //                         class="table-cell {{ $item->status === 'reject' ? 'text-danger' : 'text-warning' }}">
+                                        //                         {{ $item->status }}</td>
+                                        //                     <td class="d-flex align-items-center">
+                                        //                         @if (($item->status == 'pending' && $item->is_take) || $artisUser->id == $item->artist_id)
+                                        //                             <form
+                                        //                                 action="{{ route('lirikAndChat.artisVerified', $item->code) }}"
+                                        //                                 method="GET">
+                                        //                                 <button type="submit" class="btn-unstyled">
+                                        //                                     <i
+                                        //                                         class="fa-regular fa-comment-dots fs-5 text-info ml-1"></i>
+                                        //                                 </button>
+                                        //                             </form>
+                                        //                         @else
+                                        //                             <form
+                                        //                                 action="{{ route('lirikAndChat.artisVerified', $item->code) }}"
+                                        //                                 method="GET">
+                                        //                                 <button type="submit" class="btn-unstyled">
+                                        //                                     <i
+                                        //                                         class="fa-regular fa-circle-check fs-5 text-success"></i>
+                                        //                                 </button>
+                                        //                             </form>
+                                        //                         @endif
+                                        //                         <button type="submit" id="confirmButtonReject">
+                                        //                             <form
+                                        //                                 action="{{ route('reject.project.artisVerified') }}"
+                                        //                                 method="post" class="m-0">
+                                        //                                 @csrf
+                                        //                                 <input type="hidden" name="code"
+                                        //                                     value="{{ $item->code }}">
+                                        //                                 <input type="hidden" name="is_reject"
+                                        //                                     value="true">
+                                        //                                 <i class="far fa-times-circle btn-icon text-danger"
+                                        //                                     style="font-size: 20px"></i>
+                                        //                             </form>
+                                        //                         </button>
+                                        //                     </td>
+                                        //                 </tr>
+                                        //             @endif
+                                        //         @else
+                                        //         @endif
+                                        //     @endif
+                                        // @endforeach --}}
                                     </tbody>
                                 </table>
                             </div>

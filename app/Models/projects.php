@@ -28,7 +28,7 @@ class projects extends Model
         'is_approved',
     ];
 
-    public function artis()
+public function artis()
     {
         return $this->hasOne(artist::class, 'id', 'artist_id');
     }

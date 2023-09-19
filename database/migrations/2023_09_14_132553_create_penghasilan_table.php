@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('artist_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->bigInteger('penghasilan')->default(0);
-            $table->string('status');
             $table->bigInteger('penghasilanCair')->default(0);
             $table->bigInteger('Pengajuan')->default(0);
             $table->boolean('is_take')->default(false);
