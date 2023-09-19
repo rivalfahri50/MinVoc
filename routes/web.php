@@ -84,6 +84,7 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
     Route::get('/pencarian', 'pencarian');
     Route::get('/playlist', 'playlist');
     Route::get('/penghasilan', 'penghasilan');
+    Route::get('/riwayatPenghasilan', 'riwayatPenghasilan');
     Route::get('/riwayat', 'riwayat');
     Route::get('/profile/{code}', 'profile');
     Route::get('/profile-ubah/{code}', 'profile_ubah')->name('ubah.profile.artis');
@@ -139,6 +140,7 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
     Route::get('/kategori/{code}', 'kategori');
     Route::get('/playlist', 'playlist');
     Route::get('/penghasilan', 'penghasilan');
+    Route::get('/riwayatPenghasilan', 'riwayatPenghasilan');
     Route::get('/riwayat', 'riwayat');
     Route::get('/profile/{code}', 'profile');
     Route::get('/profile-ubah/{code}', 'profile_ubah')->name('ubah.profile.artisVerified');

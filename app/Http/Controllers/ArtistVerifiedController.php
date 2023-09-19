@@ -98,6 +98,13 @@ class ArtistVerifiedController extends Controller
         return response()->view('artisVerified.penghasilan', compact('title', 'totalpenghasilan', 'month', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'penghasilan', 'projects', 'notifs', 'penghasilanData'));
     }
 
+    protected function riwayatPenghasilan(Request $request)
+    {
+        $title = 'MusiCave';
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('artisVerified.riwayatpenghasilan', compact('title', 'notifs'));
+    }
+
     protected function pencairan()
     {
         $artistid = (int) artist::where('user_id', auth()->user()->id)->first()->id;
