@@ -419,23 +419,27 @@
                                                             </td>
                                                             <td class="d-flex align-items-center">
                                                                 @if (($item->status == 'pending' && $item->is_take) || $artisUser->id == $item->artist_id)
-                                                                    <form
-                                                                        action="{{ route('lirikAndChat.artisVerified', $item->code) }}"
-                                                                        method="GET">
-                                                                        <button type="submit" class="btn-unstyled">
-                                                                            <i
-                                                                                class="fa-regular fa-comment-dots fs-5 text-info ml-1"></i>
-                                                                        </button>
-                                                                    </form>
+                                                                    @if ($item->status == 'pending')
+                                                                        <form
+                                                                            action="{{ route('lirikAndChat.artisVerified', $item->code) }}"
+                                                                            method="GET">
+                                                                            <button type="submit" class="btn-unstyled">
+                                                                                <i
+                                                                                    class="fa-regular fa-comment-dots fs-5 text-info ml-1"></i>
+                                                                            </button>
+                                                                        </form>
+                                                                    @endif
                                                                 @else
-                                                                    <form
-                                                                        action="{{ route('lirikAndChat.artisVerified', $item->code) }}"
-                                                                        method="GET">
-                                                                        <button type="submit" class="btn-unstyled">
-                                                                            <i
-                                                                                class="fa-regular fa-circle-check fs-5 text-success"></i>
-                                                                        </button>
-                                                                    </form>
+                                                                    @if ($item->status == 'pending')
+                                                                        <form
+                                                                            action="{{ route('lirikAndChat.artisVerified', $item->code) }}"
+                                                                            method="GET">
+                                                                            <button type="submit" class="btn-unstyled">
+                                                                                <i
+                                                                                    class="fa-regular fa-circle-check fs-5 text-success"></i>
+                                                                            </button>
+                                                                        </form>
+                                                                    @endif
                                                                 @endif
                                                                 <button type="submit" id="confirmButtonReject">
                                                                     <form

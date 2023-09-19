@@ -65,6 +65,7 @@ Route::prefix('admin')->middleware('admin')->controller(AdminController::class)-
     Route::get('/admin/pencairan', 'AdminController@pencairan')->name('admin.pencairan');
     Route::get('/satuju-pencairan/{code}', 'pencairanApprove')->name('setuju.pencairan');
     Route::get('/pencairan-reject/{code}', 'pencairanReject')->name('pencairan.reject');
+    Route::get('/delete-notif/{code}', 'deleteNotif');
 
     Route::POST('/setuju-verified/{code}', 'setujuVerified')->name('tambah.verified');
     Route::post('/uploadBillboard', 'buatBillboard')->name('uploadBillboard');

@@ -171,12 +171,12 @@
                             <div class="card pcard jarak">
                                 <h3 class="angka m-0">Rp {{ number_format($totalpenghasilan, 2, ',', '.') }}</h3>
                                 <h4 class="judulnottebal mb-0">Total penghasilan</h4>
-                                @if ($penghasilanData->is_take)
+                                @if (isset($totalpenghasilan->is_take))
                                     <span class="btn-unstyled mr-2 link mb-0">Mohon tunggu jawaban dari admin..</span>
                                 @else
-                                    @if (isset($penghasilanData->penghasilan) &&
-                                            $penghasilanData->penghasilan >= 100000 &&
-                                            $penghasilanData->penghasilan !== $penghasilanData->penghasilanCair)
+                                    @if (isset($totalpenghasilan->penghasilan) &&
+                                            $totalpenghasilan->penghasilan >= 100000 ||
+                                            isset($penghasilanData->is_submit))
                                         <span class="btn-unstyled mr-2 link mb-0" style="cursor: pointer"
                                             data-bs-toggle="modal" data-bs-target="#caripenghasilan">Cairkan
                                             Penghasilan</span>
@@ -276,8 +276,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @if (isset($results) && count($results) > 0)
-                                            @foreach ($results as $item)
+                                            {{-- @foreach ($results as $item)
                                                 <tr class="table-row baris">
                                                     <td class="table-cell">
                                                         <div class="cell-content">
@@ -294,8 +293,7 @@
                                                         {{ number_format($item->harga, 2, ',', '.') }}</td>
                                                     <td class="table-cell">{{ $item->created_at->toDateString() }}</td>
                                                 </tr>
-                                            @endforeach
-                                        @else
+                                            @endforeach --}}
                                             @foreach ($projects->reverse() as $item)
                                                 <tr class="table-row baris">
                                                     <td class="table-cell">
@@ -314,8 +312,6 @@
                                                     <td class="table-cell">{{ $item->created_at->toDateString() }}</td>
                                                 </tr>
                                             @endforeach
-                                        @endif
-
                                     </tbody>
                                 </table>
                             </div>

@@ -18,6 +18,7 @@ class penghasilan extends Model
         'terakhir_diambil',
         'penghasilanCair',
         'Pengajuan',
+        'is_submit',
         'Pengajuan_tanggal'
     ];
     public function artist()

@@ -201,18 +201,14 @@ class ArtistController extends Controller
                 ->withInput();
         }
 
-        $imagePath = $request->file('foto')->store('images', 'public');
-        $artist->pengajuan_verified_at = now()->toDateString();
-        $artist->verification_status = "pending";
-        $artist->image = $imagePath;
-        $artist->pengajuan = true;
-        $artist->update();
-
-        notif::create([
-            'title' => 'pengajuan Verifikasi Baru Masuk',
-            'user_id' => 1,
-        ]);
         try {
+            $imagePath = $request->file('foto')->store('images', 'public');
+            $artist->pengajuan_verified_at = now()->toDateString();
+            $artist->verification_status = "pending";
+            $artist->image = $imagePath;
+            $artist->pengajuan = true;
+            $artist->update();
+
         } catch (\Throwable $th) {
             Alert::error('message', 'Gagal Mengirim Request Verification Account');
             return response()->redirectTo('/artis/verified')->with('failed', "failed");
@@ -457,11 +453,18 @@ class ArtistController extends Controller
             ]);
             DB::commit();
 
+            notif::create([
+                'artis_id' => $artis->id,
+                'title' => $request->input('judul'),
+                'user_id' => auth()->user()->id,
+                'is_reject' => false
+            ]);
+
             $penghasilanArtist = (int) $artis->penghasilan + 200000;
             $artis->update(['penghasilan' => $penghasilanArtist]);
 
             penghasilan::create([
-                'artist_id' => $artis->id, // Menggunakan ID artis, bukan objek artis
+                'artist_id' => $artis->id,
                 'penghasilan' => 200000,
                 'bulan' => now()->format('m'),
             ]);

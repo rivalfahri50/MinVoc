@@ -49,7 +49,7 @@
         </style>
         <div class="content-wrapper">
             <div class="row">
-                <div class="col-lg-12 grid-margin stretch-card">
+                <div class="col-lg-12 grid-margin stretch-card" style="height: 100vh">
                     <div class="table-container">
                         <table class="table table-sortable">
                             <thead>
@@ -60,11 +60,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="table-row baris">
-                                    <td class="table-cell"><h6>jj</h6></td>
-                                    <td class="table-cell">jjj</td>
-                                    <td class="table-cell">hh</td>
-                                </tr>
+                                @foreach ($penghasilan as $item)
+                                    <tr class="table-row baris">
+                                        <td class="table-cell">
+                                            <h6>{{ $item->artist->user->name }}</h6>
+                                        </td>
+                                        <td class="table-cell"> {{ number_format($item->penghasilanCair, 2, ',', '.') }}</td>
+                                        <td class="table-cell">{{ (new DateTime($item->Pengajuan_tanggal))->format('d F Y') }}</td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

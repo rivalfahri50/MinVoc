@@ -34,7 +34,6 @@ class AdminController extends Controller
         $totalArtist = artist::count();
         $songs = song::all();
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-
         $adminId = admin::where('id', 1)->first()->id;
         $month = [];
 
@@ -79,6 +78,17 @@ class AdminController extends Controller
         return response()->view('admin.iklan', compact('title', 'artist', 'billboards', 'notifs'));
     }
 
+    protected function deleteNotif(Request $request, string $code)
+    {
+        try {
+            $notif = notif::where('id', $code)->first();
+            $notif->delete();
+        } catch (\Throwable $th) {
+            abort(404);
+        }
+        return redirect()->back();
+    }
+
     protected function riwayat(): Response
     {
         $title = "MusiCave";
@@ -93,7 +103,7 @@ class AdminController extends Controller
         $notifs = notif::where('user_id', auth()->user()->id)->get();
 
         $penghasilanAll = penghasilan::with('artist')
-            ->select('penghasilan.artist_id', DB::raw('MAX(penghasilan.Pengajuan_tanggal) as Pengajuan_tanggal'), DB::raw('MAX(penghasilan.penghasilanCair) as penghasilanCair'), DB::raw('MAX(penghasilan.id) as id'), DB::raw('SUM(penghasilan.penghasilan) as total_penghasilan'))
+            ->select('penghasilan.artist_id', DB::raw('MAX(penghasilan.Pengajuan_tanggal) as Pengajuan_tanggal'), DB::raw('MAX(penghasilan.is_submit) as is_submit'), DB::raw('MAX(penghasilan.penghasilanCair) as penghasilanCair'), DB::raw('MAX(penghasilan.id) as id'), DB::raw('SUM(penghasilan.penghasilan) as total_penghasilan'))
             ->where('is_take', true)
             ->join('artists', 'penghasilan.artist_id', '=', 'artists.id')
             ->groupBy('penghasilan.artist_id')
@@ -103,43 +113,64 @@ class AdminController extends Controller
 
     protected function pencairanApprove(Request $request, string $code)
     {
-        $penghasilan = penghasilan::where(function ($query) use ($code) {
-            $query->where('is_take', true)
-                ->orWhere('id', $code);
-        })->get();
+        try {
+            $penghasilan = penghasilan::where(function ($query) use ($code) {
+                $query->where('is_take', true)->where('is_submit', false)
+                    ->orWhere('id', $code);
+            })->get();
 
-        foreach ($penghasilan as $key) {
-            $data = [
-                'penghasilan' => 0,
-                'penghasilanCair' => $key->penghasilan,
-                'Pengajuan_tanggal' => null,
-                'pengajuan' => 0,
-                'terakhir_diambil' => now()
-            ];
-            penghasilan::where('id', $key->id)->update($data);
+            // $penghasilanDiambil = penghasilan::where(function ($query) use ($code) {
+            //     $query->where('is_submit', true);
+            // })->get();
+
+            // foreach ($penghasilanDiambil as $key) {
+            //     $penghasilanSebelumnya = $key->penghasilanCair;
+            // }
+            foreach ($penghasilan as $key) {
+                $data = [
+                    'penghasilan' => 0,
+                    'penghasilanCair' => $key->penghasilan,
+                    'Pengajuan_tanggal' => null,
+                    'pengajuan' => 0,
+                    'is_take' => 0,
+                    'is_submit' => true,
+                    'terakhir_diambil' => now()
+                ];
+                notif::create([
+                    'title' => 'pengajuan Verifikasi Baru Masuk',
+                    'user_id' => $key->artist_id,
+                ]);
+                penghasilan::where('id', $key->id)->update($data);
+            }
+        } catch (\Throwable $th) {
+            Alert::error('message', 'Pencairan gagal berhasil di kirim.');
         }
-
+        Alert::success('message', 'Pencairan penghasilan berhasil di kirim.');
         return redirect()->back();
     }
 
     protected function pencairanReject(Request $request, string $code)
     {
-        $penghasilan = penghasilan::where(function ($query) use ($code) {
-            $query->where('is_take', true)
-                ->orWhere('id', $code);
-        })->get();
+        try {
+            $penghasilan = penghasilan::where(function ($query) use ($code) {
+                $query->where('is_take', true)
+                    ->orWhere('id', $code);
+            })->get();
 
-        foreach ($penghasilan as $key) {
-            $data = [
-                'penghasilan' => $key->penghasilan,
-                'penghasilanCair' => 0,
-                'Pengajuan' => 0,
-                'Pengajuan_tanggal' => null,
-                'is_take' => false
-            ];
-            penghasilan::where('id', $key->id)->update($data);
+            foreach ($penghasilan as $key) {
+                $data = [
+                    'penghasilan' => $key->penghasilan,
+                    'penghasilanCair' => 0,
+                    'Pengajuan' => 0,
+                    'Pengajuan_tanggal' => null,
+                    'is_take' => false
+                ];
+                penghasilan::where('id', $key->id)->update($data);
+            }
+        } catch (\Throwable $th) {
+            Alert::error('message', 'Pencairan penghasilan berhasil di tolak.');
         }
-
+        Alert::error('message', 'Pencairan penghasilan gagal di tolak.');
         return redirect()->back();
     }
 
@@ -170,9 +201,9 @@ class AdminController extends Controller
             $song->update();
             $persetujuan = song::all();
             $notifs = notif::where('user_id', auth()->user()->id)->get();
-            
+
             $penghasilanArtist = (int) $artis->penghasilan + 400000;
-            artist::findOrFail($artis->id)->update(['penghasilan'=> $penghasilanArtist]);
+            artist::findOrFail($artis->id)->update(['penghasilan' => $penghasilanArtist]);
             $artis->update(['penghasilan' => $penghasilanArtist]);
             penghasilan::create([
                 'artist_id' => $artis->id, // Menggunakan ID artis, bukan objek artis
