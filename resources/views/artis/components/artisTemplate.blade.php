@@ -27,6 +27,12 @@
             font-family: 'Poppins', sans-serif;
         }
 
+        .fixedbar{
+            position: fixed;
+            z-index: 1030;
+            width: 245px;
+        }
+
         .search-container {
             position: relative;
             display: flex;
@@ -218,7 +224,7 @@
                 <a class="sidebar-brand brand-logo" href="/artis/dashboard"><img src="/user/assets/images/logo.svg"
                         alt="logo" /></a>
             </div>
-            <ul class="nav">
+            <ul class="nav fixedbar">
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="/artis/dashboard">
                         <span class="menu-icon ">

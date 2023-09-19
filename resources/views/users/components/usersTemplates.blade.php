@@ -29,6 +29,12 @@
             font-family: 'Poppins', sans-serif;
         }
 
+        .fixedbar{
+            position: fixed;
+            z-index: 1030;
+            width: 245px;
+        }
+
         .search-container {
             position: relative;
             display: flex;
@@ -193,7 +199,7 @@
                 <a class="sidebar-brand brand-logo" href="/pengguna/dashboard"><img src="/user/assets/images/logo.svg"
                         alt="logo" /></a>
             </div>
-            <ul class="nav">
+            <ul class="nav fixedbar">
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="/pengguna/dashboard">
                         <span class="menu-icon ">
@@ -1008,7 +1014,7 @@
                 // ubah posisi slider
                 // Fungsi untuk mengubah posisi slider
                 function change_duration() {
-                    let slider_value = slider.value;
+                       let slider_value = slider.value;
                     if (!isNaN(track.duration) && isFinite(slider_value)) {
                         track.currentTime = track.duration * (slider_value / 100);
                         console.log(track.duration * (slider_value / 100), slider_value, track.currentTime)
@@ -1016,6 +1022,8 @@
                 }
 
                 slider.addEventListener('input', function() {
+                    console.log("Aa")
+                    console.log($(this))
                     change_duration();
                     clearInterval(timer);
                     Playing_song = true;
