@@ -28,7 +28,7 @@
         .fixedbar{
             position: fixed;
             z-index: 1030;
-            width: 40vh;
+            width: 245px;
         }
 
         .search-container {

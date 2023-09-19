@@ -139,6 +139,9 @@
                         display: flex;
                         align-items: center;
                         background-color: white;
+                        background-color: white;
+                        border-radius: 10px;
+                        border: 1px solid #c9c9c9;
                     }
                 </style>
                 <div class="col-md-5">
@@ -163,21 +166,23 @@
                                                             @foreach ($datas as $key => $item)
                                                                 <div class="chat-message">
                                                                     @if ($key == 0 || $item->messages->name != $datas[$key - 1]->messages->name)
-                                                                        <div class="chat-name">{{ $item->messages->name }}</div>
+                                                                        <div class="chat-name">{{ $item->messages->name }}
+                                                                        </div>
                                                                     @endif
                                                                     <div class="chat-text">{{ $item->message }}</div>
                                                                 </div>
                                                             @endforeach
                                                         </div>
                                                         <div class="input-with-icon chat-input">
-                                                            <input type="text" class="form-control rounded-4" placeholder="Ketik di sini untuk admin" name="message">
+                                                            <input type="text" class="form-control rounded-4"
+                                                                placeholder="Ketik di sini untuk admin" name="message">
                                                             <button type="submit" class="send-button ml-2 mr-1">
                                                                 <i class="fas fa-paper-plane"></i>
                                                             </button>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
+
                                             </form>
                                         </div>
                                     </div>

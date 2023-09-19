@@ -17,6 +17,12 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
+        .fixedbar{
+            position: fixed;
+            z-index: 1030;
+            width: 245px;
+        }
+
         .search-container {
             position: relative;
             display: flex;
@@ -142,7 +148,7 @@
                 <a class="sidebar-brand brand-logo" href="index.html"><img src="assets/images/logo.svg"
                         alt="logo" /></a>
             </div>
-            <ul class="nav">
+            <ul class="nav fixedbar">
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="/admin/dashboard">
                         <span class="menu-icon ">

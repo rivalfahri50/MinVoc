@@ -160,6 +160,9 @@
                         display: flex;
                         align-items: center;
                         background-color: white;
+                        background-color: white;
+                        border-radius: 10px;
+                        border: 1px solid #c9c9c9;
                     }
 
                     .chat-message.sent {
