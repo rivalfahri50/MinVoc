@@ -35,7 +35,7 @@ class AdminController extends Controller
         $songs = song::all();
         $notifs = notif::where('user_id', auth()->user()->id)->get();
 
-        $adminId = admin::where('id',1)->first()->id;
+        $adminId = admin::where('id', 1)->first()->id;
         $month = [];
 
         for ($i = 1; $i <= 12; $i++) {
@@ -45,7 +45,7 @@ class AdminController extends Controller
                 ->sum('penghasilan');
             $month[] = $totalPendapatan;
         }
-        return response()->view('admin.dashboard', compact('title', 'month','totalPendapatan', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'notifs'));
+        return response()->view('admin.dashboard', compact('title', 'month', 'totalPendapatan', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'notifs'));
     }
     protected function persetujuan(): Response
     {
@@ -91,7 +91,23 @@ class AdminController extends Controller
     {
         $title = "MusiCave";
         $penghasilanAll = penghasilan::with('artist.user')->get();
+        $penghasilanAll = penghasilan::with('artist.user')->get();
         $notifs = notif::where('user_id', auth()->user()->id)->get();
+        $penghasilanMerged = [];
+
+        foreach ($penghasilanAll as $key) {
+            $artistId = $key->artist_id;
+            $penghasilan = $key->penghasilan;
+
+            if (array_key_exists($artistId, $penghasilanMerged)) {
+                $penghasilanMerged[$artistId] += $penghasilan;
+            } else {
+                $penghasilanMerged[$artistId] = $penghasilan;
+            }
+        }
+
+        dd($penghasilanMerged);
+
         return response()->view('admin.pencairan', compact('title', 'notifs', 'penghasilanAll'));
     }
 

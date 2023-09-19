@@ -456,16 +456,17 @@ class ArtistController extends Controller
             $penghasilanArtist = (int) $artis->penghasilan + 200000;
             $artis->update(['penghasilan' => $penghasilanArtist]);
 
-            // penghasilan::create([
-            //     'artist_id' => $artis->id, // Menggunakan ID artis, bukan objek artis
-            //     'penghasilan' => 200000,
-            //     'status' => "unggah lagu",
-            //     'bulan' => now()->format('m'),
-            // ]);
+            penghasilan::create([
+                'artist_id' => $artis->id, // Menggunakan ID artis, bukan objek artis
+                'penghasilan' => 200000,
+                'bulan' => now()->format('m'),
+            ]);
+            Alert::success('message', 'Lagu berhasil di upload');
             return redirect('/artis/unggahAudio')->with('success', 'Song uploaded successfully.');
         } catch (\Throwable $e) {
             DB::rollBack();
-            return abort(404);
+            Alert::error('message', 'Lagu gagal di upload');
+            return redirect()->back();
         }
     }
 

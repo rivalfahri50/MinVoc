@@ -169,17 +169,22 @@
                     <div class="row">
                         <div class="col-4">
                             <div class="card pcard jarak">
-                                <h3 class="angka m-0">Rp {{ number_format($totalpenghasilan, 2,',','.')}}</h3>
+                                <h3 class="angka m-0">Rp {{ number_format($totalpenghasilan, 2, ',', '.') }}</h3>
                                 <h4 class="judulnottebal mb-0">Total penghasilan</h4>
-                                @if (isset($penghasilanData->penghasilan) &&
-                                        $penghasilanData->penghasilan >= 100000 &&
-                                        $penghasilanData->penghasilan !== $penghasilanData->penghasilanCair)
-                                    <span class="btn-unstyled mr-2 link mb-0" style="cursor: pointer" data-bs-toggle="modal"
-                                        data-bs-target="#caripenghasilan">Cairkan Penghasilan</span>
-                                @endif
                                 @if (isset($penghasilanData->is_take))
+                                    <span class="btn-unstyled mr-2 link mb-0">Mohon tunggu jawaban dari admin..</span>
+                                @else
+                                    @if (isset($penghasilanData->penghasilan) &&
+                                            $penghasilanData->penghasilan >= 100000 &&
+                                            $penghasilanData->penghasilan !== $penghasilanData->penghasilanCair)
+                                        <span class="btn-unstyled mr-2 link mb-0" style="cursor: pointer"
+                                            data-bs-toggle="modal" data-bs-target="#caripenghasilan">Cairkan
+                                            Penghasilan</span>
+                                    @endif
+                                @endif
+                                @if (!isset($penghasilanData->is_take) && isset($penghasilanData->penghasilanCair))
                                     <span style="color: #858585">Terakhir diambil pada
-                                        {{ (new DateTime($penghasilanData->terakhir_diambil))->format('d F Y') }}</span>
+                                        {{ isset($penghasilanData->terakhir_diambil) ? (new DateTime($penghasilanData->terakhir_diambil))->format('d F Y') : '' }}</span>
                                 @endif
                             </div>
                         </div>
@@ -199,7 +204,7 @@
                                         @csrf
                                         <div class="modal-body border-0">
                                             <div class="col-md-12" style="font-size: 13px;">
-                                                <div class="mb-3 pcard jarak"  style="height: 100%;">
+                                                <div class="mb-3 pcard jarak" style="height: 100%;">
                                                     <p for="namakategori" class="form-label judulnottebal">Total Penghasilan
                                                     </p>
                                                     <h3 class="judul">Rp
@@ -223,9 +228,11 @@
                             </div>
                         </div>
                         <div class="col-8 row no-gutters">
-                            <div class="card py-2 px-3">
-                                <p class="judulnottebal fs-5">Hi, {{ auth()->user()->name }}!
-                                    Anda sebagai artis ter verifikasi penghasilan dalam MusiCave didapatkan dari jumlah pendengar musik, unggah lagu, dan kolaborasi bersama artis ter verifikasi lainnya.</p>
+                            <div class="card px-3">
+                                <h3 class="judul" style="font-weight: 600">Informasi</h3>
+                                <p class="judulnottebal fs-6">Hi, {{ auth()->user()->name }}!
+                                    Anda sebagai artis ter verifikasi penghasilan dalam MusiCave didapatkan dari jumlah
+                                    pendengar musik, unggah lagu, dan kolaborasi bersama artis ter verifikasi lainnya.</p>
                             </div>
                         </div>
                     </div>
@@ -245,11 +252,14 @@
                             <h3 class="judul">Riwayat Penghasilan Masuk</h3>
                         </div>
                         <div class="col-md-8">
-                            <form method="POST" action="" class="form-inline justify-content-end">
+                            <form method="get" action="{{ route('filter.date') }}"
+                                class="form-inline justify-content-end">
                                 <label for="date1" class="mr-2">Cari Tanggal</label>
-                                <input type="date" name="date1" id="date1" class="form-control mr-2" placeholder="Dari tanggal">
+                                <input type="date" name="start_date" id="date1" class="form-control mr-2"
+                                    placeholder="Dari tanggal">
                                 <label for="date1" class="mr-2">-</label>
-                                <input type="date" name="date2" id="date2" class="form-control mr-2" placeholder="Sampai tanggal">
+                                <input type="date" name="end_date" id="date2" class="form-control mr-2"
+                                    placeholder="Sampai tanggal">
                                 <button type="submit" name="submit" class="btn">Cari</button>
                             </form>
                         </div>
@@ -266,22 +276,46 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($projects->reverse() as $item)
-                                            <tr class="table-row baris">
-                                                <td class="table-cell">
-                                                    <div class="cell-content">
-                                                        <img src="{{ asset('storage/' . $item->images) }}" alt="Face"
-                                                            class="avatar">
-                                                        <div>
-                                                            <h6>{{ $item->judul }}</h6>
-                                                            <p class="text-muted m-0">{{ $item->artis->user->name }}</p>
+                                        @if (isset($results) && count($results) > 0)
+                                            @foreach ($results as $item)
+                                                <tr class="table-row baris">
+                                                    <td class="table-cell">
+                                                        <div class="cell-content">
+                                                            <img src="{{ asset('storage/' . $item->images) }}"
+                                                                alt="Face" class="avatar">
+                                                            <div>
+                                                                <h6>{{ $item->judul }}</h6>
+                                                                <p class="text-muted m-0">{{ $item->artis->user->name }}
+                                                                </p>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                                <td class="table-cell">Rp. {{ number_format($item->harga, 2, ',', '.') }}</td>
-                                                <td class="table-cell">{{ $item->created_at->toDateString() }}</td>
-                                            </tr>
-                                        @endforeach
+                                                    </td>
+                                                    <td class="table-cell">Rp.
+                                                        {{ number_format($item->harga, 2, ',', '.') }}</td>
+                                                    <td class="table-cell">{{ $item->created_at->toDateString() }}</td>
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            @foreach ($projects->reverse() as $item)
+                                                <tr class="table-row baris">
+                                                    <td class="table-cell">
+                                                        <div class="cell-content">
+                                                            <img src="{{ asset('storage/' . $item->images) }}"
+                                                                alt="Face" class="avatar">
+                                                            <div>
+                                                                <h6>{{ $item->judul }}</h6>
+                                                                <p class="text-muted m-0">{{ $item->artis->user->name }}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="table-cell">Rp.
+                                                        {{ number_format($item->harga, 2, ',', '.') }}</td>
+                                                    <td class="table-cell">{{ $item->created_at->toDateString() }}</td>
+                                                </tr>
+                                            @endforeach
+                                        @endif
+
                                     </tbody>
                                 </table>
                             </div>
@@ -417,7 +451,7 @@
             .then(data => {
                 const inputElement = document.getElementById('harga_pencairan');
 
-                inputElement.value = data.penghasilan.penghasilan;
+                inputElement.value = data.total_penghasilan;
 
                 const event = new Event('input', {
                     bubbles: true

@@ -313,7 +313,7 @@
                                                                 </div>
                                                             @endif
                                                         </div>
-                                                        <div class="mb-4">
+                                                        <div class="my-3">
                                                             <input type="file" name="audio"
                                                                 class="form-control inputcolor" id="namaproyek" required
                                                                 value="{{ old('audio') }}">
@@ -323,7 +323,7 @@
                                                                 </div>
                                                             @endif
                                                         </div>
-                                                        <div class="mb-4">
+                                                        <div class="mb-3">
                                                             <select name="genre" class="form-select"
                                                                 style="border-radius: 13px"
                                                                 aria-label="Default select example">
@@ -338,7 +338,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div>
+                                                <div class="mt-2">
                                                     <button class="btn pl-3 kirim rounded-3 full-width-button"
                                                         type="button" data-bs-toggle="modal"
                                                         data-bs-target="#kirimkolaborasi-{{ $project->code }}">
