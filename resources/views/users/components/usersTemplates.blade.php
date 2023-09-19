@@ -1008,7 +1008,7 @@
                 // ubah posisi slider
                 // Fungsi untuk mengubah posisi slider
                 function change_duration() {
-                    let slider_value = slider.value;
+                       let slider_value = slider.value;
                     if (!isNaN(track.duration) && isFinite(slider_value)) {
                         track.currentTime = track.duration * (slider_value / 100);
                         console.log(track.duration * (slider_value / 100), slider_value, track.currentTime)
@@ -1016,6 +1016,8 @@
                 }
 
                 slider.addEventListener('input', function() {
+                    console.log("Aa")
+                    console.log($(this))
                     change_duration();
                     clearInterval(timer);
                     Playing_song = true;

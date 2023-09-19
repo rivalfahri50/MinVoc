@@ -266,50 +266,63 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                const confirmButton = document.getElementById('confirmButton');
+                const confirmButtons = document.querySelectorAll('.confirmButton');
 
-                confirmButton.addEventListener('click', function(event) {
-                    event.preventDefault(); // Mencegah pengiriman formulir langsung
+                confirmButtons.forEach(confirmButton => {
+                    confirmButton.addEventListener('click', function(event) {
+                        event.preventDefault(); // Mencegah pengiriman formulir langsung
 
-                    Swal.fire({
-                        title: 'Konfirmasi Hapus',
-                        text: 'Apakah Anda yakin ingin menghapus project ini?',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Ya, Hapus!',
-                        cancelButtonText: 'Batal'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Jika pengguna mengonfirmasi, kirimkan formulir
-                            const form = event.target.closest('form');
-                            if (form) {
-                                form.submit();
+                        const itemCode = this.getAttribute('data-item-code');
+                        const tableRow = this.closest(
+                            'tr'); // Mendapatkan baris tabel yang berisi tombol hapus
+
+                        Swal.fire({
+                            title: 'Konfirmasi Hapus',
+                            text: 'Apakah Anda yakin ingin menghapus project ini?',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Ya, Hapus!',
+                            cancelButtonText: 'Batal'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Jika pengguna mengonfirmasi, kirimkan formulir
+                                const form = event.target.closest('form');
+                                if (form) {
+                                    form.submit();
+                                }
                             }
-                        }
+                        });
+
                     });
                 });
             });
 
-            document.addEventListener('DOMContentLoaded', function() {
-                const confirmButtonReject = document.getElementById('confirmButtonReject');
-                confirmButtonReject.addEventListener('click', function(event) {
-                    event.preventDefault(); // Mencegah pengiriman formulir langsung
 
-                    Swal.fire({
-                        title: 'Konfirmasi Hapus',
-                        text: 'Apakah Anda yakin ingin menolak kolaborasi ini?',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Ya, Hapus!',
-                        cancelButtonText: 'Batal'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Jika pengguna mengonfirmasi, kirimkan formulir
-                            const form = event.target.closest('form');
-                            if (form) {
-                                form.submit();
+            document.addEventListener('DOMContentLoaded', function() {
+                const confirmButtonRejects = document.querySelectorAll('.confirmButtonReject');
+
+                confirmButtonRejects.forEach(confirmButtonReject => {
+
+                    confirmButtonReject.addEventListener('click', function(event) {
+                        event.preventDefault(); // Mencegah pengiriman formulir langsung
+                        const itemCode = this.getAttribute('data-item');
+                        const tableRow = this.closest('tr');
+                        Swal.fire({
+                            title: 'Konfirmasi Hapus',
+                            text: 'Apakah Anda yakin ingin menolak kolaborasi ini?',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Ya, Hapus!',
+                            cancelButtonText: 'Batal'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Jika pengguna mengonfirmasi, kirimkan formulir
+                                const form = event.target.closest('form');
+                                if (form) {
+                                    form.submit();
+                                }
                             }
-                        }
+                        });
                     });
                 });
             });
@@ -361,7 +374,8 @@
                                                                     style="font-size: 20px; margin-right: 2px;"></i>
                                                             </a>
 
-                                                            <button type="button" id="confirmButton">
+                                                            <button type="button" class="confirmButton"
+                                                                data-item-code="{{ $item->code }}">
                                                                 <form action="{{ route('reject.project.artisVerified') }}"
                                                                     method="post" class="m-0">
                                                                     @csrf
@@ -411,14 +425,14 @@
                                                         <tr class="table-row">
                                                             <td class="table-cell">{{ $item->artis->user->name }}</td>
                                                             <td class="table-cell">{{ $item->name }}</td>
-                                                            <td class="table-cell">
-                                                                {{ $item->created_at->format('d F Y') }}</td>
+                                                            <td class="table-cell">{{ $item->created_at->format('d F Y') }}
+                                                            </td>
                                                             <td
                                                                 class="table-cell text-success {{ $item->status == 'reject' ? 'text-danger' : '' }} {{ $item->status == 'pending' ? 'text-warning' : '' }}">
                                                                 {{ $item->status }}
                                                             </td>
                                                             <td class="d-flex align-items-center">
-                                                                @if (($item->status == 'pending' && $item->is_take) || $artisUser->id == $item->artist_id)
+                                                                @if ($item->status != 'accept' && (($item->status == 'pending' && $item->is_take) || $artisUser->id == $item->artist_id))
                                                                     <form
                                                                         action="{{ route('lirikAndChat.artisVerified', $item->code) }}"
                                                                         method="GET">
@@ -428,34 +442,42 @@
                                                                         </button>
                                                                     </form>
                                                                 @else
-                                                                    <form
-                                                                        action="{{ route('lirikAndChat.artisVerified', $item->code) }}"
-                                                                        method="GET">
-                                                                        <button type="submit" class="btn-unstyled">
-                                                                            <i
-                                                                                class="fa-regular fa-circle-check fs-5 text-success"></i>
-                                                                        </button>
-                                                                    </form>
+                                                                    <button type="submit" class="confirmButtonReject" data-item="{{ $item->code }}">
+                                                                        <form
+                                                                            action="{{ route('reject.project.artisVerified') }}"
+                                                                            method="post" class="m-0">
+                                                                            @csrf
+                                                                            <input type="hidden" name="code"
+                                                                                value="{{ $item->code }}">
+                                                                            <input type="hidden" name="is_reject"
+                                                                                value="true">
+                                                                            <i class="far fa-times-circle btn-icon text-danger"
+                                                                                style="font-size: 20px"></i>
+                                                                        </form>
+                                                                    </button>
                                                                 @endif
-                                                                <button type="submit" id="confirmButtonReject">
-                                                                    <form
-                                                                        action="{{ route('reject.project.artisVerified') }}"
-                                                                        method="post" class="m-0">
-                                                                        @csrf
-                                                                        <input type="hidden" name="code"
-                                                                            value="{{ $item->code }}">
-                                                                        <input type="hidden" name="is_reject"
-                                                                            value="true">
-                                                                        <i class="far fa-times-circle btn-icon text-danger"
-                                                                            style="font-size: 20px"></i>
-                                                                    </form>
-                                                                </button>
+                                                                @if ($item->status != 'accept')
+                                                                    <button type="submit" id="confirmButtonReject">
+                                                                        <form
+                                                                            action="{{ route('reject.project.artisVerified') }}"
+                                                                            method="post" class="m-0">
+                                                                            @csrf
+                                                                            <input type="hidden" name="code"
+                                                                                value="{{ $item->code }}">
+                                                                            <input type="hidden" name="is_reject"
+                                                                                value="true">
+                                                                            <i class="far fa-times-circle btn-icon text-danger"
+                                                                                style="font-size: 20px"></i>
+                                                                        </form>
+                                                                    </button>
+                                                                @endif
                                                             </td>
                                                         </tr>
                                                     @endif
                                                 @endif
                                             @endif
                                         @endforeach
+
 
 
 
