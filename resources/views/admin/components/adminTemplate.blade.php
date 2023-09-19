@@ -17,6 +17,12 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
+        .fixedbar{
+            position: fixed;
+            z-index: 1030;
+            width: 245px;
+        }
+
         .search-container {
             position: relative;
             display: flex;
@@ -54,7 +60,47 @@
             color: #7c6890;
         }
     </style>
+    <style>
+        /* CSS untuk styling pagination */
+        .pagination {
+            margin-top: 20px;
+        }
 
+        .page-item:first-child .page-link {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border-radius: 10px;
+        }
+
+        .page-item:last-child .page-link {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-radius: 10px;
+        }
+
+        .pagination li {
+            display: inline;
+            margin-right: 5px;
+        }
+
+        .pagination li a {
+            text-decoration: none;
+            border-radius: 10px;
+        }
+
+        .page-link.active {
+            background-color: #957DAD;
+            border: 1px solid #957DAD;
+        }
+
+        .pagination li.active a {
+            color: #fff;
+        }
+
+        .pagination li:hover {
+            background-color: #ddd;
+        }
+    </style>
     <script>
         function confirmDelete(message, callback) {
             Swal.fire({
@@ -102,7 +148,7 @@
                 <a class="sidebar-brand brand-logo" href="index.html"><img src="assets/images/logo.svg"
                         alt="logo" /></a>
             </div>
-            <ul class="nav">
+            <ul class="nav fixedbar">
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="/admin/dashboard">
                         <span class="menu-icon ">
@@ -244,8 +290,8 @@
                 <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
                     <ul class="navbar-nav navbar-nav-right">
                         <li class="nav-item dropdown">
-                            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
-                                data-toggle="dropdown">
+                            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown"
+                                href="#" data-toggle="dropdown">
                                 <i class="mdi mdi-bell"></i>
                                 @if (count($notifs) > 0)
                                     <span class="count bg-danger"></span>
@@ -253,14 +299,39 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                                 aria-labelledby="notificationDropdown">
-                                @foreach ($notifs as $item)
+                                @foreach ($notifs->reverse() as $item)
                                     @if ($item)
-                                        <a href="#" class="dropdown-item preview-item">
+                                        <div class="dropdown-item preview-item" style="gap: 15px; cursor: auto;">
+                                            @if ($item->message == null)
+                                                <div>
+                                                    <img src="{{ asset('storage/' . $item->artis->user->avatar) }}"
+                                                        width="40" style="border-radius: 100%" alt=""
+                                                        srcset="">
+                                                </div>
+                                            @endif
                                             <div class="preview-item-content">
-                                                <p class="preview-subject mb-1">{{ $item->title }}</p>
-                                                <p class="text-muted ellipsis mb-0">{{ $item->message }}</p>
+                                                <p class="preview-subject mb-1" style="font-weight: bold">
+                                                    {{ $item->title }}</p>
+                                                @if ($item->message !== null)
+                                                    <button class="text-muted ellipsis mb-0"
+                                                        style="font-size: 12px; font-weight: normal"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#alasan-{{ $item->code }}">Klik
+                                                        untuk melihat alasan</button>
+                                                @else
+                                                    <p class="text-muted ellipsis mb-0">{{ $item->artis->user->name }}
+                                                    </p>
+                                                @endif
                                             </div>
-                                        </a>
+                                            <button type="submit" class="btn btnicon p-0"
+                                                style="background: none; border: none; margin-bottom: 20px;"
+                                                onclick="">
+                                                <a href="/admin/delete-notif/{{ $item->id }}">
+                                                    <i class="far fa-times-circle text-danger"
+                                                        style="font-size: 11px;"></i>
+                                                </a>
+                                            </button>
+                                        </div>
                                     @endif
                                 @endforeach
                             </div>

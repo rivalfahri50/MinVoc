@@ -47,6 +47,7 @@
     overflow: hidden;
     margin-bottom: 10px;
     background-color: #eaeaea;
+    padding: 10px 0;
 }
 
 .table-cell {
@@ -149,18 +150,6 @@
     border-radius: 10px;
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
     background-color: #957DAD;
-}
-/* Style dropdown sidebar--Mengatur tampilan menu dropdown */
-.menu-items .nav-link {
-    position: relative;
-}
-
-.menu-arrow {
-    color: inherit;
-    position: absolute;
-    left: 185px;
-    top: 185px;
-    transform: translateY(-50%);
 }
 
 /* CSS untuk styling pagination */

@@ -1,66 +1,82 @@
-@extends('admin.components.adminTemplate')
+@extends('artisVerified.components.artisVerifiedTemplate')
+
 @section('content')
-    <link rel="stylesheet" href="/admin/assets/css/riwayat.css">
-    <style>
-        .over {
-            width: 170px;
-        }
-
-        i:hover {
-            color: rebeccapurple;
-        }
-    </style>
-    <!-- partial | ISI -->
     <div class="main-panel">
+        <link rel="stylesheet" href="/user/assets/css/riwayat.css">
+        <style>
+            i:hover {
+                color: rebeccapurple;
+            }
+
+            /* CSS untuk styling pagination */
+            .pagination {
+                margin-top: 20px;
+            }
+
+            .page-item:first-child .page-link {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+                border-radius: 10px;
+            }
+
+            .page-item:last-child .page-link {
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+                border-radius: 10px;
+            }
+
+            .pagination li {
+                display: inline;
+                margin-right: 5px;
+            }
+
+            .pagination li a {
+                text-decoration: none;
+            }
+
+            .page-link.active {
+                background-color: #957DAD;
+                border: 1px solid #957DAD;
+            }
+
+            .pagination li.active a {
+                color: #fff;
+            }
+
+            .pagination li:hover {
+                background-color: #ddd;
+            }
+        </style>
         <div class="content-wrapper">
-            <div class="col-lg-12 grid-margin stretch-card">
-                <h3 class="judul mb-3">Riwayat Persetujuan Unggah Lagu</h3>
-                <div class="table-container">
-                    <table class="table table-sortable">
-                        <thead>
-                            <tr class="table-row table-header">
-                                <th class="table-cell">Nama<i class="fas fa-sort" data-order="asc"></th>
-                                <th class="table-cell">Artis<i class="fas fa-sort" data-order="asc"></th>
-                                <th class="table-cell">Tanggal<i class="fas fa-sort" data-order="asc"></th>
-                                <th class="table-cell">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($songs->reverse() as $item)
-                                @if ($item->is_approved)
-                                    <tr class="table-row baris">
-                                        <td class="table-cell">
-                                            <div class="cell-content over">
-                                                {{ $item->judul }}
-                                            </div>
-                                        </td>
-                                        <td class="table-cell">{{ $item->artist->user->name }}</td>
-                                        </td>
-                                        <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
-                                        <td class="table-cell text-success">{{ $item->is_approved ? 'Publish' : 'Reject' }}
-                                    </tr>
-                                @endif
-                            @endforeach
-                        </tbody>
-                    </table>
-                    @if (count($songs) === 0)
-                        <div style="justify-content: center; display: flex; padding: 50px 0;">
-                            <img width="400" height="200" src="/icon-notFound/adminIcon.svg" alt=""
-                                srcset="">
-                        </div>
-                    @endif
-                </div>
-
-
-                <div class="text-center">
+            <div class="row">
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="table-container">
+                        <table class="table table-sortable">
+                            <thead>
+                                <tr class="table-row table-header">
+                                    <th class="table-cell">Artis <i class="fas fa-sort" data-order="asc"></th>
+                                    <th class="table-cell">Jumlah <i class="fas fa-sort" data-order="asc"></th>
+                                    <th class="table-cell">Tanggal <i class="fas fa-sort" data-order="asc"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-row baris">
+                                    <td class="table-cell"><h6>jj</h6></td>
+                                    <td class="table-cell">jjj</td>
+                                    <td class="table-cell">hh</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div class="text-center">
-                        <ul class="pagination justify-content-center">
-                        </ul>
+                        <div class="text-center">
+                            <ul class="pagination justify-content-center">
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
     </div>
     </div>

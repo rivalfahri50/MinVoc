@@ -249,11 +249,3 @@
     }
   });
 })(jQuery);
-
-<script>
-  function myFunction(x) {
-    x.classList.toggle("far"); // Menghapus kelas "fa fa-heart"
-  x.classList.toggle("fas"); // Menambahkan kelas "fas fa-heart"
-  x.classList.toggle("text-danger"); // Menambahkan kelas warna merah
-                                  }
-</script>

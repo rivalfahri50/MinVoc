@@ -64,6 +64,7 @@ Route::prefix('admin')->middleware('admin')->controller(AdminController::class)-
     Route::get('/setuju-music/{code}', 'setujuMusic')->name('setuju.upload.music');
     Route::get('/admin/pencairan', 'AdminController@pencairan')->name('admin.pencairan');
     Route::get('/satuju-pencairan/{code}', 'pencairanApprove')->name('setuju.pencairan');
+    Route::get('/pencairan-reject/{code}', 'pencairanReject')->name('pencairan.reject');
 
     Route::POST('/setuju-verified/{code}', 'setujuVerified')->name('tambah.verified');
     Route::post('/uploadBillboard', 'buatBillboard')->name('uploadBillboard');
@@ -84,6 +85,7 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
     Route::get('/pencarian', 'pencarian');
     Route::get('/playlist', 'playlist');
     Route::get('/penghasilan', 'penghasilan');
+    Route::get('/riwayatPenghasilan', 'riwayatPenghasilan');
     Route::get('/riwayat', 'riwayat');
     Route::get('/profile/{code}', 'profile');
     Route::get('/profile-ubah/{code}', 'profile_ubah')->name('ubah.profile.artis');
@@ -139,6 +141,7 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
     Route::get('/kategori/{code}', 'kategori');
     Route::get('/playlist', 'playlist');
     Route::get('/penghasilan', 'penghasilan');
+    Route::get('/riwayatPenghasilan', 'riwayatPenghasilan');
     Route::get('/riwayat', 'riwayat');
     Route::get('/profile/{code}', 'profile');
     Route::get('/profile-ubah/{code}', 'profile_ubah')->name('ubah.profile.artisVerified');

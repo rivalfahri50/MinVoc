@@ -319,40 +319,20 @@
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="mb-3">
-                                                <label for="uploadlatar" class="form-label judulnottebal">Upload
-                                                    Background Iklan</label>
-                                                <input type="file" name="image_background" class="form-control form-i"
-                                                    id="uploadlatar{{ $item->id }}">
-                                                <span id="image-background-error{{ $item->id }}"
-                                                    style="color: red;"></span>
+                                                <label for="uploadlatar" class="form-label judulnottebal">Upload Background Iklan</label>
+                                                <input type="file" name="image_background" class="form-control form-i" id="uploadlatar{{ $item->id }}">
+                                                <span id="image-background-error{{ $item->id }}" style="color: red;"></span>
+                                                <img id="background-image-preview{{ $item->id }}" src="{{ $item->image_background ? asset('storage/' . $item->image_background) : '' }}" alt="Foto Lama" class="gambarbg">
                                             </div>
-                                            @if ($item->image_background)
-                                                <div class="mb-3">
-                                                    <label for="fotoLamaBackground" class="form-label col-12"
-                                                        style="color: #676767">Foto Background Iklan Lama</label>
-                                                    <img src="{{ asset('storage/' . $item->image_background) }}"
-                                                        alt="Foto Lama" class="gambarbg">
-                                                </div>
-                                            @endif
                                         </div>
                                         <div class="col-6">
                                             <div class="mb-3">
-                                                <label for="uploadartis" class="form-label judulnottebal">Upload Foto
-                                                    Artis</label>
-                                                <input type="file" name="image_artis" class="form-control form-i"
-                                                    id="uploadartis{{ $item->id }}">
-                                                <span id="image-artis-error{{ $item->id }}"
-                                                    style="color: red;"></span>
+                                                <label for="uploadartis" class="form-label judulnottebal">Upload Foto Artis</label>
+                                                <input type="file" name="image_artis" class="form-control form-i" id="uploadartis{{ $item->id }}">
+                                                <span id="image-artis-error{{ $item->id }}" style="color: red;"></span>
+                                                <img id="artis-image-preview{{ $item->id }}" src="{{ $item->image_artis ? asset('storage/' . $item->image_artis) : '' }}" alt="Foto Lama" class="avatar">
                                             </div>
-                                            @if ($item->image_artis)
-                                                <div class="mb-3">
-                                                    <label for="fotoLamaArtis" class="form-label col-12"
-                                                        style="color: #676767">Foto Artis Lama</label>
-                                                    <img src="{{ asset('storage/' . $item->image_artis) }}"
-                                                        alt="Foto Lama" class="avatar">
-                                                </div>
-                                            @endif
-                                        </div>
+                                         </div>
                                     </div>
                                 </div>
                                 <div class="text-md-right">
@@ -365,6 +345,33 @@
             @endforeach
 
             <script>
+                 function previewImage(input, preview) {
+        const file = input.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+            };
+
+            reader.readAsDataURL(file);
+        } else {
+            // Jika tidak ada file yang dipilih, kosongkan gambar
+            preview.src = '';
+        }
+    }
+
+    // Tambahkan event listener untuk setiap input gambar
+    document.getElementById('uploadlatar{{ $item->id }}').addEventListener('change', function () {
+        previewImage(this, document.getElementById('background-image-preview{{ $item->id }}'));
+    });
+
+    document.getElementById('uploadartis{{ $item->id }}').addEventListener('change', function () {
+        previewImage(this, document.getElementById('artis-image-preview{{ $item->id }}'));
+    });
+
+                //po
                 @foreach ($billboards as $item)
                     document.getElementById('editBillboardForm{{ $item->id }}').addEventListener('submit', function(event) {
                         const backgroundInput = document.getElementById('uploadlatar{{ $item->id }}');

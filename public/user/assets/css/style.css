@@ -30729,10 +30729,10 @@ div.tagsinput span.tag a {
   position: relative;
 }
 
-.menu-arrow {
+.gh {
   color: inherit;
   position: absolute;
-  left: 185px;
+  left: 195px;
   top: 140px;
   transform: translateY(-50%);
 }
