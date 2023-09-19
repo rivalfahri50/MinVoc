@@ -113,35 +113,33 @@ class AdminController extends Controller
 
     protected function pencairanApprove(Request $request, string $code)
     {
-        try {
-            $penghasilan = penghasilan::where(function ($query) use ($code) {
+        $penghasilanArtisId = penghasilan::where('id', $code)->first()->artist_id;
+        $id = artist::where('id', $penghasilanArtisId)->first();
+
+        if ($id) {
+            $penghasilan = penghasilan::where(function ($query) use ($code, $id) {
                 $query->where('is_take', true)->where('is_submit', false)
-                    ->orWhere('id', $code);
+                    ->Where('artist_id', $id->id);
             })->get();
+        }
 
-            // $penghasilanDiambil = penghasilan::where(function ($query) use ($code) {
-            //     $query->where('is_submit', true);
-            // })->get();
-
-            // foreach ($penghasilanDiambil as $key) {
-            //     $penghasilanSebelumnya = $key->penghasilanCair;
-            // }
-            foreach ($penghasilan as $key) {
-                $data = [
-                    'penghasilan' => 0,
-                    'penghasilanCair' => $key->penghasilan,
-                    'Pengajuan_tanggal' => null,
-                    'pengajuan' => 0,
-                    'is_take' => 0,
-                    'is_submit' => true,
-                    'terakhir_diambil' => now()
-                ];
-                notif::create([
-                    'title' => 'pengajuan Verifikasi Baru Masuk',
-                    'user_id' => $key->artist_id,
-                ]);
-                penghasilan::where('id', $key->id)->update($data);
-            }
+        foreach ($penghasilan as $key) {
+            $data = [
+                'penghasilan' => 0,
+                'penghasilanCair' => $key->penghasilan,
+                'pengajuan' => 0,
+                'Pengajuan_tanggal' => now(),
+                'is_take' => false,
+                'is_submit' => true,
+                'terakhir_diambil' => now()
+            ];
+            notif::create([
+                'title' => 'pengajuan Verifikasi Baru Masuk',
+                'user_id' => $key->artist_id,
+            ]);
+            penghasilan::where('id', $key->id)->update($data);
+        }
+        try {
         } catch (\Throwable $th) {
             Alert::error('message', 'Pencairan gagal berhasil di kirim.');
         }
@@ -168,9 +166,9 @@ class AdminController extends Controller
                 penghasilan::where('id', $key->id)->update($data);
             }
         } catch (\Throwable $th) {
-            Alert::error('message', 'Pencairan penghasilan berhasil di tolak.');
+            Alert::error('message', 'Pencairan penghasilan gagal di tolak.');
         }
-        Alert::error('message', 'Pencairan penghasilan gagal di tolak.');
+        Alert::success('message', 'Pencairan penghasilan berhasil di tolak.');
         return redirect()->back();
     }
 

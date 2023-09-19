@@ -171,20 +171,20 @@
                             <div class="card pcard jarak">
                                 <h3 class="angka m-0">Rp {{ number_format($totalpenghasilan, 2, ',', '.') }}</h3>
                                 <h4 class="judulnottebal mb-0">Total penghasilan</h4>
-                                @if (isset($totalpenghasilan->is_take))
+                                {{-- @dd(isset($penghasilanData->is_take) && isset($penghasilanData->pengajuan) == false) --}}
+                                @if (isset($penghasilanData->is_take) && isset($penghasilanData->Pengajuan) == 0)
                                     <span class="btn-unstyled mr-2 link mb-0">Mohon tunggu jawaban dari admin..</span>
                                 @else
-                                    @if (isset($totalpenghasilan->penghasilan) &&
-                                            $totalpenghasilan->penghasilan >= 100000 ||
-                                            isset($penghasilanData->is_submit))
+                                    @if (
+                                        (isset($penghasilanData->penghasilan) === true && $totalpenghasilan >= 100000))
                                         <span class="btn-unstyled mr-2 link mb-0" style="cursor: pointer"
                                             data-bs-toggle="modal" data-bs-target="#caripenghasilan">Cairkan
                                             Penghasilan</span>
                                     @endif
                                 @endif
-                                @if (!isset($penghasilanData->is_take) && isset($penghasilanData->penghasilanCair))
+                                @if (isset($penghasilanData->is_submit) && isset($penghasilanData->penghasilanCair) == true)
                                     <span style="color: #858585">Terakhir diambil pada
-                                        {{ isset($penghasilanData->terakhir_diambil) ? (new DateTime($penghasilanData->terakhir_diambil))->format('d F Y') : '' }}</span>
+                                        {{ (new DateTime($penghasilanData->terakhir_diambil))->format('d F Y') }}</span>
                                 @endif
                             </div>
                         </div>
@@ -247,7 +247,7 @@
                 {{-- @dd($projects) --}}
 
                 <div class="col-md-12">
-                    <div class="row mb-2">
+                    {{-- <div class="row mb-2">
                         <div class="col-md-4">
                             <h3 class="judul">Riwayat Penghasilan Masuk</h3>
                         </div>
@@ -263,20 +263,20 @@
                                 <button type="submit" name="submit" class="btn">Cari</button>
                             </form>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="card mb-3">
                         <div class="table-body">
                             <div class="table-container">
                                 <table class="table">
                                     <thead class="table-header">
                                         <tr class="table-row header headerlengkung">
-                                            <th class="table-cell">Kolaborasi</th>
                                             <th class="table-cell">Jumlah</th>
+                                            <th class="table-cell">project</th>
                                             <th class="table-cell">Tanggal</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                            {{-- @foreach ($results as $item)
+                                        {{-- @foreach ($results as $item)
                                                 <tr class="table-row baris">
                                                     <td class="table-cell">
                                                         <div class="cell-content">
@@ -294,24 +294,18 @@
                                                     <td class="table-cell">{{ $item->created_at->toDateString() }}</td>
                                                 </tr>
                                             @endforeach --}}
-                                            @foreach ($projects->reverse() as $item)
-                                                <tr class="table-row baris">
-                                                    <td class="table-cell">
-                                                        <div class="cell-content">
-                                                            <img src="{{ asset('storage/' . $item->images) }}"
-                                                                alt="Face" class="avatar">
-                                                            <div>
-                                                                <h6>{{ $item->judul }}</h6>
-                                                                <p class="text-muted m-0">{{ $item->artis->user->name }}
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="table-cell">Rp.
-                                                        {{ number_format($item->harga, 2, ',', '.') }}</td>
-                                                    <td class="table-cell">{{ $item->created_at->toDateString() }}</td>
-                                                </tr>
-                                            @endforeach
+                                        @foreach ($penghasilanArtis->reverse() as $item)
+                                            <tr class="table-row baris">
+                                                <td class="table-cell">
+                                                    <div class="cell-content">
+                                                        <h6 class="text-success">Rp. {{ number_format($item->penghasilanCair, 2, ',', '.') }}
+                                                        </h6>
+                                                    </div>
+                                                </td>
+                                                <td class="table-cell">{{ $item->status }}</td>
+                                                <td class="table-cell">{{ $item->created_at->format('j F Y') }}</td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -328,8 +322,9 @@
         </div>
     </div>
 
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/user/assets/js/tablesort.js"></script>
+
     <script>
         $(document).ready(function() {
             var itemsPerPage = 4;
@@ -439,7 +434,6 @@
             saveCurrentPageToLocalStorage(currentPage); // Simpan halaman saat ini ke local storage
         });
     </script>
-
     <script>
         const code = "{{ auth()->user()->code }}"
         fetch(`/artis-verified/pencairan/${code}`)
@@ -481,7 +475,6 @@
             return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
         }
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         var ctx = document.getElementById('myChart').getContext('2d');
         var dataPendapatan = @json($penghasilan);
@@ -526,4 +519,6 @@
             }
         });
     </script>
+
+
 @endsection
