@@ -51,24 +51,66 @@
             <div class="row">
                 <div class="col-lg-12 grid-margin stretch-card" style="height: 100vh">
                     <div class="table-container">
-                        <table class="table table-sortable">
+                        <div class="row mb-2">
+                            <div class="col-md-4">
+                                <h3 class="judul fs-5">Riwayat Penghasilan Masuk</h3>
+                            </div>
+                            <div class="col-md-8">
+                                <form method="get" action="{{ route('filter.date') }}"
+                                    class="form-inline justify-content-end">
+                                    <label for="date1" class="mr-2">Cari Tanggal</label>
+                                    <input type="date" name="start_date" id="date1" class="form-control mr-2"
+                                        placeholder="Dari tanggal">
+                                    <label for="date1" class="mr-2">-</label>
+                                    <input type="date" name="end_date" id="date2" class="form-control mr-2"
+                                        placeholder="Sampai tanggal">
+                                    <button type="submit" name="submit" class="btn">Cari</button>
+                                </form>
+                            </div>
+                        </div>
+                        <table class="table table-sortable" id="myTable">
                             <thead>
                                 <tr class="table-row table-header">
-                                    <th class="table-cell">Artis <i class="fas fa-sort" data-order="asc"></th>
-                                    <th class="table-cell">Jumlah <i class="fas fa-sort" data-order="asc"></th>
-                                    <th class="table-cell">Tanggal <i class="fas fa-sort" data-order="asc"></th>
+                                    <th class="table-cell" data-sortable="true">Jumlah <i class="fas fa-sort"
+                                            data-order="asc"></th>
+                                    <th class="table-cell" data-sortable="true">Status <i class="fas fa-sort"
+                                            data-order="asc"></th>
+                                    <th class="table-cell" data-sortable="true">Tanggal <i class="fas fa-sort"
+                                            data-order="asc"></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($penghasilan as $item)
+                                @if (session('results'))
+                            <tbody>
+                                @foreach (session('results')->reverse() as $item)
                                     <tr class="table-row baris">
                                         <td class="table-cell">
-                                            <h6>{{ $item->artist->user->name }}</h6>
+                                            <div class="cell-content">
+                                                <h6 class="text-success">Rp.
+                                                    {{ number_format($item->penghasilanCair, 2, ',', '.') }}
+                                                </h6>
+                                            </div>
                                         </td>
-                                        <td class="table-cell"> {{ number_format($item->penghasilanCair, 2, ',', '.') }}</td>
-                                        <td class="table-cell">{{ (new DateTime($item->Pengajuan_tanggal))->format('d F Y') }}</td>
+                                        <td class="table-cell">{{ $item->status }}</td>
+                                        <td class="table-cell">{{ $item->created_at->format('j F Y') }}</td>
                                     </tr>
                                 @endforeach
+                            </tbody>
+                        @else
+                            @foreach ($penghasilan->reverse() as $item)
+                                <tr class="table-row baris">
+                                    <td class="table-cell">
+                                        <div class="cell-content">
+                                            <h6 class="text-success">Rp.
+                                                {{ number_format($item->penghasilanCair, 2, ',', '.') }}
+                                            </h6>
+                                        </div>
+                                    </td>
+                                    <td class="table-cell">{{ $item->status }}</td>
+                                    <td class="table-cell">{{ $item->created_at->format('j F Y') }}</td>
+                                </tr>
+                            @endforeach
+                            @endif
                             </tbody>
                         </table>
                     </div>
@@ -87,8 +129,16 @@
 
 
     <script src="/user/assets/js/tablesort.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#myTable').DataTable();
+        });
+    </script>
+
     <script>
         $(document).ready(function() {
             var itemsPerPage = 4;

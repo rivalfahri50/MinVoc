@@ -103,7 +103,8 @@ class ArtistVerifiedController extends Controller
     protected function riwayatPenghasilan(Request $request)
     {
         $title = 'MusiCave';
-        $penghasilan = penghasilan::with('artist')->where('is_submit', true)->get();
+        $artis = artist::where('user_id', auth()->user()->id)->first();
+        $penghasilan = penghasilan::with('artist')->where('is_submit', true)->where('artist_id', $artis->id)->get();
         $notifs = notif::where('user_id', auth()->user()->id)->get();
         return response()->view('artisVerified.riwayatpenghasilan', compact('title', 'notifs', 'penghasilan'));
     }
@@ -483,12 +484,12 @@ class ArtistVerifiedController extends Controller
                 'bulan' => now()->format('m'),
             ]);
 
-            notif::create([
-                'artis_id' => $artis->id,
-                'title' => $request->input('judul'),
-                'user_id' => auth()->user()->id,
-                'is_reject' => false
-            ]);
+            // notif::create([
+            //     'artis_id' => $artis->id,
+            //     'title' => $request->input('judul'),
+            //     'user_id' => auth()->user()->id,
+            //     'is_reject' => false
+            // ]);
 
             song::create([
                 'code' => $code,
@@ -575,7 +576,8 @@ class ArtistVerifiedController extends Controller
         $query = $request->input('query');
         $songs = Song::where('judul', 'LIKE', '%' . $query . '%')->get();
         $users = User::where('name', 'LIKE', '%' . $query . '%')
-            ->where('role_id', '!=', 3)
+        ->where('role_id', '!=', 3)
+        ->where('role_id', '!=', 4)
             ->get();
 
         try {
@@ -597,7 +599,7 @@ class ArtistVerifiedController extends Controller
         $start_date = Carbon::parse($startDate)->startOfDay();
         $end_date = Carbon::parse($endDate)->endOfDay();
 
-        $results = projects::with('artis')->whereNotIn('status', ['pending', 'reject'])
+        $results = penghasilan::with('artist')->whereNotIn('status', ['pending', 'reject'])
             ->whereBetween('created_at', [$start_date, $end_date])
             ->get();
 

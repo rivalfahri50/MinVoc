@@ -175,8 +175,7 @@
                                 @if (isset($penghasilanData->is_take) && isset($penghasilanData->Pengajuan) == 0)
                                     <span class="btn-unstyled mr-2 link mb-0">Mohon tunggu jawaban dari admin..</span>
                                 @else
-                                    @if (
-                                        (isset($penghasilanData->penghasilan) === true && $totalpenghasilan >= 100000))
+                                    @if (isset($penghasilanData->penghasilan) === true && $totalpenghasilan >= 100000)
                                         <span class="btn-unstyled mr-2 link mb-0" style="cursor: pointer"
                                             data-bs-toggle="modal" data-bs-target="#caripenghasilan">Cairkan
                                             Penghasilan</span>
@@ -247,7 +246,7 @@
                 {{-- @dd($projects) --}}
 
                 <div class="col-md-12">
-                    {{-- <div class="row mb-2">
+                    <div class="row mb-2">
                         <div class="col-md-4">
                             <h3 class="judul">Riwayat Penghasilan Masuk</h3>
                         </div>
@@ -263,7 +262,7 @@
                                 <button type="submit" name="submit" class="btn">Cari</button>
                             </form>
                         </div>
-                    </div> --}}
+                    </div>
                     <div class="card mb-3">
                         <div class="table-body">
                             <div class="table-container">
@@ -275,30 +274,29 @@
                                             <th class="table-cell">Tanggal</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        {{-- @foreach ($results as $item)
+                                    @if (session('results'))
+                                        <tbody>
+                                            @foreach (session('results')->reverse() as $item)
                                                 <tr class="table-row baris">
                                                     <td class="table-cell">
                                                         <div class="cell-content">
-                                                            <img src="{{ asset('storage/' . $item->images) }}"
-                                                                alt="Face" class="avatar">
-                                                            <div>
-                                                                <h6>{{ $item->judul }}</h6>
-                                                                <p class="text-muted m-0">{{ $item->artis->user->name }}
-                                                                </p>
-                                                            </div>
+                                                            <h6 class="text-success">Rp.
+                                                                {{ number_format($item->penghasilanCair, 2, ',', '.') }}
+                                                            </h6>
                                                         </div>
                                                     </td>
-                                                    <td class="table-cell">Rp.
-                                                        {{ number_format($item->harga, 2, ',', '.') }}</td>
-                                                    <td class="table-cell">{{ $item->created_at->toDateString() }}</td>
+                                                    <td class="table-cell">{{ $item->status }}</td>
+                                                    <td class="table-cell">{{ $item->created_at->format('j F Y') }}</td>
                                                 </tr>
-                                            @endforeach --}}
+                                            @endforeach
+                                        </tbody>
+                                    @else
                                         @foreach ($penghasilanArtis->reverse() as $item)
                                             <tr class="table-row baris">
                                                 <td class="table-cell">
                                                     <div class="cell-content">
-                                                        <h6 class="text-success">Rp. {{ number_format($item->penghasilanCair, 2, ',', '.') }}
+                                                        <h6 class="text-success">Rp.
+                                                            {{ number_format($item->penghasilanCair, 2, ',', '.') }}
                                                         </h6>
                                                     </div>
                                                 </td>
@@ -306,7 +304,7 @@
                                                 <td class="table-cell">{{ $item->created_at->format('j F Y') }}</td>
                                             </tr>
                                         @endforeach
-                                    </tbody>
+                                    @endif
                                 </table>
                             </div>
                         </div>
@@ -519,6 +517,5 @@
             }
         });
     </script>
-
 
 @endsection
