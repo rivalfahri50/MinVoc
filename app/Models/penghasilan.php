@@ -16,7 +16,7 @@ class penghasilan extends Model
         'bulan',
         'is_take',
         'terakhir_diambil',
-        'penghasilan',
+        'penghasilanCair',
         'Pengajuan',
         'Pengajuan_tanggal'
     ];

@@ -163,17 +163,15 @@
                                         </div>
                                         <div class="mb-3">
                                             <label for="upload" class="form-label judulnottebal">Upload Foto</label>
-                                            <input type="file" name="images" class="form-control form-i"
-                                                id="namaproyek" accept=".jpeg, .jpg, .png, .gif">
-                                            @if (isset($item->images))
-                                                <img src="{{ asset('storage/' . $item->images) }}" alt="Foto Lama"
-                                                    width="50" class="fit">
-                                            @endif
+                                            <input type="file" name="images" class="form-control form-i" id="image-input" accept=".jpeg, .jpg, .png, .gif">
+
+                                            <img id="preview-image" src="{{ $item->images ? asset('storage/' . $item->images) : '' }}" alt="Foto" width="50" class="fit">
+
                                             @if ($errors->has('images'))
-                                                <span
-                                                    class="text-danger">{{ $errors->first('images', 'File gambar  harus berupa JPEG, JPG, PNG, atau GIF.') }}</span>
+                                                <span class="text-danger">{{ $errors->first('images', 'File gambar harus berupa JPEG, JPG, PNG, atau GIF.') }}</span>
                                             @endif
                                         </div>
+
                                     </div>
                                     <div class="text-md-right">
                                         <button type="submit" class="btn" type="submit">Simpan</button>
@@ -186,6 +184,25 @@
                 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
                 <script>
+                    const imageInput = document.getElementById('image-input');
+                                            const previewImage = document.getElementById('preview-image');
+
+                                            imageInput.addEventListener('change', function () {
+                                                const file = this.files[0];
+
+                                                if (file) {
+                                                    const reader = new FileReader();
+
+                                                    reader.onload = function (e) {
+                                                        previewImage.src = e.target.result;
+                                                    };
+
+                                                    reader.readAsDataURL(file);
+                                                } else {
+                                                    // Jika tidak ada file yang dipilih, kosongkan gambar
+                                                    previewImage.src = '';
+                                                }
+                                            });
                     /* ============Dengan Rupiah=========== */
                     var harga = document.getElementById('harga');
                     harga.addEventListener('keyup', function(e) {
