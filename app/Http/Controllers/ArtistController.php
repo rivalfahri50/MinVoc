@@ -204,10 +204,14 @@ class ArtistController extends Controller
         $imagePath = $request->file('foto')->store('images', 'public');
         $artist->pengajuan_verified_at = now()->toDateString();
         $artist->verification_status = "pending";
-        $msg = 'Pengajuan Verifikasi';
         $artist->image = $imagePath;
         $artist->pengajuan = true;
         $artist->update();
+
+        notif::create([
+            'title' => 'pengajuan Verifikasi Baru Masuk',
+            'user_id' => 1,
+        ]);
         try {
         } catch (\Throwable $th) {
             Alert::error('message', 'Gagal Mengirim Request Verification Account');

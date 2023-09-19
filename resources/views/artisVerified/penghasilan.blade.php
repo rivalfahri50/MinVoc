@@ -171,7 +171,7 @@
                             <div class="card pcard jarak">
                                 <h3 class="angka m-0">Rp {{ number_format($totalpenghasilan, 2, ',', '.') }}</h3>
                                 <h4 class="judulnottebal mb-0">Total penghasilan</h4>
-                                @if (isset($penghasilanData->is_take))
+                                @if ($penghasilanData->is_take)
                                     <span class="btn-unstyled mr-2 link mb-0">Mohon tunggu jawaban dari admin..</span>
                                 @else
                                     @if (isset($penghasilanData->penghasilan) &&
