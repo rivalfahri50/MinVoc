@@ -90,30 +90,57 @@ class AdminController extends Controller
     protected function pencairan(): Response
     {
         $title = "MusiCave";
-        $penghasilanAll = penghasilan::with('artist.user')->get();
-        $penghasilanAll = penghasilan::with('artist.user')->get();
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-        $penghasilanMerged = [];
 
-        foreach ($penghasilanAll as $key) {
-            $artistId = $key->artist_id;
-            $penghasilan = $key->penghasilan;
-
-            if (array_key_exists($artistId, $penghasilanMerged)) {
-                $penghasilanMerged[$artistId] += $penghasilan;
-            } else {
-                $penghasilanMerged[$artistId] = $penghasilan;
-            }
-        }
-
-        dd($penghasilanMerged);
-
+        $penghasilanAll = penghasilan::with('artist')
+            ->select('penghasilan.artist_id', DB::raw('MAX(penghasilan.Pengajuan_tanggal) as Pengajuan_tanggal'), DB::raw('MAX(penghasilan.penghasilanCair) as penghasilanCair'), DB::raw('MAX(penghasilan.id) as id'), DB::raw('SUM(penghasilan.penghasilan) as total_penghasilan'))
+            ->where('is_take', true)
+            ->join('artists', 'penghasilan.artist_id', '=', 'artists.id')
+            ->groupBy('penghasilan.artist_id')
+            ->get();
         return response()->view('admin.pencairan', compact('title', 'notifs', 'penghasilanAll'));
     }
 
     protected function pencairanApprove(Request $request, string $code)
     {
-        dd($code);
+        $penghasilan = penghasilan::where(function ($query) use ($code) {
+            $query->where('is_take', true)
+                ->orWhere('id', $code);
+        })->get();
+
+        foreach ($penghasilan as $key) {
+            $data = [
+                'penghasilan' => 0,
+                'penghasilanCair' => $key->penghasilan,
+                'Pengajuan_tanggal' => null,
+                'pengajuan' => 0,
+                'terakhir_diambil' => now()
+            ];
+            penghasilan::where('id', $key->id)->update($data);
+        }
+
+        return redirect()->back();
+    }
+
+    protected function pencairanReject(Request $request, string $code)
+    {
+        $penghasilan = penghasilan::where(function ($query) use ($code) {
+            $query->where('is_take', true)
+                ->orWhere('id', $code);
+        })->get();
+
+        foreach ($penghasilan as $key) {
+            $data = [
+                'penghasilan' => $key->penghasilan,
+                'penghasilanCair' => 0,
+                'Pengajuan' => 0,
+                'Pengajuan_tanggal' => null,
+                'is_take' => false
+            ];
+            penghasilan::where('id', $key->id)->update($data);
+        }
+
+        return redirect()->back();
     }
 
     protected function verifikasi(): Response

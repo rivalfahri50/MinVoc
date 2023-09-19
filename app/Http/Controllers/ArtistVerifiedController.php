@@ -68,11 +68,13 @@ class ArtistVerifiedController extends Controller
         $songs = song::all();
         $projects = projects::where('status', 'accept')->get();
         $artistid = (int) artist::where('user_id', auth()->user()->id)->first()->id;
-        $penghasilan = penghasilan::where('artist_id', $artistid)->pluck('penghasilan')->toArray();
+        $penghasilan = penghasilan::where('artist_id', $artistid)->pluck('penghasilanCair')->toArray();
         $totalpenghasilan = penghasilan::where('artist_id', $artistid)->sum('penghasilan');
         $penghasilanData = penghasilan::where('artist_id', $artistid)->first();
         // $month = penghasilan::where('artist_id', $artistid)->pluck('bulan')->toArray();
         $month = [];
+
+        // dd($totalpenghasilan);
         if ($request->has("artist_id")) {
             $artistId = (int) $request->artist_id;
             $bulan = $request->bulan;
@@ -81,7 +83,7 @@ class ArtistVerifiedController extends Controller
                     ->where('bulan', $bulan)
                     ->whereYear('created_at', date('Y'))
                     ->whereMonth('created_at', $i)
-                    ->sum('penghasilan');
+                    ->sum('penghasilanCair');
                 $month[] = $totalPendapatan;
             }
         } else {
@@ -90,12 +92,19 @@ class ArtistVerifiedController extends Controller
                 $totalPendapatan = penghasilan::where('artist_id', $artistId)
                     ->whereYear('created_at', date('Y'))
                     ->whereMonth('created_at', $i)
-                    ->sum('penghasilan');
+                    ->sum('penghasilanCair');
                 $month[] = $totalPendapatan;
             }
         }
         $notifs = notif::where('user_id', auth()->user()->id)->get();
         return response()->view('artisVerified.penghasilan', compact('title', 'totalpenghasilan', 'month', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'penghasilan', 'projects', 'notifs', 'penghasilanData'));
+    }
+
+    protected function riwayatPenghasilan(Request $request)
+    {
+        $title = 'MusiCave';
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('artisVerified.riwayatpenghasilan', compact('title', 'notifs'));
     }
 
     protected function pencairan()

@@ -10,39 +10,37 @@
             }
         </style>
         @foreach ($penghasilanAll as $item)
-            @if ($item->is_take)
-                <div class="modal fade" id="detail-{{ $item->code }}" data-bs-backdrop="static" data-bs-keyboard="false"
-                    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content border-0" style="background-color: white">
-                            <div class="modal-header border-0">
-                                <h1 class="modal-title fs-5 judul" id="staticBackdropLabel">Detail</h1>
-                                <button type="button" class="btn-unstyled" data-bs-dismiss="modal" aria-label="Close">
-                                    <i class="mdi mdi-close-circle-outline btn-icon"
-                                        style="color: #957DAD; font-size: 20px;"></i>
-                                </button>
-                            </div>
-                            <div class="modal-body border-0">
-                                <div class="col-md-12" style="font-size: 13px">
-                                    <div class="mb-3">
-                                        <p for="namakategori" class="form-label judulnottebal">Total Penghasilan</p>
-                                        <h3 class="judul">Rp. {{ $item->penghasilan }}</h3>
-                                    </div>
-                                    <div class="mb-3">
-                                        <p for="konsep" class="form-label judulnottebal">Jumlah Pencairan</p>
-                                        <p class="muted">Rp. {{ $item->penghasilan }}</p>
-                                    </div>
+            <div class="modal fade" id="detail-{{ $item->id }}" data-bs-backdrop="static" data-bs-keyboard="false"
+                tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border-0" style="background-color: white">
+                        <div class="modal-header border-0">
+                            <h1 class="modal-title fs-5 judul" id="staticBackdropLabel">Detail</h1>
+                            <button type="button" class="btn-unstyled" data-bs-dismiss="modal" aria-label="Close">
+                                <i class="mdi mdi-close-circle-outline btn-icon"
+                                    style="color: #957DAD; font-size: 20px;"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body border-0">
+                            <div class="col-md-12" style="font-size: 13px">
+                                <div class="mb-3">
+                                    <p for="namakategori" class="form-label judulnottebal">Total Penghasilan</p>
+                                    <h3 class="judul">Rp. {{ number_format($item->total_penghasilan, 2, ',', '.') }}</h3>
+                                </div>
+                                <div class="mb-3">
+                                    <p for="konsep" class="form-label judulnottebal">Tanggal Pengajuan</p>
+                                    <p class="muted">{{ (new DateTime($item->Pengajuan_tanggal))->format('d F Y') }}</p>
                                 </div>
                             </div>
-                            <div class="modal-footer border-0">
-                                <button type="button" class="btn rounded-3">
-                                    <a href="/admin/satuju-pencairan/{{ $item->code }}" class="btn-link"
-                                        style="color: inherit; text-decoration: none;">Setujui</a></button>
-                            </div>
+                        </div>
+                        <div class="modal-footer border-0">
+                            <button type="button" class="btn rounded-3">
+                                <a href="/admin/satuju-pencairan/{{ $item->id }}" class="btn-link"
+                                    style="color: inherit; text-decoration: none;">Setujui</a></button>
                         </div>
                     </div>
                 </div>
-            @endif
+            </div>
         @endforeach
         <div class="content-wrapper">
             <div class="col-lg-12 grid-margin stretch-card">
@@ -59,7 +57,7 @@
                         </thead>
                         <tbody>
                             @foreach ($penghasilanAll as $item)
-                                @if ($item->is_take)
+                                @if ($item->total_penghasilan > 0)
                                     <tr class="table-row baris">
                                         <td class="table-cell">
                                             <p>{{ $item->artist->user->name }}</p>
@@ -67,14 +65,16 @@
                                         <td class="table-cell">
                                             {{ (new DateTime($item->Pengajuan_tanggal))->format('d F Y') }}</td>
                                         <td class="table-cell text-success">Rp.
-                                            {{ number_format($item->Pengajuan, 2, ',', '.') }}</td>
+                                            {{ number_format($item->total_penghasilan, 2, ',', '.') }}</td>
                                         <td class="table-cell">
                                             <button class="btn btnicon" data-bs-toggle="modal"
-                                                data-bs-target="#detail-{{ $item->code }}">
+                                                data-bs-target="#detail-{{ $item->id }}">
                                                 <i class="far fa-eye text-info"></i>
                                             </button>
-                                            <button class="btn btnicon" onclick="">
-                                                <i class="far fa-times-circle text-danger"></i>
+                                            <button class="btn btnicon" type="submit">
+                                                <a href="/admin/pencairan-reject/{{ $item->id }}">
+                                                    <i class="far fa-times-circle text-danger"></i>
+                                                </a>
                                             </button>
                                         </td>
                                     </tr>
@@ -83,11 +83,25 @@
                         </tbody>
                     </table>
                 </div>
-                {{-- @if (count($persetujuan) === 0) --}}
-                {{-- <div style="justify-content: center; display: flex; padding: 50px 0;">
-                    <img width="400" height="200" src="/icon-notFound/adminIcon.svg" alt="" srcset="">
-                </div> --}}
-                {{-- @endif --}}
+                @php
+                    $total_penghasilan = $penghasilanAll
+                        ->filter(function ($item) {
+                            return $item->total_penghasilan > 1;
+                        })
+                        ->count();
+                @endphp
+                @php
+                    $penghasilanCair = $penghasilanAll
+                        ->filter(function ($item) {
+                            return $item->penghasilancair > 1;
+                        })
+                        ->count();
+                @endphp
+                @if (empty($total_penghasilan) && empty($penghasilanCair))
+                    <div style="justify-content: center; display: flex; padding: 50px 0;">
+                        <img width="400" height="200" src="/icon-notFound/adminIcon.svg" alt="" srcset="">
+                    </div>
+                @endIf
 
                 <div class="text-center">
                     <div class="text-center">

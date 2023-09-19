@@ -12,7 +12,7 @@
     </style>
     <div class="main-panel">
         <div class="content-wrapper">
-            <form class="row" action="{{ route('unggah.artisVerified') }}" method="POST" enctype="multipart/form-data">
+            <form class="row mb-3" action="{{ route('unggah.artisVerified') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="col d-flex flex-row gap-4">
                     <div>
@@ -38,7 +38,7 @@
                             <div class="col-md-8">
                                 <input type="text" class="form-control" style="border-radius: 13px"
                                     id="exampleFormControlInput1" placeholder="Judul Lagu" name="judul"
-                                    value="{{ old('judul') }}">
+                                    value="{{ old('judul') }}" maxlength="55">
                                 @error('judul')
                                     <div class="text-danger" style="font-size: 14px">{{ $message }}</div>
                                 @enderror

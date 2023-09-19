@@ -209,7 +209,7 @@
                         </span>
                         <span class="menu-title">Playlist</span>
                         <a href="#ui-basic" data-toggle="collapse" aria-expanded="false" aria-controls="ui-basic">
-                            <span class="menu-arrow">
+                            <span class="menu-arrow gh">
                                 <i class="mdi mdi-chevron-right"></i>
                             </span>
                         </a>
