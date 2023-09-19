@@ -163,8 +163,8 @@
                         </span>
                         <span class="menu-title">Album</span>
                         <a href="#ui-basic" data-toggle="collapse" aria-expanded="false" aria-controls="ui-basic">
-                            <span class="menu-arrow">
-                                <i class="mdi mdi-chevron-right"></i>
+                            <span class="menu-arrow gh">
+                                <i class="mdi mdi-chevron-down"></i>
                             </span>
                         </a>
                     </a>
@@ -210,12 +210,32 @@
                     </a>
                 </li>
                 <li class="nav-item menu-items">
-                    <a class="nav-link" href="/artis-verified/penghasilan">
+                    <a class="nav-link" data-toggle="collapse" href="#penghasilan" aria-expanded="false"
+                        aria-controls="penghasilan">
                         <span class="menu-icon">
                             <i class="mdi mdi-cash-multiple"></i>
                         </span>
                         <span class="menu-title">Penghasilan</span>
+                        <i class="menu-arrow"></i>
                     </a>
+                    <div class="collapse" id="penghasilan">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/artis-verified/penghasilan">
+                                    <span class="menu-icon mr-0">
+                                        <i class="mdi mdi-cash-multiple submenu" style="font-size: 20px;"></i>
+                                    </span>Penghasilan
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/artis-verified/riwayatPenghasilan">
+                                    <span class="menu-icon mr-0">
+                                        <i class="mdi mdi-cash submenu" style="font-size: 20px;"></i>
+                                    </span>Riwayat Penghasilan
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="/artis-verified/riwayat">
@@ -556,11 +576,11 @@
                         });
                     });
                 });
-                $(document).ready(function() {
-                    $('.menu-arrow').click(function() {
-                        $(this).find('i').toggleClass('mdi-chevron-right mdi-chevron-down');
-                    });
-                });
+                // $(document).ready(function() {
+                //     $('.menu-arrow').click(function() {
+                //         $(this).find('i').toggleClass('mdi-chevron-right mdi-chevron-down');
+                //     });
+                // });
             </script>
 
             <script>
@@ -773,7 +793,6 @@
                         artist.innerHTML = All_song[index_no].artistId;
                         track_image.src = '{{ asset('storage') }}' + '/' + All_song[index_no].image;
                         track.load();
-
                         timer = setInterval(range_slider, 1000);
 
                     } else {
@@ -794,7 +813,6 @@
                     }
                     updateMuteButtonIcon();
                 }
-
                 // fungsi untuk memeriksa lagu diputar atau tidak
                 function justplay() {
                     if (Playing_song == false) {
@@ -974,6 +992,7 @@
                 // ubah posisi slider
                 // Fungsi untuk mengubah posisi slider
                 function change_duration() {
+                    let slider_value = slider.value;
                     if (!isNaN(track.duration) && isFinite(slider_value)) {
                         track.currentTime = track.duration * (slider_value / 100);
                         console.log(track.duration * (slider_value / 100), slider_value, track.currentTime)

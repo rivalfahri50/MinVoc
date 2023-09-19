@@ -170,6 +170,16 @@ class AdminController extends Controller
             $song->update();
             $persetujuan = song::all();
             $notifs = notif::where('user_id', auth()->user()->id)->get();
+            
+            $penghasilanArtist = (int) $artis->penghasilan + 400000;
+            artist::findOrFail($artis->id)->update(['penghasilan'=> $penghasilanArtist]);
+            $artis->update(['penghasilan' => $penghasilanArtist]);
+            penghasilan::create([
+                'artist_id' => $artis->id, // Menggunakan ID artis, bukan objek artis
+                'penghasilan' => 400000,
+                'status' => "unggah lagu",
+                'bulan' => now()->format('m'),
+            ]);
         } catch (\Throwable $th) {
             Alert::error('message', 'Lagu Gagal Dalam Perizinan Publish');
             return response()->redirectTo('/admin/persetujuan')->with(['persetujuan' => $persetujuan, 'title' => $title, 'notifs' => $notifs]);

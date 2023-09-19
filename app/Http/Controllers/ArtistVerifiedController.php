@@ -100,6 +100,13 @@ class ArtistVerifiedController extends Controller
         return response()->view('artisVerified.penghasilan', compact('title', 'totalpenghasilan', 'month', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'penghasilan', 'projects', 'notifs', 'penghasilanData'));
     }
 
+    protected function riwayatPenghasilan(Request $request)
+    {
+        $title = 'MusiCave';
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        return response()->view('artisVerified.riwayatpenghasilan', compact('title', 'notifs'));
+    }
+
     protected function pencairan()
     {
         $artistid = (int) artist::where('user_id', auth()->user()->id)->first()->id;
@@ -457,50 +464,41 @@ class ArtistVerifiedController extends Controller
         ];
 
 
+        DB::beginTransaction();
+        $code = Str::uuid();
+        $image = $request->file('image')->store('images', 'public');
+        $audioPath = $request->file('audio')->store('musics', 'public');
+        // $audio = $request->file('audio')->store('musics', 'public');
+        // $namaFile = time() . '_' . $request->file('audio')->getClientOriginalName();
+
+        // Simpan file audio dengan nama yang ditentukan di penyimpanan lokal
+        // $audioPath = $request->file('audio')->storeAs('musics', $namaFile);
+
+        $getID3 = new getID3();
+        $audioInfo = $getID3->analyze($request->file('audio')->path());
+        $durationInSeconds = $audioInfo['playtime_seconds'];
+        $durationMinutes = floor($durationInSeconds / 60);
+        $durationSeconds = $durationInSeconds % 60;
+        $formattedDuration = sprintf('%02d:%02d', $durationMinutes, $durationSeconds);
+
+
+        notif::create($data);
+        song::create([
+            'code' => $code,
+            'judul' => $request->input('judul'),
+            'image' => $image,
+            'audio' => $audioPath,
+            'waktu' => $formattedDuration,
+            'is_approved' => false,
+            'genre_id' => $request->input('genre'),
+            'album_id' => $request->input('album') == null ? null : $request->input('album'),
+            'artis_id' => $artis->id,
+        ]);
+        DB::commit();
+
+
+        return redirect('/artis-verified/unggahAudio')->with('success', 'Song uploaded successfully.');
         try {
-            DB::beginTransaction();
-            $code = Str::uuid();
-            $image = $request->file('image')->store('images', 'public');
-            $audioPath = $request->file('audio')->store('musics', 'public');
-            // $audio = $request->file('audio')->store('musics', 'public');
-            // $namaFile = time() . '_' . $request->file('audio')->getClientOriginalName();
-    
-            // Simpan file audio dengan nama yang ditentukan di penyimpanan lokal
-            // $audioPath = $request->file('audio')->storeAs('musics', $namaFile);
-    
-            $getID3 = new getID3();
-            $audioInfo = $getID3->analyze($request->file('audio')->path());
-            $durationInSeconds = $audioInfo['playtime_seconds'];
-            $durationMinutes = floor($durationInSeconds / 60);
-            $durationSeconds = $durationInSeconds % 60;
-            $formattedDuration = sprintf('%02d:%02d', $durationMinutes, $durationSeconds);
-    
-    
-            notif::create($data);
-            song::create([
-                'code' => $code,
-                'judul' => $request->input('judul'),
-                'image' => $image,
-                'audio' => $audioPath,
-                'waktu' => $formattedDuration,
-                'is_approved' => false,
-                'genre_id' => $request->input('genre'),
-                'album_id' => $request->input('album') == null ? null : $request->input('album'),
-                'artis_id' => $artis->id,
-            ]);
-            DB::commit();
-    
-            $penghasilanArtist = (int) $artis->penghasilan + 400000;
-            artist::findOrFail($artis->id)->update(['penghasilan' => $penghasilanArtist]);
-            $artis->update(['penghasilan' => $penghasilanArtist]);
-            penghasilan::create([
-                'artist_id' => $artis->id, // Menggunakan ID artis, bukan objek artis
-                'penghasilan' => 400000,
-                'status' => "unggah lagu",
-                'bulan' => now()->format('m'),
-            ]);
-            Alert::success('message', 'Lagu berhasil di upload');
-            return redirect('/artis-verified/unggahAudio')->with('success', 'Song uploaded successfully.');
         } catch (\Throwable $e) {
             DB::rollBack();
             Alert::error('message', 'Lagu gagal di upload');

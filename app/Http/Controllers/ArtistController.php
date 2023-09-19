@@ -422,28 +422,28 @@ class ArtistController extends Controller
         }
 
         $artis = artist::where('user_id', Auth::user()->id)->first();
-        
+
         try {
             DB::beginTransaction();
             $code = Str::uuid();
             $image = $request->file('image')->store('images', 'public');
             // $namaFile = time() . '_' . $request->file('audio')->getClientOriginalName();
-    
-    
+
+
             // Simpan file audio dengan nama yang ditentukan di penyimpanan lokal
             // $audioPath = $request->file('audio')->storeAs('public/musics', $namaFile);
             $audioPath = $request->file('audio')->store('musics', 'public');
             // dd($audioPath);
             $getID3 = new getID3();
-    
+
             $audioInfo = $getID3->analyze($request->file('audio')->path());
             $durationInSeconds = $audioInfo['playtime_seconds'];
             $durationMinutes = floor($durationInSeconds / 60);
             $durationSeconds = $durationInSeconds % 60;
             $formattedDuration = sprintf('%02d:%02d', $durationMinutes, $durationSeconds);
-    
+
             $artis = artist::where('user_id', Auth::user()->id)->first();
-    
+
             song::create([
                 'code' => $code,
                 'judul' => $request->input('judul'),
@@ -456,10 +456,10 @@ class ArtistController extends Controller
                 'artis_id' => $artis->id,
             ]);
             DB::commit();
-    
+
             $penghasilanArtist = (int) $artis->penghasilan + 200000;
             $artis->update(['penghasilan' => $penghasilanArtist]);
-    
+
             penghasilan::create([
                 'artist_id' => $artis->id, // Menggunakan ID artis, bukan objek artis
                 'penghasilan' => 200000,
