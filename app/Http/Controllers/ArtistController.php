@@ -468,7 +468,7 @@ class ArtistController extends Controller
                 'penghasilan' => 200000,
                 'bulan' => now()->format('m'),
             ]);
-            Alert::success('message', 'Lagu berhasil di upload');
+            Alert::success('message', 'Lagu berhasil di upload, tunggu admin untuk publish');
             return redirect('/artis/unggahAudio')->with('success', 'Song uploaded successfully.');
         } catch (\Throwable $e) {
             DB::rollBack();

@@ -119,13 +119,8 @@
     </div>
 
 
-    <script src="/user/assets/js/tablesort.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
     <script>
         $(document).ready(function() {
-
             $('.view-button').click(function() {
                 // Dapatkan ID data dari tombol "Lihat" yang ditekan
                 var itemId = $(this).data('id');
@@ -144,14 +139,13 @@
                 // Tampilkan pop-up
                 $('#popup').show();
             });
-
             // Tambahkan fungsi untuk menutup pop-up saat tombol "Tutup" ditekan
             $('#popup .close-button').click(function() {
                 $('#popup').hide();
             });
         });
-
-
+    </script>
+    <script>
         $(document).ready(function() {
             var itemsPerPage = 4;
 
@@ -260,4 +254,7 @@
             saveCurrentPageToLocalStorage(currentPage); // Simpan halaman saat ini ke local storage
         });
     </script>
+    <script src="/user/assets/js/tablesort.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 @endsection
