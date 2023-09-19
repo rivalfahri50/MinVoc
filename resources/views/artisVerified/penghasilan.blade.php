@@ -172,7 +172,7 @@
                                 <h3 class="angka m-0">Rp {{ number_format($totalpenghasilan, 2,',','.')}}</h3>
                                 <h4 class="judulnottebal mb-0">Total penghasilan</h4>
                                 @if (isset($penghasilanData->penghasilan) &&
-                                        $penghasilanData->penghasilan >= 500000 &&
+                                        $penghasilanData->penghasilan >= 100000 &&
                                         $penghasilanData->penghasilan !== $penghasilanData->penghasilanCair)
                                     <span class="btn-unstyled mr-2 link mb-0" style="cursor: pointer" data-bs-toggle="modal"
                                         data-bs-target="#caripenghasilan">Cairkan Penghasilan</span>

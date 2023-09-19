@@ -773,7 +773,6 @@
                         artist.innerHTML = All_song[index_no].artistId;
                         track_image.src = '{{ asset('storage') }}' + '/' + All_song[index_no].image;
                         track.load();
-
                         timer = setInterval(range_slider, 1000);
 
                     } else {
@@ -794,7 +793,6 @@
                     }
                     updateMuteButtonIcon();
                 }
-
                 // fungsi untuk memeriksa lagu diputar atau tidak
                 function justplay() {
                     if (Playing_song == false) {
@@ -974,6 +972,7 @@
                 // ubah posisi slider
                 // Fungsi untuk mengubah posisi slider
                 function change_duration() {
+                    let slider_value = slider.value;
                     if (!isNaN(track.duration) && isFinite(slider_value)) {
                         track.currentTime = track.duration * (slider_value / 100);
                         console.log(track.duration * (slider_value / 100), slider_value, track.currentTime)

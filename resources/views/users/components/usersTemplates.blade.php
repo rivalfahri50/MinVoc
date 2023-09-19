@@ -791,26 +791,22 @@
                     });
                 }
 
-
+                ambilDataLagu();
 
                 // function load the track
                 function load_track(index_no) {
                     if (index_no >= 0 && index_no < All_song.length) {
-                        console.log("Index_no sebelum pemanggilan load_track:", index_no);
-
                         track.src = '{{ asset('storage') }}' + '/' + All_song[index_no].audio;
                         title.innerHTML = All_song[index_no].judul;
                         artist.innerHTML = All_song[index_no].artistId;
                         track_image.src = '{{ asset('storage') }}' + '/' + All_song[index_no].image;
                         track.load();
-
                         timer = setInterval(range_slider, 1000);
-                        console.log("Index_no sebelum pemanggilan load_track:", index_no);
                     } else {
                         console.error("Index_no tidak valid.");
                     }
                 }
-                ambilDataLagu();
+               load_track(0);
                 // semua function
 
                 // fungsi mute sound
@@ -825,9 +821,9 @@
                     }
                     updateMuteButtonIcon();
                 }
-                track.addEventListener('loadedmetadata', function() {
-                    slider.max = track.duration;
-                });
+                // track.addEventListener('loadedmetadata', function() {
+                //     slider.max = track.duration;
+                // });
 
 
                 // fungsi untuk memeriksa lagu diputar atau tidak
@@ -971,6 +967,7 @@
 
                 track.addEventListener('ended', function() {
                     // Panggil fungsi untuk memutar lagu selanjutnya
+                    console.log("lagu anjeng");
                     next_song();
                 });
 
@@ -1010,16 +1007,15 @@
 
                 // ubah posisi slider
                 // Fungsi untuk mengubah posisi slider
-                function change_duration(e) {
-                    // console.log(track.curre)
-                    slider_position = track.duration * (slider.value / 100);
-                    track.currentTime = slider_position;
-                    console.log( slider_position = track.duration * (slider.value / 100));
+                function change_duration() {
+                    let slider_value = slider.value;
+                    if (!isNaN(track.duration) && isFinite(slider_value)) {
+                        track.currentTime = track.duration * (slider_value / 100);
+                        console.log(track.duration * (slider_value / 100), slider_value, track.currentTime)
+                    }
                 }
 
                 slider.addEventListener('input', function() {
-                    console.log("Aa")
-                    console.log($(this))
                     change_duration();
                     clearInterval(timer);
                     Playing_song = true;

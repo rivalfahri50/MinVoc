@@ -485,15 +485,6 @@ class ArtistVerifiedController extends Controller
         ]);
         DB::commit();
 
-            $penghasilanArtist = (int) $artis->penghasilan + 400000;
-            artist::findOrFail($artis->id)->update(['penghasilan'=> $penghasilanArtist]);
-            $artis->update(['penghasilan' => $penghasilanArtist]);
-            penghasilan::create([
-                'artist_id' => $artis->id, // Menggunakan ID artis, bukan objek artis
-                'penghasilan' => 400000,
-                'status' => "unggah lagu",
-                'bulan' => now()->format('m'),
-            ]);
 
         return redirect('/artis-verified/unggahAudio')->with('success', 'Song uploaded successfully.');
         try {
