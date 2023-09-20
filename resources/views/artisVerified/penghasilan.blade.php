@@ -171,21 +171,19 @@
                             <div class="card pcard jarak">
                                 <h3 class="angka m-0">Rp {{ number_format($totalpenghasilan, 2, ',', '.') }}</h3>
                                 <h4 class="judulnottebal mb-0">Total penghasilan</h4>
-                                {{-- @dd(isset($penghasilanData->is_take) && isset($penghasilanData->pengajuan) == false) --}}
-                                @if (isset($penghasilanData->is_take) && isset($penghasilanData->Pengajuan) == 0)
-                                    <span class="btn-unstyled mr-2 link mb-0">Mohon tunggu jawaban dari admin..</span>
+                                @if (isset($penghasilanData->Pengajuan))
+                                    <span class="btn-unstyled mr-2 link mb-0" style="cursor: pointer" data-bs-toggle="modal"
+                                        data-bs-target="#caripenghasilan">Cairkan
+                                        Penghasilan</span>
                                 @else
-                                    @if (isset($penghasilanData->penghasilan) === true && $totalpenghasilan >= 100000)
-                                        <span class="btn-unstyled mr-2 link mb-0" style="cursor: pointer"
-                                            data-bs-toggle="modal" data-bs-target="#caripenghasilan">Cairkan
-                                            Penghasilan</span>
-                                    @endif
+                                    <span class="btn-unstyled mr-2 link mb-0">Mohon tunggu jawaban dari admin..</span>
                                 @endif
-                                @if (isset($penghasilanData->is_submit) && isset($penghasilanData->penghasilanCair) == true)
+                                @if (isset($penghasilanData->is_submit) && $penghasilanData->is_submit && $penghasilanData->penghasilanCair)
                                     <span style="color: #858585">Terakhir diambil pada
                                         {{ (new DateTime($penghasilanData->terakhir_diambil))->format('d F Y') }}</span>
                                 @endif
                             </div>
+
                         </div>
                         <div class="modal fade" id="caripenghasilan" data-bs-backdrop="static" data-bs-keyboard="false"
                             tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -228,7 +226,7 @@
                         </div>
                         <div class="col-8 row no-gutters">
                             <div class="card px-3">
-                                <h3 class="judul" style="font-weight: 600">Informasi</h3>
+                                <h3 class="judul" style="font-weight: 500; margin-left: -6px">Informasi</h3>
                                 <p class="judulnottebal fs-6">Hi, {{ auth()->user()->name }}!
                                     Anda sebagai artis ter verifikasi penghasilan dalam MusiCave didapatkan dari jumlah
                                     pendengar musik, unggah lagu, dan kolaborasi bersama artis ter verifikasi lainnya.</p>
@@ -248,17 +246,17 @@
                 <div class="col-md-12">
                     <div class="row mb-2">
                         <div class="col-md-4">
-                            <h3 class="judul">Riwayat Penghasilan Masuk</h3>
+                            <h3 class="judul" style="font-size: 18px">Riwayat Penghasilan Masuk</h3>
                         </div>
                         <div class="col-md-8">
                             <form method="get" action="{{ route('filter.date') }}"
                                 class="form-inline justify-content-end">
-                                <label for="date1" class="mr-2">Cari Tanggal</label>
-                                <input type="date" name="start_date" id="date1" class="form-control mr-2"
-                                    placeholder="Dari tanggal">
-                                <label for="date1" class="mr-2">-</label>
-                                <input type="date" name="end_date" id="date2" class="form-control mr-2"
-                                    placeholder="Sampai tanggal">
+                                <label class="mr-2">Cari Tanggal</label>
+                                <input type="date" name="start_date" id="start_date" class="form-control mr-2"
+                                    placeholder="Dari tanggal" value="{{ old('start_date') }}">
+                                <label class="mr-2">-</label>
+                                <input type="date" name="end_date" id="end_date" class="form-control mr-2"
+                                    placeholder="Sampai tanggal" value="{{ old('end_date') }}">
                                 <button type="submit" name="submit" class="btn">Cari</button>
                             </form>
                         </div>
@@ -270,33 +268,44 @@
                                     <thead class="table-header">
                                         <tr class="table-row header headerlengkung">
                                             <th class="table-cell">Jumlah</th>
-                                            <th class="table-cell">project</th>
+                                            <th class="table-cell">Penghasilan</th>
                                             <th class="table-cell">Tanggal</th>
                                         </tr>
                                     </thead>
                                     @if (session('results'))
-                                        <tbody>
-                                            @foreach (session('results')->reverse() as $item)
-                                                <tr class="table-row baris">
-                                                    <td class="table-cell">
-                                                        <div class="cell-content">
-                                                            <h6 class="text-success">Rp.
-                                                                {{ number_format($item->penghasilanCair, 2, ',', '.') }}
-                                                            </h6>
-                                                        </div>
-                                                    </td>
-                                                    <td class="table-cell">{{ $item->status }}</td>
-                                                    <td class="table-cell">{{ $item->created_at->format('j F Y') }}</td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
+                                        @if (session('results'))
+                                            <tbody>
+                                                @foreach (session('results')->reverse() as $item)
+                                                    <tr class="table-row baris">
+                                                        <td class="table-cell">
+                                                            <div class="cell-content">
+                                                                <h6 class="text-success">Rp.
+                                                                    {{ number_format($item->penghasilan, 2, ',', '.') }}
+                                                                </h6>
+                                                            </div>
+                                                        </td>
+                                                        <td class="table-cell">{{ $item->status }}</td>
+                                                        <td class="table-cell">
+                                                            {{ $item->created_at->format('j F Y') }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        @else
+                                            <table class="py-3">
+                                                <span
+                                                    style="display: flex; justify-content: center; margin-top: 4px; margin-bottom: 4px">
+                                                    Tidak ada dalam history
+                                                    pencairan dana.
+                                                </span>
+                                            </table>
+                                        @endif
                                     @else
                                         @foreach ($penghasilanArtis->reverse() as $item)
                                             <tr class="table-row baris">
                                                 <td class="table-cell">
                                                     <div class="cell-content">
                                                         <h6 class="text-success">Rp.
-                                                            {{ number_format($item->penghasilanCair, 2, ',', '.') }}
+                                                            {{ number_format($item->penghasilan, 2, ',', '.') }}
                                                         </h6>
                                                     </div>
                                                 </td>

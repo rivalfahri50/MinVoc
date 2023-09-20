@@ -50,20 +50,20 @@
         <div class="content-wrapper">
             <div class="row">
                 <div class="col-lg-12 grid-margin stretch-card" style="height: 100vh">
-                    <div class="table-container">
+                    <div class="table-container" style="overflow-x: hidden">
                         <div class="row mb-2">
                             <div class="col-md-4">
-                                <h3 class="judul fs-5">Riwayat Penghasilan Masuk</h3>
+                                <h3 class="judul fs-5">Riwayat Pencairan Penghasilan</h3>
                             </div>
                             <div class="col-md-8">
-                                <form method="get" action="{{ route('filter.date') }}"
+                                <form method="get" action="{{ route('filter.date.pencairan') }}"
                                     class="form-inline justify-content-end">
-                                    <label for="date1" class="mr-2">Cari Tanggal</label>
-                                    <input type="date" name="start_date" id="date1" class="form-control mr-2"
-                                        placeholder="Dari tanggal">
-                                    <label for="date1" class="mr-2">-</label>
-                                    <input type="date" name="end_date" id="date2" class="form-control mr-2"
-                                        placeholder="Sampai tanggal">
+                                    <label class="mr-2">Cari Tanggal</label>
+                                    <input type="date" name="start_date" id="start_date" class="form-control mr-2"
+                                        placeholder="Dari tanggal" value="{{ old('start_date') }}">
+                                    <label class="mr-2">-</label>
+                                    <input type="date" name="end_date" id="end_date" class="form-control mr-2"
+                                        placeholder="Sampai tanggal" value="{{ old('end_date') }}">
                                     <button type="submit" name="submit" class="btn">Cari</button>
                                 </form>
                             </div>
@@ -73,16 +73,41 @@
                                 <tr class="table-row table-header">
                                     <th class="table-cell" data-sortable="true">Jumlah <i class="fas fa-sort"
                                             data-order="asc"></th>
-                                    <th class="table-cell" data-sortable="true">Status <i class="fas fa-sort"
+                                    <th class="table-cell" data-sortable="true">Penghasilan <i class="fas fa-sort"
                                             data-order="asc"></th>
                                     <th class="table-cell" data-sortable="true">Tanggal <i class="fas fa-sort"
                                             data-order="asc"></th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            @if (session('results'))
                                 @if (session('results'))
-                            <tbody>
-                                @foreach (session('results')->reverse() as $item)
+                                    <tbody>
+                                        @foreach (session('results')->reverse() as $item)
+                                            <tr class="table-row baris">
+                                                <td class="table-cell">
+                                                    <div class="cell-content">
+                                                        <h6 class="text-success">Rp.
+                                                            {{ number_format($item->penghasilanCair, 2, ',', '.') }}
+                                                        </h6>
+                                                    </div>
+                                                </td>
+                                                <td class="table-cell">{{ $item->status }}</td>
+                                                <td class="table-cell">
+                                                    {{ (new DateTime($item->Pengajuan_tanggal))->format('d F Y') }}
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                @else
+                                    <table class="py-3">
+                                        <span
+                                            style="display: flex; justify-content: center; margin-top: 4px; margin-bottom: 4px">
+                                            Tidak ada dalam history
+                                            pencairan dana.
+                                        </span>
+                                    </table>
+                                @endif
+                            @else
+                                @foreach ($penghasilan->reverse() as $item)
                                     <tr class="table-row baris">
                                         <td class="table-cell">
                                             <div class="cell-content">
@@ -92,26 +117,12 @@
                                             </div>
                                         </td>
                                         <td class="table-cell">{{ $item->status }}</td>
-                                        <td class="table-cell">{{ $item->created_at->format('j F Y') }}</td>
+                                        <td class="table-cell">
+                                            {{ (new DateTime($item->Pengajuan_tanggal))->format('d F Y') }}
+                                        </td>
                                     </tr>
                                 @endforeach
-                            </tbody>
-                        @else
-                            @foreach ($penghasilan->reverse() as $item)
-                                <tr class="table-row baris">
-                                    <td class="table-cell">
-                                        <div class="cell-content">
-                                            <h6 class="text-success">Rp.
-                                                {{ number_format($item->penghasilanCair, 2, ',', '.') }}
-                                            </h6>
-                                        </div>
-                                    </td>
-                                    <td class="table-cell">{{ $item->status }}</td>
-                                    <td class="table-cell">{{ $item->created_at->format('j F Y') }}</td>
-                                </tr>
-                            @endforeach
                             @endif
-                            </tbody>
                         </table>
                     </div>
                     <div class="text-center">
@@ -129,7 +140,9 @@
 
 
     <script src="/user/assets/js/tablesort.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

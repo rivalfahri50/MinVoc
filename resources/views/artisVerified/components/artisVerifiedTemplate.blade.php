@@ -25,7 +25,7 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        .fixedbar{
+        .fixedbar {
             position: fixed;
             z-index: 1030;
             width: 245px;
@@ -197,16 +197,10 @@
                 </li>
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="/artis-verified/kolaborasi">
-                        @if ($title === 'kolaborasi')
-                            <span class="menu-icon">
-                                <i class="mdi mdi-account-group-outline"></i>
-                            </span>
-                        @else
-                            <span class="menu-icon">
-                                <i class="mdi mdi-account-group-outline"></i>
-                            </span>
-                            <span class="menu-title">Kolaborasi</span>
-                        @endif
+                        <span class="menu-icon">
+                            <i class="mdi mdi-account-group-outline"></i>
+                        </span>
+                        <span class="menu-title">Kolaborasi</span>
                     </a>
                 </li>
                 <li class="nav-item menu-items">
@@ -231,7 +225,7 @@
                                 <a class="nav-link" href="/artis-verified/riwayatPenghasilan">
                                     <span class="menu-icon mr-0">
                                         <i class="mdi mdi-cash submenu" style="font-size: 20px;"></i>
-                                    </span>Riwayat Penghasilan
+                                    </span>Riwayat Pencairan
                                 </a>
                             </li>
                         </ul>
@@ -276,7 +270,7 @@
                         <div class="control-buttons">
                             <div id="controls">
                                 <button onclick="shuffle_song()" id="shuffle"><i class="fa fa-random"
-                                    aria-hidden="true"></i></button>
+                                        aria-hidden="true"></i></button>
                                 <button onclick="previous_song()" id="pre"><i class="fa fa-step-backward"
                                         aria-hidden="true"></i></button>
                                 <button onclick="justplay()" id="play"><i class="far fa-play-circle fr"
@@ -713,7 +707,6 @@
                     })
                 }
 
-
                 function updateSongLikeStatus(songId, isLiked) {
                     const likeIcons = document.querySelectorAll(`.shared-icon-like[data-id="${songId}"]`);
                     likeIcons.forEach(likeIcon => {
@@ -845,8 +838,6 @@
                         const songId = All_song[index_no].id;
                         console.log(All_song[index_no])
                         updatePlayCount(songId);
-                        history(songId);
-
                     }
                     track.addEventListener('timeupdate', updateDuration);
                     playCount++;
@@ -1022,6 +1013,8 @@
                     if (track.ended) {
                         play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>';
                         if (autoplay == 1) {
+                            const songId = All_song[index_no].id;
+                            history(songId);
                             index_no += 1;
                             load_track(index_no);
                             playsong();

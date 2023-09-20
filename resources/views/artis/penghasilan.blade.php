@@ -152,7 +152,8 @@
                                         <div class="col-md-12" style="font-size: 13px">
                                             <div class="mb-3">
                                                 <p for="namakategori" class="form-label judulnottebal">Total Penghasilan</p>
-                                                <h3 class="judul">Rp {{ number_format($totalpenghasilan, 2, ',', '.') }}</h3>
+                                                <h3 class="judul">Rp {{ number_format($totalpenghasilan, 2, ',', '.') }}
+                                                </h3>
                                             </div>
                                             <div class="mb-3">
                                                 <p for="konsep" class="form-label judulnottebal">Jumlah Pencairan</p>
@@ -169,16 +170,15 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-4">
-                            <div class="card pcard jarak" style="height: 100%;">
-                                <h3 class="angka m-0">Rp 10.000.000,00</h3>
-                                <h4 class="judulnottebal">Sisa Penghasilan</h4>
-                            </div>
-                        </div>
-                        <div class="col-4 row no-gutters">
-                            <div class="card">
-                                <img src="/assets/images/logo.svg" width="80%" height="100%" alt="logo"
-                                    class="ml-4 md-3" />
+                        <div class="col-8 row no-gutters">
+                            <div class="card px-3">
+                                <h3 class="judul" style="font-weight: 600">Informasi</h3>
+                                <p class="judulnottebal" style="font-size: 12px">Hi, {{ auth()->user()->name }}!
+                                    Untuk mencairkan dana Anda sebagai seorang artis, penting untuk diingat bahwa Anda harus
+                                    memiliki status 'Artis Verified.' Ini berarti Anda telah melewati proses verifikasi
+                                    sebagai seniman di platform kami. Setelah Anda mencapai status ini, Anda dapat mengakses
+                                    dan mencairkan pendapatan yang Anda hasilkan dengan karya seni atau kreativitas Anda.
+                                </p>
                             </div>
                         </div>
                     </div>
