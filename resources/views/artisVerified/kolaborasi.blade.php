@@ -379,7 +379,7 @@
                                                     ($item->request_project_artis_id_2 !== null && $item->artist_id === $artisUser->id) ||
                                                     $item->request_project_artis_id_1 === $artisUser->id ||
                                                     $item->request_project_artis_id_2 === $artisUser->id)
-                                                @if (empty($item->harga) || in_array($item->status, ['accept', 'pending']))
+                                                @if (empty($item->harga) || in_array($item->status, ['accept', 'pending','reject']))
                                                     @if (!$item->is_reject || $item->artis->user_id === auth()->user()->id)
                                                         <tr class="table-row">
                                                             <td class="table-cell">{{ $item->artis->user->name }}</td>
@@ -641,8 +641,8 @@
                                 <div class="mb-3">
                                     <label for="namakategori" class="form-label judulnottebal">Nama artis</label>
                                     <div class="form-group">
-                                        <select class="js-example-basic-multiple" style="width: 100%"
-                                            id="kategori-{{ $item->code }}" name="kolaborator[]" multiple="multiple">
+                                        <select class="js-example-basic-multiple" style="width: 100%" id="kategori-{{ $item->code}}"
+                                            name="kolaborator[]" multiple="multiple">
                                             @foreach ($artis as $item)
                                                 @if ($item->user_id !== auth()->user()->id && $item->is_verified === 1)
                                                     <option style="background-color: white" value="{{ $item->id }}">

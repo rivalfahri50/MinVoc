@@ -31,6 +31,9 @@
         .kembali:hover {
             color: #7745a9;
         }
+        .btn-hijau-muda {
+  background-color: #957DAD;
+}
     </style>
 </head>
 
@@ -133,7 +136,6 @@
 
 </html>
 
-<!-- Halaman Konfirmasi -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const setujuButton = document.getElementById('setujuButton');
