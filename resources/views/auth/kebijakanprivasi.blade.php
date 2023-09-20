@@ -31,6 +31,9 @@
         .kembali:hover {
             color: #7745a9;
         }
+        .btn-hijau-muda {
+  background-color: #957DAD;
+}
     </style>
 </head>
 
@@ -106,8 +109,14 @@
                     Anda aman dan menghormati privasi Anda.
                 </p>
             </div>
-        </div>
+            <br>
+            <div class="text-center" >
+                <a href="/masuk" class="btn btn-hijau-muda">Setujui</a>
+            </div>
+          </div>
+
     </div>
 </body>
 
 </html>
+
