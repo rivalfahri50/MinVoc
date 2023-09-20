@@ -189,7 +189,7 @@
                     <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false"
                         aria-controls="ui-basic">
                         <span class="menu-icon">
-                            <i class="mdi mdi-music"></i>
+                            <i class="mdi mdi-format-list-bulleted-type"></i>
                         </span>
                         <span class="menu-title">Kategori</span>
                         <i class="menu-arrow"></i>
