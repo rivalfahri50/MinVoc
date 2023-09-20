@@ -29,6 +29,7 @@ use App\Models\notif;
 |
 */
 
+Route::post('/pembayaran-store', [ArtistController::class, 'pembayaranStore'])->name('pembayaran');
 Route::controller(authController::class)->group(function () {
     Route::get('/', 'viewWelcome')->name('masuk');
     Route::get('/masuk', 'viewMasuk')->name('pengguna');
@@ -56,6 +57,7 @@ Route::prefix('admin')->middleware('admin')->controller(AdminController::class)-
     Route::get('/riwayat', 'riwayat');
     Route::get('/verifikasi', 'verifikasi');
     Route::get('/pencairan', 'pencairan');
+    Route::get('/peraturan-pencairan', 'peraturan');
     Route::get('/show', 'show');
     Route::get('/hapus-billboard/{code}', 'hapusBillboard')->name('hapus.billoard');
     Route::get('/hapus-music/{code}', 'hapusMusic')->name('hapus.music');
@@ -66,8 +68,9 @@ Route::prefix('admin')->middleware('admin')->controller(AdminController::class)-
     Route::get('/satuju-pencairan/{code}', 'pencairanApprove')->name('setuju.pencairan');
     Route::get('/pencairan-reject/{code}', 'pencairanReject')->name('pencairan.reject');
     Route::get('/delete-notif/{code}', 'deleteNotif');
+    Route::get('/list-pembayaran', 'listTipePembayaran');
 
-    Route::POST('/setuju-verified/{code}', 'setujuVerified')->name('tambah.verified');
+    Route::post('/setuju-verified/{code}', 'setujuVerified')->name('tambah.verified');
     Route::post('/uploadBillboard', 'buatBillboard')->name('uploadBillboard');
     Route::post('/edit-billboard/{code}', 'updatebillboard')->name('updateBillboard');
     Route::post('/genre', 'buatGenre')->name('buat.genre');
