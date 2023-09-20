@@ -18,6 +18,7 @@ return new class extends Migration
             $table->bigInteger('penghasilanCair')->default(0);
             $table->bigInteger('Pengajuan')->default(0);
             $table->boolean('is_take')->default(false);
+            $table->boolean('is_submit')->default(false);
             $table->string('bulan');
             $table->string('status')->nullable();
             $table->timestamp('Pengajuan_tanggal')->nullable();

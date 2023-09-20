@@ -61,7 +61,6 @@ class ArtistVerifiedController extends Controller
     {
         $title = "MusiCave";
         $totalPengguna = User::count();
-        $totalpenghasilan = penghasilan::sum('penghasilan');
         $totalLagu = song::count();
         $totalArtist = artist::count();
         $songs = song::all();
@@ -69,6 +68,7 @@ class ArtistVerifiedController extends Controller
         $projects = projects::where('status', 'accept')->get();
         $artistid = (int) artist::where('user_id', auth()->user()->id)->first()->id;
         $penghasilan = penghasilan::where('artist_id', $artistid)->pluck('penghasilanCair')->toArray();
+        $penghasilanArtis = penghasilan::with('artist')->where('artist_id', $artistid)->where('is_submit', true)->get();
         $totalpenghasilan = penghasilan::where('artist_id', $artistid)->sum('penghasilan');
         $penghasilanData = penghasilan::where('artist_id', $artistid)->first();
         // $month = penghasilan::where('artist_id', $artistid)->pluck('bulan')->toArray();
@@ -83,7 +83,7 @@ class ArtistVerifiedController extends Controller
                     ->where('bulan', $bulan)
                     ->whereYear('created_at', date('Y'))
                     ->whereMonth('created_at', $i)
-                    ->sum('penghasilanCair');
+                    ->sum('penghasilan');
                 $month[] = $totalPendapatan;
             }
         } else {
@@ -92,19 +92,20 @@ class ArtistVerifiedController extends Controller
                 $totalPendapatan = penghasilan::where('artist_id', $artistId)
                     ->whereYear('created_at', date('Y'))
                     ->whereMonth('created_at', $i)
-                    ->sum('penghasilanCair');
+                    ->sum('penghasilan');
                 $month[] = $totalPendapatan;
             }
         }
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('artisVerified.penghasilan', compact('title', 'totalpenghasilan', 'month', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'penghasilan', 'projects', 'notifs', 'penghasilanData'));
+        return response()->view('artisVerified.penghasilan', compact('title', 'totalpenghasilan', 'month', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'penghasilan', 'projects', 'notifs', 'penghasilanData', 'penghasilanArtis'));
     }
 
     protected function riwayatPenghasilan(Request $request)
     {
         $title = 'MusiCave';
+        $penghasilan = penghasilan::with('artist')->where('is_submit', true)->get();
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('artisVerified.riwayatpenghasilan', compact('title', 'notifs'));
+        return response()->view('artisVerified.riwayatpenghasilan', compact('title', 'notifs', 'penghasilan'));
     }
 
     protected function pencairan()
@@ -119,17 +120,22 @@ class ArtistVerifiedController extends Controller
 
     protected function pencairanDana(Request $request, string $code)
     {
-        $artis = artist::where('user_id', $code)->first();
-        $penghasilan = penghasilan::where('artist_id', $artis->id)->get();
-        foreach ($penghasilan as $p) {
-            $data = $p->penghasilan;
-            $data = [
-                'is_take' => true,
-                'Pengajuan' => (int) str_replace('.', '', $data),
-                'Pengajuan_tanggal' => now()
-            ];
-            $p->update($data);
+        try {
+            $artis = artist::where('user_id', $code)->first();
+            $penghasilan = penghasilan::where('artist_id', $artis->id)->get();
+            foreach ($penghasilan as $p) {
+                $data = $p->penghasilan;
+                $data = [
+                    'is_take' => true,
+                    'Pengajuan' => (int) str_replace('.', '', $data),
+                    'Pengajuan_tanggal' => now()
+                ];
+                $p->update($data);
+            }
+        } catch (\Throwable $th) {
+            Alert::error('message', 'Permintaan gagal terkirim');
         }
+        Alert::success('message', 'Permintaan telah terkirim');
         return redirect()->back();
     }
 
@@ -188,6 +194,7 @@ class ArtistVerifiedController extends Controller
         } catch (\Throwable $th) {
             return abort(404);
         }
+        Alert::success('message', 'Berhasil mengundang');
         return redirect()->back();
     }
 
@@ -456,49 +463,48 @@ class ArtistVerifiedController extends Controller
         }
 
         $artis = artist::where('user_id', Auth::user()->id)->first();
-        $data = [
-            'artis_id' => $artis->id,
-            'title' => $request->input('judul'),
-            'user_id' => auth()->user()->id,
-            'is_reject' => false
-        ];
 
-
-        DB::beginTransaction();
-        $code = Str::uuid();
-        $image = $request->file('image')->store('images', 'public');
-        $audioPath = $request->file('audio')->store('musics', 'public');
-        // $audio = $request->file('audio')->store('musics', 'public');
-        // $namaFile = time() . '_' . $request->file('audio')->getClientOriginalName();
-
-        // Simpan file audio dengan nama yang ditentukan di penyimpanan lokal
-        // $audioPath = $request->file('audio')->storeAs('musics', $namaFile);
-
-        $getID3 = new getID3();
-        $audioInfo = $getID3->analyze($request->file('audio')->path());
-        $durationInSeconds = $audioInfo['playtime_seconds'];
-        $durationMinutes = floor($durationInSeconds / 60);
-        $durationSeconds = $durationInSeconds % 60;
-        $formattedDuration = sprintf('%02d:%02d', $durationMinutes, $durationSeconds);
-
-
-        notif::create($data);
-        song::create([
-            'code' => $code,
-            'judul' => $request->input('judul'),
-            'image' => $image,
-            'audio' => $audioPath,
-            'waktu' => $formattedDuration,
-            'is_approved' => false,
-            'genre_id' => $request->input('genre'),
-            'album_id' => $request->input('album') == null ? null : $request->input('album'),
-            'artis_id' => $artis->id,
-        ]);
-        DB::commit();
-
-
-        return redirect('/artis-verified/unggahAudio')->with('success', 'Song uploaded successfully.');
         try {
+            DB::beginTransaction();
+            $code = Str::uuid();
+            $image = $request->file('image')->store('images', 'public');
+            $audioPath = $request->file('audio')->store('musics', 'public');
+
+            $getID3 = new getID3();
+            $audioInfo = $getID3->analyze($request->file('audio')->path());
+            $durationInSeconds = $audioInfo['playtime_seconds'];
+            $durationMinutes = floor($durationInSeconds / 60);
+            $durationSeconds = $durationInSeconds % 60;
+            $formattedDuration = sprintf('%02d:%02d', $durationMinutes, $durationSeconds);
+
+            penghasilan::create([
+                'artist_id' => $artis->id, // Menggunakan ID artis, bukan objek artis
+                'penghasilan' => 200000,
+                'bulan' => now()->format('m'),
+            ]);
+
+            notif::create([
+                'artis_id' => $artis->id,
+                'title' => $request->input('judul'),
+                'user_id' => auth()->user()->id,
+                'is_reject' => false
+            ]);
+
+            song::create([
+                'code' => $code,
+                'judul' => $request->input('judul'),
+                'image' => $image,
+                'audio' => $audioPath,
+                'waktu' => $formattedDuration,
+                'is_approved' => false,
+                'genre_id' => $request->input('genre'),
+                'album_id' => $request->input('album') == null ? null : $request->input('album'),
+                'artis_id' => $artis->id,
+            ]);
+            DB::commit();
+
+            Alert::success('message', 'Lagu berhasil di upload, tunggu admin untuk publish');
+            return redirect('/artis-verified/unggahAudio')->with('success', 'Song uploaded successfully.');
         } catch (\Throwable $e) {
             DB::rollBack();
             Alert::error('message', 'Lagu gagal di upload');
@@ -872,7 +878,6 @@ class ArtistVerifiedController extends Controller
             ]
         );
 
-
         setlocale(LC_MONETARY, 'id_ID');
 
         if ($validate->fails()) {
@@ -891,96 +896,97 @@ class ArtistVerifiedController extends Controller
             $persentase = 80;
         }
 
-        $uangTetap = 2000000;
+        $uangTetap = 1800000;
         $uangYangDiterima = ($range / 100) * $uangTetap;
-        // dd($request->all());
 
-        if (isset($project->request_project_artis_id_1) && isset($project->request_project_artis_id_2)) {
-            $penghasilan_request_project_artis_id_1 = penghasilan::where('artist_id', $project->request_project_artis_id_1)->first();
-            $penghasilan_request_project_artis_id_2 = penghasilan::where('artist_id', $project->request_project_artis_id_2)->first();
+        if (isset($project->request_project_artis_id_1) || isset($project->request_project_artis_id_2)) {
             $sisaPengasilan = 1800000 - $uangYangDiterima;
+            // dd($sisaPengasilan);
+            penghasilan::create([
+                'artist_id' => $project->request_project_artis_id_1,
+                'penghasilan' => $sisaPengasilan,
+                'status' => 'kolaborasi',
+                'is_take' => false,
+                'bulan' =>  date('n')
+            ]);
+            if ($project->request_project_artis_id_1 !== null && $project->request_project_artis_id_2 !== null) {
+                penghasilan::create([
+                    'artist_id' => $project->request_project_artis_id_1,
+                    'penghasilan' => $sisaPengasilan / 2,
+                    'status' => 'kolaborasi',
+                    'bulan' =>  date('n'),
+                    'is_take' => false,
+                ]);
 
-            $harga_artis_1 = $penghasilan_request_project_artis_id_1->penghasilan + ($sisaPengasilan / 2);
-            $harga_artis_2 = $penghasilan_request_project_artis_id_2->penghasilan + ($sisaPengasilan / 2);
-
-            if (isset($penghasilan_request_project_artis_id_1) === false) {
                 penghasilan::create([
-                    'artist_id' => artist::where('user_id', auth()->user()->id)->first()->id,
-                    'penghasilan' => $harga_artis_1,
+                    'artist_id' => $project->request_project_artis_id_2,
+                    'penghasilan' => $sisaPengasilan / 2,
                     'status' => 'kolaborasi',
-                    'bulan' =>  date('n')
+                    'bulan' =>  date('n'),
+                    'is_take' => false,
                 ]);
-            } else if (isset($penghasilan_request_project_artis_id_2) === false) {
-                penghasilan::create([
-                    'artist_id' => artist::where('user_id', auth()->user()->id)->first()->id,
-                    'penghasilan' => $harga_artis_2,
-                    'status' => 'kolaborasi',
-                    'bulan' =>  date('n')
-                ]);
-            } else {
-                $penghasilan_request_project_artis_id_1->update(['penghasilan' => $harga_artis_1]);
-                $penghasilan_request_project_artis_id_2->update(['penghasilan' => $harga_artis_2]);
-            }
-        } else {
-            $artisPenghasilan = penghasilan::where('artist_id', $project->artist_id)->first();
-            if (isset($artisPenghasilan) === false) {
-                penghasilan::create([
-                    'artist_id' => artist::where('user_id', auth()->user()->id)->first()->id,
-                    'penghasilan' => $uangYangDiterima,
-                    'status' => 'kolaborasi',
-                    'bulan' =>  date('n')
-                ]);
-            } else {
-                $harga = $artisPenghasilan->penghasilan + $uangYangDiterima;
-                $artisPenghasilan->update(['penghasilan' => $harga]);
             }
         }
 
-        admin::where('id', 1)->update(['penghasilan' => 200000]);
-
-        $images = $request->file('images')->store('images', 'public');
-        $audio = $request->file('audio')->store('audio', 'public');
-        $data = [
-            'code' => $project->code,
-            'name' => $project->name,
-            'konsep' => $project->konsep,
-            'judul' => $request->input('name'),
-            'images' => $images,
-            'audio' => $audio,
-            'harga' => $uangYangDiterima,
-            'status' => "accept",
-            'pembuat_project' => Auth::user()->id,
-            'is_approved' => true,
-            'is_reject' => false,
-        ];
-
-        $getID3 = new getID3();
-        $audioInfo = $getID3->analyze($request->file('audio')->path());
-        $durationInSeconds = $audioInfo['playtime_seconds'];
-        $durationMinutes = floor($durationInSeconds / 60);
-        $durationSeconds = $durationInSeconds % 60;
-        $formattedDuration = sprintf('%02d:%02d', $durationMinutes, $durationSeconds);
-
-        $artis = artist::where('user_id', auth()->user()->id)->first();
-
-        // notif::create($data);x
-        song::create([
-            'code' => $code,
-            'judul' => $request->input('name'),
-            'image' => $images,
-            'audio' => $audio,
-            'waktu' => $formattedDuration,
-            'is_approved' => true,
-            'genre_id' => $request->input('genre'),
-            'album_id' => $request->input('album') == null ? null : $request->input('album'),
-            'artis_id' => $artis->id,
+        // $artisPenghasilan = penghasilan::where('artist_id', $project->artist_id)->first();
+        // if (isset($artisPenghasilan) === false) {
+        penghasilan::create([
+            'artist_id' => artist::where('user_id', auth()->user()->id)->first()->id,
+            'penghasilan' => $uangYangDiterima,
+            'status' => 'kolaborasi',
+            'is_take' => false,
+            'bulan' =>  date('n')
         ]);
+        // } else {
+        //     $harga = $artisPenghasilan->penghasilan + $uangYangDiterima;
+        //     $artisPenghasilan->update(['penghasilan' => $harga]);
+        // }
 
-        $project->update($data);
         try {
+            admin::where('id', 1)->update(['penghasilan' => 200000]);
+
+            $images = $request->file('images')->store('images', 'public');
+            $audio = $request->file('audio')->store('audio', 'public');
+            $data = [
+                'code' => $project->code,
+                'name' => $project->name,
+                'konsep' => $project->konsep,
+                'judul' => $request->input('name'),
+                'images' => $images,
+                'audio' => $audio,
+                'harga' => $uangYangDiterima,
+                'status' => "accept",
+                'pembuat_project' => Auth::user()->id,
+                'is_approved' => true,
+                'is_reject' => false,
+            ];
+
+            $getID3 = new getID3();
+            $audioInfo = $getID3->analyze($request->file('audio')->path());
+            $durationInSeconds = $audioInfo['playtime_seconds'];
+            $durationMinutes = floor($durationInSeconds / 60);
+            $durationSeconds = $durationInSeconds % 60;
+            $formattedDuration = sprintf('%02d:%02d', $durationMinutes, $durationSeconds);
+
+            $artis = artist::where('user_id', auth()->user()->id)->first();
+
+            song::create([
+                'code' => $code,
+                'judul' => $request->input('name'),
+                'image' => $images,
+                'audio' => $audio,
+                'waktu' => $formattedDuration,
+                'is_approved' => true,
+                'genre_id' => $request->input('genre'),
+                'album_id' => $request->input('album') == null ? null : $request->input('album'),
+                'artis_id' => $artis->id,
+            ]);
+
+            $project->update($data);
         } catch (Throwable $e) {
             return abort(404);
         }
+        Alert::success('message', 'Project berhasil di buat');
         return response()->redirectTo('/artis-verified/kolaborasi')->with('message', 'User created successfully.');
     }
 

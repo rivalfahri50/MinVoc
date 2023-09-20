@@ -76,6 +76,10 @@
                 cursor: pointer;
             }
 
+            #range {
+                accent-color: #957dad;
+            }
+
             .range-wrap {
                 width: 450px;
                 position: relative;
@@ -160,6 +164,9 @@
                         display: flex;
                         align-items: center;
                         background-color: white;
+                        background-color: white;
+                        border-radius: 10px;
+                        border: 1px solid #c9c9c9;
                     }
 
                     .chat-message.sent {
@@ -352,6 +359,11 @@
                         </div>
                     </div>
                 @else
+                <style>
+                    label {
+                        justify-content: start
+                    }
+                </style>
                     <div class="col-md-6">
                         <div class="card kiri scrollbar-dusty-grass square thin rounded-4">
                             <div class="card-body">
@@ -421,7 +433,7 @@
                                     <div class="range-wrap">
                                         <div class="range-value" id="rangeV">0%</div>
                                         <input class="slider mb-4" id="range" name="range" type="range"
-                                            min="0" max="100" value="40" step="1">
+                                            min="40" max="80" step="1">
                                         <output for="range" class="output">Rp. 0</output>
                                     </div>
                                 </div>
@@ -474,16 +486,16 @@
             rangeV.innerHTML = `${persentase}%`;
 
             const harga = formatRupiah(uang);
-            output.textContent = `Rp. ${harga}`;
+            output.textContent = harga;
         };
 
-        // Fungsi untuk mengonversi nilai menjadi format Rupiah (Rp)
         const formatRupiah = (angka) => {
-            let reverse = angka.toString().split('').reverse().join('');
-            let ribuan = reverse.match(/\d{1,3}/g);
-            ribuan = ribuan.join('.').split('').reverse().join('');
-            return ribuan;
+            return angka.toLocaleString('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+            });
         };
+
 
         document.addEventListener("DOMContentLoaded", () => {
             setValue();

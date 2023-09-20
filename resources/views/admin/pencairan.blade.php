@@ -57,7 +57,7 @@
                         </thead>
                         <tbody>
                             @foreach ($penghasilanAll as $item)
-                                @if ($item->total_penghasilan > 0)
+                                @if ($item->total_penghasilan > 0 || $item->is_submit == false)
                                     <tr class="table-row baris">
                                         <td class="table-cell">
                                             <p>{{ $item->artist->user->name }}</p>

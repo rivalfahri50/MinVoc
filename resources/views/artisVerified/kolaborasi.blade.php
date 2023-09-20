@@ -1,46 +1,5 @@
 @extends('artisVerified.components.artisVerifiedTemplate')
 
-{{-- @foreach ($datas as $item)
-    <div class="modal fade" id="staticBackdrop-{{ $item->code }}" data-bs-backdrop="static" data-bs-keyboard="false"
-        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content" style="background-color: white">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Detail Kolaborasi</h1>
-                    <button type="button" class="btn-unstyled" data-bs-dismiss="modal" aria-label="Close">
-                        <i class="mdi mdi-close-circle-outline btn-icon text-danger"></i>
-                    </button>
-                </div>
-                <div class="modal-body ">
-
-                    <div class="mb-3 row">
-                        <label class="col-sm-4 col-form-label"><b>Judul Lagu </b><strong class="">:</strong>
-                        </label>
-                        <div class="col-sm-8">
-                            <input type="text" readonly class="form-control-plaintext" value="{{ $item->name }}">
-                        </div>
-                    </div>
-
-                    <div class="mb-3 row">
-                        <label class="col-sm-4 col-form-label"><b>Deskripsi </b><strong
-                                class="">:</strong></label>
-                        <div class="col-sm-5">
-                            <p class="judul-lagu text-dark">{{ $item->konsep }}</p>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-info rounded-3">
-                        <a href="{{ route('lirikAndChat.artisVerified', $item->code) }}" class="btn-link"
-                            style="color: inherit; text-decoration: none;">Buat
-                            Proyek</a></button>
-                </div>
-            </div>
-        </div>
-    </div>
-@endforeach --}}
-
 @section('content')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -266,50 +225,63 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                const confirmButton = document.getElementById('confirmButton');
+                const confirmButtons = document.querySelectorAll('.confirmButton');
 
-                confirmButton.addEventListener('click', function(event) {
-                    event.preventDefault(); // Mencegah pengiriman formulir langsung
+                confirmButtons.forEach(confirmButton => {
+                    confirmButton.addEventListener('click', function(event) {
+                        event.preventDefault(); // Mencegah pengiriman formulir langsung
 
-                    Swal.fire({
-                        title: 'Konfirmasi Hapus',
-                        text: 'Apakah Anda yakin ingin menghapus project ini?',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Ya, Hapus!',
-                        cancelButtonText: 'Batal'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Jika pengguna mengonfirmasi, kirimkan formulir
-                            const form = event.target.closest('form');
-                            if (form) {
-                                form.submit();
+                        const itemCode = this.getAttribute('data-item-code');
+                        const tableRow = this.closest(
+                            'tr'); // Mendapatkan baris tabel yang berisi tombol hapus
+
+                        Swal.fire({
+                            title: 'Konfirmasi Hapus',
+                            text: 'Apakah Anda yakin ingin menghapus project ini?',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Ya, Hapus!',
+                            cancelButtonText: 'Batal'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Jika pengguna mengonfirmasi, kirimkan formulir
+                                const form = event.target.closest('form');
+                                if (form) {
+                                    form.submit();
+                                }
                             }
-                        }
+                        });
+
                     });
                 });
             });
 
-            document.addEventListener('DOMContentLoaded', function() {
-                const confirmButtonReject = document.getElementById('confirmButtonReject');
-                confirmButtonReject.addEventListener('click', function(event) {
-                    event.preventDefault(); // Mencegah pengiriman formulir langsung
 
-                    Swal.fire({
-                        title: 'Konfirmasi Hapus',
-                        text: 'Apakah Anda yakin ingin menolak kolaborasi ini?',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Ya, Hapus!',
-                        cancelButtonText: 'Batal'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Jika pengguna mengonfirmasi, kirimkan formulir
-                            const form = event.target.closest('form');
-                            if (form) {
-                                form.submit();
+            document.addEventListener('DOMContentLoaded', function() {
+                const confirmButtonRejects = document.querySelectorAll('.confirmButtonReject');
+
+                confirmButtonRejects.forEach(confirmButtonReject => {
+
+                    confirmButtonReject.addEventListener('click', function(event) {
+                        event.preventDefault(); // Mencegah pengiriman formulir langsung
+                        const itemCode = this.getAttribute('data-item');
+                        const tableRow = this.closest('tr');
+                        Swal.fire({
+                            title: 'Konfirmasi Hapus',
+                            text: 'Apakah Anda yakin ingin menolak kolaborasi ini?',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Ya, Hapus!',
+                            cancelButtonText: 'Batal'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Jika pengguna mengonfirmasi, kirimkan formulir
+                                const form = event.target.closest('form');
+                                if (form) {
+                                    form.submit();
+                                }
                             }
-                        }
+                        });
                     });
                 });
             });
@@ -361,7 +333,8 @@
                                                                     style="font-size: 20px; margin-right: 2px;"></i>
                                                             </a>
 
-                                                            <button type="button" id="confirmButton">
+                                                            <button type="button" class="confirmButton"
+                                                                data-item-code="{{ $item->code }}">
                                                                 <form action="{{ route('reject.project.artisVerified') }}"
                                                                     method="post" class="m-0">
                                                                     @csrf
@@ -406,111 +379,90 @@
                                                     ($item->request_project_artis_id_2 !== null && $item->artist_id === $artisUser->id) ||
                                                     $item->request_project_artis_id_1 === $artisUser->id ||
                                                     $item->request_project_artis_id_2 === $artisUser->id)
-                                                @if (empty($item->harga) || in_array($item->status, ['accept', 'pending']))
+                                                @if (empty($item->harga) || in_array($item->status, ['accept', 'pending','reject']))
                                                     @if (!$item->is_reject || $item->artis->user_id === auth()->user()->id)
                                                         <tr class="table-row">
                                                             <td class="table-cell">{{ $item->artis->user->name }}</td>
                                                             <td class="table-cell">{{ $item->name }}</td>
-                                                            <td class="table-cell">
-                                                                {{ $item->created_at->format('d F Y') }}</td>
+                                                            <td class="table-cell">{{ $item->created_at->format('d F Y') }}
+                                                            </td>
                                                             <td
                                                                 class="table-cell text-success {{ $item->status == 'reject' ? 'text-danger' : '' }} {{ $item->status == 'pending' ? 'text-warning' : '' }}">
                                                                 {{ $item->status }}
                                                             </td>
                                                             <td class="d-flex align-items-center">
-                                                                @if (($item->status == 'pending' && $item->is_take) || $artisUser->id == $item->artist_id)
-                                                                    <form
-                                                                        action="{{ route('lirikAndChat.artisVerified', $item->code) }}"
-                                                                        method="GET">
-                                                                        <button type="submit" class="btn-unstyled">
-                                                                            <i
-                                                                                class="fa-regular fa-comment-dots fs-5 text-info ml-1"></i>
-                                                                        </button>
-                                                                    </form>
+                                                                @if ($item->status === 'accept')
+                                                                    <button type="submit" class="confirmButtonReject"
+                                                                        data-item="{{ $item->code }}">
+                                                                        <form
+                                                                            action="{{ route('reject.project.artisVerified') }}"
+                                                                            method="post" class="m-0">
+                                                                            @csrf
+                                                                            <input type="hidden" name="code"
+                                                                                value="{{ $item->code }}">
+                                                                            <input type="hidden" name="is_reject"
+                                                                                value="true">
+                                                                            <i class="far fa-times-circle btn-icon text-danger"
+                                                                                style="font-size: 20px"></i>
+                                                                        </form>
+                                                                    </button>
                                                                 @else
-                                                                    <form
-                                                                        action="{{ route('lirikAndChat.artisVerified', $item->code) }}"
-                                                                        method="GET">
-                                                                        <button type="submit" class="btn-unstyled">
-                                                                            <i
-                                                                                class="fa-regular fa-circle-check fs-5 text-success"></i>
+                                                                    @if (
+                                                                        $item->status !== 'accept' &&
+                                                                            (($item->status === 'pending' && $item->is_take) || $artisUser->id == $item->artist_id))
+                                                                        <form
+                                                                            action="{{ route('lirikAndChat.artisVerified', $item->code) }}"
+                                                                            method="GET">
+                                                                            <button type="submit" class="btn-unstyled">
+                                                                                <i
+                                                                                    class="fa-regular fa-comment-dots fs-5 text-info ml-1"></i>
+                                                                            </button>
+                                                                        </form>
+                                                                        <button type="submit" class="confirmButton"
+                                                                            data-item="{{ $item->code }}">
+                                                                            <form
+                                                                                action="{{ route('reject.project.artisVerified') }}"
+                                                                                method="post" class="m-0">
+                                                                                @csrf
+                                                                                <input type="hidden" name="code"
+                                                                                    value="{{ $item->code }}">
+                                                                                <input type="hidden" name="is_reject"
+                                                                                    value="true">
+                                                                                <i class="far fa-times-circle btn-icon text-danger"
+                                                                                    style="font-size: 20px"></i>
+                                                                            </form>
                                                                         </button>
-                                                                    </form>
+                                                                    @else
+                                                                        <form
+                                                                            action="{{ route('lirikAndChat.artisVerified', $item->code) }}"
+                                                                            method="GET">
+                                                                            <button type="submit" class="btn-unstyled">
+                                                                                <i
+                                                                                    class="fa-regular fa-circle-check fs-5 text-success ml-1"></i>
+                                                                            </button>
+                                                                        </form>
+                                                                        <button type="submit" class="confirmButtonReject"
+                                                                            data-item="{{ $item->code }}">
+                                                                            <form
+                                                                                action="{{ route('reject.project.artisVerified') }}"
+                                                                                method="post" class="m-0">
+                                                                                @csrf
+                                                                                <input type="hidden" name="code"
+                                                                                    value="{{ $item->code }}">
+                                                                                <input type="hidden" name="is_reject"
+                                                                                    value="true">
+                                                                                <i class="far fa-times-circle btn-icon text-danger"
+                                                                                    style="font-size: 20px"></i>
+                                                                            </form>
+                                                                        </button>
+                                                                    @endif
                                                                 @endif
-                                                                <button type="submit" id="confirmButtonReject">
-                                                                    <form
-                                                                        action="{{ route('reject.project.artisVerified') }}"
-                                                                        method="post" class="m-0">
-                                                                        @csrf
-                                                                        <input type="hidden" name="code"
-                                                                            value="{{ $item->code }}">
-                                                                        <input type="hidden" name="is_reject"
-                                                                            value="true">
-                                                                        <i class="far fa-times-circle btn-icon text-danger"
-                                                                            style="font-size: 20px"></i>
-                                                                    </form>
-                                                                </button>
                                                             </td>
                                                         </tr>
                                                     @endif
                                                 @endif
                                             @endif
                                         @endforeach
-
-
-
-                                        {{-- @foreach ($datas->reverse() as $item)
-                                        //     @if ($item->request_project_artis_id_1 !== null || ($item->request_project_artis_id_2 !== null && $item->artist_id === $artisUser->id) || $item->request_project_artis_id_1 === $artisUser->id || $item->request_project_artis_id_2 === $artisUser->id)
-                                        //         @if (empty($item->harga))
-                                        //             @if (!$item->is_reject || $item->artis->user_id === auth()->user()->id)
-                                        //                 <tr class="table-row">
-                                        //                     <td class="table-cell">{{ $item->artis->user->name }}</td>
-                                        //                     <td class="table-cell">{{ $item->name }}</td>
-                                        //                     <td class="table-cell">{{ $item->created_at->format('d F Y') }}
-                                        //                     </td>
-                                        //                     <td
-                                        //                         class="table-cell {{ $item->status === 'reject' ? 'text-danger' : 'text-warning' }}">
-                                        //                         {{ $item->status }}</td>
-                                        //                     <td class="d-flex align-items-center">
-                                        //                         @if (($item->status == 'pending' && $item->is_take) || $artisUser->id == $item->artist_id)
-                                        //                             <form
-                                        //                                 action="{{ route('lirikAndChat.artisVerified', $item->code) }}"
-                                        //                                 method="GET">
-                                        //                                 <button type="submit" class="btn-unstyled">
-                                        //                                     <i
-                                        //                                         class="fa-regular fa-comment-dots fs-5 text-info ml-1"></i>
-                                        //                                 </button>
-                                        //                             </form>
-                                        //                         @else
-                                        //                             <form
-                                        //                                 action="{{ route('lirikAndChat.artisVerified', $item->code) }}"
-                                        //                                 method="GET">
-                                        //                                 <button type="submit" class="btn-unstyled">
-                                        //                                     <i
-                                        //                                         class="fa-regular fa-circle-check fs-5 text-success"></i>
-                                        //                                 </button>
-                                        //                             </form>
-                                        //                         @endif
-                                        //                         <button type="submit" id="confirmButtonReject">
-                                        //                             <form
-                                        //                                 action="{{ route('reject.project.artisVerified') }}"
-                                        //                                 method="post" class="m-0">
-                                        //                                 @csrf
-                                        //                                 <input type="hidden" name="code"
-                                        //                                     value="{{ $item->code }}">
-                                        //                                 <input type="hidden" name="is_reject"
-                                        //                                     value="true">
-                                        //                                 <i class="far fa-times-circle btn-icon text-danger"
-                                        //                                     style="font-size: 20px"></i>
-                                        //                             </form>
-                                        //                         </button>
-                                        //                     </td>
-                                        //                 </tr>
-                                        //             @endif
-                                        //         @else
-                                        //         @endif
-                                        //     @endif
-                                        // @endforeach --}}
                                     </tbody>
                                 </table>
                             </div>
@@ -685,7 +637,7 @@
                                 <div class="mb-3">
                                     <label for="namakategori" class="form-label judulnottebal">Nama artis</label>
                                     <div class="form-group">
-                                        <select class="js-example-basic-multiple" style="width: 100%" id="kategori"
+                                        <select class="js-example-basic-multiple" style="width: 100%" id="kategori-{{ $item->code}}"
                                             name="kolaborator[]" multiple="multiple">
                                             @foreach ($artis as $item)
                                                 @if ($item->user_id !== auth()->user()->id && $item->is_verified === 1)
@@ -706,47 +658,12 @@
                 </form>
             </div>
         @endforeach
-
-        <script>
-            $(document).ready(function() {
-                $('.js-example-basic-multiple').select2({
-                    theme: "classic"
-                });
-            });
-        </script>
-        {{-- <script>
-            $(document).ready(function() {
-                // Initialize Select2
-                // $('.js-example-basic-multiple').select2();
-
-                // Get a reference to the select element
-                let selectElement = $('#kategori');
-
-                // Make an AJAX request to fetch data
-                $.ajax({
-                    url: `/artis-verified/artis-kolaborasi`,
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(response) {
-                        // Clear existing options (if any)
-                        selectElement.empty();
-
-                        // Add a placeholder option (if needed)
-                        selectElement.append('<option value="">Select an option</option>');
-
-                        // Iterate through the response data and add options
-                        response.forEach(function(item) {
-                            selectElement.append(
-                                `<option value="${item.user.name}">${item.user.name}</option>`);
-                            console.log("hasil nya " + item.user.name);
-                        });
-
-                        // Update Select2 after modifying the options
-                        selectElement.trigger('change');
-                    }
-                });
-            });
-        </script> --}}
-
     </div>
+    <script>
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2({
+                theme: "classic"
+            });
+        });
+    </script>
 @endsection

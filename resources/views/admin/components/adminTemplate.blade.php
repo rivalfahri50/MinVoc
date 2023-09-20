@@ -17,6 +17,12 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
+        .fixedbar{
+            position: fixed;
+            z-index: 1030;
+            width: 245px;
+        }
+
         .search-container {
             position: relative;
             display: flex;
@@ -142,7 +148,7 @@
                 <a class="sidebar-brand brand-logo" href="index.html"><img src="assets/images/logo.svg"
                         alt="logo" /></a>
             </div>
-            <ul class="nav">
+            <ul class="nav fixedbar">
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="/admin/dashboard">
                         <span class="menu-icon ">
@@ -296,13 +302,6 @@
                                 @foreach ($notifs->reverse() as $item)
                                     @if ($item)
                                         <div class="dropdown-item preview-item" style="gap: 15px; cursor: auto;">
-                                            @if ($item->message == null)
-                                                <div>
-                                                    <img src="{{ asset('storage/' . $item->artis->user->avatar) }}"
-                                                        width="40" style="border-radius: 100%" alt=""
-                                                        srcset="">
-                                                </div>
-                                            @endif
                                             <div class="preview-item-content">
                                                 <p class="preview-subject mb-1" style="font-weight: bold">
                                                     {{ $item->title }}</p>
@@ -312,9 +311,6 @@
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#alasan-{{ $item->code }}">Klik
                                                         untuk melihat alasan</button>
-                                                @else
-                                                    <p class="text-muted ellipsis mb-0">{{ $item->artis->user->name }}
-                                                    </p>
                                                 @endif
                                             </div>
                                             <button type="submit" class="btn btnicon p-0"
