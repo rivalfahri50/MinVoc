@@ -166,6 +166,7 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
     Route::get('/delete-notif/{code}', 'deleteNotif');
     Route::get('/pencairan/{code}', 'pencairan');
     Route::get('/filter', 'filterDate')->name('filter.date');
+    Route::get('/filter-pencairan', 'filterDatePencairan')->name('filter.date.pencairan');
 
     Route::post('/pencairan/{code}', 'pencairanDana')->name('pencairan.artiVerified');
     Route::post('/undangColab/{code}', 'undangColab')->name('undangColab');

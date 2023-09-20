@@ -135,7 +135,7 @@ class AdminController extends Controller
             ];
             notif::create([
                 'title' => 'pengajuan Verifikasi Baru Masuk',
-                'user_id' => $key->artist_id,
+                'user_id' => $key->artist->user_id,
             ]);
             penghasilan::where('id', $key->id)->update($data);
         }
@@ -151,7 +151,7 @@ class AdminController extends Controller
     {
         try {
             $penghasilan = penghasilan::where(function ($query) use ($code) {
-                $query->where('is_take', true)
+                $query->where('is_take', true)->where('is_submit', false)
                     ->orWhere('id', $code);
             })->get();
 

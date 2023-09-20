@@ -388,11 +388,13 @@
                                                             </td>
                                                             <td
                                                                 class="table-cell text-success {{ $item->status == 'reject' ? 'text-danger' : '' }} {{ $item->status == 'pending' ? 'text-warning' : '' }}">
-                                                                {{ $item->status }}
+                                                                {{ $item->status == 'reject' ? 'Tolak' : '' }}
+                                                                {{ $item->status == 'pending' ? 'Menunggu' : '' }}
+                                                                {{ $item->status == 'accept' ? 'Selesai' : '' }}
                                                             </td>
                                                             <td class="d-flex align-items-center">
                                                                 @if ($item->status === 'accept')
-                                                                    <button type="submit" class="confirmButtonReject"
+                                                                    <button type="submit" class="confirmButton"
                                                                         data-item="{{ $item->code }}">
                                                                         <form
                                                                             action="{{ route('reject.project.artisVerified') }}"
@@ -402,8 +404,10 @@
                                                                                 value="{{ $item->code }}">
                                                                             <input type="hidden" name="is_reject"
                                                                                 value="true">
-                                                                            <i class="far fa-times-circle btn-icon text-danger"
-                                                                                style="font-size: 20px"></i>
+                                                                            <span class="ml-3">
+                                                                                <i class="far fa-times-circle btn-icon text-danger"
+                                                                                    style="font-size: 20px"></i>
+                                                                            </span>
                                                                         </form>
                                                                     </button>
                                                                 @else
@@ -662,6 +666,12 @@
     <script>
         $(document).ready(function() {
             $('.js-example-basic-multiple').select2({
+                maximumSelectionLength: 2,
+                language: {
+                    maximumSelected: function(e) {
+                        return 'Anda hanya dapat memilih ' + e.maximum + ' opsi.';
+                    }
+                },
                 theme: "classic"
             });
         });

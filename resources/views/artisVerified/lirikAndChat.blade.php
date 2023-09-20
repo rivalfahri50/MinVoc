@@ -399,7 +399,7 @@
                                                                 value="Rp. 2.000.000.00" readonly disabled>
                                                             <span class="pl-1"
                                                                 style="color: darkgray; font-size: 13px;">admin memiliki
-                                                                hak sebesar 10% dalam penghasilan kolaborasi.</span>
+                                                                hak sebesar 20% dalam penghasilan kolaborasi.</span>
                                                         </div>
                                                     </div>
                                                 </div>

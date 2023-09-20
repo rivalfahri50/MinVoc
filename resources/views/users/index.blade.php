@@ -9,7 +9,18 @@
         <div class="content-wrapper">
             <div class="row">
                 <div class="col-md-12 grid-margin stretch-card">
-                    <h3 class="card-title mt-2 judul" style="font-size: 20px; font-weight: 600">Kategori</h3>
+                    <h3 class="card-title mt-2 judul" style="font-size: 20px; font-weight: 600">Genre</h3>
+                    <div class="cards">
+                        @foreach ($genres->reverse() as $item)
+                            <a href="/pengguna/kategori/{{ $item->code }}" class="card cardi card-scroll rounded-4">
+                                <img src="{{ asset('storage/' . $item->images) }}" class="img-fluid rounded-4 fit"
+                                    width="100%" height="100%">
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+                <div class="col-md-12 grid-margin stretch-card">
+                    <h3 class="card-title mt-2 judul" style="font-size: 20px; font-weight: 600">Genre</h3>
                     <div class="cards">
                         @foreach ($genres->reverse() as $item)
                             <a href="/pengguna/kategori/{{ $item->code }}" class="card cardi card-scroll rounded-4">

@@ -457,7 +457,8 @@ class penggunaController extends Controller
         $songs = Song::where('judul', 'LIKE', '%' . $query . '%')->get();
 
         $users = User::where('name', 'LIKE', '%' . $query . '%')
-            ->where('role_id', '!=', 3)
+        ->where('role_id', '!=', 3)
+        ->where('role_id', '!=', 4)
             ->get();
 
         try {

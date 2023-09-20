@@ -16,6 +16,7 @@ use App\Models\projects;
 use App\Models\Riwayat;
 use App\Models\song;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -61,6 +62,7 @@ class ArtistController extends Controller
         $artistid = (int) artist::where('user_id', auth()->user()->id)->first()->id;
         $totalpenghasilan = penghasilan::where('artist_id', $artistid)->sum('penghasilan');
         $penghasilan = penghasilan::where('artist_id', $artistid)->pluck('penghasilan')->toArray();
+        $penghasilanArtis = penghasilan::with('artist')->where('artist_id', $artistid)->where('is_submit', true)->get();
         // $month = penghasilan::where('artist_id', $artistid)->pluck('bulan')->toArray();
         $month = [];
         if ($request->has("artist_id")) {
@@ -86,7 +88,7 @@ class ArtistController extends Controller
         }
 
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('artis.penghasilan', compact('title', 'month', 'totalpenghasilan', 'songs', 'penghasilan', 'projects', 'notifs'));
+        return response()->view('artis.penghasilan', compact('title', 'month', 'totalpenghasilan', 'songs', 'penghasilan', 'projects', 'notifs', 'penghasilanArtis'));
     }
 
     protected function riwayat(): Response
@@ -208,7 +210,6 @@ class ArtistController extends Controller
             $artist->image = $imagePath;
             $artist->pengajuan = true;
             $artist->update();
-
         } catch (\Throwable $th) {
             Alert::error('message', 'Gagal Mengirim Request Verification Account');
             return response()->redirectTo('/artis/verified')->with('failed', "failed");
@@ -345,6 +346,21 @@ class ArtistController extends Controller
         return response()->redirectTo('artis/playlist');
     }
 
+    protected function filterDate(Request $request)
+    {
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+
+        $start_date = Carbon::parse($startDate)->startOfDay();
+        $end_date = Carbon::parse($endDate)->endOfDay();
+
+        $results = penghasilan::with('artist')->whereNotIn('status', ['pending', 'reject'])
+            ->whereBetween('created_at', [$start_date, $end_date])
+            ->get();
+
+        return redirect()->back()->with(['results' => $results]);
+    }
+
     protected function hapusSongPlaylist(string $code)
     {
         $song = song::where('code', $code)->first();
@@ -453,12 +469,12 @@ class ArtistController extends Controller
             ]);
             DB::commit();
 
-            notif::create([
-                'artis_id' => $artis->id,
-                'title' => $request->input('judul'),
-                'user_id' => auth()->user()->id,
-                'is_reject' => false
-            ]);
+            // notif::create([
+            //     'artis_id' => $artis->id,
+            //     'title' => $request->input('judul'),
+            //     'user_id' => auth()->user()->id,
+            //     'is_reject' => false
+            // ]);
 
             $penghasilanArtist = (int) $artis->penghasilan + 200000;
             $artis->update(['penghasilan' => $penghasilanArtist]);
@@ -531,6 +547,7 @@ class ArtistController extends Controller
 
         $users = User::where('name', 'LIKE', '%' . $query . '%')
             ->where('role_id', '!=', 3)
+            ->where('role_id', '!=', 4)
             ->get();
 
         try {

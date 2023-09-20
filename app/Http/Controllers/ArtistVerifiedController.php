@@ -68,9 +68,12 @@ class ArtistVerifiedController extends Controller
         $projects = projects::where('status', 'accept')->get();
         $artistid = (int) artist::where('user_id', auth()->user()->id)->first()->id;
         $penghasilan = penghasilan::where('artist_id', $artistid)->pluck('penghasilanCair')->toArray();
-        $penghasilanArtis = penghasilan::with('artist')->where('artist_id', $artistid)->where('is_submit', true)->get();
+        $penghasilanArtis = penghasilan::with('artist')->where('artist_id', $artistid)->where('is_submit', false)->get();
         $totalpenghasilan = penghasilan::where('artist_id', $artistid)->sum('penghasilan');
-        $penghasilanData = penghasilan::where('artist_id', $artistid)->first();
+        $penghasilanData = penghasilan::where('artist_id', $artistid)->where('is_take', false)->first();
+        if (isset($penghasilanData->Pengajuan)) {
+            $penghasilanData = penghasilan::where('artist_id', $artistid)->where('Pengajuan', $penghasilanData->Pengajuan)->first();
+        }
         // $month = penghasilan::where('artist_id', $artistid)->pluck('bulan')->toArray();
         $month = [];
 
@@ -103,7 +106,8 @@ class ArtistVerifiedController extends Controller
     protected function riwayatPenghasilan(Request $request)
     {
         $title = 'MusiCave';
-        $penghasilan = penghasilan::with('artist')->where('is_submit', true)->get();
+        $artis = artist::where('user_id', auth()->user()->id)->first();
+        $penghasilan = penghasilan::with('artist')->where('is_submit', true)->where('artist_id', $artis->id)->get();
         $notifs = notif::where('user_id', auth()->user()->id)->get();
         return response()->view('artisVerified.riwayatpenghasilan', compact('title', 'notifs', 'penghasilan'));
     }
@@ -483,12 +487,12 @@ class ArtistVerifiedController extends Controller
                 'bulan' => now()->format('m'),
             ]);
 
-            notif::create([
-                'artis_id' => $artis->id,
-                'title' => $request->input('judul'),
-                'user_id' => auth()->user()->id,
-                'is_reject' => false
-            ]);
+            // notif::create([
+            //     'artis_id' => $artis->id,
+            //     'title' => $request->input('judul'),
+            //     'user_id' => auth()->user()->id,
+            //     'is_reject' => false
+            // ]);
 
             song::create([
                 'code' => $code,
@@ -576,6 +580,7 @@ class ArtistVerifiedController extends Controller
         $songs = Song::where('judul', 'LIKE', '%' . $query . '%')->get();
         $users = User::where('name', 'LIKE', '%' . $query . '%')
             ->where('role_id', '!=', 3)
+            ->where('role_id', '!=', 4)
             ->get();
 
         try {
@@ -591,17 +596,40 @@ class ArtistVerifiedController extends Controller
 
     protected function filterDate(Request $request)
     {
+        $request->validate([
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+        ]);
+
         $startDate = $request->start_date;
         $endDate = $request->end_date;
 
         $start_date = Carbon::parse($startDate)->startOfDay();
         $end_date = Carbon::parse($endDate)->endOfDay();
 
-        $results = projects::with('artis')->whereNotIn('status', ['pending', 'reject'])
-            ->whereBetween('created_at', [$start_date, $end_date])
+        $results = penghasilan::with('artist')->whereBetween('created_at', [$start_date, $end_date])->where('is_submit', '===', 0)
             ->get();
 
-        return redirect()->back()->with(['results' => $results]);
+        return redirect()->back()->with(['results' => $results])->withInput();
+    }
+
+    protected function filterDatePencairan(Request $request)
+    {
+        $request->validate([
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+        ]);
+
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+
+        $start_date = Carbon::parse($startDate)->startOfDay();
+        $end_date = Carbon::parse($endDate)->endOfDay();
+
+        $results = penghasilan::with('artist')->whereBetween('Pengajuan_tanggal', [$start_date, $end_date])->where('is_submit', true)
+            ->get();
+
+        return redirect()->back()->with(['results' => $results])->withInput();
     }
 
     protected function pencarian_input(Request $request)
