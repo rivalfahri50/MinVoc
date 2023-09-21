@@ -47,12 +47,19 @@
                                                         <img src="{{ asset('storage/' . $item->image) }}" width="10%">
                                                     </div>
                                                     <div class="preview-item-content d-sm-flex flex-grow">
-                                                        <div class="flex-grow">
-                                                            <h6 class="preview-subject">{{ $item->judul }}</h6>
-                                                            <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
-                                                        </div>
+                                                        <a href="#lagu-diputar"
+                                                                class="flex-grow text-decoration-none link"
+                                                                onclick="putar({{ $item->id }})">
+                                                                <h6 class="preview-subject">{{ $item->judul }}</h6>
+                                                                <p class="text-muted mb-0">{{ $item->artist->user->name }}
+                                                                </p>
+                                                            </a>
+                                                        <i id="like-2{{ $item->id }}"
+                                                            data-id="{{ $item->id }}"
+                                                            onclick="toggleLike(this, {{ $item->id }})"
+                                                            class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                         <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                            <div class="text-group">    
+                                                            <div class="text-group">
                                                                 <p>{{ $item->waktu }}</p>
                                                             </div>
                                                         </div>
@@ -71,12 +78,4 @@
     </div>
     </div>
     </div>
-
-    <script>
-        function myFunction(x) {
-            x.classList.toggle("far"); // Menghapus kelas "fa fa-heart"
-            x.classList.toggle("fas"); // Menambahkan kelas "fas fa-heart"
-            x.classList.toggle("warna-kostum-like"); // Menambahkan kelas warna merah
-        }
-    </script>
 @endsection

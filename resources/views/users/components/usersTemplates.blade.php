@@ -479,7 +479,9 @@
                                         <img class="img-xs rounded-circle" style="object-fit: cover;"
                                             src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
                                     </div>
-                                    <p class="mb-0 d-none d-sm-block navbar-profile-name" style="width: 60px; overflow: hidden; text-overflow: ellipsis; height: 15px;">{{ auth()->user()->name }}</p>
+                                    <p class="mb-0 d-none d-sm-block navbar-profile-name"
+                                        style="width: 60px; overflow: hidden; text-overflow: ellipsis; height: 15px;">
+                                        {{ auth()->user()->name }}</p>
                                 </div>
                                 <a href="{{ route('ubah.profile', auth()->user()->code) }}"
                                     class="dropdown-item preview-item">
@@ -716,6 +718,58 @@
                                 const songId = item.song_id;
                                 const like = document.getElementById(`like${item.song_id}`);
                                 like.classList.toggle('fas');
+                            })
+                        }
+                    });
+                });
+
+                $(document).ready(function() {
+                    $.ajax({
+                        url: `/song/check`,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(response) {
+                            console.log(response);
+                            response.forEach(function(item) {
+                                const songId = item.song_id;
+                                const like = document.getElementById(`like-1${item.song_id}`);
+                                if (like) {
+                                    like.classList.toggle('fas');
+                                }
+                            })
+                        }
+                    });
+                });
+                $(document).ready(function() {
+                    $.ajax({
+                        url: `/song/check`,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(response) {
+                            console.log(response);
+                            response.forEach(function(item) {
+                                const songId = item.song_id;
+                                const like = document.getElementById(`like-2${item.song_id}`);
+                                if (like) {
+                                    like.classList.toggle('fas');
+                                }
+                            })
+                        }
+                    });
+                });
+                $(document).ready(function() {
+                    $.ajax({
+                        url: `/song/check`,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(response) {
+                            console.log(response);
+                            response.forEach(function(item) {
+                                const songId = item.song_id;
+                                const like = document.getElementById(`like-suka${item.song_id}`);
+                                if (like) {
+                                    like.classList.toggle('fas');
+                                }
                             })
                         }
                     });

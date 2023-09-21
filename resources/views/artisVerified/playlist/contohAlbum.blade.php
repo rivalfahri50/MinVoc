@@ -65,6 +65,10 @@
                                                         <h6 class="preview-subject">{{ $item->judul }}</h6>
                                                         <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
                                                     </a>
+                                                    <i id="like-1{{ $item->id }}"
+                                                        data-id="{{ $item->id }}"
+                                                        onclick="toggleLike(this, {{ $item->id }})"
+                                                        class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group">
                                                             <p>{{ $item->waktu }}</p>

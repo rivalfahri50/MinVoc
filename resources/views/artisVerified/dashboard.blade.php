@@ -286,6 +286,10 @@
                                                         {{ number_format($item->didengar, 0, ',', '.') }}
                                                     </p>
                                                 </div>
+                                                <i id="like-2{{ $item->id }}"
+                                                    data-id="{{ $item->id }}"
+                                                    onclick="toggleLike(this, {{ $item->id }})"
+                                                    class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                 <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                     <div class="text-group align-items-center">
                                                         <p style="pointer-events: none;">{{ $item->waktu }}</p>

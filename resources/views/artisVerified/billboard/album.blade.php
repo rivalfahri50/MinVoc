@@ -55,6 +55,10 @@
                                                                 {{ $item->artist->user->name }}</p>
                                                         </a>
                                                     </div>
+                                                    <i id="like-3{{ $item->id }}"
+                                                        data-id="{{ $item->id }}"
+                                                        onclick="toggleLike(this, {{ $item->id }})"
+                                                        class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                         <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                             <div class="text-group">
                                                                 <p>{{ $item->waktu }}</p>

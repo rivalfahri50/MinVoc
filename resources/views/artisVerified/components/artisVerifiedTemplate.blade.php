@@ -721,6 +721,49 @@
                             })
                         }
                     });
+                    $.ajax({
+                        url: `/song/check`,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(response) {
+                            console.log(response);
+                            response.forEach(function(item) {
+                                const songId = item.song_id;
+                                const like = document.getElementById(`like-1${item.song_id}`);
+                                if (like) {
+                                    like.classList.toggle('fas');
+                                }
+                            })
+                        }
+                    });
+                    $.ajax({
+                        url: `/song/check`,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(response) {
+                            console.log(response);
+                            response.forEach(function(item) {
+                                const songId = item.song_id;
+                                const like = document.getElementById(`like-2${item.song_id}`);
+                                like.classList.toggle('fas');
+                            })
+                        }
+                    });
+                    $.ajax({
+                        url: `/song/check`,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(response) {
+                            console.log(response);
+                            response.forEach(function(item) {
+                                const songId = item.song_id;
+                                const like = document.getElementById(`like-3${item.song_id}`);
+                                if (like) {
+                                    like.classList.toggle('fas');
+                                }
+                            })
+                        }
+                    });
                 });
 
                 function toggleLike(iconElement, songId) {

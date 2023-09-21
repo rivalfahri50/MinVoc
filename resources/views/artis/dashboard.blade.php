@@ -109,8 +109,10 @@
                                                     </div>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group align-items-center">
-                                                            <i onclick="toggleLike(this, {{ $item->id }}, '{{ Auth::check() == (Auth::user()->hasLikedSong($item->id) ? 'true' : 'false') }}')"
-                                                                class="{{ Auth::check() && Auth::user()->hasLikedSong($item->id) ? 'fas' : 'far' }} fa-heart pr-2"></i>
+                                                            <i id="like{{ $item->id }}"
+                                                            data-id="{{ $item->id }}"
+                                                            onclick="toggleLike(this, {{ $item->id }})"
+                                                            class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                             <p style="pointer-events: none;">{{ $item->waktu }}</p>
                                                         </div>
                                                     </div>
@@ -203,6 +205,10 @@
                                                                 {{ number_format($item->didengar, 0, ',', '.') }}
                                                             </p>
                                                         </div>
+                                                        <i id="like-3{{ $item->id }}"
+                                                            data-id="{{ $item->id }}"
+                                                            onclick="toggleLike(this, {{ $item->id }})"
+                                                            class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                         <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                             <div class="text-group align-items-center">
                                                                 <p style="pointer-events: none;">{{ $item->waktu }}</p>

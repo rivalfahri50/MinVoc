@@ -32,6 +32,8 @@ class penggunaController extends Controller
         $title = "MusiCave";
         $song = song::where('didengar','>','10')->orderByDesc('didengar')->get();
         $songs = song::all();
+        // dd($songs);
+        // dd($songs);
         $genres = genre::all();
         $playlists = playlist::all();
         $artist = artist::with('user')->get();

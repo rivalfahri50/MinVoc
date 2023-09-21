@@ -42,7 +42,7 @@
     </style>
 
     <link rel="stylesheet" href="/user/assets/css/dashboard.css">
-    
+
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="row">
@@ -113,7 +113,7 @@
                                                         <div class="text-group align-items-center">
                                                             <i id="like{{ $item->id }}" data-id="{{ $item->id }}"
                                                                 onclick="toggleLike(this, {{ $item->id }})"
-                                                                class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
+                                                                class="shared-icon-like {{ $item->isLiked == '1' ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                             <p style="pointer-events: none;">{{ $item->waktu }}</p>
                                                             @if (count($playlists) > 0)
                                                                 <a data-bs-toggle="modal"
@@ -223,6 +223,9 @@
                                                         </div>
                                                         <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                             <div class="text-group align-items-center">
+                                                                <i id="like-suka{{ $item->id }}" data-id="{{ $item->id }}"
+                                                                    onclick="toggleLike(this, {{ $item->id }})"
+                                                                    class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                                 <p style="pointer-events: none;">{{ $item->waktu }}</p>
                                                                 @if (count($playlists) > 0)
                                                                 <a data-bs-toggle="modal"

@@ -16,7 +16,7 @@
                                             <span class="fw-bold fs-4">{{ $billboard->artis->user->name }}</span>
                                             <span class="fs-5">{{ $billboard->deskripsi }}.</span>
                                         </div>
-                                    </div>  
+                                    </div>
                                 </div>
                                 <div class="col-4 d-flex text-right justify-content-center">
                                     <img src="{{ asset('storage/' . $billboard->image_artis) }}" alt=""
@@ -59,10 +59,10 @@
                                                     </div>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group">
-                                                            <i id="like-artist{{ $item->id }}"
+                                                            <i id="like{{ $item->id }}"
                                                                 data-id="{{ $item->id }}"
-                                                                onclick="likeArtist(this, {{ $item->id }})"
-                                                                class="like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
+                                                                onclick="toggleLike(this, {{ $item->id }})"
+                                                                class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                             <p style="pointer-events: none;">{{ $item->waktu }}</p>
                                                         </div>
                                                     </div>
