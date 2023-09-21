@@ -826,7 +826,7 @@ class ArtistVerifiedController extends Controller
     protected function viewKolaborasi(Request $request)
     {
         $title = "Kolaborasi";
-        $datas = projects::with('artis')->get();
+        $datas = projects::with(['artis', 'artis2'])->get();
         $artisUser = artist::where('user_id', auth()->user()->id)->first();
         $messages = messages::with(['sender.user', 'receiver', 'project'])->get();
         $notifs = notif::where('user_id', auth()->user()->id)->get();

@@ -59,21 +59,9 @@
                                 @error('kebijakan_privasi')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
-                            </div> --}}
-
-                            <div class="contact100-form-checkbox">
-                                <input class="input-checkbox100" id="ckb1" type="checkbox" name="kebijakan_privasi"
-                                    {{ old('kebijakan_privasi') ? 'checked' : '' }}>
-                                <label class="label-checkbox100" for="ckb1">
-                                    <a href="/kebijakan-privasi" style="text-decoration: none;">
-                                        <span>Kebijakan Privasi</span>
-                                    </a>
-                                </label>
-
-                                @error('kebijakan_privasi')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
                             </div>
+
+                   
                             <div>
                                 <a style="text-decoration: none; font-family: Poppins" href="{{ route('lupaSandi') }}"
                                     class="txt1">
