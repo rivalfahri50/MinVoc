@@ -40,8 +40,7 @@
                                         class="img-fluid rounded-1 p-2">
                                 </div>
                                 <h1 class="mt-2 judul"> Lagu yang disukai</h1>
-                                <p class="teks">lagu-lagu yang kamu tambah ke favorit
-                                </p>
+                                <p class="teks">lagu-lagu yang kamu tambah ke favorit</p>
                             </div>
                         </a>
                         @if (!empty($albums))
