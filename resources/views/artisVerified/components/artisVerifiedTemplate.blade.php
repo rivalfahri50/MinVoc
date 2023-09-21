@@ -845,8 +845,6 @@
                         const songId = All_song[index_no].id;
                         console.log(All_song[index_no])
                         updatePlayCount(songId);
-                        history(songId);
-
                     }
                     track.addEventListener('timeupdate', updateDuration);
                     playCount++;
@@ -1022,6 +1020,8 @@
                     if (track.ended) {
                         play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>';
                         if (autoplay == 1) {
+                            const songId = All_song[index_no].id;
+                            history(songId);
                             index_no += 1;
                             load_track(index_no);
                             playsong();

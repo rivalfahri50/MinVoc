@@ -80,7 +80,7 @@
                         <div class="row" style="margin-top: -20px">
                             <div class="col-12">
                                 <div class="preview-list">
-                                    @foreach ($songs->reverse() as $item)
+                                    @foreach ($songs as $item)
                                         @if ($item->is_approved && $item->album_id == $albumDetail->id)
                                             <div class="preview-item">
                                                 <div class="preview-thumbnail">
@@ -94,8 +94,9 @@
                                                     </a>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group">
-                                                            <i onclick="myFunction(this)" class="far fa-heart pr-2">
-                                                            </i>
+                                                            <i id="like{{ $item->id }}" data-id="{{ $item->id }}"
+                                                                onclick="toggleLike(this, {{ $item->id }})"
+                                                                class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                             <p>{{ $item->waktu }}</p>
                                                             @if (count($playlists) > 0)
                                                                 <a data-bs-toggle="modal"
@@ -187,11 +188,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
-        function myFunction(x) {
-            x.classList.toggle("far"); // Menghapus kelas "fa fa-heart"
-            x.classList.toggle("fas"); // Menambahkan kelas "fas fa-heart"
-            x.classList.toggle("warna-kostum-like"); // Menambahkan kelas warna merah
-        }
 
         const gambar = document.querySelector("#gambar");
 

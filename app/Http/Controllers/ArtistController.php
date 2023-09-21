@@ -36,12 +36,13 @@ class ArtistController extends Controller
     {
         $title = "MusiCave";
         $songs = song::all();
+        $song = song::where('didengar','>','1000')->orderByDesc('didengar')->get();
         $genres = genre::all();
         $artist = artist::with('user')->get();
         $playlists = playlist::all();
         $billboards = billboard::all();
         $notifs = notif::with('artis.user')->where('user_id', auth()->user()->id)->get();
-        return response()->view('artis.dashboard', compact('title', 'songs', 'genres', 'artist', 'billboards', 'playlists', 'notifs'));
+        return response()->view('artis.dashboard', compact('title', 'songs', 'song','genres', 'artist', 'billboards', 'playlists', 'notifs'));
     }
 
     protected function playlist(): Response
@@ -746,7 +747,9 @@ class ArtistController extends Controller
     {
         $title = "MusiCave";
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('artis.playlist.disukai', compact('title', 'notifs'));
+        $songId = Like::where('user_id', Auth::user()->id)->pluck('song_id')->toArray();
+        $song = song::whereIn('id',$songId)->get();
+        return response()->view('artis.playlist.disukai', compact('title','song', 'notifs'));
     }
 
     protected function viewKolaborasi(Request $request)

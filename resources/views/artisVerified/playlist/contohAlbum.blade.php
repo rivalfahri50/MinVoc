@@ -52,7 +52,7 @@
                         <div class="row" style="margin-top: -20px">
                             <div class="col-12">
                                 <div class="preview-list">
-                                    @foreach ($songs->reverse() as $item)
+                                    @foreach ($songs as $item)
                                         @if ($item->is_approved && $item->album_id == $albumDetail->id)
                                             <div class="preview-item">
                                                 <div class="preview-thumbnail">
@@ -66,8 +66,6 @@
                                                     </a>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group">
-                                                            <i onclick="myFunction(this)" class="far fa-heart pr-2">
-                                                            </i>
                                                             <p>{{ $item->waktu }}</p>
                                                         </div>
                                                     </div>
@@ -151,11 +149,6 @@
     </div>
 
     <script>
-        function myFunction(x) {
-            x.classList.toggle("far"); // Menghapus kelas "fa fa-heart"
-            x.classList.toggle("fas"); // Menambahkan kelas "fas fa-heart"
-            x.classList.toggle("warna-kostum-like"); // Menambahkan kelas warna merah
-        }
 
         const gambar = document.querySelector("#gambar");
 

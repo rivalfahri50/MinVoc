@@ -29,7 +29,7 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        .fixedbar{
+        .fixedbar {
             position: fixed;
             z-index: 1030;
             width: 245px;
@@ -473,7 +473,7 @@
 
             @yield('content')
 
-                @foreach ($notifs->reverse() as $item)
+            @foreach ($notifs->reverse() as $item)
                 <div class="modal fade" id="alasan-{{ $item->code }}" tabindex="-1"
                     aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
@@ -812,7 +812,7 @@
                         console.error("Index_no tidak valid.");
                     }
                 }
-               load_track(0);
+                load_track(0);
                 // semua function
 
                 // fungsi mute sound
@@ -862,9 +862,9 @@
                     if (index_no >= 0 && index_no < All_song.length) {
                         // Perbarui playCount dengan songId yang sesuai
                         const songId = All_song[index_no].id;
+                        // history(songId);
                         console.log(All_song[index_no])
                         updatePlayCount(songId);
-                        history(songId);
 
                     }
                     track.addEventListener('timeupdate', updateDuration);
@@ -973,7 +973,7 @@
 
                 track.addEventListener('ended', function() {
                     // Panggil fungsi untuk memutar lagu selanjutnya
-                    console.log("lagu anjeng");
+
                     next_song();
                 });
 
@@ -1014,7 +1014,7 @@
                 // ubah posisi slider
                 // Fungsi untuk mengubah posisi slider
                 function change_duration() {
-                       let slider_value = slider.value;
+                    let slider_value = slider.value;
                     if (!isNaN(track.duration) && isFinite(slider_value)) {
                         track.currentTime = track.duration * (slider_value / 100);
                         console.log(track.duration * (slider_value / 100), slider_value, track.currentTime)
@@ -1022,8 +1022,6 @@
                 }
 
                 slider.addEventListener('input', function() {
-                    console.log("Aa")
-                    console.log($(this))
                     change_duration();
                     clearInterval(timer);
                     Playing_song = true;
@@ -1039,7 +1037,6 @@
                     if (!isNaN(track.duration)) {
                         position = track.currentTime * (100 / track.duration);
                         slider.value = position;
-                        // console.log(track.duration);
                     }
                     if (track.ended) {
                         play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>';
@@ -1047,6 +1044,8 @@
                             index_no += 1;
                             load_track(index_no);
                             playsong();
+                            const songId = All_song[index_no].id;
+                            history(songId);
                         }
                     }
 

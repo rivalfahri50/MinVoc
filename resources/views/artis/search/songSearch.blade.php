@@ -60,7 +60,10 @@
                                                     </a>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group">
-                                                            <i onclick="myFunction(this)" class="far fa-heart pr-2">
+                                                            <i id="like{{ $item->id }}"
+                                                                data-id="{{ $item->id }}"
+                                                                onclick="toggleLike(this, {{ $item->id }})"
+                                                                class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                             </i>
                                                             <p>{{ $item->waktu }}</p>
                                                         </div>
@@ -96,11 +99,6 @@
                     }
 
 
-                    function myFunction(x) {
-                        x.classList.toggle("far"); // Menghapus kelas "fa fa-heart"
-                        x.classList.toggle("fas"); // Menambahkan kelas "fas fa-heart"
-                        x.classList.toggle("warna-kostum-like"); // Menambahkan kelas warna merah
-                    }
                 </script>
             </div>
             <!-- page-body-wrapper ends -->
