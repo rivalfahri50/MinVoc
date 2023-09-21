@@ -1014,8 +1014,6 @@
                 }
 
                 track.addEventListener('ended', function() {
-                    // Panggil fungsi untuk memutar lagu selanjutnya
-
                     next_song();
                 });
 

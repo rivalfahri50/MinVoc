@@ -1151,7 +1151,7 @@ class ArtistVerifiedController extends Controller
 
     protected function bayar(Request $request, string $code)
     {
-        dd($code);
+        // dd($code);
         $project = projects::where('code', $code)->first();
         $range = $request->input('range');
 

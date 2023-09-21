@@ -175,7 +175,7 @@
                                         @php
                                             $i = 0;
                                         @endphp
-                                        @foreach ($songs->reverse() as $item)
+                                        @foreach ($songs as $item)
                                             @if ($item->is_approved)
                                                 <div class="preview-item">
                                                     <div class="preview-thumbnail">
@@ -216,7 +216,7 @@
                             <div class="row" style="margin-top: -20px">
                                 <div class="col-12">
                                     <div class="preview-list">
-                                        @foreach ($artist->reverse() as $item)
+                                        @foreach ($artist as $item)
                                             @if ($item->likes >= 0)
                                                 <div class="preview-item">
                                                     <div class="preview-thumbnail">
