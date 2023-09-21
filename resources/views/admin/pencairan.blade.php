@@ -129,7 +129,8 @@
                         })
                         ->count();
                 @endphp
-                @if (empty($total_penghasilan) || empty($penghasilanCair))
+
+                @if (empty($total_penghasilan) && empty($penghasilanCair))
                     <div style="justify-content: center; display: flex; padding: 50px 0;">
                         <img width="400" height="200" src="/icon-notFound/adminIcon.svg" alt="" srcset="">
                     </div>

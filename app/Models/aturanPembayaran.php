@@ -11,8 +11,13 @@ class aturanPembayaran extends Model
 
     protected $fillable = [
         'code',
-        'opsi',
+        'opsi_id',
         'pendapatanArtis',
         'pendapatanAdmin',
     ];
+
+    public function opsi()
+    {
+        return $this->hasOne(opsiPembayaran::class, 'id', 'opsi_id');
+    }
 }

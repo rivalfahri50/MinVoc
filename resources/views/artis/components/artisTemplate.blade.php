@@ -605,11 +605,13 @@
                 $(document).ready(function() {
                     $('#search_song').on('keyup', function() {
                         var query = $(this).val();
+                        var id = $('#album_id').val()
                         $.ajax({
                             url: '/artis/search_song/',
                             type: 'GET',
                             data: {
-                                query: query
+                                query: query,
+                                id: id,
                             },
                             dataType: 'json',
                             success: function(response) {

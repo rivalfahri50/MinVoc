@@ -33,10 +33,6 @@ use Throwable;
 
 class ArtistController extends Controller
 {
-    public function pembayaranStore(Request $request)
-    {
-        $request->all();
-    }
     protected function index(): Response
     {
         $title = "MusiCave";
@@ -324,9 +320,11 @@ class ArtistController extends Controller
         try {
             User::where('code', $code)->update($value);
         } catch (Throwable $e) {
-            return abort(404);
+            Alert::error('message', 'Profile gagal di perbarui');
+            return redirect()->back();
         }
-        return redirect()->back()->withErrors($validate)->withInput();
+        Alert::success('message', 'Profile berhasil di perbarui');
+        return redirect()->back();
     }
 
     protected function hapusPlaylist(string $code)
@@ -551,7 +549,8 @@ class ArtistController extends Controller
     public function search_song(Request $request)
     {
         $query = $request->input('query');
-        $results = song::with('artist.user')->where('judul', 'like', '%' . $query . '%')->get();
+        $id = $request->input('id');
+        $results = song::with('artist.user')->where('judul', 'like', '%' . $query . '%')->where('album_id', $id)->get();
 
         return response()->json(['results' => $results]);
     }

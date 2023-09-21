@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\artist;
+use App\Models\aturanPembayaran;
 use App\Models\penghasilan;
 use App\Models\Riwayat;
 use App\Models\song;
@@ -21,8 +22,9 @@ class RiwayatController extends Controller
         $user_id = Auth::user()->id;
         $song_id = $request->song_id;
 
+        $pendapatan = aturanPembayaran::where('opsi_id', 1)->first();
         $play_date = Carbon::now()->format('Y-m-d H:i:s');
-        $penghasilanArtist = 100000;
+        $penghasilanArtist = $pendapatan->pendapatanArtis ? $pendapatan->pendapatanArtis : 2000;
         $artist_id =  song::findOrFail($song_id)->artist->id;
         artist::findOrFail($artist_id)->update(['penghasilan' => song::findOrFail($song_id)->artist->penghasilan + $penghasilanArtist]);
         $cek_penghasilan = penghasilan::create(['artist_id'=> $artist_id, 'bulan' => Carbon::now()->format('m'),'penghasilan'=>(string)$penghasilanArtist,'status' => "riwayat lagu"]);
