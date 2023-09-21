@@ -287,7 +287,7 @@
                                                     <i class="fas fa-pen fa-2x"></i>
                                                 </label>
                                                 <input type="file" id="gambarplaylist" name="images"
-                                                    accept="image/png,image/jpg" class="noob">
+                                                    accept="image/*" class="noob">
                                             </div>
                                         </div>
                                         <div class="col-md-7 ml-4">
@@ -904,9 +904,9 @@
                     if (index_no >= 0 && index_no < All_song.length) {
                         // Perbarui playCount dengan songId yang sesuai
                         const songId = All_song[index_no].id;
+                        // history(songId);
                         console.log(All_song[index_no])
                         updatePlayCount(songId);
-                        history(songId);
 
                     }
                     track.addEventListener('timeupdate', updateDuration);
@@ -1015,7 +1015,7 @@
 
                 track.addEventListener('ended', function() {
                     // Panggil fungsi untuk memutar lagu selanjutnya
-                    console.log("lagu anjeng");
+
                     next_song();
                 });
 
@@ -1064,8 +1064,6 @@
                 }
 
                 slider.addEventListener('input', function() {
-                    console.log("Aa")
-                    console.log($(this))
                     change_duration();
                     clearInterval(timer);
                     Playing_song = true;
@@ -1081,7 +1079,6 @@
                     if (!isNaN(track.duration)) {
                         position = track.currentTime * (100 / track.duration);
                         slider.value = position;
-                        // console.log(track.duration);
                     }
                     if (track.ended) {
                         play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>';
@@ -1089,6 +1086,8 @@
                             index_no += 1;
                             load_track(index_no);
                             playsong();
+                            const songId = All_song[index_no].id;
+                            history(songId);
                         }
                     }
 

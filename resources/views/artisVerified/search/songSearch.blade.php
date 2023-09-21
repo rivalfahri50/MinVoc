@@ -47,7 +47,7 @@
                                         @foreach ($songs->reverse() as $item)
                                             <div class="preview-item">
                                                 <div class="preview-thumbnail">
-                                                    <img src="{{ asset('storage/' . $song->image) }}" width="10%">
+                                                    <img src="{{ asset('storage/' . $item->image) }}" width="10%">
                                                 </div>
                                                 <div class="preview-item-content d-sm-flex flex-grow">
                                                     <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
@@ -57,7 +57,10 @@
                                                     </a>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group">
-                                                            <i onclick="myFunction(this)" class="far fa-heart pr-2">
+                                                            <i id="like{{ $item->id }}"
+                                                                data-id="{{ $item->id }}"
+                                                                onclick="toggleLike(this, {{ $item->id }})"
+                                                                class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                             </i>
                                                             <p>{{ $item->waktu }}</p>
                                                         </div>
@@ -76,11 +79,6 @@
             <!-- page-body-wrapper ends -->
         </div>
         <script>
-            function myFunction(x) {
-                x.classList.toggle("far"); // Menghapus kelas "fa fa-heart"
-                x.classList.toggle("fas"); // Menambahkan kelas "fas fa-heart"
-                x.classList.toggle("warna-kostum-like");
-            }
 
             // function togglePlayPause() {
             //     const playIcon = document.getElementById('playIcon');

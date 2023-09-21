@@ -52,9 +52,7 @@
                                                             <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
                                                         </div>
                                                         <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                            <div class="text-group">
-                                                                <i onclick="myFunction(this)" class="far fa-heart pr-2">
-                                                                </i>
+                                                            <div class="text-group">    
                                                                 <p>{{ $item->waktu }}</p>
                                                             </div>
                                                         </div>

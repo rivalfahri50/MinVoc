@@ -26,7 +26,7 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="col-3 text-xxl-end">
+                            <div class="col-9 text-xxl-end">
                                 <div class="bottom-left-text">
                                     <h3 class="m-0" style="font-weight: 600">{{ $albumDetail->name }}
                                     </h3>
@@ -68,8 +68,9 @@
                                                     </a>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group">
-                                                                <i onclick="myFunction(this)" class="far fa-heart pr-2">
-                                                                </i>
+                                                            <i id="like{{ $item->id }}" data-id="{{ $item->id }}"
+                                                                onclick="toggleLike(this, {{ $item->id }})"
+                                                                class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                             <p>{{ $item->waktu }}</p>
                                                         </div>
                                                     </div>
@@ -121,7 +122,7 @@
                                         style="background-size: cover; background-repeat: no-repeat" width="150"
                                         alt="Gambar">
                                 </label>
-                                <input type="file" id="gambar" name="image" accept="image/png,image/jpg"
+                                <input type="file" id="gambar" name="image" accept="image/*"
                                     class="inputgambar">
                             </div>
                         </div>

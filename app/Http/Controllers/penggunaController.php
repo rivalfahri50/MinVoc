@@ -6,6 +6,7 @@ use App\Models\album;
 use App\Models\artist;
 use App\Models\billboard;
 use App\Models\genre;
+use App\Models\Like;
 use App\Models\notif;
 use App\Models\playlist;
 use App\Models\Riwayat;
@@ -29,13 +30,14 @@ class penggunaController extends Controller
     protected function index(Request $request): Response
     {
         $title = "MusiCave";
+        $song = song::where('didengar','>','1000')->orderByDesc('didengar')->get();
         $songs = song::all();
         $genres = genre::all();
         $playlists = playlist::all();
         $artist = artist::with('user')->get();
         $billboards = billboard::all();
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('users.index', compact('title', 'songs', 'artist', 'genres', 'playlists', 'billboards', 'notifs'));
+        return response()->view('users.index', compact('title', 'songs','song', 'artist', 'genres', 'playlists', 'billboards', 'notifs'));
     }
 
     protected function pencarian(): Response
@@ -325,8 +327,10 @@ class penggunaController extends Controller
     protected function disukaiPlaylist(): Response
     {
         $title = "MusiCave";
+        $songId = Like::where('user_id', Auth::user()->id)->pluck('song_id')->toArray();
+        $song =song::whereIn('id',$songId)->get();
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('users.playlist.disukai', compact('title', 'notifs'));
+        return response()->view('users.playlist.disukai', compact('title','song', 'notifs'));
     }
 
     protected function updateProfile(string $code, Request $request)

@@ -158,7 +158,7 @@
                                         <div class="mb-3">
                                             <label for="namakategori" class="form-label judulnottebal">Nama
                                                 Kategori</label>
-                                            <input type="text" name="name" class="form-control form-i" maxlength="55"
+                                            <input type="text" name="name" class="form-control form-i"
                                                 id="namaproyek" value="{{ $item->name }}" required>
                                         </div>
                                         <div class="mb-3">

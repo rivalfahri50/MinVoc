@@ -320,7 +320,7 @@
                                         <div class="col-6">
                                             <div class="mb-3">
                                                 <label for="uploadlatar" class="form-label judulnottebal">Upload Background Iklan</label>
-                                                <input type="file" name="image_background" class="form-control form-i" id="uploadlatar{{ $item->id }}">
+                                                <input type="file" name="image_background" class="form-control form-i mb-2" id="uploadlatar{{ $item->id }}">
                                                 <span id="image-background-error{{ $item->id }}" style="color: red;"></span>
                                                 <img id="background-image-preview{{ $item->id }}" src="{{ $item->image_background ? asset('storage/' . $item->image_background) : '' }}" alt="Foto Lama" class="gambarbg">
                                             </div>
@@ -328,7 +328,7 @@
                                         <div class="col-6">
                                             <div class="mb-3">
                                                 <label for="uploadartis" class="form-label judulnottebal">Upload Foto Artis</label>
-                                                <input type="file" name="image_artis" class="form-control form-i" id="uploadartis{{ $item->id }}">
+                                                <input type="file" name="image_artis" class="form-control form-i mb-2" id="uploadartis{{ $item->id }}">
                                                 <span id="image-artis-error{{ $item->id }}" style="color: red;"></span>
                                                 <img id="artis-image-preview{{ $item->id }}" src="{{ $item->image_artis ? asset('storage/' . $item->image_artis) : '' }}" alt="Foto Lama" class="avatar">
                                             </div>

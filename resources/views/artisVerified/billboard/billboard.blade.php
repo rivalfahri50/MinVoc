@@ -124,16 +124,20 @@
                                                             Mainkan
                                                         </span>
                                                     </button>
-                                                    <span style="margin-left: -20px;">
-                                                        <svg width="50" height="50" viewBox="0 0 50 50"
-                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <circle cx="25" cy="25" r="25"
-                                                                fill="white" />
-                                                            <path
-                                                                d="M35.2542 21.712C37.5502 23.3028 37.5502 26.6972 35.2542 28.288L23.778 36.2389C21.1252 38.0769 17.5 36.1782 17.5 32.951L17.5 17.049C17.5 13.8217 21.1252 11.9231 23.778 13.7611L35.2542 21.712Z"
-                                                                fill="#957DAD" />
-                                                        </svg>
-                                                    </span>
+                                                    <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
+                                                        onclick="putar({{ 'id' }})">
+                                                        <span
+                                                            style="display: inline-block; width: 35px; height: 35px;left:90px; background-color: white; border-radius: 50%; text-align: center;position: absolute;top:27%;">
+                                                            <button onclick="togglePlayPause()" id="play"
+                                                                style="border: none; background: none;margin-top: -11px;margin-left: -13%">
+                                                                <i id="playIcon" class="fas fa-play"
+                                                                    style="line-height: 55px;"></i>
+                                                            </button>
+                                                        </span>
+                                                    </a>
+                                                    <script>
+                                                        var isPlaying = false; // Default status pemutaran lagu
+                                                    </script>
                                                 </span>
                                             </div>
                                         </div>
@@ -166,27 +170,32 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="preview-list">
-                                        @foreach ($songs->reverse() as $item)
+                                        @foreach ($songs as $item)
                                             @if ($item->is_approved)
-                                                <div class="preview-item">
-                                                    <div class="preview-thumbnail">
-                                                        <img src="{{ asset('storage/' . $item->image) }}" width="10%">
-                                                    </div>
-                                                    <div class="preview-item-content d-sm-flex flex-grow">
-                                                        <a href="" class="flex-grow text-decoration-none link">
-                                                            <h6 class="preview-subject" style="color: #4e4e4e;">
-                                                                {{ $item->judul }}</h6>
-                                                            <p class="text-muted mb-0 fw-light">
-                                                                {{ $item->artist->user->name }}</p>
-                                                        </a>
-                                                    </div>
-                                                    <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                        <div class="text-group">
-                                                            <i onclick="myFunction(this)" class="far fa-heart pr-2"></i>
-                                                            <p style="pointer-events: none;">{{ $item->waktu }}</p>
-                                                        </div>
+                                            <div class="preview-item">
+                                                <div class="preview-thumbnail">
+                                                    <img src="{{ asset('storage/' . $item->image) }}" width="10%">
+                                                </div>
+                                                <div class="preview-item-content d-sm-flex flex-grow">
+                                                    <a href="#lagu-diputar"
+                                                        class="flex-grow text-decoration-none link"
+                                                        onclick="putar({{ $item->id }})">
+                                                        <h6 class="preview-subject" style="color: #4e4e4e;">
+                                                            {{ $item->judul }}</h6>
+                                                        <p class="text-muted mb-0" style="font-weight: 400">
+                                                            {{ $item->artist->user->name }}</p>
+                                                    </a>
+                                                </div>
+                                                <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                                    <div class="text-group align-items-center">
+                                                        <i id="like{{ $item->id }}"
+                                                            data-id="{{ $item->id }}"
+                                                            onclick="toggleLike(this, {{ $item->id }})"
+                                                            class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
+                                                        <p style="pointer-events: none;">{{ $item->waktu }}</p>
                                                     </div>
                                                 </div>
+                                            </div>
                                             @endIf
                                         @endforeach
                                     </div>
@@ -201,10 +210,24 @@
     </div>
     </div>
     <script>
-        function myFunction(x) {
-            x.classList.toggle("far"); // Menghapus kelas "fa fa-heart"
-            x.classList.toggle("fas"); // Menambahkan kelas "fas fa-heart"
-            x.classList.toggle("warna-kostum-like"); // Menambahkan kelas warna merah
+        function togglePlayPause() {
+            const playIcon = document.getElementById('playIcon');
+
+            if (isPlaying) {
+                // Jika sedang diputar, ganti menjadi pause
+                playIcon.classList.remove('fa-pause');
+                playIcon.classList.add('fa-play');
+            } else {
+                // Jika sedang tidak diputar, ganti menjadi play
+                playIcon.classList.remove('fa-play');
+                playIcon.classList.add('fa-pause');
+            }
+
+            // Ubah status pemutaran
+            isPlaying = !isPlaying;
+
+            // Panggil fungsi justplay() jika diperlukan
+            justplay();
         }
     </script> --}}
 @endsection

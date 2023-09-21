@@ -8,6 +8,7 @@ use App\Models\artist;
 use App\Models\aturanPembayaran;
 use App\Models\billboard;
 use App\Models\genre;
+use App\Models\Like;
 use App\Models\messages;
 use App\Models\notif;
 use App\Models\penghasilan;
@@ -36,6 +37,7 @@ class ArtistVerifiedController extends Controller
     protected function index(): Response
     {
         $title = "MusiCave";
+        $song = song::where('didengar','>','1000')->orderByDesc('didengar')->get();
         $songs = song::all();
         $genres = genre::all();
         $playlists = playlist::all();
@@ -46,7 +48,7 @@ class ArtistVerifiedController extends Controller
         $notifs = notif::where('user_id', auth()->user()->id)->get();
         $artistid = (int) artist::where('user_id', auth()->user()->id)->first()->id;
         $totalpenghasilan = penghasilan::where('artist_id', $artistid)->sum('penghasilan');
-        return response()->view('artisVerified.dashboard', compact('title', 'songs', 'genres', 'artist', 'billboards', 'playlists', 'notifs', 'totalpenghasilan'));
+        return response()->view('artisVerified.dashboard', compact('title', 'songs','song', 'genres', 'artist', 'billboards', 'playlists', 'notifs', 'totalpenghasilan'));
     }
 
     protected function playlist(): Response
@@ -810,8 +812,10 @@ class ArtistVerifiedController extends Controller
     protected function disukaiPlaylist(): Response
     {
         $title = "MusiCave";
+        $songId = Like::where('user_id', Auth::user()->id)->pluck('song_id')->toArray();
+        $song =song::whereIn('id',$songId)->get();
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('artisVerified.playlist.disukai', compact('title', 'notifs'));
+        return response()->view('artisVerified.playlist.disukai', compact('title','song','notifs'));
     }
 
     protected function viewKolaborasi(Request $request)

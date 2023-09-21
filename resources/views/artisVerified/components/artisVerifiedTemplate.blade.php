@@ -488,7 +488,7 @@
                                 <div class="mb-3">
                                     <h3 for="upload" class="form-label judul">Upload
                                         Foto</h3>
-                                    <input type="file" name="image" class="form-control" id="namaproyek"
+                                    <input type="file" name="image" class="form-control" id="namaproyek" accept="image/*"
                                         required>
                                 </div>
                             </div>

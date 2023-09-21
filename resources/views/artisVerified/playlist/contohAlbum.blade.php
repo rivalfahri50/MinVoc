@@ -26,7 +26,7 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="col-3 text-xxl-end">
+                            <div class="col-9 text-xxl-end">
                                 <div class="bottom-left-text">
                                     <h3 class="m-0" style="font-weight: 600">{{ $albumDetail->name }}
                                     </h3>
@@ -53,7 +53,7 @@
                         <div class="row" style="margin-top: -20px">
                             <div class="col-12">
                                 <div class="preview-list">
-                                    @foreach ($songs->reverse() as $item)
+                                    @foreach ($songs as $item)
                                         @if ($item->is_approved && $item->album_id == $albumDetail->id)
                                             <div class="preview-item">
                                                 <div class="preview-thumbnail">
@@ -67,8 +67,6 @@
                                                     </a>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group">
-                                                            <i onclick="myFunction(this)" class="far fa-heart pr-2">
-                                                            </i>
                                                             <p>{{ $item->waktu }}</p>
                                                         </div>
                                                     </div>
@@ -126,8 +124,7 @@
                                         style="background-size: cover; background-repeat: no-repeat" width="150"
                                         alt="Gambar">
                                 </label>
-                                <input type="file" id="gambar" name="image" accept="image/png,image/jpg"
-                                    class="inputgambar">
+                                <input type="file" id="gambar" name="image" accept="image/*" class="inputgambar">
                             </div>
                         </div>
                         <div class="col-md-7 ml-4">
@@ -154,11 +151,6 @@
     </div>
 
     <script>
-        function myFunction(x) {
-            x.classList.toggle("far"); // Menghapus kelas "fa fa-heart"
-            x.classList.toggle("fas"); // Menambahkan kelas "fas fa-heart"
-            x.classList.toggle("warna-kostum-like"); // Menambahkan kelas warna merah
-        }
 
         const gambar = document.querySelector("#gambar");
 
