@@ -313,7 +313,7 @@
                                                         <div class="mb-4">
                                                             <input type="text" class="form-control form-i inputcolor"
                                                                 name="name" id="nama" placeholder="Judul Lagu"
-                                                                value="{{ old('name') }}">
+                                                                value="{{ old('name') }}" maxlength="55">
                                                             @if ($errors->has('name'))
                                                                 <div class="text-danger" style="font-size: 12px">
                                                                     {{ $errors->first('name') }}

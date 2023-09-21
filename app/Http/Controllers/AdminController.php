@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\admin;
 use App\Models\artist;
+use App\Models\aturanPembayaran;
 use App\Models\billboard;
 use App\Models\genre;
 use App\Models\notif;
+use App\Models\opsiPembayaran;
 use App\Models\penghasilan;
 use App\Models\projects;
 use App\Models\song;
@@ -60,6 +62,20 @@ class AdminController extends Controller
         $notifs = notif::where('user_id', auth()->user()->id)->get();
         return response()->view('admin.persetujuan', compact('title', 'show', 'notifs'));
     }
+
+    protected function peraturan(Request $request)
+    {
+        $title = 'MusiCave';
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        $opsi = opsiPembayaran::all();
+        return response()->view('admin.components.peraturanPembayaran', compact('title', 'notifs', 'opsi'));
+    }
+
+    // protected function listTipePembayaran()
+    // {
+    //     $datas = opsiPembayaran::all();
+    //     return response()->json(['datas' => $datas]);
+    // }
 
     protected function kategori(): Response
     {
@@ -204,8 +220,8 @@ class AdminController extends Controller
             artist::findOrFail($artis->id)->update(['penghasilan' => $penghasilanArtist]);
             $artis->update(['penghasilan' => $penghasilanArtist]);
             penghasilan::create([
-                'artist_id' => $artis->id, // Menggunakan ID artis, bukan objek artis
-                'penghasilan' => 400000,
+                'artist_id' => $artis->id,
+                'penghasilan' => 100000,
                 'status' => "unggah lagu",
                 'bulan' => now()->format('m'),
             ]);

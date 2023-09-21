@@ -171,12 +171,14 @@
                             <div class="card pcard jarak">
                                 <h3 class="angka m-0">Rp {{ number_format($totalpenghasilan, 2, ',', '.') }}</h3>
                                 <h4 class="judulnottebal mb-0">Total penghasilan</h4>
-                                @if (isset($penghasilanData->Pengajuan))
-                                    <span class="btn-unstyled mr-2 link mb-0" style="cursor: pointer" data-bs-toggle="modal"
-                                        data-bs-target="#caripenghasilan">Cairkan
-                                        Penghasilan</span>
-                                @else
-                                    <span class="btn-unstyled mr-2 link mb-0">Mohon tunggu jawaban dari admin..</span>
+                                @if ($totalpenghasilan > 0)
+                                    @if (isset($penghasilanData->Pengajuan))
+                                        <span class="btn-unstyled mr-2 link mb-0" style="cursor: pointer"
+                                            data-bs-toggle="modal" data-bs-target="#caripenghasilan">Cairkan
+                                            Penghasilan</span>
+                                    @else
+                                        <span class="btn-unstyled mr-2 link mb-0">Mohon tunggu jawaban dari admin..</span>
+                                    @endif
                                 @endif
                                 @if (isset($penghasilanData->is_submit) && $penghasilanData->is_submit && $penghasilanData->penghasilanCair)
                                     <span style="color: #858585">Terakhir diambil pada

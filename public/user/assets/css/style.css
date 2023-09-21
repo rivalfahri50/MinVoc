@@ -30736,3 +30736,9 @@ div.tagsinput span.tag a {
   top: 140px;
   transform: translateY(-50%);
 }
+
+.overflow-cardtext {
+  width: 150px;
+  height: 40px;
+  overflow: hidden;
+}

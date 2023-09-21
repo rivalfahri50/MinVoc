@@ -481,19 +481,6 @@ class ArtistVerifiedController extends Controller
             $durationSeconds = $durationInSeconds % 60;
             $formattedDuration = sprintf('%02d:%02d', $durationMinutes, $durationSeconds);
 
-            penghasilan::create([
-                'artist_id' => $artis->id, // Menggunakan ID artis, bukan objek artis
-                'penghasilan' => 200000,
-                'bulan' => now()->format('m'),
-            ]);
-
-            // notif::create([
-            //     'artis_id' => $artis->id,
-            //     'title' => $request->input('judul'),
-            //     'user_id' => auth()->user()->id,
-            //     'is_reject' => false
-            // ]);
-
             song::create([
                 'code' => $code,
                 'judul' => $request->input('judul'),
