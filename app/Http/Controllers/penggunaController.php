@@ -26,7 +26,7 @@ use Throwable;
 
 class penggunaController extends Controller
 {
-    protected function index(): Response
+    protected function index(Request $request): Response
     {
         $title = "MusiCave";
         $songs = song::all();
@@ -130,7 +130,7 @@ class penggunaController extends Controller
         } catch (\Throwable $th) {
             return abort(404);
         }
-        return back();
+        return redirect()->back();
     }
 
     protected function storePlaylist(Request $request)
@@ -162,7 +162,8 @@ class penggunaController extends Controller
         } catch (\Throwable $th) {
             return abort(404);
         }
-        return response()->view('users.playlist', compact('title', 'playlists', 'notifs'));
+        return redirect()->back();
+        // return response()->view('users.playlist', compact('title', 'playlists', 'notifs'));
     }
 
     protected function ubahPlaylist(Request $request, string $code)
@@ -249,14 +250,15 @@ class penggunaController extends Controller
         $playlists = playlist::all();
         $song = song::where('judul', 'like', '%' .  $request->input('search') . '%')->first();
         $user = user::where('name', 'like', '%' .  $request->input('search') . '%')->first();
-        $notifs = notif::where('user_id', auth()->user()->id)->get();
 
         if ($song) {
             $songs = song::all();
+            $notifs = notif::where('user_id', auth()->user()->id)->get();
             return view('users.search.songSearch', compact('song', 'title', 'songs', 'playlists', 'notifs'));
         } else if ($user) {
             $artis = artist::where('user_id', $user->id)->first();
             $songs = song::where('artis_id', $artis->id)->get();
+            $notifs = notif::where('user_id', auth()->user()->id)->get();
             return view('users.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs'));
         } else {
             return abort(404);
@@ -303,7 +305,7 @@ class penggunaController extends Controller
         } catch (\Throwable $th) {
             return abort(404);
         }
-        return response()->view('artis.billboard.album', compact('title', 'album', 'songs', 'playlists', 'notifs'));
+        return response()->view('users.billboard.album', compact('title', 'album', 'songs', 'playlists', 'notifs'));
     }
 
     function detailAlbum(string $code): Response
@@ -525,6 +527,7 @@ class penggunaController extends Controller
 
     protected function logout(Request $request)
     {
+        User::where('id', auth()->user()->id)->update(['is_login' => false]);
         try {
             Auth::logout();
         } catch (\Throwable $th) {

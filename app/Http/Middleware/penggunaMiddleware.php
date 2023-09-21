@@ -16,7 +16,9 @@ class penggunaMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && auth()->user()->role_id === 3) {
+        if (auth()->user()->is_login === false) {
+            return response()->redirectTo('/masuk');
+        } else if (Auth::check() && auth()->user()->role_id === 3) {
             return $next($request);
         }
         return response()->redirectTo('/masuk')->with('message', 'Anda Tidak Mendapatkan Akses Untuk Halaman Ini.');

@@ -409,7 +409,7 @@
                                                 stroke="#957DAD" stroke-width="2" stroke-linecap="round" />
                                         </svg>
                                     </span>
-                                    <input type="text" id="search" class="form-control"
+                                    <input type="text" id="search" name="search" class="form-control"
                                         placeholder="cari di sini" style="border-radius: 0px 15px 15px 0px">
                                 </div>
                             </form>

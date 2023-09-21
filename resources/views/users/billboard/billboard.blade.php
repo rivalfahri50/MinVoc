@@ -15,31 +15,6 @@
                                         <div class="d-flex flex-column gap-3" style="color: #6C6C6C;">
                                             <span class="fw-bold fs-4">{{ $billboard->artis->user->name }}</span>
                                             <span class="fs-5">{{ $billboard->deskripsi }}.</span>
-                                            <div class="d-flex gap-4 align-content-center">
-                                                <span style="display: flex; align-items: center;">
-                                                    <button
-                                                        style="background-color: #957DAD; border: 1px solid #957DAD; padding: 4px 25px; margin-right: 10px;"
-                                                        class="rounded-3">
-                                                        <span class="text-white">
-                                                            Mainkan
-                                                        </span>
-                                                    </button>
-                                                    <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
-                                                        onclick="putar({{ 'id' }})">
-                                                        <span
-                                                            style="display: inline-block; width: 35px; height: 35px;left:90px; background-color: white; border-radius: 50%; text-align: center;position: absolute;top:27%;">
-                                                            <button onclick="togglePlayPause()" id="play"
-                                                                style="border: none; background: none;margin-top: -11px;margin-left: -13%">
-                                                                <i id="playIcon" class="fas fa-play"
-                                                                    style="line-height: 55px;"></i>
-                                                            </button>
-                                                        </span>
-                                                    </a>
-                                                    <script>
-                                                        var isPlaying = false; // Default status pemutaran lagu
-                                                    </script>
-                                                </span>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>

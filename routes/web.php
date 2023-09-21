@@ -36,6 +36,7 @@ Route::controller(authController::class)->group(function () {
     Route::get('/masuk-Admin', 'viewMasukAdmin')->name('admin');
     Route::get('/buat-akun', 'viewBuatAkun');
     Route::get('/lupa-password', 'viewLupaPassword')->name('lupaSandi');
+    Route::get('/logout-user', 'logout')->name('logout.admin');
 
     // operations datas
     Route::post('/validationSignIn', 'storeSignIn')->name('storeSignIn');
@@ -45,9 +46,9 @@ Route::controller(authController::class)->group(function () {
     Route::get('/reset-password/{token}', 'resetPasswordToken')->name('password.reset');
     Route::post('/reset-password', 'resetPassword')->name('password.email');
     Route::post('/ubah-password', 'ubahPassword')->name('password.update');
-})->middleware('guest');
+})->middleware(['guest']);
 
-Route::prefix('admin')->middleware('admin')->controller(AdminController::class)->group(function () {
+Route::prefix('admin')->middleware(['admin'])->controller(AdminController::class)->group(function () {
     // Route::post('/validationSignInAdmin', 'storeSignIn')->name('storeSignIn.admin');
 
     Route::get('/dashboard', 'index')->name('admin.dashboard');

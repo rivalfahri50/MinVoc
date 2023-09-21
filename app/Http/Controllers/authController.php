@@ -127,23 +127,25 @@ class authController extends Controller
                 ->withInput();
         }
 
-        try {
-            if (Auth::attempt($credentials)) {
-                $user = auth()->user();
-                switch ($user->role_id) {
-                    case 3:
-                        return redirect()->intended(route('user.dashboard'));
-                    case 2:
-                        return redirect()->intended(route('artist.dashboard'));
-                    case 1:
-                        return redirect()->intended(route('artist-verified.dashboard'));
-                    case 4:
-                        if (auth('admin')->attempt($credentials)) {
-                            return redirect()->intended(route('admin.dashboard'));
-                        }
-                        break;
-                }
+        
+        if (Auth::attempt($credentials)) {
+            User::where('id', auth()->user()->id)->update(['is_login' => true]);
+            $user = auth()->user();
+            switch ($user->role_id) {
+                case 3:
+                    return redirect()->intended(route('user.dashboard'));
+                case 2:
+                    return redirect()->intended(route('artist.dashboard'));
+                case 1:
+                    return redirect()->intended(route('artist-verified.dashboard'));
+                case 4:
+                    if (auth('admin')->attempt($credentials)) {
+                        return redirect()->intended(route('admin.dashboard'));
+                    }
+                    break;
             }
+        }
+        try {
         } catch (\Throwable $th) {
             return abort(404);
         }
@@ -217,5 +219,17 @@ class authController extends Controller
             return response()->redirectTo('/buat-akun')->with('failed', "Gagal untuk register!!");
         }
         return response()->redirectTo('/masuk')->with('success', 'Berhasil register.');
+    }
+
+    protected function logout()
+    {
+        // dd(auth()->user());
+        User::where('id', auth()->user()->id)->update(['is_login' => true]);
+        try {
+            Auth::logout();
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
+        return response()->redirectTo("/masuk");
     }
 }

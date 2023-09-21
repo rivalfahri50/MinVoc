@@ -351,7 +351,7 @@
                                         src="https://cdn.pnghd.pics/data/815/profil-wa-kosong-28.jpg" alt="">
                                     <p class="mb-0 d-none d-sm-block navbar-profile-name">Admin</p>
                                 </div>
-                                <a class="dropdown-item preview-item" href="{{ route('logout.users') }}">
+                                <a class="dropdown-item preview-item" href="{{ route('logout.admin') }}">
                                     <div class="preview-thumbnail">
                                         <div class="preview-icon rounded-circle">
                                             <i class="mdi mdi-logout"></i>
