@@ -3,13 +3,6 @@
     position: relative;
 }
 
-.menu-arrow {
-    color: inherit;
-    position: absolute;
-    left: 185px;
-    top: 185px;
-    transform: translateY(-50%);
-}
 
  /*---- style untuk atas ----*/
   .coba {
