@@ -9,6 +9,37 @@
                 border: none;
             }
         </style>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const confirmButtonRejects = document.querySelectorAll('.confirmButtonReject');
+
+                confirmButtonRejects.forEach(confirmButtonReject => {
+
+                    confirmButtonReject.addEventListener('click', function(event) {
+                        event.preventDefault(); // Mencegah pengiriman formulir langsung
+                        const itemCode = this.getAttribute('data-item');
+                        const tableRow = this.closest('tr');
+                        Swal.fire({
+                            title: 'Konfirmasi Hapus',
+                            text: 'Apakah Anda yakin ingin menolak pengajuan pencairan ini?',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Ya, Hapus!',
+                            cancelButtonText: 'Batal'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Jika pengguna mengonfirmasi, kirimkan formulir
+                                const form = event.target.closest('form');
+                                if (form) {
+                                    form.submit();
+                                }
+                            }
+                        });
+                    });
+                });
+            });
+        </script>
         @foreach ($penghasilanAll as $item)
             <div class="modal fade" id="detail-{{ $item->id }}" data-bs-backdrop="static" data-bs-keyboard="false"
                 tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -71,10 +102,11 @@
                                                 data-bs-target="#detail-{{ $item->id }}">
                                                 <i class="far fa-eye text-info"></i>
                                             </button>
-                                            <button class="btn btnicon" type="submit">
-                                                <a href="/admin/pencairan-reject/{{ $item->id }}">
+                                            <button class="btn btnicon confirmButtonReject" type="submit">
+                                                <form method="GET" action="/admin/pencairan-reject/{{ $item->id }}">
+                                                    @csrf
                                                     <i class="far fa-times-circle text-danger"></i>
-                                                </a>
+                                                </form>
                                             </button>
                                         </td>
                                     </tr>
@@ -93,10 +125,11 @@
                 @php
                     $penghasilanCair = $penghasilanAll
                         ->filter(function ($item) {
-                            return $item->penghasilancair > 1;
+                            return $item->is_submit == true;
                         })
                         ->count();
                 @endphp
+
                 @if (empty($total_penghasilan) && empty($penghasilanCair))
                     <div style="justify-content: center; display: flex; padding: 50px 0;">
                         <img width="400" height="200" src="/icon-notFound/adminIcon.svg" alt="" srcset="">

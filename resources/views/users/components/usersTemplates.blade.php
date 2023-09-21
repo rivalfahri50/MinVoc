@@ -173,6 +173,46 @@
             content: "\f004";
             color: #957DAD;
         }
+
+        /* CSS untuk styling pagination */
+        .pagination {
+            margin-top: 20px;
+        }
+
+        .page-item:first-child .page-link {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border-radius: 10px;
+        }
+
+        .page-item:last-child .page-link {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-radius: 10px;
+        }
+
+        .pagination li {
+            display: inline;
+            margin-right: 5px;
+        }
+
+        .pagination li a {
+            text-decoration: none;
+            border-radius: 10px;
+        }
+
+        .page-link.active {
+            background-color: #957DAD;
+            border: 1px solid #957DAD;
+        }
+
+        .pagination li.active a {
+            color: #fff;
+        }
+
+        .pagination li:hover {
+            background-color: #ddd;
+        }
     </style>
     <script>
         // INI SCRIPT UNTUK HASIL SEARCH TAMPIL/TIDAK
@@ -247,7 +287,7 @@
                                                     <i class="fas fa-pen fa-2x"></i>
                                                 </label>
                                                 <input type="file" id="gambarplaylist" name="images"
-                                                    accept="image/png,image/jpg" class="noob">
+                                                    accept="image/*" class="noob">
                                             </div>
                                         </div>
                                         <div class="col-md-7 ml-4">
@@ -356,7 +396,9 @@
                 <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
                     <ul class="navbar-nav w-75">
                         <li class="nav-item w-75">
-                            <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
+                            <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search" method="POST"
+                                action="{{ route('pencarian') }}">
+                                @csrf
                                 <div class="input-group mb-3">
                                     <span class="input-group-text"
                                         style="border-radius: 15px 0px 0px 15px; border: 1px solid #eaeaea">
@@ -437,8 +479,7 @@
                                         <img class="img-xs rounded-circle" style="object-fit: cover;"
                                             src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
                                     </div>
-                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ auth()->user()->name }}
-                                    </p>
+                                    <p class="mb-0 d-none d-sm-block navbar-profile-name" style="width: 60px; overflow: hidden; text-overflow: ellipsis; height: 15px;">{{ auth()->user()->name }}</p>
                                 </div>
                                 <a href="{{ route('ubah.profile', auth()->user()->code) }}"
                                     class="dropdown-item preview-item">
@@ -471,6 +512,7 @@
                 </div>
             </nav>
 
+            @include('sweetalert::alert')
             @yield('content')
 
             @foreach ($notifs->reverse() as $item)

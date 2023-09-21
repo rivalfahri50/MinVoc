@@ -26,7 +26,7 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="col-3 text-xxl-end">
+                            <div class="col-9 text-xxl-end">
                                 <div class="bottom-left-text">
                                     <h3 class="m-0" style="font-weight: 600">{{ $albumDetail->name }}
                                     </h3>
@@ -46,6 +46,7 @@
                 <h3 class="card-title judul">Temukan berbagai lagu</h3>
                 <form class="col-6 mb-4 p-0 nav-link search">
                     <input type="text" id="search_song" class="form-control rounded-4" placeholder="Cari musik">
+                    <input type="hidden" id="album_id" value="{{ $albumDetail->id }}">
                     <ul id="search-results-song"></ul>
                 </form>
                 <div class="card scroll scrollbar-down thin">
@@ -121,7 +122,7 @@
                                         style="background-size: cover; background-repeat: no-repeat" width="150"
                                         alt="Gambar">
                                 </label>
-                                <input type="file" id="gambar" name="image" accept="image/png,image/jpg"
+                                <input type="file" id="gambar" name="image" accept="image/*"
                                     class="inputgambar">
                             </div>
                         </div>

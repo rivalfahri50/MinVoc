@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use Mockery\Undefined;
+use RealRashid\SweetAlert\Facades\Alert;
 use Throwable;
 
 class penggunaController extends Controller
@@ -74,7 +75,7 @@ class penggunaController extends Controller
 
     protected function profile(string $code)
     {
-        $user = artist::with('user')->where('user_id', $code)->first();
+        $user = User::where('id', $code)->first();
         return response()->json(['user' => $user]);
     }
 
@@ -200,7 +201,7 @@ class penggunaController extends Controller
         } catch (\Throwable $th) {
             return abort(404);
         }
-        return response()->view('users.playlist', compact('title', 'playlists', 'notifs'));
+        return redirect()->back();
     }
 
     protected function hapusSongPlaylist(string $code)
@@ -439,8 +440,10 @@ class penggunaController extends Controller
         try {
             User::where('code', $code)->update($value);
         } catch (Throwable $e) {
-            return abort(404);
+            Alert::error('message', 'Profile gagal di perbarui');
+            return redirect()->back();
         }
+        Alert::success('message', 'Profile berhasil di perbarui');
         return redirect()->back();
     }
 
@@ -462,6 +465,7 @@ class penggunaController extends Controller
 
         $users = User::where('name', 'LIKE', '%' . $query . '%')
             ->where('role_id', '!=', 3)
+            ->where('role_id', '!=', 4)
             ->get();
 
         try {

@@ -108,7 +108,7 @@
 /*------ untuk scroll gambar -------*/
 
 .cardi {
-  height: 200px; /* Atur tinggi sesuai kebutuhan */
+  height: 150px; /* Atur tinggi sesuai kebutuhan */
   margin: 0; /* Hapus margin */
   padding: 0; /* Hapus padding */
   overflow: hidden; /* Hindari tampilan gambar yang keluar dari batas tinggi */
@@ -164,7 +164,7 @@
 
 @media (min-width: 1100px) {
   .cards {
-    grid-auto-columns: calc(20% - 10px);
+    grid-auto-columns: calc(15% - 10px);
     grid-column-gap: 11px;
   }
 }

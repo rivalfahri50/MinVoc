@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\admin;
 use App\Models\album;
 use App\Models\artist;
+use App\Models\aturanPembayaran;
 use App\Models\billboard;
 use App\Models\genre;
 use App\Models\Like;
@@ -70,9 +71,12 @@ class ArtistVerifiedController extends Controller
         $projects = projects::where('status', 'accept')->get();
         $artistid = (int) artist::where('user_id', auth()->user()->id)->first()->id;
         $penghasilan = penghasilan::where('artist_id', $artistid)->pluck('penghasilanCair')->toArray();
-        $penghasilanArtis = penghasilan::with('artist')->where('artist_id', $artistid)->where('is_submit', true)->get();
+        $penghasilanArtis = penghasilan::with('artist')->where('artist_id', $artistid)->where('is_submit', false)->get();
         $totalpenghasilan = penghasilan::where('artist_id', $artistid)->sum('penghasilan');
-        $penghasilanData = penghasilan::where('artist_id', $artistid)->first();
+        $penghasilanData = penghasilan::where('artist_id', $artistid)->where('is_take', false)->first();
+        if (isset($penghasilanData->Pengajuan)) {
+            $penghasilanData = penghasilan::where('artist_id', $artistid)->where('Pengajuan', $penghasilanData->Pengajuan)->first();
+        }
         // $month = penghasilan::where('artist_id', $artistid)->pluck('bulan')->toArray();
         $month = [];
 
@@ -105,7 +109,8 @@ class ArtistVerifiedController extends Controller
     protected function riwayatPenghasilan(Request $request)
     {
         $title = 'MusiCave';
-        $penghasilan = penghasilan::with('artist')->where('is_submit', true)->get();
+        $artis = artist::where('user_id', auth()->user()->id)->first();
+        $penghasilan = penghasilan::with('artist')->where('is_submit', true)->where('artist_id', $artis->id)->get();
         $notifs = notif::where('user_id', auth()->user()->id)->get();
         return response()->view('artisVerified.riwayatpenghasilan', compact('title', 'notifs', 'penghasilan'));
     }
@@ -354,8 +359,10 @@ class ArtistVerifiedController extends Controller
         try {
             User::where('code', $code)->update($value);
         } catch (Throwable $e) {
-            return abort(404);
+            Alert::error('message', 'Profile gagal di perbarui');
+            return redirect()->back();
         }
+        Alert::success('message', 'Profile berhasil di perbarui');
         return redirect()->back();
     }
 
@@ -479,19 +486,6 @@ class ArtistVerifiedController extends Controller
             $durationSeconds = $durationInSeconds % 60;
             $formattedDuration = sprintf('%02d:%02d', $durationMinutes, $durationSeconds);
 
-            penghasilan::create([
-                'artist_id' => $artis->id, // Menggunakan ID artis, bukan objek artis
-                'penghasilan' => 200000,
-                'bulan' => now()->format('m'),
-            ]);
-
-            notif::create([
-                'artis_id' => $artis->id,
-                'title' => $request->input('judul'),
-                'user_id' => auth()->user()->id,
-                'is_reject' => false
-            ]);
-
             song::create([
                 'code' => $code,
                 'judul' => $request->input('judul'),
@@ -578,6 +572,7 @@ class ArtistVerifiedController extends Controller
         $songs = Song::where('judul', 'LIKE', '%' . $query . '%')->get();
         $users = User::where('name', 'LIKE', '%' . $query . '%')
             ->where('role_id', '!=', 3)
+            ->where('role_id', '!=', 4)
             ->get();
 
         try {
@@ -593,17 +588,40 @@ class ArtistVerifiedController extends Controller
 
     protected function filterDate(Request $request)
     {
+        $request->validate([
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+        ]);
+
         $startDate = $request->start_date;
         $endDate = $request->end_date;
 
         $start_date = Carbon::parse($startDate)->startOfDay();
         $end_date = Carbon::parse($endDate)->endOfDay();
 
-        $results = projects::with('artis')->whereNotIn('status', ['pending', 'reject'])
-            ->whereBetween('created_at', [$start_date, $end_date])
+        $results = penghasilan::with('artist')->whereBetween('created_at', [$start_date, $end_date])->where('is_submit', '===', 0)
             ->get();
 
-        return redirect()->back()->with(['results' => $results]);
+        return redirect()->back()->with(['results' => $results])->withInput();
+    }
+
+    protected function filterDatePencairan(Request $request)
+    {
+        $request->validate([
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+        ]);
+
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+
+        $start_date = Carbon::parse($startDate)->startOfDay();
+        $end_date = Carbon::parse($endDate)->endOfDay();
+
+        $results = penghasilan::with('artist')->whereBetween('Pengajuan_tanggal', [$start_date, $end_date])->where('is_submit', true)
+            ->get();
+
+        return redirect()->back()->with(['results' => $results])->withInput();
     }
 
     protected function pencarian_input(Request $request)
@@ -649,7 +667,8 @@ class ArtistVerifiedController extends Controller
     public function search_song(Request $request)
     {
         $query = $request->input('query');
-        $results = song::with('artist.user')->where('judul', 'like', '%' . $query . '%')->get();
+        $id = $request->input('id');
+        $results = song::with('artist.user')->where('judul', 'like', '%' . $query . '%')->where('album_id', $id)->get();
 
         return response()->json(['results' => $results]);
     }
@@ -802,7 +821,7 @@ class ArtistVerifiedController extends Controller
     protected function viewKolaborasi(Request $request)
     {
         $title = "Kolaborasi";
-        $datas = projects::with('artis')->get();
+        $datas = projects::with(['artis', 'artis2'])->get();
         $artisUser = artist::where('user_id', auth()->user()->id)->first();
         $messages = messages::with(['sender.user', 'receiver', 'project'])->get();
         $notifs = notif::where('user_id', auth()->user()->id)->get();
@@ -890,6 +909,7 @@ class ArtistVerifiedController extends Controller
                 ->withInput();
         }
 
+        $pendapatan = aturanPembayaran::where('opsi_id', 3)->first();
         $project = projects::where('code', $code)->first();
 
         $range = $request->input('range');
@@ -900,12 +920,12 @@ class ArtistVerifiedController extends Controller
             $persentase = 80;
         }
 
-        $uangTetap = 1800000;
+        $uangTetap = $pendapatan->pendapatanArtis ? $pendapatan->pendapatanArtis : 30000;
         $uangYangDiterima = ($range / 100) * $uangTetap;
 
+
         if (isset($project->request_project_artis_id_1) || isset($project->request_project_artis_id_2)) {
-            $sisaPengasilan = 1800000 - $uangYangDiterima;
-            // dd($sisaPengasilan);
+            $sisaPengasilan = $uangTetap - $uangYangDiterima;
             penghasilan::create([
                 'artist_id' => $project->request_project_artis_id_1,
                 'penghasilan' => $sisaPengasilan,

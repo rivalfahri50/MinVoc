@@ -26,7 +26,7 @@
                                 </svg>
                             </label>
                             <input type="file" id="tamel" name="image" value="{{ old('image') }}"
-                                accept="image/png,image/jpg">
+                                accept="image/*">
                         </div>
                         @error('image')
                             <div class="text-danger" style="font-size: 14px; width: 170px">{{ $message }}</div>
@@ -114,7 +114,7 @@
                                         <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
                                         <td class="table-cell {{ $item->is_approved == 0 ? 'text-warning' : 'text-success' }}"
                                             style="font-weight: 600">
-                                            {{ $item->is_approved == 0 ? 'Pending' : 'Publish' }}</td>
+                                            {{ $item->is_approved == 0 ? 'Menunggu' : 'Telah Terbit' }}</td>
                                     </tr>
                                 @endIf
                             @endforeach

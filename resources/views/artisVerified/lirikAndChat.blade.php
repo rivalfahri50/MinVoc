@@ -313,7 +313,7 @@
                                                         <div class="mb-4">
                                                             <input type="text" class="form-control form-i inputcolor"
                                                                 name="name" id="nama" placeholder="Judul Lagu"
-                                                                value="{{ old('name') }}">
+                                                                value="{{ old('name') }}" maxlength="55">
                                                             @if ($errors->has('name'))
                                                                 <div class="text-danger" style="font-size: 12px">
                                                                     {{ $errors->first('name') }}
@@ -399,7 +399,7 @@
                                                                 value="Rp. 2.000.000.00" readonly disabled>
                                                             <span class="pl-1"
                                                                 style="color: darkgray; font-size: 13px;">admin memiliki
-                                                                hak sebesar 10% dalam penghasilan kolaborasi.</span>
+                                                                hak sebesar 20% dalam penghasilan kolaborasi.</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -433,7 +433,7 @@
                                     <div class="range-wrap">
                                         <div class="range-value" id="rangeV">0%</div>
                                         <input class="slider mb-4" id="range" name="range" type="range"
-                                            min="40" max="80" step="1">
+                                            min="40" max="70" step="1">
                                         <output for="range" class="output">Rp. 0</output>
                                     </div>
                                 </div>
@@ -473,20 +473,28 @@
         const output = document.querySelector('.output');
 
         const setValue = () => {
-            const persentase = Number(range.value);
-            const faktor = 18000;
+            fetch(`/nominal`)
+                .then(response => response.json())
+                .then(data => {
+                    const faktor = data.nominal.pendapatanArtis;
+                    const persentase = Number(range.value);
+        
+                    if (persentase < 40) {
+                        range.value = 40;
+                    } else if (persentase > 80) {
+                        range.value = 80;
+                    }
+        
+                    const uang = (persentase / 100) * faktor;
+                    rangeV.innerHTML = `${persentase}%`;
+        
+                    const harga = formatRupiah(uang);
+                    output.textContent = harga;
+                })
+                .catch(error => {
+                    console.error('Error fetching item data:', error);
+                });
 
-            if (persentase < 40) {
-                range.value = 40;
-            } else if (persentase > 80) {
-                range.value = 80;
-            }
-
-            const uang = (persentase / 100) * faktor * 100;
-            rangeV.innerHTML = `${persentase}%`;
-
-            const harga = formatRupiah(uang);
-            output.textContent = harga;
         };
 
         const formatRupiah = (angka) => {

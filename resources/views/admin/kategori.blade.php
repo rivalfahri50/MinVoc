@@ -106,7 +106,7 @@
                                     @csrf
                                     <div class="mb-3">
                                         <label for="namakategori" class="form-label judulnottebal">Nama Kategori</label>
-                                        <input type="text" name="name" class="form-control form-i" id="namaproyek"
+                                        <input type="text" name="name" class="form-control form-i" id="namaproyek" maxlength="55"
                                             required>
                                         @error('name')
                                             <div class="text-danger">{{ $message }}</div>

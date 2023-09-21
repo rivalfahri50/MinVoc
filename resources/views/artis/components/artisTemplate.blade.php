@@ -27,7 +27,7 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        .fixedbar{
+        .fixedbar {
             position: fixed;
             z-index: 1030;
             width: 245px;
@@ -157,6 +157,46 @@
         .fa-heart:before {
             content: "\f004";
             color: #957DAD;
+        }
+
+        /* CSS untuk styling pagination */
+        .pagination {
+            margin-top: 20px;
+        }
+
+        .page-item:first-child .page-link {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border-radius: 10px;
+        }
+
+        .page-item:last-child .page-link {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-radius: 10px;
+        }
+
+        .pagination li {
+            display: inline;
+            margin-right: 5px;
+        }
+
+        .pagination li a {
+            text-decoration: none;
+            border-radius: 10px;
+        }
+
+        .page-link.active {
+            background-color: #957DAD;
+            border: 1px solid #957DAD;
+        }
+
+        .pagination li.active a {
+            color: #fff;
+        }
+
+        .pagination li:hover {
+            background-color: #ddd;
         }
     </style>
     <style>
@@ -464,7 +504,7 @@
                                     style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
                                     <img class="img-xs rounded-circle" style="object-fit: cover;"
                                         src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
-                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ auth()->user()->name }}
+                                    <p class="mb-0 d-none d-sm-block navbar-profile-name" style="width: 60px; overflow: hidden; text-overflow: ellipsis; height: 15px;">{{ auth()->user()->name }}
                                     </p>
                                 </div>
                                 <a href="{{ route('ubah.profile.artis', auth()->user()->code) }}"
@@ -518,12 +558,12 @@
                                 <div class="mb-3">
                                     <h3 class="form-label judul">Nama Album</h3>
                                     <input type="text" name="name" class="form-control" id="namaproyek"
-                                        placeholder="Masukkan nama kategori musik" maxlength="80" required>
+                                        placeholder="Masukkan nama kategori musik" maxlength="55" required>
                                 </div>
                                 <div class="mb-3">
                                     <h3 for="upload" class="form-label judul">Upload
                                         Foto</h3>
-                                    <input type="file" name="image" class="form-control" id="namaproyek"
+                                    <input type="file" name="image" class="form-control" id="namaproyek" accept="image/*"
                                         required>
                                 </div>
                             </div>
@@ -565,11 +605,13 @@
                 $(document).ready(function() {
                     $('#search_song').on('keyup', function() {
                         var query = $(this).val();
+                        var id = $('#album_id').val()
                         $.ajax({
                             url: '/artis/search_song/',
                             type: 'GET',
                             data: {
-                                query: query
+                                query: query,
+                                id: id,
                             },
                             dataType: 'json',
                             success: function(response) {
@@ -1101,7 +1143,6 @@
                     } else {
                         console.error('Lagu dengan ID ' + id + ' tidak ditemukan dalam data lagu.');
                     }
-
                 }
 
                 track.addEventListener('ended', function() {

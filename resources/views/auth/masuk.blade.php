@@ -49,8 +49,7 @@
 
                         <div class="flex-sb-m w-full p-t-3 p-b-32">
                             <div class="contact100-form-checkbox">
-                                <input class="input-checkbox100" id="ckb1" type="checkbox" name="kebijakan_privasi"
-                                    {{ old('kebijakan_privasi') ? 'checked' : '' }}>
+                                <input class="input-checkbox100" id="ckb1" type="checkbox" name="kebijakan_privasi">
                                 <label class="label-checkbox100" for="ckb1">
                                     <a href="/kebijakan-privasi" style="text-decoration: none;">
                                         <span>Kebijakan Privasi</span>
@@ -61,6 +60,8 @@
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
+
+                   
                             <div>
                                 <a style="text-decoration: none; font-family: Poppins" href="{{ route('lupaSandi') }}"
                                     class="txt1">
@@ -92,50 +93,31 @@
             </div>
         </div>
     </div>
+
     <script>
-        // Cek apakah ada nilai checkbox yang tersimpan di localStorage
-        const savedCheckboxValue = localStorage.getItem('checkboxState');
-        const emailField = document.querySelector('input[name="email"]');
-        const passwordField = document.querySelector('input[name="password"]');
-        const checkbox = document.querySelector('#ckb1');
+        document.addEventListener('DOMContentLoaded', function() {
+            const dataKey = 'dataKey';
+            const checkbox = document.querySelector('#ckb1');
 
-        // Setel nilai checkbox berdasarkan nilai yang tersimpan di localStorage
+            const storedData = localStorage.getItem(dataKey);
 
-        if (savedCheckboxValue === 'checked') {
-            checkbox.checked = true;
+            if (storedData !== null) {
+                checkbox.checked = true;
+                console.log('Data ditemukan:', storedData);
 
-        }
-        // Menambahkan event listener pada saat tautan Kebijakan Privasi diklik
-        document.querySelector('a[href="/kebijakan-privasi/button"]').addEventListener('click', function (e) {
-
-            if (!checkbox.checked) {
-                if (!confirm('Anda belum mencentang kotak Kebijakan Privasi. Lanjutkan otomatis mencentang?')) {
-                    e.preventDefault(); // Hentikan perpindahan ke halaman Kebijakan Privasi
-                } else {
-                    // Setel centang otomatis jika pengguna setuju
-                    checkbox.checked = true;
-                    localStorage.getItem('checkboxState', checkbox.checked ? 'checked' : '');
-
+                const dataElement = document.getElementById('dataElement');
+                if (dataElement) {
+                    dataElement.textContent = storedData;
                 }
             } else {
-                // Simpan nilai email dan password ke sessionStorage
-                sessionStorage.setItem('savedEmail', emailField.value);
-                sessionStorage.setItem('savedPassword', passwordField.value);
+                console.log('Data tidak ditemukan.');
             }
+        });
 
+        window.addEventListener('unload', function() {
+            const dataKey = 'dataKey';
 
-             });
-
-        // Mengisi email dan password jika sudah dikonfirmasi
-        if (sessionStorage.getItem('savedEmail') && sessionStorage.getItem('savedPassword')) {
-            emailField.value = sessionStorage.getItem('savedEmail');
-            passwordField.value = sessionStorage.getItem('savedPassword');
-        }
-
-        // Menghapus nilai email dan password dari sessionStorage saat form dikirim
-        document.querySelector('.login100-form').addEventListener('submit', function () {
-            sessionStorage.removeItem('savedEmail');
-            sessionStorage.removeItem('savedPassword');
+            localStorage.removeItem(dataKey);
         });
     </script>
-        @endsection
+@endsection

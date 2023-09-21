@@ -37,7 +37,7 @@
                                         <td class="table-cell">{{ $item->artist->user->name }}</td>
                                         </td>
                                         <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
-                                        <td class="table-cell text-success">{{ $item->is_approved ? 'Publish' : 'Reject' }}
+                                        <td class="table-cell text-success">{{ $item->is_approved ? 'Telah Terbit' : 'Tolak' }}
                                     </tr>
                                 @endif
                             @endforeach

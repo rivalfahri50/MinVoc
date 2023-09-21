@@ -63,7 +63,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="p-5">
-                            <input type="file" id="gambar" accept="image/png,image/jpg" name="avatar"
+                            <input type="file" id="gambar" accept="image/*" name="avatar"
                                 class="form-control" onchange="previewImage()">
                             @if ($errors->has('avatar'))
                                 <div class="text-danger mt-1 my-1" style="width: 500px">
@@ -78,7 +78,7 @@
                             <label for="nama" class="form-label"
                                 style="font-size: 20px; font-weight: 600; color: #957dad">Nama pengguna</label>
                             <input type="text" class="form-control" name="name" id="nama"
-                                aria-describedby="validationServer03Feedback">
+                                aria-describedby="validationServer03Feedback" maxlength="55">
                             @if ($errors->has('name'))
                                 <div class="text-danger mt-1 my-1">
                                     {{ $errors->first('name') }}
@@ -90,7 +90,7 @@
                         <div class="mb-3">
                             <label for="email" class="form-label"
                                 style="font-size: 20px; font-weight: 600; color: #957dad">Email</label>
-                            <input type="email" class="form-control" name="email" id="email" required>
+                            <input type="email" class="form-control" name="email" id="email" maxlength="55" required>
                             @if ($errors->has('email'))
                                 <div class="text-danger mt-1 my-1">
                                     {{ $errors->first('email') }}

@@ -16,6 +16,7 @@ use App\Models\projects;
 use App\Models\Riwayat;
 use App\Models\song;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -62,6 +63,7 @@ class ArtistController extends Controller
         $artistid = (int) artist::where('user_id', auth()->user()->id)->first()->id;
         $totalpenghasilan = penghasilan::where('artist_id', $artistid)->sum('penghasilan');
         $penghasilan = penghasilan::where('artist_id', $artistid)->pluck('penghasilan')->toArray();
+        $penghasilanArtis = penghasilan::with('artist')->where('artist_id', $artistid)->where('is_submit', true)->get();
         // $month = penghasilan::where('artist_id', $artistid)->pluck('bulan')->toArray();
         $month = [];
         if ($request->has("artist_id")) {
@@ -87,7 +89,7 @@ class ArtistController extends Controller
         }
 
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('artis.penghasilan', compact('title', 'month', 'totalpenghasilan', 'songs', 'penghasilan', 'projects', 'notifs'));
+        return response()->view('artis.penghasilan', compact('title', 'month', 'totalpenghasilan', 'songs', 'penghasilan', 'projects', 'notifs', 'penghasilanArtis'));
     }
 
     protected function riwayat(): Response
@@ -209,7 +211,6 @@ class ArtistController extends Controller
             $artist->image = $imagePath;
             $artist->pengajuan = true;
             $artist->update();
-
         } catch (\Throwable $th) {
             Alert::error('message', 'Gagal Mengirim Request Verification Account');
             return response()->redirectTo('/artis/verified')->with('failed', "failed");
@@ -320,9 +321,11 @@ class ArtistController extends Controller
         try {
             User::where('code', $code)->update($value);
         } catch (Throwable $e) {
-            return abort(404);
+            Alert::error('message', 'Profile gagal di perbarui');
+            return redirect()->back();
         }
-        return redirect()->back()->withErrors($validate)->withInput();
+        Alert::success('message', 'Profile berhasil di perbarui');
+        return redirect()->back();
     }
 
     protected function hapusPlaylist(string $code)
@@ -344,6 +347,21 @@ class ArtistController extends Controller
             return abort(404);
         }
         return response()->redirectTo('artis/playlist');
+    }
+
+    protected function filterDate(Request $request)
+    {
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+
+        $start_date = Carbon::parse($startDate)->startOfDay();
+        $end_date = Carbon::parse($endDate)->endOfDay();
+
+        $results = penghasilan::with('artist')->whereNotIn('status', ['pending', 'reject'])
+            ->whereBetween('created_at', [$start_date, $end_date])
+            ->get();
+
+        return redirect()->back()->with(['results' => $results]);
     }
 
     protected function hapusSongPlaylist(string $code)
@@ -424,11 +442,6 @@ class ArtistController extends Controller
             DB::beginTransaction();
             $code = Str::uuid();
             $image = $request->file('image')->store('images', 'public');
-            // $namaFile = time() . '_' . $request->file('audio')->getClientOriginalName();
-
-
-            // Simpan file audio dengan nama yang ditentukan di penyimpanan lokal
-            // $audioPath = $request->file('audio')->storeAs('public/musics', $namaFile);
             $audioPath = $request->file('audio')->store('musics', 'public');
             // dd($audioPath);
             $getID3 = new getID3();
@@ -454,21 +467,9 @@ class ArtistController extends Controller
             ]);
             DB::commit();
 
-            notif::create([
-                'artis_id' => $artis->id,
-                'title' => $request->input('judul'),
-                'user_id' => auth()->user()->id,
-                'is_reject' => false
-            ]);
-
             $penghasilanArtist = (int) $artis->penghasilan + 200000;
             $artis->update(['penghasilan' => $penghasilanArtist]);
 
-            penghasilan::create([
-                'artist_id' => $artis->id,
-                'penghasilan' => 200000,
-                'bulan' => now()->format('m'),
-            ]);
             Alert::success('message', 'Lagu berhasil di upload, tunggu admin untuk publish');
             return redirect('/artis/unggahAudio')->with('success', 'Song uploaded successfully.');
         } catch (\Throwable $e) {
@@ -532,6 +533,7 @@ class ArtistController extends Controller
 
         $users = User::where('name', 'LIKE', '%' . $query . '%')
             ->where('role_id', '!=', 3)
+            ->where('role_id', '!=', 4)
             ->get();
 
         try {
@@ -548,7 +550,8 @@ class ArtistController extends Controller
     public function search_song(Request $request)
     {
         $query = $request->input('query');
-        $results = song::with('artist.user')->where('judul', 'like', '%' . $query . '%')->get();
+        $id = $request->input('id');
+        $results = song::with('artist.user')->where('judul', 'like', '%' . $query . '%')->where('album_id', $id)->get();
 
         return response()->json(['results' => $results]);
     }

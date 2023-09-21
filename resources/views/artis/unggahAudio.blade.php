@@ -25,7 +25,7 @@
                                         </svg>
                                     </label>
                                     <input type="file" id="tamel" name="image" value="{{ old('image') }}"
-                                        accept="image/png,image/jpg">
+                                        accept="image/*">
                                 </div>
                                 @error('image')
                                     <div class="text-danger">{{ $message }}</div>

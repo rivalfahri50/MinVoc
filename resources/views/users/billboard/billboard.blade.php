@@ -39,7 +39,6 @@
                                                         var isPlaying = false; // Default status pemutaran lagu
                                                     </script>
                                                 </span>
-
                                             </div>
                                         </div>
                                     </div>

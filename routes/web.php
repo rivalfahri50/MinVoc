@@ -16,6 +16,7 @@ use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\penggunaController;
 use App\Http\Controllers\ArtistVerifiedController;
 use App\Http\Controllers\LikeController;
+use App\Models\aturanPembayaran;
 use App\Models\notif;
 
 /*
@@ -56,7 +57,9 @@ Route::prefix('admin')->middleware('admin')->controller(AdminController::class)-
     Route::get('/riwayat', 'riwayat');
     Route::get('/verifikasi', 'verifikasi');
     Route::get('/pencairan', 'pencairan');
+    Route::get('/peraturan-pencairan', 'peraturan');
     Route::get('/show', 'show');
+    Route::get('/items/{code}', 'items');
     Route::get('/hapus-billboard/{code}', 'hapusBillboard')->name('hapus.billoard');
     Route::get('/hapus-music/{code}', 'hapusMusic')->name('hapus.music');
     Route::get('/hapus-genre/{code}', 'hapusGenre')->name('hapus.genre');
@@ -66,8 +69,9 @@ Route::prefix('admin')->middleware('admin')->controller(AdminController::class)-
     Route::get('/satuju-pencairan/{code}', 'pencairanApprove')->name('setuju.pencairan');
     Route::get('/pencairan-reject/{code}', 'pencairanReject')->name('pencairan.reject');
     Route::get('/delete-notif/{code}', 'deleteNotif');
+    Route::get('/list-pembayaran', 'listTipePembayaran');
 
-    Route::POST('/setuju-verified/{code}', 'setujuVerified')->name('tambah.verified');
+    Route::post('/setuju-verified/{code}', 'setujuVerified')->name('tambah.verified');
     Route::post('/uploadBillboard', 'buatBillboard')->name('uploadBillboard');
     Route::post('/edit-billboard/{code}', 'updatebillboard')->name('updateBillboard');
     Route::post('/genre', 'buatGenre')->name('buat.genre');
@@ -166,6 +170,7 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
     Route::get('/delete-notif/{code}', 'deleteNotif');
     Route::get('/pencairan/{code}', 'pencairan');
     Route::get('/filter', 'filterDate')->name('filter.date');
+    Route::get('/filter-pencairan', 'filterDatePencairan')->name('filter.date.pencairan');
 
     Route::post('/pencairan/{code}', 'pencairanDana')->name('pencairan.artiVerified');
     Route::post('/undangColab/{code}', 'undangColab')->name('undangColab');
@@ -231,6 +236,9 @@ Route::controller(SongController::class)->group(function () {
     Route::post('/update-play-count/{song_id}', 'playCount');
 });
 
+Route::post('/peraturan-pembayaran', [AdminController::class, 'peraturanPembayaran'])->name('peraturan');
+Route::post('/update-peraturan-pembayaran/{code}', [AdminController::class, 'updatePeraturanPembayaran'])->name('update.pendapatan');
+
 Route::controller(LikeController::class)->group(function () {
     Route::post('/artist/{artist}/like', 'likeArtist');
     Route::get('/artist/check', 'likeCheck');
@@ -239,6 +247,10 @@ Route::controller(LikeController::class)->group(function () {
 
 Route::post('/simpan-riwayat', [RiwayatController::class, 'simpanRiwayat']);
 Route::post('/hitung/penghasilan', [RiwayatController::class, 'penghasilanArtist']);
+Route::get('/nominal', function () {
+    $pendapatan = aturanPembayaran::where('opsi_id', 3)->first();
+    return response()->json(['nominal' => $pendapatan]);
+});
 
 Route::get('/kebijakan-privasi', function () {
     return view('auth.kebijakanprivasi');

@@ -47,7 +47,7 @@
         <div class="content-wrapper">
             <div class="row">
                 <div class="col-md-12 grid-margin stretch-card">
-                    <h3 class="card-title mt-2 judul" style="font-size: 20px; font-weight: 600">Kategori</h3>
+                    <h3 class="card-title mt-2 judul" style="font-size: 20px; font-weight: 600">Genre</h3>
                     <div class="cards">
                         @foreach ($genres as $item)
                             <a href="/artis/kategori/{{ $item->code }}" class="card cardi card-scroll rounded-4">

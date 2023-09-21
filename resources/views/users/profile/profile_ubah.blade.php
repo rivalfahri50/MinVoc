@@ -63,7 +63,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="p-5">
-                            <input type="file" id="gambar" accept="image/png,image/jpg" name="avatar"
+                            <input type="file" id="gambar" accept="image/*" name="avatar"
                                 class="form-control" onchange="previewImage()">
                             @if ($errors->has('avatar'))
                                 <div class="text-danger mt-1 my-1" style="width: 200px">
@@ -77,8 +77,7 @@
                         <div class="mb-3">
                             <label for="nama" class="form-label"
                                 style="font-size: 20px; font-weight: 600; color: #957dad">Nama pengguna</label>
-                            <input type="text" class="form-control" name="name" id="nama"
-                                value="{{ $user[0]->name }}" aria-describedby="namaFeedback">
+                            <input type="text" class="form-control" name="name" id="name" aria-describedby="namaFeedback" maxlength="55">
                             @if ($errors->has('name'))
                                 <div class="text-danger mt-1 my-1">
                                     {{ $errors->first('name') }}
@@ -91,8 +90,7 @@
                         <div class="mb-3">
                             <label for="email" class="form-label"
                                 style="font-size: 20px; font-weight: 600; color: #957dad">Email</label>
-                            <input type="email" class="form-control" name="email" id="email"
-                                value="{{ $user[0]->email }}" aria-describedby="emailFeedback">
+                            <input type="email" class="form-control" name="email" id="email" aria-describedby="emailFeedback" maxlength="55">
                             @if ($errors->has('email'))
                                 <div class="text-danger mt-1 my-1">
                                     {{ $errors->first('email') }}
@@ -105,7 +103,7 @@
                         <div class="mb-3">
                             <label for="deskripsi" class="form-label"
                                 style="font-size: 20px; font-weight: 600; color: #957dad">Deskripsi</label>
-                            <textarea id="deskripsi" class="form-control" name="deskripsi" maxlength="500" rows="5">{{ $user[0]->deskripsi === 'none' ? '' : $user[0]->deskripsi }}</textarea>
+                            <textarea id="deskripsiUser" class="form-control" name="deskripsi" maxlength="500" rows="5"></textarea>
                             <div id="counter" class="float-right"></div>
                         </div>
                     </div>
@@ -121,19 +119,20 @@
 
     <script>
         const code = "{{ auth()->user()->id }}"
+        console.log(code);
         fetch(`/pengguna/profile/${code}`)
             .then(response => response.json())
             .then(data => {
-                const name = document.getElementById('nama');
+                const name = document.getElementById('name');
                 const email = document.getElementById('email');
-                const deskripsi = document.getElementById('deskripsi');
+                const deskripsi = document.getElementById('deskripsiUser');
 
-                name.value = data.user.user.name;
-                email.value = data.user.user.email;
-                if (data.user.user.deskripsi == "none") {
+                name.value = data.user.name;
+                email.value = data.user.email;
+                if (data.user.deskripsi == "none") {
                     deskripsi.innerHTML = '';
                 } else {
-                    deskripsi.innerHTML = data.user.user.deskripsi;
+                    deskripsi.innerHTML = data.user.deskripsi;
                 }
 
                 const event = new Event('input', {

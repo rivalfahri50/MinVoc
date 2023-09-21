@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\admin;
 use App\Models\artist;
+use App\Models\aturanPembayaran;
 use App\Models\billboard;
 use App\Models\genre;
 use App\Models\notif;
+use App\Models\opsiPembayaran;
 use App\Models\penghasilan;
 use App\Models\projects;
 use App\Models\song;
@@ -59,6 +61,96 @@ class AdminController extends Controller
         $show = song::findOrFail($id);
         $notifs = notif::where('user_id', auth()->user()->id)->get();
         return response()->view('admin.persetujuan', compact('title', 'show', 'notifs'));
+    }
+
+    protected function peraturan(Request $request)
+    {
+        $title = 'MusiCave';
+        $tipePembayaran = aturanPembayaran::with('opsi')->get();
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        $opsi = opsiPembayaran::all();
+        return response()->view('peraturanPembayaran', compact('title', 'notifs', 'opsi', 'tipePembayaran'));
+    }
+
+    // protected function listTipePembayaran()
+    // {
+    //     $datas = opsiPembayaran::all();
+    //     return response()->json(['datas' => $datas]);
+    // }
+
+    protected function items(string $code)
+    {
+        $data = aturanPembayaran::with('opsi')->where('code', $code)->first();
+        return response()->json(['data' => $data]);
+    }
+
+    protected function peraturanPembayaran(Request $request)
+    {
+        $validator = Validator::make($request->only('opsi', 'pembayaranArtis', 'pembayaranAdmin'), [
+            'opsi' => 'required|exists:opsi_pembayarans,id',
+            'pembayaranArtis' => 'required|integer|min:1',
+            'pembayaranAdmin' => 'required|integer|min:1',
+        ], [
+            'required' => 'Kolom :attribute harus diisi.',
+            'integer' => 'Kolom :attribute harus berupa angka.',
+            'min' => 'Kolom :attribute minimal harus :min.',
+            'exists' => 'Kolom :attribute yang dipilih tidak valid.',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $opsi = opsiPembayaran::where('id', $request->input('opsi'))->first();
+
+        aturanPembayaran::create([
+            'code' => Str::uuid(),
+            'opsi_id' => $opsi->id,
+            'pendapatanArtis' => $request->input('pembayaranArtis'),
+            'pendapatanAdmin' => $request->input('pembayaranAdmin'),
+        ]);
+        try {
+        } catch (\Throwable $th) {
+            Alert::error('message', 'Pengaturan pembayaran gagal dibuat');
+            return redirect()->back();
+        }
+        Alert::success('message', 'Pengaturan pembayaran berhasil dibuat');
+        return redirect()->back();
+    }
+
+    protected function updatePeraturanPembayaran(Request $request, string $code)
+    {
+        $validator = Validator::make($request->only('opsi', 'pembayaranArtis', 'pembayaranAdmin'), [
+            'pembayaranArtis' => 'required|integer|min:1',
+            'pembayaranAdmin' => 'required|integer|min:1',
+        ], [
+            'required' => 'Kolom :attribute harus diisi.',
+            'integer' => 'Kolom :attribute harus berupa angka.',
+            'min' => 'Kolom :attribute minimal harus :min.',
+            'exists' => 'Kolom :attribute yang dipilih tidak valid.',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        try {
+            $opsi = opsiPembayaran::where('tipe', $request->input('opsi'))->first();
+            $aturan = aturanPembayaran::where('code', $code)->first();
+
+            $data = [
+                'opsi_id' => $opsi->id,
+                'pendapatanArtis' => $request->input('pembayaranArtis'),
+                'pendapatanAdmin' => $request->input('pembayaranAdmin'),
+            ];
+
+            $aturan->update($data);
+        } catch (\Throwable $th) {
+            Alert::error('message', 'Aturan pembayaran gagal di perbarui');
+            return redirect()->back();
+        }
+        Alert::success('message', 'Aturan pembayaran berhasil di perbarui');
+        return redirect()->back();
     }
 
     protected function kategori(): Response
@@ -135,7 +227,8 @@ class AdminController extends Controller
             ];
             notif::create([
                 'title' => 'pengajuan Verifikasi Baru Masuk',
-                'user_id' => $key->artist_id,
+                'message' => 'pengajuan verifikasi telah di setujui oleh admin.',
+                'user_id' => $key->artist->user_id,
             ]);
             penghasilan::where('id', $key->id)->update($data);
         }
@@ -151,7 +244,7 @@ class AdminController extends Controller
     {
         try {
             $penghasilan = penghasilan::where(function ($query) use ($code) {
-                $query->where('is_take', true)
+                $query->where('is_take', true)->where('is_submit', false)
                     ->orWhere('id', $code);
             })->get();
 
@@ -186,26 +279,26 @@ class AdminController extends Controller
         $song = song::where('code', $code)->first();
         $artis = artist::where('id', $song->artis_id)->first();
         $user = User::where('id', $artis->user_id)->first();
-
-        $data = [
-            'artis_id' => $song->artis_id,
-            'title' => $song->judul,
-            'user_id' => $user->id,
-            'is_reject' => false
-        ];
-        notif::create($data);
+        $pengahasilan = aturanPembayaran::where('opsi_id', 2)->first();
         try {
+            $data = [
+                'artis_id' => $song->artis_id,
+                'title' => $song->judul,
+                'user_id' => $user->id,
+                'is_reject' => false
+            ];
+            notif::create($data);
             $song->is_approved = true;
             $song->update();
             $persetujuan = song::all();
             $notifs = notif::where('user_id', auth()->user()->id)->get();
-
-            $penghasilanArtist = (int) $artis->penghasilan + 400000;
+    
+            $penghasilanArtist = (int) $artis->penghasilan + $pengahasilan->pendapatanArtis ? $pengahasilan->pendapatanArtis : 20000;
             artist::findOrFail($artis->id)->update(['penghasilan' => $penghasilanArtist]);
             $artis->update(['penghasilan' => $penghasilanArtist]);
             penghasilan::create([
-                'artist_id' => $artis->id, // Menggunakan ID artis, bukan objek artis
-                'penghasilan' => 400000,
+                'artist_id' => $artis->id,
+                'penghasilan' => $pengahasilan->pendapatanArtis ? $pengahasilan->pendapatanArtis : 20000,
                 'status' => "unggah lagu",
                 'bulan' => now()->format('m'),
             ]);
@@ -279,7 +372,7 @@ class AdminController extends Controller
         // Validasi input sesuai kebutuhan
         $this->validate($request, [
             'artis_id' => 'required|exists:artists,id',
-            'deskripsi' => 'required|string|max:250',
+            // 'deskripsi' => 'required|string|max:250',
             'image_background' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'image_artis' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ], [
