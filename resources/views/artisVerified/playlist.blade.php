@@ -36,7 +36,7 @@
                         class="card card-scroll coba text-decoration-none">
                         <div class="card-content">
                             <div class="kotaktetap">
-                                <img src="{{ asset('storage/images/my-profil.jpg' ) }}" class="img-fluid rounded-1 p-2">
+                                <img src="http://127.0.0.1:8000/storage/images/53e3eyfg734r-r4ry4rgg43ry-34rwerwrww3.jpg" class="img-fluid rounded-1 p-2">
                             </div>
                             <h1 class="mt-2 judul"> Lagu yang disukai</h1>
                             <p class="teks">lagu-lagu yang kamu tambah ke favorit

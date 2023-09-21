@@ -37,13 +37,13 @@ class ArtistController extends Controller
     {
         $title = "MusiCave";
         $songs = song::all();
-        $song = song::where('didengar','>','1000')->orderByDesc('didengar')->get();
+        $song = song::where('didengar', '>', '10')->orderByDesc('didengar')->get();
         $genres = genre::all();
         $artist = artist::with('user')->get();
         $playlists = playlist::all();
         $billboards = billboard::all();
         $notifs = notif::with('artis.user')->where('user_id', auth()->user()->id)->get();
-        return response()->view('artis.dashboard', compact('title', 'songs', 'song','genres', 'artist', 'billboards', 'playlists', 'notifs'));
+        return response()->view('artis.dashboard', compact('title', 'songs', 'song', 'genres', 'artist', 'billboards', 'playlists', 'notifs'));
     }
 
     protected function playlist(): Response
@@ -716,7 +716,7 @@ class ArtistController extends Controller
         } catch (\Throwable $th) {
             return abort(404);
         }
-        return response()->view('artis.playlist', compact('title', 'album', 'notifs'));
+        return redirect()->back();
     }
 
     protected function detailPlaylist(string $code): Response
@@ -751,8 +751,8 @@ class ArtistController extends Controller
         $title = "MusiCave";
         $notifs = notif::where('user_id', auth()->user()->id)->get();
         $songId = Like::where('user_id', Auth::user()->id)->pluck('song_id')->toArray();
-        $song = song::whereIn('id',$songId)->get();
-        return response()->view('artis.playlist.disukai', compact('title','song', 'notifs'));
+        $song = song::whereIn('id', $songId)->get();
+        return response()->view('artis.playlist.disukai', compact('title', 'song', 'notifs'));
     }
 
     protected function viewKolaborasi(Request $request)
@@ -787,7 +787,12 @@ class ArtistController extends Controller
 
     protected function logout(Request $request)
     {
-        Auth::logout();
+        User::where('id', auth()->user()->id)->update(['is_login' => false]);
+        try {
+            Auth::logout();
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
         return response()->redirectTo("/masuk");
     }
 

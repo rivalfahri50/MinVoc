@@ -396,7 +396,7 @@
                                                                 class="form-label judulnottebal fs-6">Harga</label>
                                                             <input type="text" name="harga"
                                                                 class="form-control inputcolor bg-white" id="namaproyek"
-                                                                value="Rp. 2.000.000.00" readonly disabled>
+                                                                value="Rp. {{ number_format($uang, 2, ',', '.') }}" readonly disabled>
                                                             <span class="pl-1"
                                                                 style="color: darkgray; font-size: 13px;">admin memiliki
                                                                 hak sebesar 20% dalam penghasilan kolaborasi.</span>

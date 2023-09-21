@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class checkLogout
@@ -15,9 +16,8 @@ class checkLogout
      */
     public function handle(Request $request, Closure $next): Response
     {
-        dd(auth()->check());
-        if (auth()->check()) {
-            return redirect('/masuk');
+        if (Auth::check()) {
+            return back();
         }
         return $next($request);
     }

@@ -399,11 +399,11 @@
                                                 <p class="preview-subject mb-1" style="font-weight: bold">
                                                     {{ $item->title }}</p>
                                                 @if ($item->message !== null)
-                                                    <button class="text-muted ellipsis mb-0"
-                                                        style="font-size: 12px; font-weight: normal"
+                                                    <span class="text-muted ellipsis mb-0"
+                                                        style="font-size: 12px; font-weight: normal; cursor: pointer;"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#alasan-{{ $item->code }}">Klik
-                                                        untuk melihat alasan</button>
+                                                        untuk melihat alasan</span>
                                                 @else
                                                     <p class="text-muted ellipsis mb-0">{{ $item->artis->user->name }}
                                                     </p>
@@ -448,7 +448,7 @@
                                         <p class="preview-subject mb-1 fw-light">Profile</p>
                                     </div>
                                 </a>
-                                <a class="dropdown-item preview-item" href="{{ route('logout.users') }}">
+                                <a class="dropdown-item preview-item" href="{{ route('logout.artisVerified') }}">
                                     <div class="preview-thumbnail">
                                         <div class="preview-icon rounded-circle">
                                             <i class="mdi mdi-logout"></i>

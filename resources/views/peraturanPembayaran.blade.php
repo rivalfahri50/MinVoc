@@ -141,7 +141,8 @@
                                     <div class="col-4 mb-3">
                                         <label for="namakategori" class="form-label judulnottebal">Pendapatan Artis</label>
                                         <input type="number" name="pembayaranArtis" class="form-control form-i styleinput"
-                                            id="harga1" min="5" maxlength="6" minlength="5" required placeholder="100000">
+                                            id="harga1" min="5" maxlength="6" minlength="5" required
+                                            placeholder="100000">
                                         @error('pembayaranArtis')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
@@ -149,7 +150,8 @@
                                     <div class="col-4 mb-4">
                                         <label for="namakategori" class="form-label judulnottebal">Komisi Admin</label>
                                         <input type="number" name="pembayaranAdmin" class="form-control form-i styleinput"
-                                            id="harga2" min="5" required maxlength="6" minlength="5" placeholder="100000">
+                                            id="harga2" min="5" required maxlength="6" minlength="5"
+                                            placeholder="100000">
                                         @error('pembayaranAdmin')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
@@ -198,6 +200,15 @@
                                                         data-bs-target="#edit-{{ $item->code }}">
                                                         <i class="far fa-edit text-primary"></i>
                                                     </button>
+                                                    {{-- <button class="btn btnicon confirmButtonReject" type="submit"> --}}
+                                                        <a class="btn btnicon confirmButtonReject" href="/admin/delete-pencairan/{{ $item->code }}">
+                                                            <i class="far fa-times-circle text-danger"></i>
+                                                        </a>
+                                                        {{-- <form method="GET"
+                                                            action="/admin/pencairan-reject/{{ $item->id }}">
+                                                            @csrf --}}
+                                                        {{-- </form> --}}
+                                                    {{-- </button> --}}
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -265,8 +276,8 @@
                         <div class="modal-body mb-4" style="padding: 0 30px;">
                             <div class="mb-3">
                                 <label for="ops" class="form-label judulnottebal">Tipe pendapatan</label>
-                                <input type="text" name="opsi" class="form-control form-i"
-                                    id="ops" required readonly>
+                                <input type="text" name="opsi" class="form-control form-i" id="ops" required
+                                    readonly>
                             </div>
                             <div class="mb-3">
                                 <label for="pendapatan1" class="form-label judulnottebal">Pendapatan Artis</label>

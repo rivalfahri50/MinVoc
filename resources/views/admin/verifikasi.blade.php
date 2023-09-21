@@ -29,7 +29,7 @@
                                 </div>
                                 <div class="mb-4">
                                     <h5 class="judul mb-3">Tanggal Pengajuan :</h5>
-                                    <p class="teksbiasa">{{ $item->pengajuan_verified_at }}</p>
+                                    <p class="teksbiasa">{{ (new DateTime($item->pengajuan_verified_at))->format('d F Y') }}</p>
                                 </div>
                                 <div class="mb-4">
                                     <h5 class="judul mb-3">Disukai :</h5>
@@ -246,7 +246,8 @@
                                                         </div>
                                                     </td>
                                                     <td class="table-cell mt-1">
-                                                        {{ \Carbon\Carbon::parse($item->created_at)->format('Y-m-d') }}
+                                                        {{ (new DateTime($item->created_at))->format('d F Y') }}
+                                                        {{-- {{ \Carbon\Carbon::parse($item->created_at)->format('Y-m-d') }} --}}
                                                     </td>
                                                     <td class="table-cell text-warning mt-1">
                                                         {{ $item->verification_status }}

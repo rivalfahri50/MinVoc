@@ -35,7 +35,6 @@ class AdminController extends Controller
         $totalLagu = song::count();
         $totalArtist = artist::count();
         $songs = song::all();
-        $notifs = notif::where('user_id', auth()->user()->id)->get();
         $adminId = admin::where('id', 1)->first()->id;
         $month = [];
 
@@ -46,30 +45,27 @@ class AdminController extends Controller
                 ->sum('penghasilan');
             $month[] = $totalPendapatan;
         }
-        return response()->view('admin.dashboard', compact('title', 'month', 'totalPendapatan', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs', 'notifs'));
+        return response()->view('admin.dashboard', compact('title', 'month', 'totalPendapatan', 'totalPengguna', 'totalLagu', 'totalArtist', 'songs'));
     }
     protected function persetujuan(): Response
     {
         $title = "MusiCave";
         $persetujuan = song::where('is_approved', false)->get();
-        $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('admin.persetujuan', compact('title', 'persetujuan', 'notifs'));
+        return response()->view('admin.persetujuan', compact('title', 'persetujuan'));
     }
     protected function show($id): Response
     {
         $title = "MusiCave";
         $show = song::findOrFail($id);
-        $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('admin.persetujuan', compact('title', 'show', 'notifs'));
+        return response()->view('admin.persetujuan', compact('title', 'show'));
     }
 
     protected function peraturan(Request $request)
     {
         $title = 'MusiCave';
         $tipePembayaran = aturanPembayaran::with('opsi')->get();
-        $notifs = notif::where('user_id', auth()->user()->id)->get();
         $opsi = opsiPembayaran::all();
-        return response()->view('peraturanPembayaran', compact('title', 'notifs', 'opsi', 'tipePembayaran'));
+        return response()->view('peraturanPembayaran', compact('title', 'opsi', 'tipePembayaran'));
     }
 
     // protected function listTipePembayaran()
@@ -118,6 +114,18 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
+    protected function deletePencairan(string $code)
+    {
+        $data = aturanPembayaran::where('code', $code)->first();
+        try {
+            $data->delete();
+        } catch (\Throwable $th) {
+            Alert::error('message', 'Aturan pembayaran gagal di hapus');
+        }
+        Alert::success('message', 'Aturan pembayaran berhasil di hapus');
+        return redirect()->back();
+    }
+
     protected function updatePeraturanPembayaran(Request $request, string $code)
     {
         $validator = Validator::make($request->only('opsi', 'pembayaranArtis', 'pembayaranAdmin'), [
@@ -157,8 +165,7 @@ class AdminController extends Controller
     {
         $title = "MusiCave";
         $genres = genre::all();
-        $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('admin.kategori', compact('title', 'genres', 'notifs'));
+        return response()->view('admin.kategori', compact('title', 'genres'));
     }
 
     protected function iklan(): Response
@@ -166,33 +173,19 @@ class AdminController extends Controller
         $title = "MusiCave";
         $billboards = billboard::all();
         $artist = artist::where('is_verified', 1)->get();
-        $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('admin.iklan', compact('title', 'artist', 'billboards', 'notifs'));
-    }
-
-    protected function deleteNotif(Request $request, string $code)
-    {
-        try {
-            $notif = notif::where('id', $code)->first();
-            $notif->delete();
-        } catch (\Throwable $th) {
-            abort(404);
-        }
-        return redirect()->back();
+        return response()->view('admin.iklan', compact('title', 'artist', 'billboards'));
     }
 
     protected function riwayat(): Response
     {
         $title = "MusiCave";
         $songs = song::all();
-        $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('admin.riwayat', compact('title', 'songs', 'notifs'));
+        return response()->view('admin.riwayat', compact('title', 'songs'));
     }
 
     protected function pencairan(): Response
     {
         $title = "MusiCave";
-        $notifs = notif::where('user_id', auth()->user()->id)->get();
 
         $penghasilanAll = penghasilan::with('artist')
             ->select('penghasilan.artist_id', DB::raw('MAX(penghasilan.Pengajuan_tanggal) as Pengajuan_tanggal'), DB::raw('MAX(penghasilan.is_submit) as is_submit'), DB::raw('MAX(penghasilan.penghasilanCair) as penghasilanCair'), DB::raw('MAX(penghasilan.id) as id'), DB::raw('SUM(penghasilan.penghasilan) as total_penghasilan'))
@@ -200,7 +193,7 @@ class AdminController extends Controller
             ->join('artists', 'penghasilan.artist_id', '=', 'artists.id')
             ->groupBy('penghasilan.artist_id')
             ->get();
-        return response()->view('admin.pencairan', compact('title', 'notifs', 'penghasilanAll'));
+        return response()->view('admin.pencairan', compact('title', 'penghasilanAll'));
     }
 
     protected function pencairanApprove(Request $request, string $code)
@@ -226,8 +219,8 @@ class AdminController extends Controller
                 'terakhir_diambil' => now()
             ];
             notif::create([
-                'title' => 'pengajuan Verifikasi Baru Masuk',
-                'message' => 'pengajuan verifikasi telah di setujui oleh admin.',
+                'title' => 'pengajuan pencairan uang berhasil',
+                'message' => 'pengajuan pencairan uang telah di setujui oleh admin.',
                 'user_id' => $key->artist->user_id,
             ]);
             penghasilan::where('id', $key->id)->update($data);
@@ -269,8 +262,7 @@ class AdminController extends Controller
     {
         $title = "MusiCave";
         $artist = artist::where('is_verified', 0)->get();
-        $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('admin.verifikasi', compact('title', 'artist', 'notifs'));
+        return response()->view('admin.verifikasi', compact('title', 'artist'));
     }
 
     protected function setujuMusic(string $code)
@@ -280,34 +272,48 @@ class AdminController extends Controller
         $artis = artist::where('id', $song->artis_id)->first();
         $user = User::where('id', $artis->user_id)->first();
         $pengahasilan = aturanPembayaran::where('opsi_id', 2)->first();
-        try {
-            $data = [
-                'artis_id' => $song->artis_id,
-                'title' => $song->judul,
-                'user_id' => $user->id,
-                'is_reject' => false
-            ];
-            notif::create($data);
-            $song->is_approved = true;
-            $song->update();
-            $persetujuan = song::all();
-            $notifs = notif::where('user_id', auth()->user()->id)->get();
-    
+        $pengahasilanAdmin = aturanPembayaran::where('opsi_id', 2)->first();
+        $data = [
+            'artis_id' => $song->artis_id,
+            'title' => $song->judul,
+            'user_id' => $user->id,
+            'is_reject' => false
+        ];
+        notif::create($data);
+        $song->is_approved = true;
+        $song->update();
+        $persetujuan = song::all();
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        
+        $admin = admin::where('user_id', 1)->first();
+        $penghasilanSaatIni = $admin->penghasilan;
+
+        $jumlahTambahan = 2000;
+
+        $penghasilanBaru = $penghasilanSaatIni + $jumlahTambahan;
+
+        $admin->update(['penghasilan' => $penghasilanBaru]);
+
+        if (isset($pengahasilan) == null) {
+            $penghasilanArtist = (int) $artis->penghasilan + 20000;
+        } else {
             $penghasilanArtist = (int) $artis->penghasilan + $pengahasilan->pendapatanArtis ? $pengahasilan->pendapatanArtis : 20000;
-            artist::findOrFail($artis->id)->update(['penghasilan' => $penghasilanArtist]);
-            $artis->update(['penghasilan' => $penghasilanArtist]);
-            penghasilan::create([
-                'artist_id' => $artis->id,
-                'penghasilan' => $pengahasilan->pendapatanArtis ? $pengahasilan->pendapatanArtis : 20000,
-                'status' => "unggah lagu",
-                'bulan' => now()->format('m'),
-            ]);
+        }
+        artist::findOrFail($artis->id)->update(['penghasilan' => $penghasilanArtist]);
+        $artis->update(['penghasilan' => $penghasilanArtist]);
+        penghasilan::create([
+            'artist_id' => $artis->id,
+            'penghasilan' => isset($pengahasilan->pendapatanArtis) != null ? $pengahasilan->pendapatanArtis : 20000,
+            'status' => "unggah lagu",
+            'bulan' => now()->format('m'),
+        ]);
+        try {
         } catch (\Throwable $th) {
             Alert::error('message', 'Lagu Gagal Dalam Perizinan Publish');
-            return response()->redirectTo('/admin/persetujuan')->with(['persetujuan' => $persetujuan, 'title' => $title, 'notifs' => $notifs]);
+            return response()->redirectTo('/admin/persetujuan')->with(['persetujuan' => $persetujuan, 'title' => $title]);
         }
         Alert::success('message', 'Lagu Berhasil Publish');
-        return response()->redirectTo('/admin/persetujuan')->with(['persetujuan' => $persetujuan, 'title' => $title, 'notifs' => $notifs]);
+        return response()->redirectTo('/admin/persetujuan')->with(['persetujuan' => $persetujuan, 'title' => $title]);
     }
 
     protected function buatBillboard(Request $request)
@@ -354,7 +360,7 @@ class AdminController extends Controller
             $billboards = billboard::all();
         } catch (\Throwable $th) {
             Alert::error('message', 'Gagal Untuk Menambah Billboard');
-            return response()->view('admin.iklan', compact('artist', 'title', 'notifs'));
+            return response()->view('admin.iklan', compact('artist', 'title'));
         }
 
         Alert::success('message', 'Berhasil Untuk Menambah Billboard');

@@ -41,20 +41,19 @@
                                     royalti pada MusiCave</span>
                             </p>
                             <p class="teks-biasa">1. Setiap satu kali pemutaran lagu mendapatkan <span
-                                    class="highlight">komisi sebesar Rp 45.000</span>.
+                                    class="highlight">komisi sebesar Rp 2.000</span>.
                                 Penghasilan bersih akan dibagi kepada platform sebesar 10% <br>
-                                2. Setiap satu kali mendapat like mendapatkan <span class="highlight">komisi sebesar Rp
-                                    20.000</span>. Penghasilan bersih
                                 akan dibagi kepada platform sebesar 10%<br>
-                                3. Setiap satu kali mengunggah lagu mendapatkan <span class="highlight">komisi sebesar Rp
-                                    200.000</span>. Penghasilan
+                                2. Setiap satu kali mengunggah lagu mendapatkan <span class="highlight">komisi sebesar Rp
+                                    20.000</span>. Penghasilan
                                 bersih akan dibagi kepada admin sebesar 10%<br>
-                                4. Keuntungan mendaftar sebagai artis verifikasi adalah mendapatkan akses untuk ditampilkan
-                                pada iklan dan akan mendapat <span class="highlight">komisi sebesar Rp 150.000</span>.
+                                3. Keuntungan mendaftar sebagai artis verifikasi adalah mendapatkan akses untuk ditampilkan
+                                pada iklan dan akan mendapat <span class="highlight">komisi sebesar Rp 30.000</span>.
                                 Penghasilan bersih akan dibagi
                                 kepada admin sebesar 20%<br>5. Pembagian penghasilan kepada artis dalam kolaborasi akan
                                 diatur oleh artis yang ter verifikasi. Setiap penghasilan bersih akan dibagi kepada platform
-                                <span class="highlight">sebesar 10%.</span>
+                                <span class="highlight">sebesar 20%.</span>
+                            </p>
                             </p>
                         </div>
                     </div>

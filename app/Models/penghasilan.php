@@ -11,6 +11,7 @@ class penghasilan extends Model
     protected $table = 'penghasilan';
     protected $fillable = [
         'artist_id',
+        'user_id',
         'penghasilan',
         'status',
         'bulan',

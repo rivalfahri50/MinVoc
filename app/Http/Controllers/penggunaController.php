@@ -30,7 +30,7 @@ class penggunaController extends Controller
     protected function index(Request $request): Response
     {
         $title = "MusiCave";
-        $song = song::where('didengar','>','1000')->orderByDesc('didengar')->get();
+        $song = song::where('didengar','>','10')->orderByDesc('didengar')->get();
         $songs = song::all();
         $genres = genre::all();
         $playlists = playlist::all();

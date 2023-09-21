@@ -362,14 +362,18 @@
         }
     }
 
+    @foreach ($billboards as $item)
     // Tambahkan event listener untuk setiap input gambar
     document.getElementById('uploadlatar{{ $item->id }}').addEventListener('change', function () {
         previewImage(this, document.getElementById('background-image-preview{{ $item->id }}'));
     });
-
+    @endforeach
+    
+    @foreach ($billboards as $item)
     document.getElementById('uploadartis{{ $item->id }}').addEventListener('change', function () {
         previewImage(this, document.getElementById('artis-image-preview{{ $item->id }}'));
     });
+        @endforeach
 
                 //po
                 @foreach ($billboards as $item)

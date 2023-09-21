@@ -300,43 +300,6 @@
                 <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
                     <ul class="navbar-nav navbar-nav-right">
                         <li class="nav-item dropdown">
-                            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown"
-                                href="#" data-toggle="dropdown">
-                                <i class="mdi mdi-bell"></i>
-                                @if (count($notifs) > 0)
-                                    <span class="count bg-danger"></span>
-                                @endif
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-                                aria-labelledby="notificationDropdown">
-                                @foreach ($notifs->reverse() as $item)
-                                    @if ($item)
-                                        <div class="dropdown-item preview-item" style="gap: 15px; cursor: auto;">
-                                            <div class="preview-item-content">
-                                                <p class="preview-subject mb-1" style="font-weight: bold">
-                                                    {{ $item->title }}</p>
-                                                @if ($item->message !== null)
-                                                    <button class="text-muted ellipsis mb-0"
-                                                        style="font-size: 12px; font-weight: normal"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#alasan-{{ $item->code }}">Klik
-                                                        untuk melihat alasan</button>
-                                                @endif
-                                            </div>
-                                            <button type="submit" class="btn btnicon p-0"
-                                                style="background: none; border: none; margin-bottom: 20px;"
-                                                onclick="">
-                                                <a href="/admin/delete-notif/{{ $item->id }}">
-                                                    <i class="far fa-times-circle text-danger"
-                                                        style="font-size: 11px;"></i>
-                                                </a>
-                                            </button>
-                                        </div>
-                                    @endif
-                                @endforeach
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
                             <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                                 <div class="navbar-profile">
                                     <img class="img-xs rounded-circle"
@@ -404,8 +367,8 @@
 
                 let All_song = [];
 
-                async function ambilDataLagu() {
-                    await fetch('/ambil-lagu')
+                function ambilDataLagu() {
+                    fetch('/ambil-lagu')
                         .then(response => response.json())
                         .then(data => {
                             All_song = data.map(lagu => {

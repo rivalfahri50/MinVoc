@@ -31,11 +31,11 @@ use App\Models\notif;
 */
 
 Route::controller(authController::class)->group(function () {
-    Route::get('/', 'viewWelcome')->name('masuk');
-    Route::get('/masuk', 'viewMasuk')->name('pengguna');
-    Route::get('/masuk-Admin', 'viewMasukAdmin')->name('admin');
-    Route::get('/buat-akun', 'viewBuatAkun');
-    Route::get('/lupa-password', 'viewLupaPassword')->name('lupaSandi');
+    Route::get('/', 'viewWelcome')->name('masuk')->middleware('loginCheck');
+    Route::get('/masuk', 'viewMasuk')->name('pengguna')->middleware('loginCheck');
+    Route::get('/masuk-Admin', 'viewMasukAdmin')->name('admin')->middleware('loginCheck');
+    Route::get('/buat-akun', 'viewBuatAkun')->middleware('loginCheck');
+    Route::get('/lupa-password', 'viewLupaPassword')->name('lupaSandi')->middleware('loginCheck');
     Route::get('/logout-user', 'logout')->name('logout.admin');
 
     // operations datas
@@ -48,7 +48,7 @@ Route::controller(authController::class)->group(function () {
     Route::post('/ubah-password', 'ubahPassword')->name('password.update');
 })->middleware(['guest']);
 
-Route::prefix('admin')->middleware(['admin'])->controller(AdminController::class)->group(function () {
+Route::prefix('admin')->middleware(['admin', 'auth'])->controller(AdminController::class)->group(function () {
     // Route::post('/validationSignInAdmin', 'storeSignIn')->name('storeSignIn.admin');
 
     Route::get('/dashboard', 'index')->name('admin.dashboard');
@@ -71,6 +71,7 @@ Route::prefix('admin')->middleware(['admin'])->controller(AdminController::class
     Route::get('/pencairan-reject/{code}', 'pencairanReject')->name('pencairan.reject');
     Route::get('/delete-notif/{code}', 'deleteNotif');
     Route::get('/list-pembayaran', 'listTipePembayaran');
+    Route::get('/delete-pencairan/{code}', 'deletePencairan');
 
     Route::post('/setuju-verified/{code}', 'setujuVerified')->name('tambah.verified');
     Route::post('/uploadBillboard', 'buatBillboard')->name('uploadBillboard');
