@@ -20,7 +20,8 @@
                                                     class="img-fluid rounded-1 try">
                                             </div>
                                             <h4 class="mt-2 judul">{{ $item->name }}</h4>
-                                            <p class="teks overflow-cardtext">{{ $item->deskripsi === 'none' ? '' : "$item->deskripsi" }}
+                                            <p class="teks overflow-cardtext">
+                                                {{ $item->deskripsi === 'none' ? '' : "$item->deskripsi" }}
                                             </p>
                                         </div>
                                     </a>
@@ -44,18 +45,14 @@
                         @if (!empty($albums))
                             @foreach ($albums->reverse() as $item)
                                 {{-- @if ($item->artis->user_id == auth()->user()->id) --}}
-                                    <a href="{{ route('detailAlbumArtis', $item->code) }}"
-                                        class="card card-scroll coba text-decoration-none">
-                                        <div class="card-content">
-                                            <div class="kotaktetap">
-                                                <img src="{{ asset('storage/' . $item->image) }}"
-                                                    class="img-fluid rounded-1 try">
-                                            </div>
-                                            <h4 class="mt-2 judul overflow-cardtext">{{ $item->name }}</h4>
-                                            </p>
+                                <a href="{{ route('detailAlbumArtis', $item->code) }}"
+                                    class="card card-scroll coba text-decoration-none">
+                                    <div class="card-content">
+                                        <div class="kotaktetap">
+                                            <img src="{{ asset('storage/' . $item->image) }}"
+                                                class="img-fluid rounded-1 try">
                                         </div>
-                                        <h4 class="mt-2 judul">{{ $item->name }}</h4>
-                                        </p>
+                                        <h4 class="mt-2 judul overflow-cardtext">{{ $item->name }}</h4>
                                     </div>
                                 </a>
                                 {{-- @endif --}}
@@ -65,6 +62,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
     </div>
     </div>
