@@ -205,7 +205,7 @@ class AdminController extends Controller
             $artis->update(['penghasilan' => $penghasilanArtist]);
             penghasilan::create([
                 'artist_id' => $artis->id, // Menggunakan ID artis, bukan objek artis
-                'penghasilan' => 400000,
+                'penghasilan' => 100000,
                 'status' => "unggah lagu",
                 'bulan' => now()->format('m'),
             ]);

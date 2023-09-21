@@ -479,11 +479,6 @@ class ArtistController extends Controller
             $penghasilanArtist = (int) $artis->penghasilan + 200000;
             $artis->update(['penghasilan' => $penghasilanArtist]);
 
-            penghasilan::create([
-                'artist_id' => $artis->id,
-                'penghasilan' => 200000,
-                'bulan' => now()->format('m'),
-            ]);
             Alert::success('message', 'Lagu berhasil di upload, tunggu admin untuk publish');
             return redirect('/artis/unggahAudio')->with('success', 'Song uploaded successfully.');
         } catch (\Throwable $e) {
