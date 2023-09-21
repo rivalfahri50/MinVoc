@@ -31,7 +31,7 @@
                                     <div class="col-6 mb-4" style="padding-left: 0;">
                                         <h4 class="judul fw-bold">Unggah Foto KTP</h4>
                                         <input type="file" id="foto" name="foto" class="form-control filecolor"
-                                            aria-label="Pilih tanda pengenal" required>
+                                            aria-label="Pilih tanda pengenal" accept="image/*" required>
                                         @error('foto')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
@@ -44,7 +44,6 @@
                                 <div class="fs-6" style="color: #f23f35; font-weight: lighter">Pengajuan telah terkirim, tunggu beberapa saat !</div>
                                 @endif
                             </form>
-
                         </div>
                     </div>
                 </div>

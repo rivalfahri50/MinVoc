@@ -42,7 +42,7 @@
                                                 <img src="{{ asset('storage/' . $item->image) }}"
                                                     class="img-fluid rounded-1 try">
                                             </div>
-                                            <h4 class="mt-2 judul">{{ $item->name }}</h4>
+                                            <h4 class="mt-2 judul overflow-cardtext">{{ $item->name }}</h4>
                                             </p>
                                         </div>
                                     </a>

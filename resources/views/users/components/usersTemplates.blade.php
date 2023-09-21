@@ -287,7 +287,7 @@
                                                     <i class="fas fa-pen fa-2x"></i>
                                                 </label>
                                                 <input type="file" id="gambarplaylist" name="images"
-                                                    accept="image/png,image/jpg" class="noob">
+                                                    accept="image/*" class="noob">
                                             </div>
                                         </div>
                                         <div class="col-md-7 ml-4">

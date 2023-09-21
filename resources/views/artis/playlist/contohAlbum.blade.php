@@ -26,7 +26,7 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="col-3 text-xxl-end">
+                            <div class="col-9 text-xxl-end">
                                 <div class="bottom-left-text">
                                     <h3 class="m-0" style="font-weight: 600">{{ $albumDetail->name }}
                                     </h3>
@@ -120,7 +120,7 @@
                                         style="background-size: cover; background-repeat: no-repeat" width="150"
                                         alt="Gambar">
                                 </label>
-                                <input type="file" id="gambar" name="image" accept="image/png,image/jpg"
+                                <input type="file" id="gambar" name="image" accept="image/*"
                                     class="inputgambar">
                             </div>
                         </div>
