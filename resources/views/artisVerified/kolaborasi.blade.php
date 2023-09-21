@@ -221,6 +221,10 @@
                 font-weight: 600;
                 font-size: 20px;
             }
+            .flex-grow.text-decoration-none.link.btn {
+    max-width: 100px; /* Ganti dengan lebar maksimum yang Anda inginkan */
+}
+
         </style>
 
         <script>
@@ -392,8 +396,15 @@
                                                                 {{ $item->status == 'pending' ? 'Menunggu' : '' }}
                                                                 {{ $item->status == 'accept' ? 'Selesai' : '' }}
                                                             </td>
+
                                                             <td class="d-flex align-items-center">
-                                                                @if ($item->status === 'accept')
+                                                                <button type="button"  data-bs-toggle="modal" data-bs-target="#kolaborasiModal-{{ $item->code }}">
+
+                                                                    <!-- Tambahkan ikon mata biru di samping ikon fa-times-circle -->
+                                                                    <i class="fas fa-eye text-primary "  style="font-size: 20px"></i>
+                                                                </button>
+
+                                                                    @if ($item->status === 'accept')
                                                                     <button type="submit" class="confirmButton"
                                                                         data-item="{{ $item->code }}">
                                                                         <form
@@ -404,12 +415,15 @@
                                                                                 value="{{ $item->code }}">
                                                                             <input type="hidden" name="is_reject"
                                                                                 value="true">
-                                                                            <span class="ml-3">
+
+                                                                            <span class="">
                                                                                 <i class="far fa-times-circle btn-icon text-danger"
                                                                                     style="font-size: 20px"></i>
                                                                             </span>
                                                                         </form>
                                                                     </button>
+                                                                    <a href="#lagu-diputar" class="flex-grow text-decoration-none link btn"
+                                                                    onclick="putar({{ $item->id }})">Putar Lagu</a>
                                                                 @else
                                                                     @if (
                                                                         $item->status !== 'accept' &&
@@ -475,6 +489,53 @@
                 </div>
             </div>
         </div>
+        <!-- untuk detail selesai kolaborasi -->
+        @foreach ($datas->reverse() as $item)
+    <!-- Modal untuk Proyek Kolaborasi -->
+    <div class="modal fade" id="kolaborasiModal-{{ $item->code }}" tabindex="-1" aria-labelledby="kolaborasiModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <h4 class="modal-tittle">Detail Proyek Kolaborasi</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    @if (isset($item->request_project_artis_id_1) && isset($item->request_project_artis_id_2))
+                        <p id="kolaborasiModalLabel">Artis yang berkolaborasi :
+                            @if ($item->artis)
+                                {{$item->artis->user->name}}
+                            @endif
+                            @if ($item->artis2)
+                                & {{$item->artis2->user->name}}
+                            @endif
+                            @if ($item->artis3)
+                                & {{$item->artis3->user->name}}
+                            @endif
+                        </p>
+                    @else
+                        <p id="kolaborasiModalLabel">Artis yang berkolaborasi :
+                            @if ($item->artis)
+                                {{$item->artis->user->name}}
+                            @endif
+                            @if ($item->artis2)
+                                & {{$item->artis2->user->name}}
+                            @endif
+                        </p>
+                    @endif
+                    <p  id="kolaborasiModalLabel">Nama Proyek: {{ $item->name }}</p>
+                    <p  id="kolaborasiModalLabel">Tanggal: {{ $item->created_at->format('d F Y')  }}</p>
+                   
+                </div>
+
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+@endforeach
+
 
         {{-- untuk tambah kolab --}}
         <div class="modal fade" id="tambahModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

@@ -479,8 +479,7 @@
                                         <img class="img-xs rounded-circle" style="object-fit: cover;"
                                             src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
                                     </div>
-                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ auth()->user()->name }}
-                                    </p>
+                                    <p class="mb-0 d-none d-sm-block navbar-profile-name" style="width: 60px; overflow: hidden; text-overflow: ellipsis; height: 15px;">{{ auth()->user()->name }}</p>
                                 </div>
                                 <a href="{{ route('ubah.profile', auth()->user()->code) }}"
                                     class="dropdown-item preview-item">

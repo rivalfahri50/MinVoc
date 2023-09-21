@@ -19,7 +19,7 @@
                                                     class="img-fluid rounded-1 p-2">
                                             </div>
                                             <h4 class="mt-2 judul">{{ $item->name }}</h4>
-                                            <p class="teks">{{ $item->deskripsi === 'none' ? '' : "$item->deskripsi" }}
+                                            <p class="teks overflow-cardtext">{{ $item->deskripsi === 'none' ? '' : "$item->deskripsi" }}
                                             </p>
                                         </div>
                                     </a>
@@ -64,7 +64,7 @@
                                                     class="img-fluid rounded-1 fit">
                                             </div>
                                             <h4 class="mt-2 judul">{{ $item->name }}</h4>
-                                            <p class="teks">{{ $item->deskripsi === 'none' ? '' : "$item->deskripsi" }}
+                                            <p class="teks overflow-cardtext">{{ $item->deskripsi === 'none' ? '' : "$item->deskripsi" }}
                                             </p>
                                         </div>
                                     </a>

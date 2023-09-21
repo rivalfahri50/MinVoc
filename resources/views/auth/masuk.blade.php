@@ -60,6 +60,8 @@
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
+
+                   
                             <div>
                                 <a style="text-decoration: none; font-family: Poppins" href="{{ route('lupaSandi') }}"
                                     class="txt1">

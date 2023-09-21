@@ -435,8 +435,7 @@
                                     style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
                                     <img class="img-xs rounded-circle" style="object-fit: cover;"
                                         src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
-                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ auth()->user()->name }}
-                                    </p>
+                                    <p class="mb-0 d-none d-sm-block navbar-profile-name" style="width: 60px; overflow: hidden; text-overflow: ellipsis; height: 15px;">{{ auth()->user()->name }}</p>
                                 </div>
                                 <a href="{{ route('ubah.profile.artisVerified', auth()->user()->code) }}"
                                     class="dropdown-item preview-item">
@@ -484,7 +483,7 @@
                                 <div class="mb-3">
                                     <h3 class="form-label judul">Nama Album</h3>
                                     <input type="text" name="name" class="form-control" id="namaproyek"
-                                        placeholder="Masukkan nama kategori musik" maxlength="80" required>
+                                        placeholder="Masukkan nama kategori musik" maxlength="55" required>
                                 </div>
                                 <div class="mb-3">
                                     <h3 for="upload" class="form-label judul">Upload

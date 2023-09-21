@@ -25,7 +25,7 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="col-3 text-xxl-end">
+                            <div class="col-9 text-xxl-end">
                                 <div class="bottom-left-text">
                                     <h3 class="m-0" style="font-weight: 600">{{ $playlistDetail->name }}
                                     </h3>

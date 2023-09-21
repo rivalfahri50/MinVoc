@@ -68,7 +68,7 @@
 
                         <div class="mb-3">
                             <input placeholder="Nama pengguna" name="name" type="text" class="form-control rounded-3"
-                                id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ old('name') }}">
+                                id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ old('name') }}" maxlength="55">
                             @error('name')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -76,18 +76,18 @@
 
                         <div class="mb-3">
                             <input placeholder="Email" name="email" type="email" class="form-control rounded-3"
-                                id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ old('email') }}">
+                                id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ old('email') }}" maxlength="55">
                             @error('email')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
 
                         <div class="mb-3">
-                            <input placeholder="Kata Sandi" name="password" type="password" class="form-control rounded-3" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ old('password') }}">
+                            <input placeholder="Kata Sandi" name="password" type="password" class="form-control rounded-3" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ old('password') }}" maxlength="55">
                         </div>
                         
                         <div class="mb-3">
-                            <input placeholder="Konfirmasi Kata Sandi" name="password_confirmation" type="password" class="form-control rounded-3" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ old('password_confirmation') }}">
+                            <input placeholder="Konfirmasi Kata Sandi" name="password_confirmation" type="password" class="form-control rounded-3" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ old('password_confirmation') }}" maxlength="55">
                             @error('password')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
