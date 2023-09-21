@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\admin;
 use App\Models\album;
 use App\Models\artist;
+use App\Models\aturanPembayaran;
 use App\Models\billboard;
 use App\Models\genre;
 use App\Models\messages;
@@ -356,8 +357,10 @@ class ArtistVerifiedController extends Controller
         try {
             User::where('code', $code)->update($value);
         } catch (Throwable $e) {
-            return abort(404);
+            Alert::error('message', 'Profile gagal di perbarui');
+            return redirect()->back();
         }
+        Alert::success('message', 'Profile berhasil di perbarui');
         return redirect()->back();
     }
 
@@ -662,7 +665,8 @@ class ArtistVerifiedController extends Controller
     public function search_song(Request $request)
     {
         $query = $request->input('query');
-        $results = song::with('artist.user')->where('judul', 'like', '%' . $query . '%')->get();
+        $id = $request->input('id');
+        $results = song::with('artist.user')->where('judul', 'like', '%' . $query . '%')->where('album_id', $id)->get();
 
         return response()->json(['results' => $results]);
     }
@@ -901,6 +905,7 @@ class ArtistVerifiedController extends Controller
                 ->withInput();
         }
 
+        $pendapatan = aturanPembayaran::where('opsi_id', 3)->first();
         $project = projects::where('code', $code)->first();
 
         $range = $request->input('range');
@@ -911,12 +916,12 @@ class ArtistVerifiedController extends Controller
             $persentase = 80;
         }
 
-        $uangTetap = 1800000;
+        $uangTetap = $pendapatan->pendapatanArtis ? $pendapatan->pendapatanArtis : 30000;
         $uangYangDiterima = ($range / 100) * $uangTetap;
 
+
         if (isset($project->request_project_artis_id_1) || isset($project->request_project_artis_id_2)) {
-            $sisaPengasilan = 1800000 - $uangYangDiterima;
-            // dd($sisaPengasilan);
+            $sisaPengasilan = $uangTetap - $uangYangDiterima;
             penghasilan::create([
                 'artist_id' => $project->request_project_artis_id_1,
                 'penghasilan' => $sisaPengasilan,

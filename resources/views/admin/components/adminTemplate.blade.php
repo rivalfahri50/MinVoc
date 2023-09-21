@@ -224,9 +224,10 @@
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="/admin/peraturan-pencairan">
                         <span class="menu-icon">
-                            <i class="mdi mdi-clock-outline"></i>
+                            {{-- <i class="mdi mdi-cog"></i> --}}
+                            <i class="mdi mdi-cogs"></i>
                         </span>
-                        <span class="menu-title">Aturan Pembayaran</span>
+                        <span class="menu-title">Pembayaran</span>
                     </a>
                 </li>
                 <li class="nav-item menu-items">

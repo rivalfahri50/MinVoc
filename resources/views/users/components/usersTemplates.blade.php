@@ -513,6 +513,7 @@
                 </div>
             </nav>
 
+            @include('sweetalert::alert')
             @yield('content')
 
             @foreach ($notifs->reverse() as $item)

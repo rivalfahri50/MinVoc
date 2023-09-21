@@ -46,6 +46,7 @@
                 <h3 class="card-title judul">Temukan berbagai lagu</h3>
                 <form class="col-6 mb-4 p-0 nav-link search">
                     <input type="text" id="search_song" class="form-control rounded-4" placeholder="Cari musik">
+                    <input type="hidden" id="album_id" value="{{ $albumDetail->id }}">
                     <ul id="search-results-song"></ul>
                 </form>
                 <div class="card scroll scrollbar-down thin">

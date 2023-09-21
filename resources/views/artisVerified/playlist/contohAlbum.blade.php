@@ -46,6 +46,7 @@
                 <h3 class="card-title judul">Temukan berbagai lagu</h3>
                 <form class="col-6 mb-4 p-0 nav-link search">
                     <input type="text" id="search_song" class="form-control rounded-4" placeholder="Cari musik">
+                    <input type="hidden" id="album_id" value="{{ $albumDetail->id }}">
                 </form>
                 <div class="card scroll scrollbar-down thin">
                     <div class="card-body">
@@ -103,10 +104,10 @@
         }
 
         /* .shorten {
-            width: 500px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        } */
+                width: 500px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            } */
     </style>
 
     <div id="popup">
@@ -125,7 +126,8 @@
                                         style="background-size: cover; background-repeat: no-repeat" width="150"
                                         alt="Gambar">
                                 </label>
-                                <input type="file" id="gambar" name="image" accept="image/png,image/jpg" class="inputgambar">
+                                <input type="file" id="gambar" name="image" accept="image/png,image/jpg"
+                                    class="inputgambar">
                             </div>
                         </div>
                         <div class="col-md-7 ml-4">
@@ -141,7 +143,8 @@
                             </div>
                         </div>
                     </form>
-                    <form id="hapus" action="{{ route('hapus.albums.artisVerified', $albumDetail->code) }}" method="GET">
+                    <form id="hapus" action="{{ route('hapus.albums.artisVerified', $albumDetail->code) }}"
+                        method="GET">
                         @csrf
                     </form>
                 </div>

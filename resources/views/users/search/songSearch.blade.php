@@ -17,7 +17,7 @@
                                         <img src="{{ asset('storage/' . $song->image) }}" alt="Face" class="avatar">
                                     </div>
                                     <div style="margin-left: 10px;">
-                                        <h4 class="judul mt-4 clamp-text">{{ $song->judul }}</h4>
+                                        <h4 class="judul mt-4 clamp-text" style="font-size: 16px">{{ $song->judul }}</h4>
                                         <div class="d-flex flex-row align-content-center">
                                             <p class="text-muted m-1 clamp-text">{{ $song->artist->user->name }}</p>
                                         </div>
