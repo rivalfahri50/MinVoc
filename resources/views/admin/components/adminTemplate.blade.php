@@ -12,12 +12,12 @@
     <link rel="stylesheet" href="assets/vendors/mdi/css/materialdesignicons.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="/admin/assets/css/style.css" />
-    <link rel="stylesheet" href="{{ asset('style.css')}}" />
+    <link rel="stylesheet" href="{{ asset('style.css') }}" />
     <link rel="shortcut icon" href="/image/favicon.svg" />
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        .fixedbar{
+        .fixedbar {
             position: fixed;
             z-index: 1030;
             width: 245px;
@@ -222,6 +222,14 @@
                     </a>
                 </li>
                 <li class="nav-item menu-items">
+                    <a class="nav-link" href="/admin/peraturan-pencairan">
+                        <span class="menu-icon">
+                            <i class="mdi mdi-clock-outline"></i>
+                        </span>
+                        <span class="menu-title">Aturan Pembayaran</span>
+                    </a>
+                </li>
+                <li class="nav-item menu-items">
                     <a class="nav-link" href="/admin/riwayat">
                         <span class="menu-icon">
                             <i class="mdi mdi-clock-outline"></i>
@@ -231,58 +239,59 @@
                 </li>
             </ul>
             <footer
-            style="background-color: #6c6c6c; color: #957DAD; width: 100%; position: fixed; bottom: 0; height: 85px;"
-            id="lagu-diputar">
-            <div class="music-player">
-                <div class="song-bar">
-                    <div class="song-infos">
-                        <div class="image-container1">
-                            <img src="https://d2y6mqrpjbqoe6.cloudfront.net/image/upload/f_auto,q_auto/media/library-400/216_636967437355378335Your_Lie_Small_hq.jpg"
-                                alt="" id="track_image" />
-                        </div>
-                        <div class="song-description">
-                            <p id="title">
-                                Watashitachi
-                            </p>
-                            <p id="artist">Masaru Yokoyama</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="progress-controller">
-                    <div class="control-buttons">
-                        <div id="controls">
-                            <button onclick="previous_song()" id="pre"><i class="fa fa-step-backward"
-                                    aria-hidden="true"></i></button>
-                            <button onclick="justplay()" id="play"><i class="far fa-play-circle fr"
-                                    aria-hidden="true"></i></button>
-                            <button onclick="next_song()" id="next"><i class="fa fa-step-forward"
-                                    aria-hidden="true"></i></button>
-                        </div>
-                    </div>
-                    <div class="progress-container">
-                        <span id="current-time" class="durasi">00:00</span>
-                        <div class="progress-bar">
-                            <div class="duration">
-                                <input type="range" class="progress" min="0" step="1" max="100"
-                                    value="0" id="duration_slider" onchange="change_duration()">
+                style="background-color: #6c6c6c; color: #957DAD; width: 100%; position: fixed; bottom: 0; height: 85px;"
+                id="lagu-diputar">
+                <div class="music-player">
+                    <div class="song-bar">
+                        <div class="song-infos">
+                            <div class="image-container1">
+                                <img src="https://d2y6mqrpjbqoe6.cloudfront.net/image/upload/f_auto,q_auto/media/library-400/216_636967437355378335Your_Lie_Small_hq.jpg"
+                                    alt="" id="track_image" />
+                            </div>
+                            <div class="song-description">
+                                <p id="title">
+                                    Watashitachi
+                                </p>
+                                <p id="artist">Masaru Yokoyama</p>
                             </div>
                         </div>
-                        <span id="duration" class="durasi">00:00</span>
+                    </div>
+                    <div class="progress-controller">
+                        <div class="control-buttons">
+                            <div id="controls">
+                                <button onclick="previous_song()" id="pre"><i class="fa fa-step-backward"
+                                        aria-hidden="true"></i></button>
+                                <button onclick="justplay()" id="play"><i class="far fa-play-circle fr"
+                                        aria-hidden="true"></i></button>
+                                <button onclick="next_song()" id="next"><i class="fa fa-step-forward"
+                                        aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                        <div class="progress-container">
+                            <span id="current-time" class="durasi">00:00</span>
+                            <div class="progress-bar">
+                                <div class="duration">
+                                    <input type="range" class="progress" min="0" step="1"
+                                        max="100" value="0" id="duration_slider"
+                                        onchange="change_duration()">
+                                </div>
+                            </div>
+                            <span id="duration" class="durasi">00:00</span>
+                        </div>
+                    </div>
+
+                    <div class="other-features">
+                        <div class="volume-bar">
+                            <i class="mdi mdi-volume-high " onclick="mute_sound()" aria-hidden="true"
+                                id="volume_icon"></i>
+                            <input type="range" class="volume" min="0" max="100" step="1"
+                                value="100" onchange="volume_change()" id="volume">
+                            <p id="volume_show">100</p>
+
+                        </div>
                     </div>
                 </div>
-
-                <div class="other-features">
-                    <div class="volume-bar">
-                        <i class="mdi mdi-volume-high " onclick="mute_sound()" aria-hidden="true"
-                            id="volume_icon"></i>
-                        <input type="range" class="volume" min="0" max="100" step="1"
-                            value="100" onchange="volume_change()" id="volume">
-                        <p id="volume_show">100</p>
-
-                    </div>
-                </div>
-            </div>
-        </footer>
+            </footer>
         </nav>
         <!-- partial -->
         <div class="container-fluid page-body-wrapper">

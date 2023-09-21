@@ -29,7 +29,7 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        .fixedbar{
+        .fixedbar {
             position: fixed;
             z-index: 1030;
             width: 245px;
@@ -396,7 +396,9 @@
                 <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
                     <ul class="navbar-nav w-75">
                         <li class="nav-item w-75">
-                            <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
+                            <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search" method="POST"
+                                action="{{ route('pencarian') }}">
+                                @csrf
                                 <div class="input-group mb-3">
                                     <span class="input-group-text"
                                         style="border-radius: 15px 0px 0px 15px; border: 1px solid #eaeaea">
@@ -512,7 +514,7 @@
 
             @yield('content')
 
-                @foreach ($notifs->reverse() as $item)
+            @foreach ($notifs->reverse() as $item)
                 <div class="modal fade" id="alasan-{{ $item->code }}" tabindex="-1"
                     aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
@@ -851,7 +853,7 @@
                         console.error("Index_no tidak valid.");
                     }
                 }
-               load_track(0);
+                load_track(0);
                 // semua function
 
                 // fungsi mute sound
@@ -1053,7 +1055,7 @@
                 // ubah posisi slider
                 // Fungsi untuk mengubah posisi slider
                 function change_duration() {
-                       let slider_value = slider.value;
+                    let slider_value = slider.value;
                     if (!isNaN(track.duration) && isFinite(slider_value)) {
                         track.currentTime = track.duration * (slider_value / 100);
                         console.log(track.duration * (slider_value / 100), slider_value, track.currentTime)

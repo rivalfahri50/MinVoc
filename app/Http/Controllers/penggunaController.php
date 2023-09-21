@@ -72,7 +72,7 @@ class penggunaController extends Controller
 
     protected function profile(string $code)
     {
-        $user = artist::with('user')->where('user_id', $code)->first();
+        $user = User::where('id', $code)->first();
         return response()->json(['user' => $user]);
     }
 

@@ -33,6 +33,10 @@ use Throwable;
 
 class ArtistController extends Controller
 {
+    public function pembayaranStore(Request $request)
+    {
+        $request->all();
+    }
     protected function index(): Response
     {
         $title = "MusiCave";
@@ -439,11 +443,6 @@ class ArtistController extends Controller
             DB::beginTransaction();
             $code = Str::uuid();
             $image = $request->file('image')->store('images', 'public');
-            // $namaFile = time() . '_' . $request->file('audio')->getClientOriginalName();
-
-
-            // Simpan file audio dengan nama yang ditentukan di penyimpanan lokal
-            // $audioPath = $request->file('audio')->storeAs('public/musics', $namaFile);
             $audioPath = $request->file('audio')->store('musics', 'public');
             // dd($audioPath);
             $getID3 = new getID3();
@@ -468,13 +467,6 @@ class ArtistController extends Controller
                 'artis_id' => $artis->id,
             ]);
             DB::commit();
-
-            // notif::create([
-            //     'artis_id' => $artis->id,
-            //     'title' => $request->input('judul'),
-            //     'user_id' => auth()->user()->id,
-            //     'is_reject' => false
-            // ]);
 
             $penghasilanArtist = (int) $artis->penghasilan + 200000;
             $artis->update(['penghasilan' => $penghasilanArtist]);
