@@ -16,7 +16,7 @@
                                     <img src="{{ asset('storage/' . $user->avatar) }}" alt="Gambar">
                                 </div>
                             </div>
-                            <div class="col-9 text-xxl-end">
+                            <div class="col-9">
                                 <div class="bottom-left-text">
                                     <h3 class="judul">{{ $user->name }}</h3>
                                     <p class="m-0" style="color: #957dad; font-weight: 400;">662,429 didengar

@@ -23,15 +23,15 @@
                                         </div>
                                         <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
                                             onclick="putar({{ $song->id }})">
-                                            <button onclick="togglePlayPause()" id="play" style="border: none">
+                                            <button onclick="togglePlayPause()" id="play" style="border: none; background: none;">
                                                 <i id="playIcon" class="far fa-play-circle ukuraniconplaykhusus"
                                                     style="color: #957DAD;"></i>
                                             </button>
                                         </a>
                                     </div>
-                                    <script>
+                                    {{-- <script>
                                         var isPlaying = false; // Default status pemutaran lagu
-                                    </script>
+                                    </script> --}}
                                 </div>
                             </div>
                         </div>
@@ -95,25 +95,25 @@
         </div>
         <script>
 
-            function togglePlayPause() {
-                const playIcon = document.getElementById('playIcon');
+            // function togglePlayPause() {
+            //     const playIcon = document.getElementById('playIcon');
 
-                if (isPlaying) {
-                    // Jika sedang diputar, ganti menjadi pause
-                    playIcon.classList.remove('fa-pause-circle');
-                    playIcon.classList.add('fa-play-circle');
-                } else {
-                    // Jika sedang tidak diputar, ganti menjadi play
-                    playIcon.classList.remove('fa-play-circle');
-                    playIcon.classList.add('fa-pause-circle');
-                }
+            //     if (isPlaying) {
+            //         // Jika sedang diputar, ganti menjadi pause
+            //         playIcon.classList.remove('fa-pause-circle');
+            //         playIcon.classList.add('fa-play-circle');
+            //     } else {
+            //         // Jika sedang tidak diputar, ganti menjadi play
+            //         playIcon.classList.remove('fa-play-circle');
+            //         playIcon.classList.add('fa-pause-circle');
+            //     }
 
-                // Ubah status pemutaran
-                isPlaying = !isPlaying;
+            //     // Ubah status pemutaran
+            //     isPlaying = !isPlaying;
 
-                // Panggil fungsi justplay() jika diperlukan
-                justplay();
-            }
+            //     // Panggil fungsi justplay() jika diperlukan
+            //     justplay();
+            // }
         </script>
     </div>
 @endSection

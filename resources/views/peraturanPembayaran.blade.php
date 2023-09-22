@@ -100,6 +100,10 @@
                 background-color: white;
                 border: 1px solid #957DAD;
             }
+
+            .form-control::placeholder {
+                color: #c0c0c0;
+            }
         </style>
         @php
             $selectedOptions = [];
@@ -140,9 +144,9 @@
                                     </div>
                                     <div class="col-4 mb-3">
                                         <label for="namakategori" class="form-label judulnottebal">Pendapatan Artis</label>
-                                        <input type="number" name="pembayaranArtis" class="form-control form-i styleinput"
-                                            id="harga1" min="5" maxlength="6" minlength="5" required
-                                            placeholder="100000">
+                                        <input type="number" class="form-control styleinput" name="pembayaranArtis"
+                                            id="harga1" min="10000" minlength="5" maxlength="6" required
+                                            placeholder="10000">
                                         @error('pembayaranArtis')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
@@ -150,8 +154,8 @@
                                     <div class="col-4 mb-4">
                                         <label for="namakategori" class="form-label judulnottebal">Komisi Admin</label>
                                         <input type="number" name="pembayaranAdmin" class="form-control form-i styleinput"
-                                            id="harga2" min="5" required maxlength="6" minlength="5"
-                                            placeholder="100000">
+                                            id="harga2" min="10000" minlength="5" maxlength="6" required
+                                            placeholder="10000">
                                         @error('pembayaranAdmin')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
@@ -201,13 +205,14 @@
                                                         <i class="far fa-edit text-primary"></i>
                                                     </button>
                                                     {{-- <button class="btn btnicon confirmButtonReject" type="submit"> --}}
-                                                        <a class="btn btnicon confirmButtonReject" href="/admin/delete-pencairan/{{ $item->code }}">
-                                                            <i class="far fa-times-circle text-danger"></i>
-                                                        </a>
-                                                        {{-- <form method="GET"
+                                                    <a class="btn btnicon confirmButtonReject"
+                                                        href="/admin/delete-pencairan/{{ $item->code }}">
+                                                        <i class="far fa-times-circle text-danger"></i>
+                                                    </a>
+                                                    {{-- <form method="GET"
                                                             action="/admin/pencairan-reject/{{ $item->id }}">
                                                             @csrf --}}
-                                                        {{-- </form> --}}
+                                                    {{-- </form> --}}
                                                     {{-- </button> --}}
                                                 </td>
                                             </tr>

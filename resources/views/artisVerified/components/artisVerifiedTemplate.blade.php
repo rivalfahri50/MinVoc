@@ -262,7 +262,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/artis-verified/riwayatPenghasilan">
+                                <a class="nav-link" href="/artis-verified/riwaya-penghasilan">
                                     <span class="menu-icon mr-0">
                                         <i class="mdi mdi-cash submenu" style="font-size: 20px;"></i>
                                     </span>Riwayat Pencairan

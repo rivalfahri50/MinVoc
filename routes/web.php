@@ -58,7 +58,7 @@ Route::prefix('admin')->middleware(['admin', 'auth'])->controller(AdminControlle
     Route::get('/riwayat', 'riwayat');
     Route::get('/verifikasi', 'verifikasi');
     Route::get('/pencairan', 'pencairan');
-    Route::get('/peraturan-pencairan', 'peraturan');
+    Route::get('/peraturan-bayar', 'peraturan');
     Route::get('/show', 'show');
     Route::get('/items/{code}', 'items');
     Route::get('/hapus-billboard/{code}', 'hapusBillboard')->name('hapus.billoard');
@@ -92,7 +92,7 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
     Route::get('/pencarian', 'pencarian');
     Route::get('/playlist', 'playlist');
     Route::get('/penghasilan', 'penghasilan');
-    Route::get('/riwayatPenghasilan', 'riwayatPenghasilan');
+    Route::get('/riwaya-penghasilan', 'riwayatPenghasilan');
     Route::get('/riwayat', 'riwayat');
     Route::get('/profile/{code}', 'profile');
     Route::get('/profile-ubah/{code}', 'profile_ubah')->name('ubah.profile.artis');
@@ -148,7 +148,7 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
     Route::get('/kategori/{code}', 'kategori');
     Route::get('/playlist', 'playlist');
     Route::get('/penghasilan', 'penghasilan');
-    Route::get('/riwayatPenghasilan', 'riwayatPenghasilan');
+    Route::get('/riwaya-penghasilan', 'riwayatPenghasilan');
     Route::get('/riwayat', 'riwayat');
     Route::get('/profile/{code}', 'profile');
     Route::get('/profile-ubah/{code}', 'profile_ubah')->name('ubah.profile.artisVerified');

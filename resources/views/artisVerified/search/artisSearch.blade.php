@@ -16,7 +16,7 @@
                                     <img src="{{ asset('storage/' . $user->avatar) }}" alt="Gambar">
                                 </div>
                             </div>
-                            <div class="col-9 text-xxl-end">
+                            <div class="col-9">
                                 <div class="bottom-left-text">
                                     <h3 class="judul">{{ $user->name }}</h3>
                                     <span class="ml-2" style="color: #cccccc; font-size: 8px;"></span> {{ $artis->likes }}
