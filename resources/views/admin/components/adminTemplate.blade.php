@@ -314,7 +314,7 @@
                                         src="https://cdn.pnghd.pics/data/815/profil-wa-kosong-28.jpg" alt="">
                                     <p class="mb-0 d-none d-sm-block navbar-profile-name">Admin</p>
                                 </div>
-                                <a class="dropdown-item preview-item" href="{{ route('logout.admin') }}">
+                                <a class="dropdown-item preview-item" href="{{ route('logout') }}">
                                     <div class="preview-thumbnail">
                                         <div class="preview-icon rounded-circle">
                                             <i class="mdi mdi-logout"></i>
@@ -336,6 +336,7 @@
 
             @include('sweetalert::alert')
             @yield('content')
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             <script>
                 let previous = document.querySelector('#pre');
                 let play = document.querySelector('#play');
@@ -368,9 +369,11 @@
                 let All_song = [];
 
                 function ambilDataLagu() {
-                    fetch('/ambil-lagu')
-                        .then(response => response.json())
-                        .then(data => {
+                    $.ajax({
+                        url: '/ambil-lagu',
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
                             All_song = data.map(lagu => {
                                 return {
                                     id: lagu.id,
@@ -380,17 +383,18 @@
                                     artistId: lagu.artist.user.name
                                 };
                             });
-                            console.log(All_song);
+                            console.log("data lagu yang diambil:", All_song);
                             if (All_song.length > 0) {
                                 // Memanggil load_track dengan indeks 0 sebagai lagu pertama
                                 load_track(0);
                             } else {
                                 console.error("Data lagu kosong.");
                             }
-                        })
-                        .catch(error => {
+                        },
+                        error: function(error) {
                             console.error('Error fetching data:', error);
-                        });
+                        }
+                    });
                 }
 
                 ambilDataLagu();

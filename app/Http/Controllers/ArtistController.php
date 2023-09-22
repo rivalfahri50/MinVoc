@@ -573,6 +573,9 @@ class ArtistController extends Controller
         $playlists = playlist::all();
         $song = song::where('judul', 'like', '%' .  $request->input('search') . '%')->first();
         $user = user::where('name', 'like', '%' .  $request->input('search') . '%')->first();
+        $totalDidengar = DB::table('riwayat')->where('user_id', auth()->user()->id)->sum('song_id');
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
+
 
         if ($song) {
             $songs = song::all();
@@ -582,29 +585,32 @@ class ArtistController extends Controller
             $artis = artist::where('user_id', $user->id)->first();
             $songs = song::where('artis_id', $artis->id)->get();
             $notifs = notif::where('user_id', auth()->user()->id)->get();
-            return view('artis.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs'));
+            return view('artis.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
         } else {
-            return abort(404);
+            return response()->view('artis.searchNotFound', compact('title', 'notifs'));
         }
     }
 
     public function search_result(Request $request, string $code)
     {
         $title = "MusiCave";
-        $song = song::where('code', $code)->first();
-        $user = user::where('code', $code)->first();
-        $artis = artist::with('user')->where('user_id', $user->id)->first();
-        $notifs = notif::where('user_id', auth()->user()->id)->get();
         $playlists = playlist::all();
+        $song = song::where('judul', 'like', '%' .  $request->input('search') . '%')->first();
+        $user = user::where('name', 'like', '%' .  $request->input('search') . '%')->first();
+        $totalDidengar = DB::table('riwayat')->where('user_id', auth()->user()->id)->sum('song_id');
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
 
         if ($song) {
             $songs = song::all();
+            $notifs = notif::where('user_id', auth()->user()->id)->get();
             return view('artis.search.songSearch', compact('song', 'title', 'songs', 'playlists', 'notifs'));
-        } else if ($artis) {
+        } else if ($user) {
+            $artis = artist::where('user_id', $user->id)->first();
             $songs = song::where('artis_id', $artis->id)->get();
-            return view('artis.search.artisSearch', compact('artis', 'title', 'songs', 'playlists', 'notifs'));
+            $notifs = notif::where('user_id', auth()->user()->id)->get();
+            return view('artis.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
         } else {
-            return abort(404);
+            return response()->view('artis.searchNotFound', compact('title', 'notifs'));
         }
     }
 

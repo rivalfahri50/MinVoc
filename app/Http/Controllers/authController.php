@@ -62,20 +62,23 @@ class authController extends Controller
 
     protected function resetPassword(Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'email' => 'required|email|unique:users,email',
         ], [
             'email.unique' => 'Alamat email ini sudah terdaftar di sistem kami.',
         ]);
 
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
+        $status = Password::sendResetLink($validatedData);
+
+        $message = $status === Password::RESET_LINK_SENT
+            ? 'Kami telah mengirimkan email dengan tautan reset kata sandi Anda!'
+            : 'Kami tidak dapat menemukan pengguna dengan alamat email tersebut.';
 
         return $status === Password::RESET_LINK_SENT
-            ? back()->with(['status' => __($status), 'title' => 'musiCave'])
-            : back()->withErrors(['email' => __($status)]);
+            ? back()->with(['status' => $message, 'title' => 'musiCave'])
+            : back()->withErrors(['email' => $message]);
     }
+
 
     protected function ubahPassword(Request $request)
     {
@@ -83,6 +86,15 @@ class authController extends Controller
             'token' => 'required',
             'email' => 'required|email',
             'password' => 'required|string|min:6|same:password_confirmation|confirmed',
+        ], [
+            'token.required' => 'Token diperlukan.',
+            'email.required' => 'Alamat email diperlukan.',
+            'email.email' => 'Format alamat email tidak valid.',
+            'password.required' => 'Kata sandi diperlukan.',
+            'password.string' => 'Kata sandi harus berupa teks.',
+            'password.min' => 'Kata sandi harus memiliki setidaknya 6 karakter.',
+            'password.same' => 'Kata sandi harus sama dengan konfirmasi kata sandi.',
+            'password.confirmed' => 'Konfirmasi kata sandi tidak cocok.',
         ]);
 
         $status = Password::reset(
@@ -127,7 +139,7 @@ class authController extends Controller
                 ->withInput();
         }
 
-        
+
         if (Auth::attempt($credentials)) {
             User::where('id', auth()->user()->id)->update(['is_login' => true]);
             $user = auth()->user();
@@ -223,13 +235,12 @@ class authController extends Controller
 
     protected function logout()
     {
-        // dd(auth()->user());
         User::where('id', auth()->user()->id)->update(['is_login' => true]);
         try {
             Auth::logout();
         } catch (\Throwable $th) {
             return abort(404);
         }
-        return response()->redirectTo("/masuk");
+        return redirect("/masuk");
     }
 }

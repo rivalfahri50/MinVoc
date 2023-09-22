@@ -16,6 +16,7 @@ class checkLogout
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // dd(Auth::user());
         if (Auth::check()) {
             return back();
         }

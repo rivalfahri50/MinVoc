@@ -19,10 +19,12 @@
                             <div class="col-9">
                                 <div class="bottom-left-text">
                                     <h3 class="judul">{{ $user->name }}</h3>
-                                    <span class="ml-2" style="color: #cccccc; font-size: 8px;"></span> {{ $artis->likes }}
-                                    disukai
-                                    {{-- <p class="m-0" style="color: #957dad; font-weight: 400;">662,429 didengar
-                                    </p> --}}
+                                    <p class="m-0" style="color: #957dad; font-weight: 400;">{{ $totalDidengar }}
+                                        didengar
+                                        <span class="fas fa-circle mr-2 ml-2"
+                                            style="color: #cccccc; font-size: 8px;"></span>
+                                        {{ number_format($user->artist->likes, 0, ',', '.') }} disukai
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -32,8 +34,6 @@
                     <hr class="divider">
                 </div>
                 <div class="col-md-12 grid-margin stretch-card">
-                    <button onclick="justplay()" id="play" class="card-title judul"><i
-                            class="far fa-play-circle fa-2x mb-4" aria-hidden="true"></i></button>
                     <div class="card scroll scrollbar-down thin">
                         <div class="card-body">
                             <div class="row" style="margin-top: -20px">
