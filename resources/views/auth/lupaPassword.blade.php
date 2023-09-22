@@ -44,9 +44,9 @@
                             </button>
                         </div>
                         <div class="container-login100-form-btn mt-4">
-                            <button id="button" class="login100 rounded-4">
+                            <span style="cursor: pointer" id="button" onclick="goBack()" class="login100 rounded-4">
                                 Kembali
-                            </button>
+                            </span>
                         </div>
                     </form>
                 </div>
@@ -62,6 +62,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous">
+    </script>
+    <script>
+        function goBack() {
+            window.location = 'http://127.0.0.1:8000/masuk'
+        }
     </script>
     </body>
 

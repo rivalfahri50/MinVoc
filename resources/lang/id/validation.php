@@ -159,6 +159,11 @@ return [
         'role.in' => 'Peran harus salah satu dari: pengguna, artis, admin.',
         'name.required' => 'Nama harus diisi.',
         'name.string' => 'Nama harus berupa teks.',
-        'name.max' => 'Nama tidak boleh lebih dari :max karakter.'
+        'name.max' => 'Nama tidak boleh lebih dari :max karakter.',
+        'reset' => 'Kata sandi Anda telah direset!',
+        'sent' => 'Kami telah mengirimkan email dengan tautan reset kata sandi Anda!',
+        'token' => 'Token reset kata sandi ini tidak valid.',
+        'user' => "Kami tidak dapat menemukan pengguna dengan alamat email tersebut.",
     ],
+    
 ];

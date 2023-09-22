@@ -16,9 +16,10 @@ class loginCheck
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check()) {
-            return redirect()->back();
-        }
+        // dd(Auth::check())
+        // if (Auth::check()) {
+        //     return redirect()->back();
+        // }
         return $next($request);
     }
 }

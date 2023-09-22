@@ -301,7 +301,7 @@
                                                                 <i class="fas fa-pen fa-2x"></i>
                                                             </label>
                                                             <input type="file" id="gambar" name="images"
-                                                                accept="image/png,image/jpg" class="inputgambar">
+                                                                accept="image/png,image/jpg" class="inputgambar" required>
                                                         </div>
                                                         @if ($errors->has('images'))
                                                             <div class="text-danger" style="font-size: 12px;">
@@ -311,7 +311,7 @@
                                                     </div>
                                                     <div class="col-7">
                                                         <div class="mb-4">
-                                                            <input type="text" class="form-control form-i inputcolor"
+                                                            <input type="text" required class="form-control form-i inputcolor"
                                                                 name="name" id="nama" placeholder="Judul Lagu"
                                                                 value="{{ old('name') }}" maxlength="55">
                                                             @if ($errors->has('name'))
@@ -333,7 +333,7 @@
                                                         <div class="mb-3">
                                                             <select name="genre" class="form-select"
                                                                 style="border-radius: 13px"
-                                                                aria-label="Default select example">
+                                                                aria-label="Default select example" required>
                                                                 <option value="" disabled selected>Music Genre
                                                                 </option>
                                                                 @foreach ($genre as $item)
@@ -359,11 +359,11 @@
                         </div>
                     </div>
                 @else
-                <style>
-                    label {
-                        justify-content: start
-                    }
-                </style>
+                    <style>
+                        label {
+                            justify-content: start
+                        }
+                    </style>
                     <div class="col-md-6">
                         <div class="card kiri scrollbar-dusty-grass square thin rounded-4">
                             <div class="card-body">
@@ -396,7 +396,8 @@
                                                                 class="form-label judulnottebal fs-6">Harga</label>
                                                             <input type="text" name="harga"
                                                                 class="form-control inputcolor bg-white" id="namaproyek"
-                                                                value="Rp. {{ number_format($uang, 2, ',', '.') }}" readonly disabled>
+                                                                value="Rp. {{ number_format($uang, 2, ',', '.') }}"
+                                                                readonly disabled>
                                                             <span class="pl-1"
                                                                 style="color: darkgray; font-size: 13px;">admin memiliki
                                                                 hak sebesar 20% dalam penghasilan kolaborasi.</span>
@@ -433,7 +434,7 @@
                                     <div class="range-wrap">
                                         <div class="range-value" id="rangeV">0%</div>
                                         <input class="slider mb-4" id="range" name="range" type="range"
-                                            min="40" max="70" step="1">
+                                            min="40" max="60" step="1">
                                         <output for="range" class="output">Rp. 0</output>
                                     </div>
                                 </div>
@@ -476,23 +477,31 @@
             fetch(`/nominal`)
                 .then(response => response.json())
                 .then(data => {
-                    const faktor = data.nominal.pendapatanArtis;
+                    const faktor = data.nominal;
                     const persentase = Number(range.value);
-        
                     if (persentase < 40) {
                         range.value = 40;
                     } else if (persentase > 80) {
                         range.value = 80;
                     }
-        
                     const uang = (persentase / 100) * faktor;
                     rangeV.innerHTML = `${persentase}%`;
-        
                     const harga = formatRupiah(uang);
                     output.textContent = harga;
                 })
                 .catch(error => {
-                    console.error('Error fetching item data:', error);
+                    const persentase = Number(range.value);
+                    if (persentase < 40) {
+                        range.value = 40;
+                    } else if (persentase > 80) {
+                        range.value = 80;
+                    }
+
+                    const uang = (persentase / 100) * 20000;
+                    rangeV.innerHTML = `${persentase}%`;
+
+                    const harga = formatRupiah(uang);
+                    output.textContent = harga;
                 });
 
         };

@@ -16,9 +16,15 @@ class artistMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && auth()->user()->role_id === 2) {
+        if (Auth::user()->role_id != 2) {
+            return back();
+        }
+        if (!Auth::check() && Auth::logout() && auth()->user()->is_login === false) {
+            return back();
+        } else if (Auth::check() && auth()->user()->role_id === 2) {
             return $next($request);
         }
-        return response()->redirectTo('/masuk')->with('message', 'Anda Tidak Mendapatkan Akses Untuk Halaman Ini.');
+        return back();
+        // return response()->redirectTo('/masuk')->with('message', 'Anda Tidak Mendapatkan Akses Untuk Halaman Ini.');
     }
 }

@@ -30,13 +30,13 @@ use App\Models\notif;
 |
 */
 
-Route::controller(authController::class)->group(function () {
-    Route::get('/', 'viewWelcome')->name('masuk')->middleware('loginCheck');
-    Route::get('/masuk', 'viewMasuk')->name('pengguna')->middleware('loginCheck');
-    Route::get('/masuk-Admin', 'viewMasukAdmin')->name('admin')->middleware('loginCheck');
-    Route::get('/buat-akun', 'viewBuatAkun')->middleware('loginCheck');
-    Route::get('/lupa-password', 'viewLupaPassword')->name('lupaSandi')->middleware('loginCheck');
-    Route::get('/logout-user', 'logout')->name('logout.admin');
+
+Route::middleware(['logout.check', 'guest'])->controller(authController::class)->group(function () {
+    Route::get('/', 'viewWelcome')->name('masuk');
+    Route::get('/masuk', 'viewMasuk')->name('pengguna');
+    Route::get('/masuk-Admin', 'viewMasukAdmin')->name('admin');
+    Route::get('/buat-akun', 'viewBuatAkun');
+    Route::get('/lupa-password', 'viewLupaPassword')->name('lupaSandi');
 
     // operations datas
     Route::post('/validationSignIn', 'storeSignIn')->name('storeSignIn');
@@ -46,7 +46,8 @@ Route::controller(authController::class)->group(function () {
     Route::get('/reset-password/{token}', 'resetPasswordToken')->name('password.reset');
     Route::post('/reset-password', 'resetPassword')->name('password.email');
     Route::post('/ubah-password', 'ubahPassword')->name('password.update');
-})->middleware(['guest']);
+});
+Route::get('/logout-user', [authController::class, 'logout'])->name('logout');
 
 Route::prefix('admin')->middleware(['admin', 'auth'])->controller(AdminController::class)->group(function () {
     // Route::post('/validationSignInAdmin', 'storeSignIn')->name('storeSignIn.admin');
@@ -86,7 +87,6 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
     Route::get('/kolaborasi', 'viewKolaborasi')->name('kolaborasi');
     Route::get('/lirik-chat/{code}', 'viewLirikAndChat')->name('lirikAndChat');
     Route::get('/show/{code}', 'showData')->name('project.show');
-    Route::get('/logout', 'logout')->name('logout.artis');
 
     Route::get('/dashboard', 'index')->name('artist.dashboard');
     Route::get('/pencarian', 'pencarian');
@@ -138,7 +138,6 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
     Route::get('/kolaborasi', 'viewKolaborasi')->name('artist-verified.kolaborasi');
     Route::get('/lirik-chat/{code}', 'viewLirikAndChat')->name('lirikAndChat.artisVerified');
     Route::get('/show/{code}', 'showData')->name('project.show.artisVerified');
-    Route::get('/logout', 'logout')->name('logout.artisVerified');
     Route::get('/artis-kolaborasi', 'artisSelect');
 
     Route::get('/dashboard', 'index')->name('artist-verified.dashboard');
@@ -211,7 +210,6 @@ Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(pengguna
     Route::get('/detail-album/{code}', 'detailAlbum')->name('detailAlbumPengguna');
     Route::get('/disukai-playlist', 'disukaiPlaylist');
     Route::get('/search', 'search')->name('search');
-    Route::get('/logout', 'logout')->name('logout.users');
     Route::get('/toggle-like', 'like')->name('toggle-like');
     Route::get('/hapus-playlist/{code}', 'hapusPlaylist')->name('hapus.playlist.user');
     Route::get('/search_song', 'search_song')->name('search.song.pengguna');
@@ -251,7 +249,8 @@ Route::post('/simpan-riwayat', [RiwayatController::class, 'simpanRiwayat']);
 Route::post('/hitung/penghasilan', [RiwayatController::class, 'penghasilanArtist']);
 Route::get('/nominal', function () {
     $pendapatan = aturanPembayaran::where('opsi_id', 3)->first();
-    return response()->json(['nominal' => $pendapatan]);
+    $uang = isset($pendapatan->pendapatanArtis) != null ? $pendapatan->pendapatanArtis : 20000;
+    return response()->json(['nominal' => $uang]);
 });
 
 Route::get('/kebijakan-privasi', function () {
