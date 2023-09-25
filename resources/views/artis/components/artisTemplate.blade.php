@@ -872,7 +872,7 @@
             </script>
 
 
-            <script>
+            {{-- <script>
                 let previous = document.querySelector('#pre');
                 let play = document.querySelector('#play');
                 let next = document.querySelector('#next');
@@ -1344,7 +1344,7 @@
                         recent_volume.value = track.volume * 100;
                     }
                 }
-            </script>
+            </script> --}}
 
             <script src="/user/assets/vendors/js/vendor.bundle.base.js"></script>
             <script src="/user/assets/vendors/chart.js/Chart.min.js"></script>

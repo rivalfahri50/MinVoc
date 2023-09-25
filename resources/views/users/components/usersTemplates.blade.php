@@ -354,7 +354,7 @@
                     <div class="progress-controller">
                         <div class="control-buttons">
                             <div id="controls">
-                                <button onclick="shuffle_song()" id="shuffle"><i class="fa fa-random"
+                                <button onclick="shuffle_song()" id="shuffle_button "><i class="fa fa-random"
                                         aria-hidden="true"></i></button>
                                 <button onclick="previous_song()" id="pre"><i class="fa fa-step-backward"
                                         aria-hidden="true"></i></button>
@@ -713,23 +713,7 @@
                         type: 'GET',
                         dataType: 'json',
                         success: function(response) {
-                            console.log(response);
-                            response.forEach(function(item) {
-                                const songId = item.song_id;
-                                const like = document.getElementById(`like${item.song_id}`);
-                                like.classList.toggle('fas');
-                            })
-                        }
-                    });
-                });
-
-                $(document).ready(function() {
-                    $.ajax({
-                        url: `/song/check`,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(response) {
-                            console.log(response);
+                            // console.log(response);
                             response.forEach(function(item) {
                                 const songId = item.song_id;
                                 const like = document.getElementById(`like-1${item.song_id}`);
@@ -746,7 +730,7 @@
                         type: 'GET',
                         dataType: 'json',
                         success: function(response) {
-                            console.log(response);
+                            // console.log(response);
                             response.forEach(function(item) {
                                 const songId = item.song_id;
                                 const like = document.getElementById(`like-2${item.song_id}`);
@@ -757,23 +741,7 @@
                         }
                     });
                 });
-                $(document).ready(function() {
-                    $.ajax({
-                        url: `/song/check`,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(response) {
-                            console.log(response);
-                            response.forEach(function(item) {
-                                const songId = item.song_id;
-                                const like = document.getElementById(`like-suka${item.song_id}`);
-                                if (like) {
-                                    like.classList.toggle('fas');
-                                }
-                            })
-                        }
-                    });
-                });
+
 
                 function toggleLike(iconElement, songId) {
                     const isLiked = iconElement.classList.contains('fas');
@@ -806,7 +774,7 @@
                 }
             </script>
 
-            <script>
+            {{-- <script>
                 let previous = document.querySelector('#pre');
                 let play = document.querySelector('#play');
                 let next = document.querySelector('#next');
@@ -1135,11 +1103,11 @@
                     if (track.ended) {
                         play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>';
                         if (autoplay == 1) {
+                            const songId = All_song[index_no].id;
+                            history(songId);
                             index_no += 1;
                             load_track(index_no);
                             playsong();
-                            const songId = All_song[index_no].id;
-                            history(songId);
                         }
                     }
 
@@ -1213,7 +1181,7 @@
                         recent_volume.value = track.volume * 100;
                     }
                 }
-            </script>
+            </script> --}}
             <script src="/assets/js/tablesort.js"></script>
             <script src="/user/assets/js/closepopup.js"></script>
             <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

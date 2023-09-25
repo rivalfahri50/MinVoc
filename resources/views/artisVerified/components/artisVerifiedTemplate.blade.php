@@ -715,27 +715,16 @@
                         success: function(response) {
                             console.log(response);
                             response.forEach(function(item) {
-                                const songId = item.song_id;
-                                const like = document.getElementById(`like${item.song_id}`);
-                                like.classList.toggle('fas');
-                            })
-                        }
-                    });
-                    $.ajax({
-                        url: `/song/check`,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(response) {
-                            console.log(response);
-                            response.forEach(function(item) {
-                                const songId = item.song_id;
-                                const like = document.getElementById(`like-1${item.song_id}`);
+                                let songId = item.song_id;
+                                let like = document.getElementById(`like-1${item.song_id}`);
                                 if (like) {
                                     like.classList.toggle('fas');
                                 }
                             })
                         }
                     });
+                });
+                $(document).ready(function() {
                     $.ajax({
                         url: `/song/check`,
                         type: 'GET',
@@ -743,21 +732,8 @@
                         success: function(response) {
                             console.log(response);
                             response.forEach(function(item) {
-                                const songId = item.song_id;
-                                const like = document.getElementById(`like-2${item.song_id}`);
-                                like.classList.toggle('fas');
-                            })
-                        }
-                    });
-                    $.ajax({
-                        url: `/song/check`,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(response) {
-                            console.log(response);
-                            response.forEach(function(item) {
-                                const songId = item.song_id;
-                                const like = document.getElementById(`like-3${item.song_id}`);
+                                let songId = item.song_id;
+                                let like = document.getElementById(`like-2${item.song_id}`);
                                 if (like) {
                                     like.classList.toggle('fas');
                                 }
@@ -800,7 +776,7 @@
                 }
             </script>
 
-            <script>
+            {{-- <script>
                 let previous = document.querySelector('#pre');
                 let play = document.querySelector('#play');
                 let next = document.querySelector('#next');
@@ -1175,7 +1151,7 @@
                         recent_volume.value = track.volume * 100;
                     }
                 }
-            </script>
+            </script> --}}
 
             <script src="/user/assets/vendors/js/vendor.bundle.base.js"></script>
             <script src="/user/assets/vendors/chart.js/Chart.min.js"></script>
