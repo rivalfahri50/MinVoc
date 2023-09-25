@@ -425,9 +425,12 @@
                                                                             </span>
                                                                         </form>
                                                                     </button>
+                                                                    {{-- <a href="#lagu-diputar"
+                                                                        class="flex-grow text-decoration-none link btn"
+                                                                        onclick="putar({{ $item->id }})">Putar Lagu</a> --}}
                                                                     <a href="#lagu-diputar"
                                                                         class="flex-grow text-decoration-none link btn"
-                                                                        onclick="putar({{ $item->id }})">Putar Lagu</a>
+                                                                        onclick="putar({{ $item->id }})">Putar Lagu</a> 
                                                                 @else
                                                                     @if (
                                                                         $item->status !== 'accept' &&

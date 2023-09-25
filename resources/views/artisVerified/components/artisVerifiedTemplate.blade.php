@@ -262,7 +262,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/artis-verified/riwayatPenghasilan">
+                                <a class="nav-link" href="/artis-verified/riwaya-penghasilan">
                                     <span class="menu-icon mr-0">
                                         <i class="mdi mdi-cash submenu" style="font-size: 20px;"></i>
                                     </span>Riwayat Pencairan
@@ -435,7 +435,9 @@
                                     style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
                                     <img class="img-xs rounded-circle" style="object-fit: cover;"
                                         src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
-                                    <p class="mb-0 d-none d-sm-block navbar-profile-name" style="width: 60px; overflow: hidden; text-overflow: ellipsis; height: 15px;">{{ auth()->user()->name }}</p>
+                                    <p class="mb-0 d-none d-sm-block navbar-profile-name"
+                                        style="width: 60px; overflow: hidden; text-overflow: ellipsis; height: 15px;">
+                                        {{ auth()->user()->name }}</p>
                                 </div>
                                 <a href="{{ route('ubah.profile.artisVerified', auth()->user()->code) }}"
                                     class="dropdown-item preview-item">
@@ -448,7 +450,7 @@
                                         <p class="preview-subject mb-1 fw-light">Profile</p>
                                     </div>
                                 </a>
-                                <a class="dropdown-item preview-item" href="{{ route('logout.artisVerified') }}">
+                                <a class="dropdown-item preview-item" href="{{ route('logout') }}">
                                     <div class="preview-thumbnail">
                                         <div class="preview-icon rounded-circle">
                                             <i class="mdi mdi-logout"></i>
@@ -488,8 +490,8 @@
                                 <div class="mb-3">
                                     <h3 for="upload" class="form-label judul">Upload
                                         Foto</h3>
-                                    <input type="file" name="image" class="form-control" id="namaproyek" accept="image/*"
-                                        required>
+                                    <input type="file" name="image" class="form-control" id="namaproyek"
+                                        accept="image/*" required>
                                 </div>
                             </div>
                             <div class="text-md-right">
@@ -808,10 +810,35 @@
 
                 let All_song = [];
 
-                async function ambilDataLagu() {
-                    await fetch('/ambil-lagu')
-                        .then(response => response.json())
-                        .then(data => {
+                function ambilDataLagu() {
+                    // fetch('/ambil-lagu')
+                    //     .then(response => response.json())
+                    //     .then(data => {
+                    //         All_song = data.map(lagu => {
+                    //             return {
+                    //                 id: lagu.id,
+                    //                 judul: lagu.judul,
+                    //                 audio: lagu.audio,
+                    //                 image: lagu.image,
+                    //                 artistId: lagu.artist.user.name
+                    //             };
+                    //         });
+                    //         console.log(All_song);
+                    //         if (All_song.length > 0) {
+                    //             // Memanggil load_track dengan indeks 0 sebagai lagu pertama
+                    //             load_track(0);
+                    //         } else {
+                    //             console.error("Data lagu kosong.");
+                    //         }
+                    //     })
+                    //     .catch(error => {
+                    //         console.error('Error fetching data:', error);
+                    //     });
+                    $.ajax({
+                        url: '/ambil-lagu',
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
                             All_song = data.map(lagu => {
                                 return {
                                     id: lagu.id,
@@ -821,17 +848,18 @@
                                     artistId: lagu.artist.user.name
                                 };
                             });
-                            console.log(All_song);
+                            console.log("data lagu yang diambil:", All_song);
                             if (All_song.length > 0) {
                                 // Memanggil load_track dengan indeks 0 sebagai lagu pertama
                                 load_track(0);
                             } else {
                                 console.error("Data lagu kosong.");
                             }
-                        })
-                        .catch(error => {
+                        },
+                        error: function(error) {
                             console.error('Error fetching data:', error);
-                        });
+                        }
+                    });
                 }
 
                 ambilDataLagu();

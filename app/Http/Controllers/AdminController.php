@@ -287,11 +287,8 @@ class AdminController extends Controller
         
         $admin = admin::where('user_id', 1)->first();
         $penghasilanSaatIni = $admin->penghasilan;
-
-        $jumlahTambahan = 2000;
-
+        $jumlahTambahan = $jumlahTambahan = isset($pengahasilanAdmin->pendapatanAdmin) != null ? $pengahasilanAdmin->pendapatanAdmin : 2000;
         $penghasilanBaru = $penghasilanSaatIni + $jumlahTambahan;
-
         $admin->update(['penghasilan' => $penghasilanBaru]);
 
         if (isset($pengahasilan) == null) {

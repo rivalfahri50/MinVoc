@@ -30,7 +30,7 @@ class penggunaController extends Controller
     protected function index(Request $request): Response
     {
         $title = "MusiCave";
-        $song = song::where('didengar','>','10')->orderByDesc('didengar')->get();
+        $song = song::where('didengar', '>', '10')->orderByDesc('didengar')->get();
         $songs = song::all();
         // dd($songs);
         // dd($songs);
@@ -39,7 +39,7 @@ class penggunaController extends Controller
         $artist = artist::with('user')->get();
         $billboards = billboard::all();
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('users.index', compact('title', 'songs','song', 'artist', 'genres', 'playlists', 'billboards', 'notifs'));
+        return response()->view('users.index', compact('title', 'songs', 'song', 'artist', 'genres', 'playlists', 'billboards', 'notifs'));
     }
 
     protected function pencarian(): Response
@@ -229,21 +229,23 @@ class penggunaController extends Controller
     protected function search_result(Request $request, string $code)
     {
         $title = "MusiCave";
-        $song = song::where('code', $code)->first();
-        $user = user::where('code', $code)->first();
         $playlists = playlist::all();
-        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        $song = song::where('judul', 'like', '%' .  $request->input('search') . '%')->first();
+        $user = user::where('name', 'like', '%' .  $request->input('search') . '%')->first();
         $totalDidengar = DB::table('riwayat')->where('user_id', auth()->user()->id)->sum('song_id');
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
 
         if ($song) {
             $songs = song::all();
-            return view('users.search.songSearch', compact('song', 'title', 'songs', 'playlists', 'notifs'));
+            $notifs = notif::where('user_id', auth()->user()->id)->get();
+            return view('artis.search.songSearch', compact('song', 'title', 'songs', 'playlists', 'notifs'));
         } else if ($user) {
             $artis = artist::where('user_id', $user->id)->first();
             $songs = song::where('artis_id', $artis->id)->get();
-            return view('users.search.artisSearch', compact('user', 'title', 'totalDidengar', 'songs', 'playlists', 'notifs'));
+            $notifs = notif::where('user_id', auth()->user()->id)->get();
+            return view('artis.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
         } else {
-            return abort(404);
+            return response()->view('users.searchNotFound', compact('title', 'notifs'));
         }
     }
 
@@ -253,6 +255,8 @@ class penggunaController extends Controller
         $playlists = playlist::all();
         $song = song::where('judul', 'like', '%' .  $request->input('search') . '%')->first();
         $user = user::where('name', 'like', '%' .  $request->input('search') . '%')->first();
+        $totalDidengar = DB::table('riwayat')->where('user_id', auth()->user()->id)->sum('song_id');
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
 
         if ($song) {
             $songs = song::all();
@@ -262,9 +266,9 @@ class penggunaController extends Controller
             $artis = artist::where('user_id', $user->id)->first();
             $songs = song::where('artis_id', $artis->id)->get();
             $notifs = notif::where('user_id', auth()->user()->id)->get();
-            return view('users.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs'));
+            return view('users.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
         } else {
-            return abort(404);
+            return response()->view('users.searchNotFound', compact('title', 'notifs'));
         }
     }
 
@@ -318,6 +322,7 @@ class penggunaController extends Controller
         try {
             $title = "MusiCave";
             $albumDetail = album::where('code', $code)->first();
+            $songs = song::where('album_id', $albumDetail->id)->get();
             $album_id = $albumDetail->id;
             $songs = song::all();
             $playlists = playlist::all();
@@ -332,9 +337,11 @@ class penggunaController extends Controller
     {
         $title = "MusiCave";
         $songId = Like::where('user_id', Auth::user()->id)->pluck('song_id')->toArray();
-        $song =song::whereIn('id',$songId)->get();
+        $song = song::whereIn('id', $songId)->get();
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('users.playlist.disukai', compact('title','song', 'notifs'));
+        $playlists = playlist::all();
+        $songs = song::all();
+        return response()->view('users.playlist.disukai', compact('title', 'song', 'notifs', 'playlists', 'songs'));
     }
 
     protected function updateProfile(string $code, Request $request)

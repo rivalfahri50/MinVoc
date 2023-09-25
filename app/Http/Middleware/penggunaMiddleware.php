@@ -16,11 +16,15 @@ class penggunaMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->user()->is_login === false) {
-            return response()->redirectTo('/masuk');
+        if (Auth::user()->role_id != 3) {
+            return back();
+        }
+        if (!Auth::check() && Auth::logout() && auth()->user()->is_login === false) {
+            return back();
         } else if (Auth::check() && auth()->user()->role_id === 3) {
             return $next($request);
         }
-        return response()->redirectTo('/masuk')->with('message', 'Anda Tidak Mendapatkan Akses Untuk Halaman Ini.');
+        return back();
+        // return response()->redirectTo('/masuk')->with('message', 'Anda Tidak Mendapatkan Akses Untuk Halaman Ini.');
     }
 }

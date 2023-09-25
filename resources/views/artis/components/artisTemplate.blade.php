@@ -520,7 +520,7 @@
                                         <p class="preview-subject mb-1 fw-light">Profile</p>
                                     </div>
                                 </a>
-                                <a class="dropdown-item preview-item" href="{{ route('logout.artis') }}">
+                                <a class="dropdown-item preview-item" href="{{ route('logout') }}">
                                     <div class="preview-thumbnail">
                                         <div class="preview-icon rounded-circle">
                                             <i class="mdi mdi-logout"></i>
@@ -1001,30 +1001,32 @@
                 //     }
                 // }
 
-                async function ambilDataLagu() {
-                    await fetch('/ambil-lagu')
-                        .then(response => response.json())
-                        .then(data => {
-                            All_song = data.map(lagu => {
-                                return {
-                                    id: lagu.id,
-                                    judul: lagu.judul,
-                                    audio: lagu.audio,
-                                    image: lagu.image,
-                                    artistId: lagu.artist.user.name
-                                };
-                            });
-                            if (All_song.length > 0) {
-                                // Memanggil load_track dengan indeks 0 sebagai lagu pertama
-                                load_track(0);
-                            } else {
-                                console.error("Data lagu kosong.");
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error fetching data:', error);
+                $.ajax({
+                    url: '/ambil-lagu',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        All_song = data.map(lagu => {
+                            return {
+                                id: lagu.id,
+                                judul: lagu.judul,
+                                audio: lagu.audio,
+                                image: lagu.image,
+                                artistId: lagu.artist.user.name
+                            };
                         });
-                }
+                        console.log("data lagu yang diambil:", All_song);
+                        if (All_song.length > 0) {
+                            // Memanggil load_track dengan indeks 0 sebagai lagu pertama
+                            load_track(0);
+                        } else {
+                            console.error("Data lagu kosong.");
+                        }
+                    },
+                    error: function(error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
 
                 console.log("audio media -> ", slider);
 

@@ -30742,3 +30742,8 @@ div.tagsinput span.tag a {
   height: 40px;
   overflow: hidden;
 }
+
+.swal2-modal .swal2-icon {
+  margin-top: 0;
+  margin-bottom: 0;
+}
