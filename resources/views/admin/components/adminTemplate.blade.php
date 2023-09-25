@@ -177,7 +177,7 @@
                                 <a class="nav-link" href="/admin/persetujuan">
                                     <span class="menu-icon mr-0">
                                         <i class="mdi mdi-check-circle-outline submenu" style="font-size: 20px;"></i>
-                                    </span>Persetujuan
+                                    </span>Lagu
                                 </a>
                             </li>
                             <li class="nav-item">

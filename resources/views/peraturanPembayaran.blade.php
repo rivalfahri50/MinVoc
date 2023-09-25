@@ -145,7 +145,7 @@
                                     <div class="col-4 mb-3">
                                         <label for="namakategori" class="form-label judulnottebal">Pendapatan Artis</label>
                                         <input type="number" class="form-control styleinput" name="pembayaranArtis"
-                                            id="harga1" min="10000" minlength="5" maxlength="6" required
+                                            id="harga1" min="100" minlength="3" maxlength="6" required
                                             placeholder="10000">
                                         @error('pembayaranArtis')
                                             <div class="text-danger">{{ $message }}</div>
@@ -154,7 +154,7 @@
                                     <div class="col-4 mb-4">
                                         <label for="namakategori" class="form-label judulnottebal">Komisi Admin</label>
                                         <input type="number" name="pembayaranAdmin" class="form-control form-i styleinput"
-                                            id="harga2" min="10000" minlength="5" maxlength="6" required
+                                            id="harga2" min="100" minlength="3" maxlength="6" required
                                             placeholder="10000">
                                         @error('pembayaranAdmin')
                                             <div class="text-danger">{{ $message }}</div>

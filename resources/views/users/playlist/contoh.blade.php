@@ -40,15 +40,6 @@
             color: #eaeaea;
         }
 
-        .coba img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
         .custom-container {
             display: flex;
             flex-direction: column;
@@ -163,8 +154,8 @@
             <div class="row">
                 <div class="col-md-12 stretch-card">
                     <div class="custom-container">
-                        <div class="row">
-                            <div class="col-3">
+                        <div class="row no-gutters">
+                            <div class="col-md-3">
                                 @if ($playlistDetail->user_id === auth()->user()->id)
                                     <div class="col-3">
                                         <a href="#popup" class="card coba">
@@ -179,8 +170,8 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="col-9 text-xxl-end">
-                                <div class="bottom-left-text">
+                            <div class="col-md-8 d-flex align-items-end">
+                                <div class="card-body pb-0">
                                     <h3 class="m-0" style="font-weight: 600">{{ $playlistDetail->name }}
                                     </h3>
                                     <p style="font-size: 18px;">
@@ -302,11 +293,10 @@
                         <div class="col-md-7 ml-4">
                             <div class="mb-3">
                                 <input type="text" class="form-control form-i" name="name" id="nama"
-                                    placeholder="{{ $playlistDetail->name }}">
+                                    value="{{ $playlistDetail->name }}" maxlength="55">
                             </div>
                             <div class="mb-3">
-                                <textarea id="deskripsi" class="form-control" name="deskripsi" maxlength="500" rows="6"
-                                    placeholder="{{ $playlistDetail->deskripsi == 'none' ? '' : $playlistDetail->deskripsi }}"></textarea>
+                                <textarea id="deskripsi" class="form-control" name="deskripsi" maxlength="100" rows="6">{{ $playlistDetail->deskripsi == 'none' ? '' : $playlistDetail->deskripsi }}</textarea>
                             </div>
                         </div>
                         <div class="text-md-right col-md-12">
@@ -329,7 +319,6 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-
         const gambar = document.querySelector("#gambar");
 
         const tampilGambar = document.querySelector("#tampil_gambar");
@@ -346,7 +335,7 @@
             reader.readAsDataURL(this.files[0]);
         });
     </script>
-     <script>
+    <script>
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
         let next = document.querySelector('#next');
@@ -374,7 +363,7 @@
 
         // create a audio element
         let track = document.createElement('audio');
-        const playlistId = {{$playlist_id}};
+        const playlistId = {{ $playlist_id }};
         let All_song = [];
         console.log("iki lhoooooooooooo", All_song);
 
@@ -392,7 +381,7 @@
                             audio: lagu.audio,
                             image: lagu.image,
                             artistId: lagu.artist.user.name,
-                            playlist_id:lagu.playlist_id,
+                            playlist_id: lagu.playlist_id,
                         };
                     });
                     All_song = All_song.filter(lagu => lagu.playlist_id == playlistId)

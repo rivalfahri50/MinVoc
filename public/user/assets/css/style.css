@@ -25633,7 +25633,6 @@ div.tagsinput {
 .preview-list .preview-item .preview-item-content p {
   margin-bottom: 10px;
   line-height: 1;
-  font-weight: 600;
 }
 
 .preview-list .preview-item .preview-item-content p .content-category {
@@ -30739,9 +30738,11 @@ div.tagsinput span.tag a {
 }
 
 .overflow-cardtext {
-  width: 150px;
-  height: 40px;
+  display: -webkit-box;
+  text-overflow: ellipsis;
   overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .swal2-modal .swal2-icon {
