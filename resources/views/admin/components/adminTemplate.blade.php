@@ -100,6 +100,11 @@
         .pagination li:hover {
             background-color: #ddd;
         }
+
+        .swal2-modal .swal2-icon {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
     </style>
     <script>
         function confirmDelete(message, callback) {

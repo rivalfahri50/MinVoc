@@ -264,9 +264,26 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                @php
+                                    $artistCount = $artist
+                                        ->filter(function ($item) {
+                                            return $item->pengajuan_verified_at > 1;
+                                        })
+                                        ->count();
+                                @endphp
+
+                                @if (empty($artistCount))
+                                    <div style="justify-content: center; display: flex; padding: 50px 0;">
+                                        <img width="400" height="200" src="/icon-notFound/adminIcon.svg" alt="" srcset="">
+                                    </div>
+                                @endif
+                                </div>
                             </div>
                         </div>
                     </div>
+
+
+
                     {{-- @php
                         $count = $artist
                             ->filter(function ($item) {
