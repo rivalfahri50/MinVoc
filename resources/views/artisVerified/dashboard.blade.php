@@ -209,7 +209,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-5 grid-margin stretch-card billboardheight">
+                <div class="col-md-5 stretch-card billboardheight">
                     <h3 class="card-title mb-4 judul" style="font-size: 20px; font-weight: 700">Artis yang disukai</h3>
                     <div class="card datakiri scrollbar-down square thin">
                         <div class="card-body">
@@ -220,10 +220,9 @@
                                             @if ($item->likes >= 0)
                                                 <div class="preview-item">
                                                     <div class="preview-thumbnail">
-                                                        <img src="{{ asset('storage/' . $item->user->avatar) }}"
-                                                            width="10%">
+                                                        <img src="{{ asset('storage/' . $item->user->avatar) }}" class="fotoartis">
                                                     </div>
-                                                    <div class="preview-item-content d-sm-flex flex-grow">
+                                                    <div class="preview-item-content d-sm-flex flex-grow align-items-center">
                                                         <div class="flex-grow">
                                                             <h6 class="preview-subject">{{ $item->user->name }}</h6>
                                                             <p class="text-muted mb-0" style="font-weight: 400">

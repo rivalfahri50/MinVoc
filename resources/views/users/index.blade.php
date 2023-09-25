@@ -150,11 +150,10 @@
                                             @if ($item->user_id !== auth()->user()->id)
                                                 <div class="preview-item">
                                                     <div class="preview-thumbnail">
-                                                        <img src="{{ asset('storage/' . $item->user->avatar) }}"
-                                                            width="10%">
+                                                        <img src="{{ asset('storage/' . $item->user->avatar) }}" class="fotoartis">
                                                     </div>
                                                     <div class="preview-item-content d-sm-flex flex-grow">
-                                                        <div class="preview-item-content d-sm-flex flex-grow">
+                                                        <div class="preview-item-content d-sm-flex flex-grow align-items-center">
                                                             <div class="flex-grow">
                                                                 <h6 class="preview-subject">{{ $item->user->name }}</h6>
                                                                 <p class="text-muted mb-0">
@@ -185,8 +184,8 @@
                     </h3>
                     <div class="table-header">
                         <div class="table-row header headerlengkung row ml-0 mr-0 mb-0 ">
-                            <span class="table-cell ml-4 "> judul </span>
-                            <span class="table-cell "  style=" margin-left:430px"> putar </span>
+                            <span class="table-cell ml-4 "> Judul </span>
+                            <span class="table-cell "  style=" margin-left:430px"> Putar </span>
                             <span class="table-cell " style=" margin-left:390px">
                                 <i class=" fa fa-clock"></i>
                              </span>

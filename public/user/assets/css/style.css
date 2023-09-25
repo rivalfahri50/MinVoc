@@ -22104,6 +22104,7 @@ input:focus {
   border-color: transparent;
   outline: none;
 }
+
 /* Backgrounds  */
 .bg-gradient-primary {
   background: #0090e7;
@@ -25568,7 +25569,7 @@ div.tagsinput {
   -webkit-flex-direction: row;
   flex-direction: row;
   -webkit-align-items: flex-start;
-  align-items: flex-start;
+  align-items: center;
   padding: 1rem 0rem;
   font-size: .875rem;
 }
@@ -30017,7 +30018,7 @@ div.tagsinput span.tag a {
   transition-property: color;
   -webkit-transition-property: color;
   height: 46px;
-  border-radius: 0px 100px 100px 0px;
+  border-radius: 0px 20px 20px 0px;
 }
 
 .sidebar .nav .nav-item .nav-link i {
@@ -30746,4 +30747,10 @@ div.tagsinput span.tag a {
 .swal2-modal .swal2-icon {
   margin-top: 0;
   margin-bottom: 0;
+}
+
+.fotoartis {
+  width: 50px !important;
+  height: 50px !important;
+  border-radius: 50%;
 }

@@ -265,7 +265,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="#buatplaylist">
                                     <span class="menu-icon">
-                                        <i class="mdi mdi-plus-circle-outline"></i>
+                                        <i class="mdi mdi-plus-circle-outline"  style="font-size: 20px;"></i>
                                     </span>
                                     <span class="menu-title">Buat Playlist</span>
                                 </a>
