@@ -217,7 +217,6 @@
                 <div class="col-12 mb-5">
                     <h3 class="card-title mt-2 judul" style="font-size: 20px; font-weight: 600">Lagu Yang Sering Didengar
                     </h3>
-<<<<<<< HEAD
                     <div class="bordertabel">
                         <table class="table">
                             <thead class="table-header headertext-ungu">
@@ -262,57 +261,6 @@
                             <ul class="pagination justify-content-center">
                                 <!-- Pagination links will be dynamically generated here -->
                             </ul>
-=======
-                    <div class="table-header">
-                        <div class="table-row header headerlengkung row ml-0 mr-0 mb-0 ">
-                            <span class="table-cell ml-4 "> judul </span>
-                            <span class="table-cell " style=" margin-left:430px"> putar </span>
-                            <span class="table-cell " style=" margin-left:380px">
-                                <i class=" fa fa-clock"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="card datakanan scrollbar-down thin">
-                        <div class="card-body">
-                            <div class="row" style="margin-top: -20px">
-                                <div class="col-12">
-                                    <div class="preview-list">
-                                        @foreach ($song as $item)
-                                            @if ($item->is_approved)
-                                                <div class="preview-item">
-                                                    <div class="preview-thumbnail">
-                                                        <img src="{{ asset('storage/' . $item->image) }}" width="10%">
-                                                    </div>
-                                                    <div class="preview-item-content d-sm-flex flex-grow">
-                                                        <a href="#lagu-diputar"
-                                                            class="flex-grow text-decoration-none link"
-                                                            onclick="putar({{ $item->id }})">
-                                                            <h6 class="preview-subject" style="color: #4e4e4e;">
-                                                                {{ $item->judul }}</h6>
-                                                            <p class="text-muted mb-0" style="font-weight: 400">
-                                                                {{ $item->artist->user->name }}</p>
-                                                        </a>
-                                                    </div>
-                                                    <div style="padding-right:400px">
-                                                        <p>
-                                                            {{ number_format($item->didengar, 0, ',', '.') }}
-                                                        </p>
-                                                    </div>
-                                                    <i id="like-2{{ $item->id }}" data-id="{{ $item->id }}"
-                                                        onclick="toggleLike(this, {{ $item->id }})"
-                                                        class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
-                                                    <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                        <div class="text-group align-items-center">
-                                                            <p style="pointer-events: none;">{{ $item->waktu }}</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endIf
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
->>>>>>> 8d1aa809c20a5cff09c61b5be9e5d0078563b671
                         </div>
                     </div>
                 </div>
