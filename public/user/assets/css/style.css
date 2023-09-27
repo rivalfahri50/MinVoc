@@ -13027,7 +13027,7 @@ input[type="button"].btn-block {
   color: #6C6C6C;
   text-align: left;
   list-style: none;
-  background-color: #ECECEC;
+  background-color: inherit;
   /*DISINI WARNA DROPDOWN*/
   background-clip: padding-box;
   border: 1px solid #2c2e33;
@@ -13202,7 +13202,7 @@ input[type="button"].btn-block {
   color: #6C6C6C;
   text-align: inherit;
   white-space: nowrap;
-  background-color: transparent;
+  background-color: #fafafa;
   border: 0;
 }
 
@@ -13210,7 +13210,7 @@ input[type="button"].btn-block {
 .dropdown-item:focus {
   color: #16181b;
   text-decoration: none;
-  background-color: #d1d1d1;
+  background-color: #eaeaea;
 }
 
 /*DISINI WARNA HOVER DROPDOWN*/
@@ -29736,9 +29736,9 @@ div.tagsinput span.tag a {
   top: 48px;
   right: 0;
   left: auto;
-  -webkit-box-shadow: 0px 0px 35px -3px black;
-  -moz-box-shadow: 0px 0px 35px -3px black;
-  box-shadow: 0px 0px 35px -3px black;
+  -webkit-box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.3);
   padding: 0;
 }
 
@@ -29754,7 +29754,7 @@ div.tagsinput span.tag a {
 }
 
 .navbar .navbar-menu-wrapper .navbar-nav .nav-item.dropdown .dropdown-menu.navbar-dropdown .dropdown-item:hover {
-  color: #fff;
+  color: #919191;
 }
 
 .navbar .navbar-menu-wrapper .navbar-nav .nav-item.dropdown .dropdown-menu.navbar-dropdown .dropdown-item i {

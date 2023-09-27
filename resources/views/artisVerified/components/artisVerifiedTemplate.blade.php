@@ -424,7 +424,7 @@
                                                     @endif
                                                 </div>
                                                 <button type="submit" class="btn btnicon p-0"
-                                                    style="background: none; border: none;"
+                                                    style="background: none; border: none; margin-bottom: 3px"
                                                     onclick="">
                                                     <a href="/artis-verified/delete-notif/{{ $item->code }}">
                                                         <i class="far fa-times-circle text-danger"
