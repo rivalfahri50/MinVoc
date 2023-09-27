@@ -104,15 +104,15 @@
                                                         <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
                                                             onclick="putar({{ $item->id }})">
                                                             <h6 class="preview-subject">{{ $item->judul }}</h6>
-                                                            <p class="text-muted mb-0" style="font-weight: 400">{{ $item->artist->user->name }}</p>
+                                                            <p class="text-muted mb-0" style="font-weight: 400">
+                                                                {{ $item->artist->user->name }}</p>
                                                         </a>
                                                     </div>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group align-items-center">
-                                                            <i id="like{{ $item->id }}"
-                                                            data-id="{{ $item->id }}"
-                                                            onclick="toggleLike(this, {{ $item->id }})"
-                                                            class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
+                                                            <i id="like{{ $item->id }}" data-id="{{ $item->id }}"
+                                                                onclick="toggleLike(this, {{ $item->id }})"
+                                                                class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                             <p style="pointer-events: none;">{{ $item->waktu }}</p>
                                                         </div>
                                                     </div>
@@ -125,7 +125,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-5 grid-margin stretch-card billboardheight">
+                <div class="col-md-5 stretch-card billboardheight">
                     <h3 class="card-title mb-4 judul" style="font-size: 20px; font-weight: 700">Artis yang disukai</h3>
                     <div class="card datakiri scrollbar-down square thin">
                         <div class="card-body">
@@ -137,11 +137,14 @@
                                                 <div class="preview-item">
                                                     <div class="preview-thumbnail">
                                                         <img src="{{ asset('storage/' . $item->user->avatar) }}"
-                                                            width="10%" class="fit">
+                                                            width="10%" class="fotoartis">
                                                     </div>
-                                                    <div class="preview-item-content d-sm-flex flex-grow">
+                                                    <div
+                                                        class="preview-item-content d-sm-flex flex-grow align-items-center">
                                                         <div class="flex-grow">
-                                                            <h6 class="preview-subject">{{ $item->user->name }}</h6>
+                                                            <h6 class="preview-subject"
+                                                                onclick="redirectArtis('{{ $item->code }}')"
+                                                                style="cursor: pointer">{{ $item->user->name }}</h6>
                                                             <p class="text-muted mb-0" style="font-weight: 400">
                                                                 <span
                                                                     id="likeCount{{ $item->id }}">{{ number_format($item->likes, 0, ',', '.') }}</span>
@@ -170,10 +173,10 @@
                     <div class="table-header">
                         <div class="table-row header headerlengkung row ml-0 mr-0 mb-0 ">
                             <span class="table-cell ml-4 "> judul </span>
-                            <span class="table-cell "  style=" margin-left:430px"> putar </span>
+                            <span class="table-cell " style=" margin-left:430px"> putar </span>
                             <span class="table-cell " style=" margin-left:390px">
                                 <i class=" fa fa-clock"></i>
-                             </span>
+                            </span>
                         </div>
                     </div>
                     <div class="card datakanan scrollbar-down thin">
@@ -186,33 +189,31 @@
                                                 {{-- @if (count($songs) > 0) --}}
                                                 <div>
                                                 </div>
-                                                    <div class="preview-item">
-                                                        <div class="preview-thumbnail">
-                                                            <img src="{{ asset('storage/' . $item->image) }}"
-                                                                width="10%">
-                                                        </div>
-                                                        <div class="preview-item-content d-sm-flex flex-grow">
-                                                            <a href="#lagu-diputar"
-                                                                class="flex-grow text-decoration-none link"
-                                                                onclick="putar({{ $item->id }})">
-                                                                <h6 class="preview-subject">{{ $item->judul }}</h6>
-                                                                <p class="text-muted mb-0">{{ $item->artist->user->name }}
-                                                                </p>
-                                                            </a>
-                                                        </div>
-                                                        <div style="padding-right:400px">
-                                                            <p>
-                                                                {{ number_format($item->didengar, 0, ',', '.') }}
+                                                <div class="preview-item">
+                                                    <div class="preview-thumbnail">
+                                                        <img src="{{ asset('storage/' . $item->image) }}" width="10%">
+                                                    </div>
+                                                    <div class="preview-item-content d-sm-flex flex-grow">
+                                                        <a href="#lagu-diputar"
+                                                            class="flex-grow text-decoration-none link"
+                                                            onclick="putar({{ $item->id }})">
+                                                            <h6 class="preview-subject">{{ $item->judul }}</h6>
+                                                            <p class="text-muted mb-0">{{ $item->artist->user->name }}
                                                             </p>
-                                                        </div>
-                                                        <i id="like-3{{ $item->id }}"
-                                                            data-id="{{ $item->id }}"
-                                                            onclick="toggleLike(this, {{ $item->id }})"
-                                                            class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
-                                                        <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                            <div class="text-group align-items-center">
-                                                                <p style="pointer-events: none;">{{ $item->waktu }}</p>
-                                                                @if (count($playlists) > 0)
+                                                        </a>
+                                                    </div>
+                                                    <div style="padding-right:400px">
+                                                        <p>
+                                                            {{ number_format($item->didengar, 0, ',', '.') }}
+                                                        </p>
+                                                    </div>
+                                                    <i id="like-3{{ $item->id }}" data-id="{{ $item->id }}"
+                                                        onclick="toggleLike(this, {{ $item->id }})"
+                                                        class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
+                                                    <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                                        <div class="text-group align-items-center">
+                                                            <p style="pointer-events: none;">{{ $item->waktu }}</p>
+                                                            @if (count($playlists) > 0)
                                                                 <a data-bs-toggle="modal"
                                                                     data-bs-target="#staticBackdrop-{{ $item->code }}"
                                                                     style="color: #957dad">
@@ -225,9 +226,9 @@
                                                                     </svg>
                                                                 </a>
                                                             @endif
-                                                            </div>
                                                         </div>
                                                     </div>
+                                                </div>
                                                 {{-- @endif --}}
                                             @endIf
                                         @endforeach
@@ -243,6 +244,19 @@
     </div>
     </div>
     <script>
+        function redirectArtis(id) {
+            $.ajax({
+                url: `/artis/detail-artis/${id}`,
+                type: 'GET',
+                data: {
+                    data: id
+                },
+                success: function(response) {
+                    window.location.href = `/artis/detail-artis/${id}`;
+                },
+            });
+        }
+
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
         let next = document.querySelector('#next');

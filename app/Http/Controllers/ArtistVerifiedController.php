@@ -45,7 +45,7 @@ class ArtistVerifiedController extends Controller
         $billboards = billboard::all();
         $artistid = (int) artist::where('user_id', auth()->user()->id)->first()->id;
         $totalpenghasilan = penghasilan::where('artist_id', $artistid)->sum('penghasilan');
-        $notifs = notif::where('user_id', auth()->user()->id)->get();
+        $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
         $artistid = (int) artist::where('user_id', auth()->user()->id)->first()->id;
         $totalpenghasilan = penghasilan::where('artist_id', $artistid)->sum('penghasilan');
         return response()->view('artisVerified.dashboard', compact('title', 'songs', 'song', 'genres', 'artist', 'billboards', 'playlists', 'notifs', 'totalpenghasilan'));
@@ -75,7 +75,7 @@ class ArtistVerifiedController extends Controller
         $totalpenghasilan = penghasilan::where('artist_id', $artistid)->sum('penghasilan');
         $penghasilanData = penghasilan::where('artist_id', $artistid)->where('is_take', false)->first();
         if (isset($penghasilanData->Pengajuan)) {
-            $penghasilanData = penghasilan::where('artist_id', $artistid)->where('Pengajuan', $penghasilanData->Pengajuan)->first();
+            $penghasilanData = penghasilan::where('artist_id', $artistid)->where('Pengajuan', $penghasilanData->Pengajuan)->latest('terakhir_diambil')->first();
         }
         // $month = penghasilan::where('artist_id', $artistid)->pluck('bulan')->toArray();
         $month = [];
@@ -564,7 +564,7 @@ class ArtistVerifiedController extends Controller
     protected function deleteNotif(Request $request, string $code)
     {
         try {
-            $notif = notif::where('id', $code)->first();
+            $notif = notif::where('code', $code)->first();
             $notif->delete();
         } catch (\Throwable $th) {
             abort(404);
@@ -572,7 +572,7 @@ class ArtistVerifiedController extends Controller
         return redirect()->back();
     }
 
-    public function search(Request $request)
+    protected function search(Request $request)
     {
         $query = $request->input('query');
         $songs = Song::where('judul', 'LIKE', '%' . $query . '%')->get();
@@ -673,6 +673,23 @@ class ArtistVerifiedController extends Controller
             return response()->view('artisverified.searchNotFound', compact('title', 'notifs'));
         }
     }
+
+    protected function detailArtis(Request $request, string $code)
+    {
+        $title = 'MusiCave';
+        try {
+            $artis = artist::where('code', $code)->first();
+            $user = User::where('id', $artis->user_id)->first();
+            $songs = song::where('artis_id', $artis->id)->get();
+            $notifs = notif::where('user_id', auth()->user()->id)->get();
+            $totalDidengar = DB::table('riwayat')->where('user_id', auth()->user()->id)->sum('song_id');
+            $playlists = playlist::all();
+        } catch (\Throwable $th) {
+            abort(404);
+        }
+        return view('artisVerified.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
+    }
+
 
     public function search_song(Request $request)
     {

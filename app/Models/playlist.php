@@ -15,6 +15,10 @@ class playlist extends Model
         'deskripsi',
         'images',
         'user_id',
-        // 'song_id',
     ];
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }

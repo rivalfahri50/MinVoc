@@ -22104,6 +22104,7 @@ input:focus {
   border-color: transparent;
   outline: none;
 }
+
 /* Backgrounds  */
 .bg-gradient-primary {
   background: #0090e7;
@@ -25568,7 +25569,7 @@ div.tagsinput {
   -webkit-flex-direction: row;
   flex-direction: row;
   -webkit-align-items: flex-start;
-  align-items: flex-start;
+  align-items: center;
   padding: 1rem 0rem;
   font-size: .875rem;
 }
@@ -25632,7 +25633,6 @@ div.tagsinput {
 .preview-list .preview-item .preview-item-content p {
   margin-bottom: 10px;
   line-height: 1;
-  font-weight: 600;
 }
 
 .preview-list .preview-item .preview-item-content p .content-category {
@@ -30017,7 +30017,7 @@ div.tagsinput span.tag a {
   transition-property: color;
   -webkit-transition-property: color;
   height: 46px;
-  border-radius: 0px 100px 100px 0px;
+  border-radius: 0px 20px 20px 0px;
 }
 
 .sidebar .nav .nav-item .nav-link i {
@@ -30738,12 +30738,20 @@ div.tagsinput span.tag a {
 }
 
 .overflow-cardtext {
-  width: 150px;
-  height: 40px;
+  display: -webkit-box;
+  text-overflow: ellipsis;
   overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .swal2-modal .swal2-icon {
   margin-top: 0;
   margin-bottom: 0;
+}
+
+.fotoartis {
+  width: 50px !important;
+  height: 50px !important;
+  border-radius: 50%;
 }

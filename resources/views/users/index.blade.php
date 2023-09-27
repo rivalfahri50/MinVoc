@@ -140,7 +140,7 @@
                     </div>
                 </div>
                 <div class="col-md-5 stretch-card billboardheight">
-                    <h3 class="card-title mb-4 judul" style="font-size: 20px; font-weight: 700">Artis yang disukai</h3>
+                    <h3 class="card-title mb-4 judul" style="font-size: 20px; font-weight: 700">Artis Terbaru</h3>
                     <div class="card datakiri scrollbar-down square thin">
                         <div class="card-body">
                             <div class="row" style="margin-top: -20px">
@@ -151,12 +151,15 @@
                                                 <div class="preview-item">
                                                     <div class="preview-thumbnail">
                                                         <img src="{{ asset('storage/' . $item->user->avatar) }}"
-                                                            width="10%">
+                                                            class="fotoartis">
                                                     </div>
                                                     <div class="preview-item-content d-sm-flex flex-grow">
-                                                        <div class="preview-item-content d-sm-flex flex-grow">
+                                                        <div
+                                                            class="preview-item-content d-sm-flex flex-grow align-items-center">
                                                             <div class="flex-grow">
-                                                                <h6 class="preview-subject">{{ $item->user->name }}</h6>
+                                                                <h6 class="preview-subject"
+                                                                    onclick="redirectArtis('{{ $item->code }}')"
+                                                                    style="cursor: pointer">{{ $item->user->name }}</h6>
                                                                 <p class="text-muted mb-0">
                                                                     <span
                                                                         id="likeCount{{ $item->id }}">{{ number_format($item->likes, 0, ',', '.') }}</span>
@@ -185,8 +188,8 @@
                     </h3>
                     <div class="table-header">
                         <div class="table-row header headerlengkung row ml-0 mr-0 mb-0 ">
-                            <span class="table-cell ml-4 "> judul </span>
-                            <span class="table-cell " style=" margin-left:430px"> putar </span>
+                            <span class="table-cell ml-4 "> Judul </span>
+                            <span class="table-cell " style=" margin-left:430px"> Putar </span>
                             <span class="table-cell " style=" margin-left:390px">
                                 <i class=" fa fa-clock"></i>
                             </span>
@@ -257,6 +260,19 @@
     </div>
     {{-- ini untuk like pada halaman ini --}}
     <script>
+        function redirectArtis(id) {
+            $.ajax({
+                url: `/pengguna/detail-artis/${id}`,
+                type: 'GET',
+                data: {
+                    data: id
+                },
+                success: function(response) {
+                    window.location.href = `/pengguna/detail-artis/${id}`;
+                },
+            });
+        }
+
         var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         $(document).ready(function() {
             $.ajax({
