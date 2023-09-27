@@ -435,7 +435,6 @@
                                         @endif
                                     @endif
                                 @endforeach
-
                             </div>
                         </li>
                         <li class="nav-item dropdown">

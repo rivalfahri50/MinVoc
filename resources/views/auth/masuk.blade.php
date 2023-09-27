@@ -28,7 +28,7 @@
                         @endif
 
                         <div class="mb-3">
-                            <input name="email" placeholder="Nama pengguna" type="text" class="form-control rounded-3"
+                            <input name="email" placeholder="Email" type="text" class="form-control rounded-3"
                                 id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ old('email') }}">
                             @if ($errors->has('email'))
                                 <div class="text-danger mt-1 my-1">

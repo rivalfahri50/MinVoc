@@ -41,7 +41,8 @@
                 </div>
                 @if (count($uniqueRows) === 0)
                     <div style="justify-content: center; display: flex; padding: 50px 0;">
-                        <img width="400" height="200" src="/icon-notFound/adminIcon.svg" alt="" srcset="">
+                        <img width="400" height="200" src="/user/assets/images/logo-user.svg" alt=""
+                                srcset="">
                     </div>
                 @endif
             </div>

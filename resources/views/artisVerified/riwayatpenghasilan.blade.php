@@ -99,11 +99,10 @@
                                     </tbody>
                                 @else
                                     <table class="py-3">
-                                        <span
-                                            style="display: flex; justify-content: center; margin-top: 4px; margin-bottom: 4px">
-                                            Tidak ada dalam history
-                                            pencairan dana.
-                                        </span>
+                                        <div style="justify-content: center; display: flex; padding: 50px 0;">
+                                            <img width="400" height="200" src="/user/assets/images/logo-user.svg"
+                                                alt="" srcset="">
+                                        </div>
                                     </table>
                                 @endif
                             @else
@@ -125,6 +124,12 @@
                             @endif
                         </table>
                     </div>
+                    @if (count($penghasilan) == 0)
+                        <div style="justify-content: center; display: flex; padding: 50px 0;">
+                            <img width="400" height="200" src="/user/assets/images/logo-user.svg" alt=""
+                                srcset="">
+                        </div>
+                    @endif
                     <div class="text-center">
                         <div class="text-center">
                             <ul class="pagination justify-content-center">

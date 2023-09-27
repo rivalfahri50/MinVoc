@@ -31,7 +31,7 @@ class AdminController extends Controller
     protected function index(Request $request): Response
     {
         $title = "MusiCave";
-        $totalPengguna = User::whereNotIn('role_id', [3])->count();
+        $totalPengguna = User::where('role_id', 3)->count();
         $totalLagu = song::count();
         $totalArtist = artist::count();
         $songs = song::all();
