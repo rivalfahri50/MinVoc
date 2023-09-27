@@ -25862,15 +25862,17 @@ div.tagsinput {
   font-size: 0.875rem;
   line-height: 1;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .table th img,
 .jsgrid .jsgrid-table th img,
 .table td img,
 .jsgrid .jsgrid-table td img {
-  width: 30px;
-  height: 30px;
-  border-radius: 100%;
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
 }
 
 .table th .badge,
@@ -30754,4 +30756,26 @@ div.tagsinput span.tag a {
   width: 50px !important;
   height: 50px !important;
   border-radius: 50%;
+}
+
+.headertext-ungu {
+  color: #957DAD;
+  font-weight: bold;
+}
+
+.fototabelsejajar {
+  display: flex;
+  align-items: center;
+  gap: 10%;
+}
+
+.texttitik {
+  width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bordertabel {
+  border-radius: 10px;
+  overflow: hidden;
 }

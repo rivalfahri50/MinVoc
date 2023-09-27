@@ -550,6 +550,7 @@ class ArtistVerifiedController extends Controller
     {
         $title = "MusiCave";
         $genre = genre::where('code', $code)->first();
+        $genre_id = $genre->id;
         $playlists = playlist::all();
         $songs = song::where('genre_id', $genre->id)->get();
         $genre_id = $genre->id;

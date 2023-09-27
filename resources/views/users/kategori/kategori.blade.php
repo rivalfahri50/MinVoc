@@ -164,7 +164,7 @@
         let track = document.createElement('audio');
         let currentGenreId = null;
 
-        let genreId = {{$genre_id}};
+        let genreId = {{ $genre_id }};
         let All_song = [];
         console.log("iki lhoooooooooooo ", All_song);
 
@@ -328,8 +328,14 @@
             });
         }
 
-        shuffleButton.addEventListener('click', function() {
-            shuffle_song();
+        document.addEventListener("DOMContentLoaded", function() {
+            // Tempatkan kode Anda di sini
+            let shuffleButton = document.querySelector('#shuffle_button');
+            console.log('info', shuffleButton);
+            shuffleButton.addEventListener('click', function() {
+                shuffle_song();
+                console.log(shuffleButton);
+            });
         });
 
 

@@ -97,8 +97,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         $(document).ready(function() {
-            var itemsPerPage = 4;
-
+            var itemsPerPage = 5;
+    
             // Fungsi untuk menyimpan halaman saat ini ke local storage
             function saveCurrentPageToLocalStorage(page) {
                 localStorage.setItem("currentPage", page);

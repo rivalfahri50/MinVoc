@@ -309,7 +309,7 @@
                     <div class="progress-controller">
                         <div class="control-buttons">
                             <div id="controls">
-                                <button onclick="shuffle_song()" id="shuffle"><i class="fa fa-random"
+                                <button onclick="shuffle_song()" id="shuffle_button"><i class="fa fa-random"
                                         aria-hidden="true"></i></button>
                                 <button onclick="previous_song()" id="pre"><i class="fa fa-step-backward"
                                         aria-hidden="true"></i></button>
@@ -424,7 +424,7 @@
                                                     @endif
                                                 </div>
                                                 <button type="submit" class="btn btnicon p-0"
-                                                    style="background: none; border: none; margin-bottom: 20px;"
+                                                    style="background: none; border: none;"
                                                     onclick="">
                                                     <a href="/artis-verified/delete-notif/{{ $item->code }}">
                                                         <i class="far fa-times-circle text-danger"
@@ -631,164 +631,6 @@
                 //         $(this).find('i').toggleClass('mdi-chevron-right mdi-chevron-down');
                 //     });
                 // });
-            </script>
-
-            <script>
-                var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                $(document).ready(function() {
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-                    $.ajax({
-                        url: `/artist/check`,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(response) {
-                            console.log(response);
-                            response.forEach(function(item) {
-                                const artistId = item.artist_id;
-                                const like = document.getElementById(`like-artist${item.artist_id}`);
-                                like.classList.toggle('fas');
-                            })
-
-                        },
-                        error: function(response) {
-                            console.log(response)
-                        }
-                    });
-                    $.ajax({
-                        url: `/artist/count`,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(response) {
-                            let totalLikes = 0;
-                            response.forEach(function(item) {
-                                totalLikes += item.likes;
-                                const artistId = item.artist_id;
-                                console.log("datas" + item.likes);
-                            })
-                            const count = document.getElementById('likeCount');
-                            if (count) {
-                                count.textContent = totalLikes;
-                            }
-                        },
-                        error: function(response) {
-
-                        }
-                    })
-                });
-
-                function likeArtist(iconElement, artistId) {
-                    const isLiked = iconElement.classList.contains('fas');
-
-                    $.ajax({
-                        url: `/artist/${artistId}/like`,
-                        type: 'POST',
-                        dataType: 'json',
-                        success: function(response) {
-                            if (response.success) {
-                                const likeCountElement = document.getElementById(`likeCount${artistId}`);
-                                if (likeCountElement) {
-                                    likeCountElement.textContent = response.likes;
-                                }
-                                if (isLiked) {
-                                    iconElement.classList.remove('fas');
-                                    iconElement.classList.add('far');
-                                } else {
-                                    iconElement.classList.remove('far');
-                                    iconElement.classList.add('fas');
-                                }
-                                updateLikeStatus(artistId, !isLiked);
-                            }
-                        },
-                        error: function(response) {
-                            console.log(response);
-                        }
-
-                    })
-                }
-
-
-                function updateLikeStatus(artistId, isLiked) {
-                    const likeIcons = document.querySelectorAll(`.like[data-id="${artistId}"]`);
-                    likeIcons.forEach(likeIcon => {
-                        likeIcon.classList.toggle('fas', isLiked);
-                        likeIcon.classList.toggle('far', !isLiked);
-                    });
-                }
-            </script>
-
-            <script>
-                var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                $(document).ready(function() {
-                    $.ajax({
-                        url: `/song/check`,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(response) {
-                            console.log(response);
-                            response.forEach(function(item) {
-                                let songId = item.song_id;
-                                let like = document.getElementById(`like-1${item.song_id}`);
-                                if (like) {
-                                    like.classList.toggle('fas');
-                                }
-                            })
-                        }
-                    });
-                });
-                $(document).ready(function() {
-                    $.ajax({
-                        url: `/song/check`,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(response) {
-                            console.log(response);
-                            response.forEach(function(item) {
-                                let songId = item.song_id;
-                                let like = document.getElementById(`like-2${item.song_id}`);
-                                if (like) {
-                                    like.classList.toggle('fas');
-                                }
-                            })
-                        }
-                    });
-                });
-
-                function toggleLike(iconElement, songId) {
-                    const isLiked = iconElement.classList.contains('fas');
-                    $.ajax({
-                        url: `/song/${songId}/like`,
-                        type: 'POST',
-                        dataType: 'json',
-                        success: function(response) {
-                            console.log(response);
-                            if (response.success) {
-                                if (isLiked) {
-                                    iconElement.classList.remove('fas');
-                                    iconElement.classList.add('far');
-                                } else {
-                                    iconElement.classList.remove('far');
-                                    iconElement.classList.add('fas');
-                                }
-                                updateSongLikeStatus(songId, !isLiked);
-                            }
-                        },
-                        error: function(response) {
-                            console.log(response);
-                        }
-                    })
-                }
-
-                function updateSongLikeStatus(songId, isLiked) {
-                    const likeIcons = document.querySelectorAll(`.shared-icon-like[data-id="${songId}"]`);
-                    likeIcons.forEach(likeIcon => {
-                        likeIcon.classList.toggle('fas', isLiked);
-                        likeIcon.classList.toggle('far', !isLiked);
-                    });
-                }
             </script>
 
             {{-- <script>
