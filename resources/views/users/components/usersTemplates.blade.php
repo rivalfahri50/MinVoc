@@ -354,7 +354,7 @@
                     <div class="progress-controller">
                         <div class="control-buttons">
                             <div id="controls">
-                                <button onclick="shuffle_song()" id="shuffle_button "><i class="fa fa-random"
+                                <button onclick="shuffle_song()" id="shuffle_button"><i class="fa fa-random"
                                         aria-hidden="true"></i></button>
                                 <button onclick="previous_song()" id="pre"><i class="fa fa-step-backward"
                                         aria-hidden="true"></i></button>
@@ -869,7 +869,8 @@
                         track.src = '{{ asset('storage') }}' + '/' + All_song[index_no].audio;
                         title.innerHTML = All_song[index_no].judul;
                         artist.innerHTML = All_song[index_no].artistId;
-                        track_image.src = '{{ asset('storage') }}' + '/' + All_song[index_no].image;
+                        // track_image.src = '{{ asset('storage') }}' + '/' + All_song[index_no].image;
+                        console.log("LAGU NAME" + title);
                         track.load();
                         timer = setInterval(range_slider, 1000);
                     } else {
@@ -1032,7 +1033,6 @@
                     } else {
                         console.error('Lagu dengan ID ' + id + ' tidak ditemukan dalam data lagu.');
                     }
-
                 }
 
                 track.addEventListener('ended', function() {

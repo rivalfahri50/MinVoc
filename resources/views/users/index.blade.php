@@ -118,7 +118,9 @@
                                                         <div
                                                             class="preview-item-content d-sm-flex flex-grow align-items-center">
                                                             <div class="flex-grow">
-                                                                <h6 class="preview-subject">{{ $item->user->name }}</h6>
+                                                                <h6 class="preview-subject"
+                                                                    onclick="redirectArtis('{{ $item->code }}')"
+                                                                    style="cursor: pointer">{{ $item->user->name }}</h6>
                                                                 <p class="text-muted mb-0">
                                                                     <span
                                                                         id="likeCount{{ $item->id }}">{{ number_format($item->likes, 0, ',', '.') }}</span>
@@ -396,6 +398,19 @@
 
     {{-- ini untuk like pada halaman ini --}}
     <script>
+        function redirectArtis(id) {
+            $.ajax({
+                url: `/pengguna/detail-artis/${id}`,
+                type: 'GET',
+                data: {
+                    data: id
+                },
+                success: function(response) {
+                    window.location.href = `/pengguna/detail-artis/${id}`;
+                },
+            });
+        }
+
         var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         $(document).ready(function() {
             $.ajax({

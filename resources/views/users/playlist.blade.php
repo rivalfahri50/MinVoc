@@ -35,13 +35,14 @@
                             @foreach ($albums->reverse() as $item)
                                 {{-- @if ($item->artis->user_id == auth()->user()->id) --}}
                                 <a href="{{ route('detailAlbumPengguna', $item->code) }}"
-                                    class="card card-scroll coba text-decoration-none">
+                                        class="card card-scroll coba text-decoration-none" style="width: 95%">
                                     <div class="card-content">
                                         <div class="kotaktetap">
                                             <img src="{{ asset('storage/' . $item->image) }}"
                                                 class="img-fluid rounded-1">
                                         </div>
-                                        <h4 class="mt-2 judul">{{ $item->name }}</h4>
+                                        <h4 class="mt-2 judul" style="font-size: 17px">{{ $item->name }}</h4>
+                                        <span class="judul" style="font-size: 12px">Dari {{ $item->artis->user->name }}</span>
                                         </p>
                                     </div>
                                 </a>

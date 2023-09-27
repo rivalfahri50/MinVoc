@@ -189,7 +189,9 @@
                                                     <div
                                                         class="preview-item-content d-sm-flex flex-grow align-items-center">
                                                         <div class="flex-grow">
-                                                            <h6 class="preview-subject">{{ $item->user->name }}</h6>
+                                                            <h6 class="preview-subject"
+                                                                onclick="redirectArtis('{{ $item->code }}')"
+                                                                style="cursor: pointer">{{ $item->user->name }}</h6>
                                                             <p class="text-muted mb-0" style="font-weight: 400">
                                                                 <span
                                                                     id="likeCount{{ $item->id }}">{{ number_format($item->likes, 0, ',', '.') }}</span>
@@ -215,6 +217,7 @@
                 <div class="col-12 mb-5">
                     <h3 class="card-title mt-2 judul" style="font-size: 20px; font-weight: 600">Lagu Yang Sering Didengar
                     </h3>
+<<<<<<< HEAD
                     <div class="bordertabel">
                         <table class="table">
                             <thead class="table-header headertext-ungu">
@@ -259,6 +262,57 @@
                             <ul class="pagination justify-content-center">
                                 <!-- Pagination links will be dynamically generated here -->
                             </ul>
+=======
+                    <div class="table-header">
+                        <div class="table-row header headerlengkung row ml-0 mr-0 mb-0 ">
+                            <span class="table-cell ml-4 "> judul </span>
+                            <span class="table-cell " style=" margin-left:430px"> putar </span>
+                            <span class="table-cell " style=" margin-left:380px">
+                                <i class=" fa fa-clock"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card datakanan scrollbar-down thin">
+                        <div class="card-body">
+                            <div class="row" style="margin-top: -20px">
+                                <div class="col-12">
+                                    <div class="preview-list">
+                                        @foreach ($song as $item)
+                                            @if ($item->is_approved)
+                                                <div class="preview-item">
+                                                    <div class="preview-thumbnail">
+                                                        <img src="{{ asset('storage/' . $item->image) }}" width="10%">
+                                                    </div>
+                                                    <div class="preview-item-content d-sm-flex flex-grow">
+                                                        <a href="#lagu-diputar"
+                                                            class="flex-grow text-decoration-none link"
+                                                            onclick="putar({{ $item->id }})">
+                                                            <h6 class="preview-subject" style="color: #4e4e4e;">
+                                                                {{ $item->judul }}</h6>
+                                                            <p class="text-muted mb-0" style="font-weight: 400">
+                                                                {{ $item->artist->user->name }}</p>
+                                                        </a>
+                                                    </div>
+                                                    <div style="padding-right:400px">
+                                                        <p>
+                                                            {{ number_format($item->didengar, 0, ',', '.') }}
+                                                        </p>
+                                                    </div>
+                                                    <i id="like-2{{ $item->id }}" data-id="{{ $item->id }}"
+                                                        onclick="toggleLike(this, {{ $item->id }})"
+                                                        class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
+                                                    <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                                        <div class="text-group align-items-center">
+                                                            <p style="pointer-events: none;">{{ $item->waktu }}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endIf
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+>>>>>>> 8d1aa809c20a5cff09c61b5be9e5d0078563b671
                         </div>
                     </div>
                 </div>
@@ -464,6 +518,176 @@
     </script>
 
     <script>
+        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: `/artist/check`,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    console.log("like artis", response);
+                    response.forEach(function(item) {
+                        const artistId = item.artist_id;
+                        const like = document.getElementById(`like-artist${item.artist_id}`);
+                        like.classList.toggle('fas');
+                    })
+
+                },
+                error: function(response) {
+                    console.log(response)
+                }
+            });
+            $.ajax({
+                url: `/artist/count`,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    let totalLikes = 0;
+                    response.forEach(function(item) {
+                        totalLikes += item.likes;
+                        const artistId = item.artist_id;
+                        console.log("datas" + item.likes);
+                    })
+                    const count = document.getElementById('likeCount');
+                    if (count) {
+                        count.textContent = totalLikes;
+                    }
+                },
+                error: function(response) {
+
+                }
+            })
+        });
+
+        function likeArtist(iconElement, artistId) {
+            const isLiked = iconElement.classList.contains('fas');
+
+            $.ajax({
+                url: `/artist/${artistId}/like`,
+                type: 'POST',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        const likeCountElement = document.getElementById(`likeCount${artistId}`);
+                        if (likeCountElement) {
+                            likeCountElement.textContent = response.likes;
+                        }
+                        if (isLiked) {
+                            iconElement.classList.remove('fas');
+                            iconElement.classList.add('far');
+                        } else {
+                            iconElement.classList.remove('far');
+                            iconElement.classList.add('fas');
+                        }
+                        updateLikeStatus(artistId, !isLiked);
+                    }
+                },
+                error: function(response) {
+                    console.log(response);
+                }
+
+            })
+        }
+
+
+        function updateLikeStatus(artistId, isLiked) {
+            const likeIcons = document.querySelectorAll(`.like[data-id="${artistId}"]`);
+            likeIcons.forEach(likeIcon => {
+                likeIcon.classList.toggle('fas', isLiked);
+                likeIcon.classList.toggle('far', !isLiked);
+            });
+        }
+    </script>
+
+    <script>
+        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        $(document).ready(function() {
+            $.ajax({
+                url: `/song/check`,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    console.log("like lagu atas",response);
+                    response.forEach(function(item) {
+                        let songId = item.song_id;
+                        let like = document.getElementById(`like-1${item.song_id}`);
+                        if (like) {
+                            like.classList.toggle('fas');
+                        }
+                    })
+                }
+            });
+        });
+        $(document).ready(function() {
+            $.ajax({
+                url: `/song/check`,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    console.log("like lagu bawah",response);
+                    response.forEach(function(item) {
+                        let songId = item.song_id;
+                        let like = document.getElementById(`like-2${item.song_id}`);
+                        if (like) {
+                            like.classList.toggle('fas');
+                        }
+                    })
+                }
+            });
+        });
+
+        function toggleLike(iconElement, songId) {
+            const isLiked = iconElement.classList.contains('fas');
+            $.ajax({
+                url: `/song/${songId}/like`,
+                type: 'POST',
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response);
+                    if (response.success) {
+                        if (isLiked) {
+                            iconElement.classList.remove('fas');
+                            iconElement.classList.add('far');
+                        } else {
+                            iconElement.classList.remove('far');
+                            iconElement.classList.add('fas');
+                        }
+                        updateSongLikeStatus(songId, !isLiked);
+                    }
+                },
+                error: function(response) {
+                    console.log(response);
+                }
+            })
+        }
+
+        function updateSongLikeStatus(songId, isLiked) {
+            const likeIcons = document.querySelectorAll(`.shared-icon-like[data-id="${songId}"]`);
+            likeIcons.forEach(likeIcon => {
+                likeIcon.classList.toggle('fas', isLiked);
+                likeIcon.classList.toggle('far', !isLiked);
+            });
+        }
+    </script>
+    <script>
+        function redirectArtis(id) {
+            $.ajax({
+                url: `/artis/detail-artis/${id}`,
+                type: 'GET',
+                data: {
+                    data: id
+                },
+                success: function(response) {
+                    window.location.href = `/artis/detail-artis/${id}`;
+                },
+            });
+        }
+
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
         let next = document.querySelector('#next');

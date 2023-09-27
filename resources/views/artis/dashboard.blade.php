@@ -104,7 +104,9 @@
                                                     <div
                                                         class="preview-item-content d-sm-flex flex-grow align-items-center">
                                                         <div class="flex-grow">
-                                                            <h6 class="preview-subject">{{ $item->user->name }}</h6>
+                                                            <h6 class="preview-subject"
+                                                                onclick="redirectArtis('{{ $item->code }}')"
+                                                                style="cursor: pointer">{{ $item->user->name }}</h6>
                                                             <p class="text-muted mb-0" style="font-weight: 400">
                                                                 <span
                                                                     id="likeCount{{ $item->id }}">{{ number_format($item->likes, 0, ',', '.') }}</span>
@@ -164,24 +166,6 @@
                                             <td class="table-cell">{{ $item->waktu }}</td>
                                             <td class="table-cell">{{ $item->created_at->diffForHumans() }}</td>
                                         </tr>
-                                        {{-- <tr class="table-row baris" data-href="#lagu-diputar"
-                                        onclick="putar({{ $item->id }})">
-                                        <td class="table-cell" scope="row">2</td>
-                                        <td class="table-cell">
-                                            <div class="cell-content">
-                                                <img src="{{ asset('storage/' . $item->image) }}">
-                                                <div>
-                                                    <h6>{{ $item->judul }}</h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="table-cell">
-                                            <h6>{{ $item->artist->user->name }}
-                                            </h6>
-                                        </td>
-                                        <td class="table-cell">{{ $item->waktu }}</td>
-                                        <td class="table-cell">{{ $item->created_at->diffForHumans() }}</td>
-                                    </tr> --}}
                                     @endIf
                                 @endforeach
                             </tbody>
@@ -397,6 +381,19 @@
     </script>
     
     <script>
+        function redirectArtis(id) {
+            $.ajax({
+                url: `/artis/detail-artis/${id}`,
+                type: 'GET',
+                data: {
+                    data: id
+                },
+                success: function(response) {
+                    window.location.href = `/artis/detail-artis/${id}`;
+                },
+            });
+        }
+
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
         let next = document.querySelector('#next');

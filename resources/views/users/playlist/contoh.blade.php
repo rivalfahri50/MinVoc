@@ -174,8 +174,11 @@
                                 <div class="card-body pb-0">
                                     <h3 class="m-0" style="font-weight: 600">{{ $playlistDetail->name }}
                                     </h3>
-                                    <p style="font-size: 18px;">
-                                        {{ $playlistDetail->deskripsi == 'none' ? '' : "$playlistDetail->deskripsi" }}
+                                    <p style="font-size: 16px; margin-top: 3px;">
+                                        <span class="mt-5">
+                                            <img src="{{ asset('storage/' . $playlistDetail->user->avatar) }}" width="20" style="border-radius: 20px" alt="" srcset="">
+                                        </span>
+                                        {{ $playlistDetail->user->name }}
                                     </p>
                                 </div>
                             </div>
@@ -187,7 +190,7 @@
                 <hr class="divider"> <!-- Divider -->
             </div>
             <div class="col-md-12 grid-margin stretch-card">
-                <h3 class="card-title judul">Temukan berbagai lagu</h3>
+                <h3 class="card-title judul">{{ $playlistDetail->deskripsi == 'none' ? '' : "$playlistDetail->deskripsi" }}</h3>
                 <form class="col-6 mb-4 p-0 nav-link search">
                     <input type="text" id="search_song" class="form-control rounded-4" placeholder="Cari musik">
                     <ul id="search-results-song"></ul>

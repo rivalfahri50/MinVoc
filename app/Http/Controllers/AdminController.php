@@ -31,7 +31,7 @@ class AdminController extends Controller
     protected function index(Request $request): Response
     {
         $title = "MusiCave";
-        $totalPengguna = User::whereNotIn('id', [1, 2, 3])->count();
+        $totalPengguna = User::whereNotIn('role_id', [3])->count();
         $totalLagu = song::count();
         $totalArtist = artist::count();
         $songs = song::all();
@@ -67,12 +67,6 @@ class AdminController extends Controller
         $opsi = opsiPembayaran::all();
         return response()->view('peraturanPembayaran', compact('title', 'opsi', 'tipePembayaran'));
     }
-
-    // protected function listTipePembayaran()
-    // {
-    //     $datas = opsiPembayaran::all();
-    //     return response()->json(['datas' => $datas]);
-    // }
 
     protected function items(string $code)
     {
@@ -208,6 +202,12 @@ class AdminController extends Controller
             })->get();
         }
 
+        notif::create([
+            'code' => Str::uuid(),
+            'title' => 'pengajuan pencairan uang berhasil',
+            'user_id' => $id->user_id,
+        ]);
+
         foreach ($penghasilan as $key) {
             $data = [
                 'penghasilan' => 0,
@@ -218,11 +218,6 @@ class AdminController extends Controller
                 'is_submit' => true,
                 'terakhir_diambil' => now()
             ];
-            notif::create([
-                'title' => 'pengajuan pencairan uang berhasil',
-                'message' => 'pengajuan pencairan uang telah di setujui oleh admin.',
-                'user_id' => $key->artist->user_id,
-            ]);
             penghasilan::where('id', $key->id)->update($data);
         }
         try {
@@ -273,18 +268,20 @@ class AdminController extends Controller
         $user = User::where('id', $artis->user_id)->first();
         $pengahasilan = aturanPembayaran::where('opsi_id', 2)->first();
         $pengahasilanAdmin = aturanPembayaran::where('opsi_id', 2)->first();
-        $data = [
-            'artis_id' => $song->artis_id,
-            'title' => $song->judul,
-            'user_id' => $user->id,
-            'is_reject' => false
-        ];
-        notif::create($data);
+        notif::create(
+            [
+                'code' => Str::uuid(),
+                'artis_id' => $song->artis_id,
+                'title' => $song->judul . "di setujui oleh admin",
+                'user_id' => $user->id,
+                'is_reject' => false
+            ]
+        );
         $song->is_approved = true;
         $song->update();
         $persetujuan = song::all();
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-        
+
         $admin = admin::where('user_id', 1)->first();
         $penghasilanSaatIni = $admin->penghasilan;
         $jumlahTambahan = $jumlahTambahan = isset($pengahasilanAdmin->pendapatanAdmin) != null ? $pengahasilanAdmin->pendapatanAdmin : 2000;
@@ -543,6 +540,7 @@ class AdminController extends Controller
 
         try {
             notif::create([
+                'code' => Str::uuid(),
                 'artis_id' => $artis->id,
                 'title' => "Pengajuan verifikasi akun ditolak",
                 'message' => $request->input('alasan'),
@@ -583,11 +581,29 @@ class AdminController extends Controller
 
     protected function hapusMusic(Request $request, string $code)
     {
+        $music = song::where('code', $code)->first();
+        $user = artist::where('id', $music->artis_id)->first();
+
+        notif::create(
+            [
+                'code' => Str::uuid(),
+                'title' => $music->judul . " ditolak oleh admin",
+                'user_id' => $user->id,
+                'is_reject' => false
+            ]
+        );
         try {
-            $music = song::where('code', $code)->first();
 
             if (!$music) {
                 return redirect()->back()->with('error', 'Record not found.');
+            }
+
+            if (Storage::disk('public')->exists($music->audio)) {
+                Storage::disk('public')->delete($music->audio);
+            }
+
+            if (Storage::disk('public')->exists($music->image)) {
+                Storage::disk('public')->delete($music->image);
             }
 
             $music->delete();
