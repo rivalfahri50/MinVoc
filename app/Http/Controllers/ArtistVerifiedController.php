@@ -528,10 +528,11 @@ class ArtistVerifiedController extends Controller
     {
         $title = "MusiCave";
         $album = album::where('code', $code)->first();
+        $album_id = $album->id;
         $songs = song::where('album_id', $album->id)->get();
         $playlists = playlist::all();
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('artisVerified.billboard.album', compact('title', 'album', 'songs', 'playlists', 'notifs'));
+        return response()->view('artisVerified.billboard.album', compact('title','album_id', 'album', 'songs', 'playlists', 'notifs'));
     }
 
     protected function album(): Response
@@ -545,10 +546,11 @@ class ArtistVerifiedController extends Controller
     {
         $title = "MusiCave";
         $genre = genre::where('code', $code)->first();
+        $genre_id = $genre->id;
         $playlists = playlist::all();
         $songs = song::where('genre_id', $genre->id)->get();
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('artisVerified.kategori.kategori', compact('title', 'genre', 'playlists', 'songs', 'notifs'));
+        return response()->view('artisVerified.kategori.kategori', compact('title', 'genre_id', 'genre', 'playlists', 'songs', 'notifs'));
     }
 
     protected function buatPlaylist(): Response

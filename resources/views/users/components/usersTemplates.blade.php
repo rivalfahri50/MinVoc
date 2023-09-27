@@ -354,7 +354,7 @@
                     <div class="progress-controller">
                         <div class="control-buttons">
                             <div id="controls">
-                                <button onclick="shuffle_song()" id="shuffle_button "><i class="fa fa-random"
+                                <button onclick="shuffle_song()" id="shuffle_button"><i class="fa fa-random"
                                         aria-hidden="true"></i></button>
                                 <button onclick="previous_song()" id="pre"><i class="fa fa-step-backward"
                                         aria-hidden="true"></i></button>

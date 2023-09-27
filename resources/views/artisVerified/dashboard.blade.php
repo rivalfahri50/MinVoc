@@ -310,6 +310,163 @@
     </div>
     </div>
     <script>
+        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: `/artist/check`,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    console.log("like artis", response);
+                    response.forEach(function(item) {
+                        const artistId = item.artist_id;
+                        const like = document.getElementById(`like-artist${item.artist_id}`);
+                        like.classList.toggle('fas');
+                    })
+
+                },
+                error: function(response) {
+                    console.log(response)
+                }
+            });
+            $.ajax({
+                url: `/artist/count`,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    let totalLikes = 0;
+                    response.forEach(function(item) {
+                        totalLikes += item.likes;
+                        const artistId = item.artist_id;
+                        console.log("datas" + item.likes);
+                    })
+                    const count = document.getElementById('likeCount');
+                    if (count) {
+                        count.textContent = totalLikes;
+                    }
+                },
+                error: function(response) {
+
+                }
+            })
+        });
+
+        function likeArtist(iconElement, artistId) {
+            const isLiked = iconElement.classList.contains('fas');
+
+            $.ajax({
+                url: `/artist/${artistId}/like`,
+                type: 'POST',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        const likeCountElement = document.getElementById(`likeCount${artistId}`);
+                        if (likeCountElement) {
+                            likeCountElement.textContent = response.likes;
+                        }
+                        if (isLiked) {
+                            iconElement.classList.remove('fas');
+                            iconElement.classList.add('far');
+                        } else {
+                            iconElement.classList.remove('far');
+                            iconElement.classList.add('fas');
+                        }
+                        updateLikeStatus(artistId, !isLiked);
+                    }
+                },
+                error: function(response) {
+                    console.log(response);
+                }
+
+            })
+        }
+
+
+        function updateLikeStatus(artistId, isLiked) {
+            const likeIcons = document.querySelectorAll(`.like[data-id="${artistId}"]`);
+            likeIcons.forEach(likeIcon => {
+                likeIcon.classList.toggle('fas', isLiked);
+                likeIcon.classList.toggle('far', !isLiked);
+            });
+        }
+    </script>
+
+    <script>
+        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        $(document).ready(function() {
+            $.ajax({
+                url: `/song/check`,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    console.log("like lagu atas",response);
+                    response.forEach(function(item) {
+                        let songId = item.song_id;
+                        let like = document.getElementById(`like-1${item.song_id}`);
+                        if (like) {
+                            like.classList.toggle('fas');
+                        }
+                    })
+                }
+            });
+        });
+        $(document).ready(function() {
+            $.ajax({
+                url: `/song/check`,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    console.log("like lagu bawah",response);
+                    response.forEach(function(item) {
+                        let songId = item.song_id;
+                        let like = document.getElementById(`like-2${item.song_id}`);
+                        if (like) {
+                            like.classList.toggle('fas');
+                        }
+                    })
+                }
+            });
+        });
+
+        function toggleLike(iconElement, songId) {
+            const isLiked = iconElement.classList.contains('fas');
+            $.ajax({
+                url: `/song/${songId}/like`,
+                type: 'POST',
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response);
+                    if (response.success) {
+                        if (isLiked) {
+                            iconElement.classList.remove('fas');
+                            iconElement.classList.add('far');
+                        } else {
+                            iconElement.classList.remove('far');
+                            iconElement.classList.add('fas');
+                        }
+                        updateSongLikeStatus(songId, !isLiked);
+                    }
+                },
+                error: function(response) {
+                    console.log(response);
+                }
+            })
+        }
+
+        function updateSongLikeStatus(songId, isLiked) {
+            const likeIcons = document.querySelectorAll(`.shared-icon-like[data-id="${songId}"]`);
+            likeIcons.forEach(likeIcon => {
+                likeIcon.classList.toggle('fas', isLiked);
+                likeIcon.classList.toggle('far', !isLiked);
+            });
+        }
+    </script>
+    <script>
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
         let next = document.querySelector('#next');

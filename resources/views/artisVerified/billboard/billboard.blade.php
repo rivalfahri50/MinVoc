@@ -102,6 +102,7 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
+                    console.log("like lagu", response);
                     response.forEach(function(item) {
                         const songId = item.song_id;
                         const like = document.getElementById(`like-5${item.song_id}`);
@@ -115,6 +116,11 @@
 
         function toggleLike(iconElement, songId) {
             const isLiked = iconElement.classList.contains('fas');
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
 
             $.ajax({
                 url: `/song/${songId}/like`,
