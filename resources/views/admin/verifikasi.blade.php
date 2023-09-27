@@ -8,13 +8,13 @@
                 <div class="modal-header" style="border-bottom: 0;">
                     <h3 class="modal-title judul" id="exampleModalLabel">Detail Pengajuan Verifikasi Akun</h3>
                     <button type="button" class="close-button far fa-times-circle" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                        aria-label="Close" style="background: none"></button>
                 </div>
                 <div class="modal-body" style="padding: 0 30px;">
                     <form action="{{ route('tambah.verified', $item->code) }}" method="post">
                         @csrf
                         <div class="row mt-4">
-                            <div class="col-6 mb-4">
+                            <div class="col-6 mb-4" style="margin-right: 2.4rem !important;">
                                 <div class="mb-4">
                                     <h5 class="judul mb-3">Nama :</h5>
                                     <td class="table-cell">
@@ -29,14 +29,14 @@
                                 </div>
                                 <div class="mb-4">
                                     <h5 class="judul mb-3">Tanggal Pengajuan :</h5>
-                                    <p class="teksbiasa">{{ (new DateTime($item->pengajuan_verified_at))->format('d F Y') }}</p>
+                                    <input type="text" name="name" class="form-control form-i" id="namaproyek" value="{{ (new DateTime($item->pengajuan_verified_at))->format('d F Y') }}" readonly disabled>
                                 </div>
                                 <div class="mb-4">
                                     <h5 class="judul mb-3">Disukai :</h5>
-                                    <p class="teksbiasa">{{ $item->likes }}</p>
+                                    <input type="text" name="name" class="form-control form-i" id="namaproyek" value="{{ $item->likes }}" readonly disabled>
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-5">
                                 <h5 class="judul mb-3">Foto KTP :</h5>
                                 <td class="table-cell">
                                     <div class="cell-content">
@@ -264,9 +264,26 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                @php
+                                    $artistCount = $artist
+                                        ->filter(function ($item) {
+                                            return $item->pengajuan_verified_at > 1;
+                                        })
+                                        ->count();
+                                @endphp
+
+                                @if (empty($artistCount))
+                                    <div style="justify-content: center; display: flex; padding: 50px 0;">
+                                        <img width="400" height="200" src="/icon-notFound/adminIcon.svg" alt="" srcset="">
+                                    </div>
+                                @endif
+                                </div>
                             </div>
                         </div>
                     </div>
+
+
+
                     {{-- @php
                         $count = $artist
                             ->filter(function ($item) {

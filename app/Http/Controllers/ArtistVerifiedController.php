@@ -526,15 +526,11 @@ class ArtistVerifiedController extends Controller
 
     protected function albumBillboard(string $code): Response
     {
-        try {
-            $title = "MusiCave";
-            $album = album::where('code', $code)->first();
-            $songs = song::where('album_id', $album->id)->get();
-            $playlists = playlist::all();
-            $notifs = notif::where('user_id', auth()->user()->id)->get();
-        } catch (\Throwable $th) {
-            abort(404);
-        }
+        $title = "MusiCave";
+        $album = album::where('code', $code)->first();
+        $songs = song::where('album_id', $album->id)->get();
+        $playlists = playlist::all();
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
         return response()->view('artisVerified.billboard.album', compact('title', 'album', 'songs', 'playlists', 'notifs'));
     }
 
@@ -547,15 +543,11 @@ class ArtistVerifiedController extends Controller
 
     protected function kategori(string $code): Response
     {
-        try {
-            $title = "MusiCave";
-            $genre = genre::where('code', $code)->first();
-            $playlists = playlist::all();
-            $songs = song::where('genre_id', $genre->id)->get();
-            $notifs = notif::where('user_id', auth()->user()->id)->get();
-        } catch (\Throwable $th) {
-            abort(404);
-        }
+        $title = "MusiCave";
+        $genre = genre::where('code', $code)->first();
+        $playlists = playlist::all();
+        $songs = song::where('genre_id', $genre->id)->get();
+        $notifs = notif::where('user_id', auth()->user()->id)->get();
         return response()->view('artisVerified.kategori.kategori', compact('title', 'genre', 'playlists', 'songs', 'notifs'));
     }
 
@@ -817,21 +809,22 @@ class ArtistVerifiedController extends Controller
     protected function detailPlaylist(string $code): Response
     {
         $playlistDetail = playlist::where('code', $code)->first();
+        $playlist_id = $playlistDetail->id;
         $songs = song::where('playlist_id', $playlistDetail->id)->get();
         $playlists = playlist::all();
         $title = "MusiCave";
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-        return response()->view('artisVerified.playlist.contoh', compact('title', 'playlistDetail', 'songs', 'playlists', 'notifs'));
+        return response()->view('artisVerified.playlist.contoh', compact('title', 'playlist_id','playlistDetail', 'songs', 'playlists', 'notifs'));
     }
 
     protected function detailAlbum(string $code): Response
     {
         $albumDetail = album::where('code', $code)->first();
-        $songs = song::where('album_id', $albumDetail->id)->get();
+        $songs = song::all();
         $playlists = playlist::all();
         $title = "MusiCave";
         $notifs = notif::where('user_id', auth()->user()->id)->get();
-        // dd($songs);
+
         return response()->view('artisVerified.playlist.contohAlbum', compact('title', 'albumDetail', 'songs', 'playlists', 'notifs'));
     }
 

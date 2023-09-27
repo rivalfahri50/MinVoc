@@ -59,6 +59,7 @@
     width: 100px;
     height: 50px;
     border-radius: 0;
+    object-fit: cover;
 }
 
 .cell-content {

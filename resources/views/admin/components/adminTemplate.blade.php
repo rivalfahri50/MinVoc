@@ -100,6 +100,11 @@
         .pagination li:hover {
             background-color: #ddd;
         }
+
+        .swal2-modal .swal2-icon {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
     </style>
     <script>
         function confirmDelete(message, callback) {
@@ -172,7 +177,7 @@
                                 <a class="nav-link" href="/admin/persetujuan">
                                     <span class="menu-icon mr-0">
                                         <i class="mdi mdi-check-circle-outline submenu" style="font-size: 20px;"></i>
-                                    </span>Persetujuan
+                                    </span>Lagu
                                 </a>
                             </li>
                             <li class="nav-item">
