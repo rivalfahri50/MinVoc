@@ -559,7 +559,7 @@ class ArtistController extends Controller
     protected function deleteNotif(Request $request, string $code)
     {
         try {
-            $notif = notif::where('id', $code)->first();
+            $notif = notif::where('code', $code)->first();
             $notif->delete();
         } catch (\Throwable $th) {
             abort(404);
@@ -589,6 +589,22 @@ class ArtistController extends Controller
         } else {
             return response()->view('artis.searchNotFound', compact('title', 'notifs'));
         }
+    }
+
+    protected function detailArtis(Request $request, string $code)
+    {
+        $title = 'MusiCave';
+        try {
+            $artis = artist::where('code', $code)->first();
+            $user = User::where('id', $artis->user_id)->first();
+            $songs = song::where('artis_id', $artis->id)->get();
+            $notifs = notif::where('user_id', auth()->user()->id)->get();
+            $totalDidengar = DB::table('riwayat')->where('user_id', auth()->user()->id)->sum('song_id');
+            $playlists = playlist::all();
+        } catch (\Throwable $th) {
+            abort(404);
+        }
+        return view('artis.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
     }
 
     public function search_result(Request $request, string $code)

@@ -901,7 +901,8 @@
                         track.src = '{{ asset('storage') }}' + '/' + All_song[index_no].audio;
                         title.innerHTML = All_song[index_no].judul;
                         artist.innerHTML = All_song[index_no].artistId;
-                        track_image.src = '{{ asset('storage') }}' + '/' + All_song[index_no].image;
+                        // track_image.src = '{{ asset('storage') }}' + '/' + All_song[index_no].image;
+                        console.log("LAGU NAME" + title);
                         track.load();
                         timer = setInterval(range_slider, 1000);
                     } else {
@@ -1064,7 +1065,6 @@
                     } else {
                         console.error('Lagu dengan ID ' + id + ' tidak ditemukan dalam data lagu.');
                     }
-
                 }
 
                 track.addEventListener('ended', function() {

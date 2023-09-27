@@ -430,7 +430,7 @@
                                                                         onclick="putar({{ $item->id }})">Putar Lagu</a> --}}
                                                                     <a href="#lagu-diputar"
                                                                         class="flex-grow text-decoration-none link btn"
-                                                                        onclick="putar({{ $item->id }})">Putar Lagu</a> 
+                                                                        onclick="putar({{ $item->id }})">Putar Lagu</a>
                                                                 @else
                                                                     @if (
                                                                         $item->status !== 'accept' &&
@@ -510,39 +510,35 @@
                                 aria-label="Close"></button>
                         </div>
 
-                        <div class="modal-body" style="padding: 10px 25px 25px;">
+                        <div class="modal-body d-flex flex-column gap-3" style="padding: 10px 25px 25px;">
                             <div>
-                                <p id="kolaborasiModalLabel" class="mb-2">Artis yang berkolaborasi :</p>
+                                <p>Artis yang berkolaborasi :</p>
                                 @if (isset($item->request_project_artis_id_1) && isset($item->request_project_artis_id_2))
-                                    <p class="ml-2">
-                                        @if ($item->artis)
-                                            {{ $item->artis->user->name }}
-                                        @endif
-                                        @if ($item->artis2)
-                                            & {{ $item->artis2->user->name }}
-                                        @endif
-                                        @if ($item->artis3)
-                                            & {{ $item->artis3->user->name }}
-                                        @endif
-                                    </p>
+                                    <span>
+                                        <input type="text" class="form-control" id="name_1" readonly
+                                            value="{{ $item->artis->user->name }}, {{ $item->artis2->user->name }} & {{ $item->artis3->user->name }}">
+                                    </span>
                                 @else
-                                    <p class="ml-2">
-                                        @if ($item->artis)
-                                            {{ $item->artis->user->name }}
+                                    <span>
+                                        @if ($item->artis && $item->artis2)
+                                            <input type="text" class="form-control" id="name_1" readonly
+                                                value="{{ $item->artis->user->name }} & {{ $item->artis2->user->name }}">
                                         @endif
-                                        @if ($item->artis2)
-                                            & {{ $item->artis2->user->name }}
-                                        @endif
-                                    </p>
+                                        {{-- @if )
+                                            {{ $item->artis2->user->name }}
+                                        @endif --}}
+                                    </span>
                                 @endif
                             </div>
                             <div>
-                                <p id="kolaborasiModalLabel" class="mb-2">Nama Proyek :</p>
-                                <p class="ml-2">{{ $item->name }}</p>
+                                <p class="mb-2">Nama Proyek :</p>
+                                <input type="text" class="form-control" id="project_name_1" readonly
+                                    value="{{ $item->name }}">
                             </div>
                             <div>
-                                <p id="kolaborasiModalLabel" class="mb-2">Tanggal :</p>
-                                <p class="ml-2">{{ $item->created_at->format('d F Y') }}</p>
+                                <p class="mb-2">Tanggal :</p>
+                                <input type="text" class="form-control" id="date" readonly
+                                    value="{{ $item->created_at->format('d F Y') }}">
                             </div>
                         </div>
 

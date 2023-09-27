@@ -118,6 +118,7 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
         return view('artis.peraturan', ['title' => 'MusiCave', 'notifs' => $notifs]);
     })->name('peraturan.artis');
     Route::get('/delete-notif/{code}', 'deleteNotif');
+    Route::get('/detail-artis/{code}', 'detailArtis');
 
     Route::post('/search', 'pencarian_input')->name('pencarian.artis');
     Route::post('/tambah_playlist/{code}', 'tambah_playlist')->name('tambah.playlist.artis');
@@ -172,6 +173,7 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
     Route::get('/pencairan/{code}', 'pencairan');
     Route::get('/filter', 'filterDate')->name('filter.date');
     Route::get('/filter-pencairan', 'filterDatePencairan')->name('filter.date.pencairan');
+    Route::get('/detail-artis/{code}', 'detailArtis');
 
     Route::post('/pencairan/{code}', 'pencairanDana')->name('pencairan.artiVerified');
     Route::post('/undangColab/{code}', 'undangColab')->name('undangColab');
@@ -220,6 +222,7 @@ Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(pengguna
         return view('users.peraturan', ['title' => 'MusiCave', 'notifs' => $notifs]);
     })->name('peraturan.pengguna');
     Route::get('/delete-notif/{code}', 'deleteNotif');
+    Route::get('/detail-artis/{code}', 'detailArtis');
 
     Route::post('/search', 'pencarian_input')->name('pencarian');
     Route::post('/tambah_playlist/{code}', 'tambah_playlist')->name('tambah.playlist');

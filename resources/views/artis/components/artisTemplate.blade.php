@@ -439,7 +439,7 @@
                                 @foreach ($notifs as $item)
                                     @if (count($notifs) > 0)
                                         @if ($item)
-                                            <div class="dropdown-item preview-item" style="gap: 15px; cursor: auto;">
+                                            <div class="dropdown-item preview-item" style="cursor: auto;">
                                                 @if ($item->message == null)
                                                     <div>
                                                         <img src="{{ asset('storage/' . $item->artis->user->avatar) }}"
@@ -447,7 +447,7 @@
                                                             srcset="">
                                                     </div>
                                                 @endif
-                                                <div class="preview-item-content">
+                                                <div class="preview-item-content" style="margin-right: 3px">
                                                     <p class="preview-subject mb-1" style="font-weight: bold">
                                                         {{ $item->title }}</p>
                                                     @if ($item->message !== null)
@@ -583,7 +583,7 @@
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header pb-0">
-                                <h3 class="modal-title judul" id="exampleModalLabel">Pengajuan verifikasi
+                                <h3 class="modal-title judul" style="font-size: 20px" id="exampleModalLabel">Pengajuan verifikasi
                                     akun ditolak
                                 </h3>
                                 <button type="button" style="background: none; border: none;"
@@ -592,9 +592,7 @@
                                 </button>
                             </div>
                             <div class="modal-body pt-1">
-                                <p style="padding: 5px;">
-                                    {{ $item->message }}
-                                </p>
+                                <textarea class="form-control" rows="5" readonly>{{ $item->message }}</textarea>
                             </div>
                         </div>
                     </div>

@@ -17,7 +17,6 @@
     padding: 15px;
 }
 
-/*------ untuk scroll gambar -------*/
 .card-scroll {
     scroll-snap-align: start;
     transition: all 0.2s;

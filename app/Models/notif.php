@@ -11,15 +11,15 @@ class notif extends Model
     use HasFactory;
 
     protected $fillable = [
-        'artis_id',
+        'code',
         'message',
         'title',
         'user_id',
         'is_reject',
     ];
 
-    public function artis(): HasOne
+    public function user()
     {
-        return $this->hasOne(artist::class, 'id', 'artis_id');
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
 }

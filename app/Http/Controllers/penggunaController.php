@@ -54,7 +54,7 @@ class penggunaController extends Controller
     protected function playlist(): Response
     {
         $title = "MusiCave";
-        $albums = album::all();
+        $albums = album::with('artis')->get();
         $playlists = playlist::all();
         $notifs = notif::where('user_id', auth()->user()->id)->get();
         return response()->view('users.playlist', compact('title', 'playlists', 'albums', 'notifs'));
@@ -292,7 +292,7 @@ class penggunaController extends Controller
     {
         try {
             $title = "MusiCave";
-            $playlistDetail = playlist::where('code', $code)->first();
+            $playlistDetail = playlist::with('user')->where('code', $code)->first();
             $songs = song::where('playlist_id', $playlistDetail->id)->get();
             $notifs = notif::where('user_id', auth()->user()->id)->get();
             $playlists = playlist::all();
@@ -455,6 +455,22 @@ class penggunaController extends Controller
         }
         Alert::success('message', 'Profile berhasil di perbarui');
         return redirect()->back();
+    }
+
+    protected function detailArtis(Request $request, string $code)
+    {
+        $title = 'MusiCave';
+        try {
+            $artis = artist::where('code', $code)->first();
+            $user = User::where('id', $artis->user_id)->first();
+            $songs = song::where('artis_id', $artis->id)->get();
+            $notifs = notif::where('user_id', auth()->user()->id)->get();
+            $totalDidengar = DB::table('riwayat')->where('user_id', auth()->user()->id)->sum('song_id');
+            $playlists = playlist::all();
+        } catch (\Throwable $th) {
+            abort(404);
+        }
+        return view('users.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
     }
 
     protected function deleteNotif(Request $request, string $code)

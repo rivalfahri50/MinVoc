@@ -211,7 +211,7 @@
                                                         </div>
                                                         <div class="input-with-icon chat-input">
                                                             <input type="text" class="form-control rounded-4"
-                                                                placeholder="Ketik di sini untuk admin" maxlength="250"
+                                                                placeholder="Ketik di sini" maxlength="250"
                                                                 name="message">
                                                             <button type="submit" class="send-button ml-2 mr-1">
                                                                 <i class="fas fa-paper-plane"></i>
