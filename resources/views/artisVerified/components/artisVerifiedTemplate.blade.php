@@ -219,7 +219,7 @@
                                 </a> --}}
                                 <a class="nav-link" href="#buat-album">
                                     <span class="menu-icon">
-                                        <i class="mdi mdi-plus-circle-outline"></i>
+                                        <span class="mdi mdi-plus-circle-outline submenu"></span>
                                     </span>
                                     <span class="menu-title">Buat Album</span>
                                 </a>
@@ -404,8 +404,7 @@
                                             <div class="dropdown-item preview-item" style="cursor: auto;">
                                                 @if ($item->message == null)
                                                     <div>
-                                                        <img src="{{ asset('storage/' . $item->user->avatar) }}"
-                                                            width="40" style="border-radius: 100%">
+                                                        <img src="{{ asset('storage/' . $item->user->avatar) }}" class="avatarnotif">
                                                     </div>
                                                 @endif
                                                 <div class="preview-item-content" style="margin-right: 5px">
@@ -492,19 +491,19 @@
                 <div class="card window">
                     <div class="card-body">
                         <a href="" class="close-button far fa-times-circle"></a>
-                        <h2 class="judul">Buat Album</h2>
+                        <h3 class="judulnottebal">Buat Album</h3>
                         <form class="row" action="{{ route('tambah.album.artisVerified', auth()->user()->code) }}"
                             method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="col-md-12">
                                 <div class="mb-3">
-                                    <h3 class="form-label judul">Nama Album</h3>
+                                    <h6 class="form-label judulnottebal">Nama Album</h6>
                                     <input type="text" name="name" class="form-control" id="namaproyek"
                                         placeholder="Masukkan nama album" maxlength="55" required>
                                 </div>
                                 <div class="mb-3">
-                                    <h3 for="upload" class="form-label judul">Upload
-                                        Foto</h3>
+                                    <h6 for="upload" class="form-label judulnottebal">Upload
+                                        Foto</h6>
                                     <input type="file" name="image" class="form-control" id="namaproyek"
                                         accept="image/*" required>
                                 </div>

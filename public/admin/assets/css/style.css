@@ -21180,3 +21180,7 @@ div.tagsinput {
   padding-right: 10px;
   /* Jarak antar teks */
 }
+
+.submenu {
+  font-size: 20px !important;
+}

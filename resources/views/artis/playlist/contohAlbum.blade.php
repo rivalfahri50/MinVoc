@@ -20,13 +20,13 @@
                                     </div>
                                 @else
                                     <div class="col-3">
-                                        <div class="card coba">
+                                        <div class="card coba" style="cursor: default">
                                             <img src="{{ asset('storage/' . $albumDetail->image) }}" alt="Gambar">
                                         </div>
                                     </div>
                                 @endif
                             </div>
-                            <div class="col-3" style="margin-left: -30px;">
+                            <div class="col-3">
                                 <div class="bottom-left-text">
                                     <h3 class="my-1" style="font-weight: 400; font-size: 15px">Album
                                     </h3>
@@ -34,8 +34,7 @@
                                     </h3>
                                     <div style="display: flex; flex-direction: row; gap: 5px; align-items: center">
                                         <span>
-                                            <img src="{{ asset('storage/' . $albumDetail->artis->user->avatar) }}"
-                                                width="30" style="border-radius: 30px">
+                                            <img src="{{ asset('storage/' . $albumDetail->artis->user->avatar) }}" class="avatarpembuat">
                                         </span>
                                         <p class="m-0" style="font-weight: 300; font-size: 16px">
                                             {{ $albumDetail->artis->user->name }}
@@ -54,7 +53,7 @@
                 <hr class="divider"> <!-- Divider -->
             </div>
             <div class="col-md-12 grid-margin stretch-card">
-                <h3 class="card-title judul">Temukan berbagai lagu</h3>
+                <h4 class="card-title judul">Temukan berbagai lagu</h4>
                 <form class="col-6 mb-4 p-0 nav-link search">
                     <input type="text" id="search_song" class="form-control rounded-4" placeholder="Cari musik">
                     <input type="hidden" id="album_id" value="{{ $albumDetail->id }}">

@@ -88,7 +88,7 @@
                     </div>
                 </div>
                 <div class="col-md-5 stretch-card billboardheight">
-                    <h3 class="card-title mb-4 judul" style="font-size: 20px; font-weight: 700">Artis yang disukai</h3>
+                    <h3 class="card-title mb-4 judul" style="font-size: 20px; font-weight: 700">Artis Terbaru</h3>
                     <div class="card datakiri scrollbar-down square thin">
                         <div class="card-body">
                             <div class="row" style="margin-top: -20px">

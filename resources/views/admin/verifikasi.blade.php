@@ -18,9 +18,9 @@
                                 <div class="mb-4">
                                     <h5 class="judul mb-3">Nama :</h5>
                                     <td class="table-cell">
-                                        <div class="cell-content">
+                                        <div class="sejajar">
                                             <img src="{{ asset('storage/' . $item->user->avatar) }}" alt="Face"
-                                                class="avatar">
+                                                class="avatarbulat">
                                             <div>
                                                 <p class="teksbiasa">{{ $item->user->name }}</p>
                                             </div>
@@ -158,11 +158,13 @@
 
             .avatar {
                 width: 40px;
+                height: 40px;
                 margin-right: 10px;
+                object-fit: cover;
             }
 
             .ktp {
-                width: 100px;
+                width: 150px;
                 margin-right: 10px;
                 border-radius: 0;
                 height: 100px;

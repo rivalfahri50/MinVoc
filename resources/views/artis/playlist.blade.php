@@ -39,7 +39,7 @@
                                     <img src="http://127.0.0.1:8000/storage/images/53e3eyfg734r-r4ry4rgg43ry-34rwerwrww3.jpg"
                                         class="img-fluid rounded-1">
                                 </div>
-                                <h1 class="mt-2 judul"> Lagu yang disukai</h1>
+                                <h5 class="mt-2 judul"> Lagu yang disukai</h5>
                                 <p class="teks">lagu-lagu yang kamu tambah ke favorit</p>
                             </div>
                         </a>
@@ -53,7 +53,7 @@
                                             <img src="{{ asset('storage/' . $item->image) }}"
                                                 class="img-fluid rounded-1 try">
                                         </div>
-                                        <h4 class="mt-2 judul overflow-cardtext" style="font-size: 17px; font-weight: bold">{{ $item->name }}</h4>
+                                        <h5 class="mt-2 judul overflow-cardtext" style="font-weight: bold">{{ $item->name }}</h5>
                                         <span class="judul" style="font-size: 12px">Dari {{ $item->artis->user->name }}</span>
                                     </div>
                                 </a>

@@ -176,14 +176,14 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/admin/persetujuan">
                                     <span class="menu-icon mr-0">
-                                        <i class="mdi mdi-check-circle-outline submenu" style="font-size: 20px;"></i>
+                                        <span class="mdi mdi-check-circle-outline submenu"></span>
                                     </span>Lagu
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/admin/pencairan">
                                     <span class="menu-icon mr-0">
-                                        <i class="mdi mdi-check-circle-outline submenu" style="font-size: 20px;"></i>
+                                        <span class="mdi mdi-check-circle-outline submenu"></span>
                                     </span>Pencairan
                                 </a>
                             </li>
@@ -204,14 +204,14 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/admin/kategori">
                                     <span class="menu-icon mr-0">
-                                        <i class="mdi mdi-plus-circle-outline submenu" style="font-size: 20px;"></i>
+                                        <i class="mdi mdi-plus-circle-outline submenu"></i>
                                     </span>Genre
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/admin/iklan">
                                     <span class="menu-icon mr-0">
-                                        <i class="mdi mdi-plus-circle-outline submenu" style="font-size: 20px;"></i>
+                                        <i class="mdi mdi-plus-circle-outline submenu"></i>
                                     </span>Papan Iklan
                                 </a>
                             </li>

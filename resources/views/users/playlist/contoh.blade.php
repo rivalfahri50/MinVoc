@@ -139,10 +139,6 @@
             right: 10px;
         }
 
-        .judul {
-            font-size: 20px;
-        }
-
         .iconminus {
             border: none;
             padding: 0 0 0 5px;
@@ -172,13 +168,14 @@
                             </div>
                             <div class="col-md-8 d-flex align-items-end">
                                 <div class="card-body pb-0">
-                                    <h3 class="m-0" style="font-weight: 600">{{ $playlistDetail->name }}
+                                    <h3 class="my-1" style="font-weight: 600; font-size: 30px">{{ $playlistDetail->name }}
                                     </h3>
-                                    <p style="font-size: 16px; margin-top: 3px;">
-                                        <span class="mt-5">
-                                            <img src="{{ asset('storage/' . $playlistDetail->user->avatar) }}" width="20" style="border-radius: 20px" alt="" srcset="">
+                                    <div style="display: flex; flex-direction: row; gap: 5px; align-items: center">
+                                        <span>
+                                            <img src="{{ asset('storage/' . $playlistDetail->user->avatar) }}" class="avatarpembuat">
                                         </span>
-                                        {{ $playlistDetail->user->name }}
+                                        <p class="m-0" style="font-weight: 300; font-size: 16px">{{ $playlistDetail->user->name }}
+                                        </div>
                                     </p>
                                 </div>
                             </div>
