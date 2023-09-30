@@ -91,7 +91,9 @@
                             <div class="row mt-4">
                                 <div class="col-md-12">
                                     <h5 class="judul">Tanggal Pengajuan</h5>
-                                    <p class="teksbiasa">{{ $item->created_at->toDateString() }}</p>
+                                    <p class="teksbiasa">
+                                        {{ (new DateTime($item->created_at))->format('d F Y') }}
+                                    </p>
                                 </div>
                                 <div class="col-md-12 mb-4">
                                     <h5 class="judul">Judul Lagu</h5>

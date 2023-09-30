@@ -13027,7 +13027,7 @@ input[type="button"].btn-block {
   color: #6C6C6C;
   text-align: left;
   list-style: none;
-  background-color: #ECECEC;
+  background-color: #fafafa;
   /*DISINI WARNA DROPDOWN*/
   background-clip: padding-box;
   border: 1px solid #2c2e33;
@@ -13202,7 +13202,7 @@ input[type="button"].btn-block {
   color: #6C6C6C;
   text-align: inherit;
   white-space: nowrap;
-  background-color: transparent;
+  background-color: #fafafa;
   border: 0;
 }
 
@@ -13210,7 +13210,7 @@ input[type="button"].btn-block {
 .dropdown-item:focus {
   color: #16181b;
   text-decoration: none;
-  background-color: #d1d1d1;
+  background-color: #eaeaea;
 }
 
 /*DISINI WARNA HOVER DROPDOWN*/
@@ -25862,15 +25862,17 @@ div.tagsinput {
   font-size: 0.875rem;
   line-height: 1;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .table th img,
 .jsgrid .jsgrid-table th img,
 .table td img,
 .jsgrid .jsgrid-table td img {
-  width: 30px;
-  height: 30px;
-  border-radius: 100%;
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
 }
 
 .table th .badge,
@@ -29734,9 +29736,9 @@ div.tagsinput span.tag a {
   top: 48px;
   right: 0;
   left: auto;
-  -webkit-box-shadow: 0px 0px 35px -3px black;
-  -moz-box-shadow: 0px 0px 35px -3px black;
-  box-shadow: 0px 0px 35px -3px black;
+  -webkit-box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.3);
   padding: 0;
 }
 
@@ -29752,7 +29754,7 @@ div.tagsinput span.tag a {
 }
 
 .navbar .navbar-menu-wrapper .navbar-nav .nav-item.dropdown .dropdown-menu.navbar-dropdown .dropdown-item:hover {
-  color: #fff;
+  color: #919191;
 }
 
 .navbar .navbar-menu-wrapper .navbar-nav .nav-item.dropdown .dropdown-menu.navbar-dropdown .dropdown-item i {
@@ -30703,7 +30705,6 @@ div.tagsinput span.tag a {
   padding: 5px;
   color: #957DAD;
   font-weight: 500;
-  font-size: 14px;
 }
 
 .judulnottebal {
@@ -30754,4 +30755,44 @@ div.tagsinput span.tag a {
   width: 50px !important;
   height: 50px !important;
   border-radius: 50%;
+}
+
+.headertext-ungu {
+  color: #957DAD;
+  font-weight: bold;
+}
+
+.fototabelsejajar {
+  display: flex;
+  align-items: center;
+  gap: 10%;
+}
+
+.texttitik {
+  width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bordertabel {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.avatarpembuat {
+  border-radius: 30px;
+  height: 20px;
+  width: 20px;
+  object-fit: cover;
+}
+
+.submenu {
+  font-size: 20px !important;
+}
+
+.avatarnotif {
+  border-radius: 100%;
+  width: 20px;
+  height: 20px;
+  object-fit: cover;
 }

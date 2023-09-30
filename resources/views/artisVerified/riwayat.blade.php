@@ -81,7 +81,8 @@
                 </div>
                 @if (count($uniqueRows) === 0)
                     <div style="justify-content: center; display: flex; padding: 50px 0;">
-                        <img width="400" height="200" src="/icon-notFound/adminIcon.svg" alt="" srcset="">
+                        <img width="400" height="200" src="/user/assets/images/logo-user.svg" alt=""
+                            srcset="">
                     </div>
                 @endif
             </div>
@@ -96,50 +97,50 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         $(document).ready(function() {
-            var itemsPerPage = 4;
+            var itemsPerPage = 5;
     
             // Fungsi untuk menyimpan halaman saat ini ke local storage
             function saveCurrentPageToLocalStorage(page) {
                 localStorage.setItem("currentPage", page);
             }
-    
+
             // Fungsi untuk mendapatkan halaman saat ini dari local storage
             function getCurrentPageFromLocalStorage() {
                 return parseInt(localStorage.getItem("currentPage")) || 1;
             }
-    
+
             // Mendapatkan halaman saat ini dari local storage atau default ke 1
             var currentPage = getCurrentPageFromLocalStorage();
-    
+
             function showTableRows() {
                 var start = (currentPage - 1) * itemsPerPage;
                 var end = start + itemsPerPage;
                 $(".baris").hide();
                 $(".baris").slice(start, end).show();
             }
-    
+
             function updatePagination() {
                 $(".pagination").empty();
                 var numPages = Math.ceil($(".baris").length / itemsPerPage);
-    
+
                 var maxPaginationPages = 3; // Jumlah maksimum halaman pagination yang ditampilkan
-    
+
                 // Menentukan halaman pertama yang akan ditampilkan
                 var startPage = Math.max(currentPage - Math.floor(maxPaginationPages / 2), 1);
-    
+
                 // Menentukan halaman terakhir yang akan ditampilkan
                 var endPage = Math.min(startPage + maxPaginationPages - 1, numPages);
-    
+
                 // Tambahkan tombol "Previous" jika ada halaman sebelumnya
                 if (currentPage > 1) {
                     var prevButton = $("<a>")
                         .addClass("page-item")
                         .addClass("page-link")
                         .attr("href", "#");
-    
+
                     var prevIcon = $("<i>").addClass("fa fa-chevron-left");
                     prevButton.append(prevIcon);
-    
+
                     prevButton.click(function(event) {
                         event.preventDefault(); // Menghentikan tindakan default
                         currentPage--;
@@ -147,19 +148,19 @@
                         updatePagination();
                         saveCurrentPageToLocalStorage(currentPage);
                     });
-    
+
                     $(".pagination").append($("<li>").append(prevButton));
                 }
-    
+
                 for (var i = startPage; i <= endPage; i++) {
                     var activeClass = i === currentPage ? "active" : "";
                     var button = $("<a>")
                         .addClass("page-item " + activeClass)
                         .addClass("page-link")
                         .attr("href", "#");
-    
+
                     button.text(i);
-    
+
                     button.click(function(event) {
                         event.preventDefault(); // Menghentikan tindakan default
                         currentPage = parseInt($(this).text());
@@ -167,20 +168,20 @@
                         updatePagination();
                         saveCurrentPageToLocalStorage(currentPage);
                     });
-    
+
                     $(".pagination").append($("<li>").append(button));
                 }
-    
+
                 // Tambahkan tombol "Next" jika ada lebih banyak halaman
                 if (currentPage < numPages) {
                     var nextButton = $("<a>")
                         .addClass("page-item")
                         .addClass("page-link")
                         .attr("href", "#");
-    
+
                     var nextIcon = $("<i>").addClass("fa fa-chevron-right");
                     nextButton.append(nextIcon);
-    
+
                     nextButton.click(function(event) {
                         event.preventDefault(); // Menghentikan tindakan default
                         currentPage++;
@@ -188,18 +189,18 @@
                         updatePagination();
                         saveCurrentPageToLocalStorage(currentPage);
                     });
-    
+
                     $(".pagination").append($("<li>").append(nextButton));
                 }
-    
+
                 if (numPages <= 1) {
                     $(".pagination").hide();
                 }
             }
-    
+
             showTableRows();
             updatePagination();
-    
+
             saveCurrentPageToLocalStorage(currentPage); // Simpan halaman saat ini ke local storage
         });
     </script>

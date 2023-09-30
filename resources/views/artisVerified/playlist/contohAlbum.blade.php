@@ -26,10 +26,20 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="col-9 text-xxl-end">
+                            <div class="col-3">
                                 <div class="bottom-left-text">
-                                    <h3 class="m-0" style="font-weight: 600">{{ $albumDetail->name }}
+                                    <h3 class="my-1" style="font-weight: 400; font-size: 15px">Album
                                     </h3>
+                                    <h3 class="my-1" style="font-weight: 600; font-size: 30px">{{ $albumDetail->name }}
+                                    </h3>
+                                    <div style="display: flex; flex-direction: row; gap: 5px; align-items: center">
+                                        <span>
+                                            <img src="{{ asset('storage/' . $albumDetail->artis->user->avatar) }}" class="avatarpembuat">
+                                        </span>
+                                        <p class="m-0" style="font-weight: 300; font-size: 16px">
+                                            {{ $albumDetail->artis->user->name }}
+                                    </div>
+                                    </p>
                                     <p style="font-size: 18px;">
                                         {{ $albumDetail->deskripsi == 'none' ? '' : "$albumDetail->deskripsi" }}
                                     </p>
@@ -65,8 +75,7 @@
                                                         <h6 class="preview-subject">{{ $item->judul }}</h6>
                                                         <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
                                                     </a>
-                                                    <i id="like-4{{ $item->id }}"
-                                                        data-id="{{ $item->id }}"
+                                                    <i id="like-4{{ $item->id }}" data-id="{{ $item->id }}"
                                                         onclick="toggleLike(this, {{ $item->id }})"
                                                         class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
@@ -106,10 +115,10 @@
         }
 
         /* .shorten {
-                width: 500px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            } */
+                    width: 500px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                } */
     </style>
 
     <div id="popup">
@@ -204,7 +213,6 @@
     </script>
 
     <script>
-
         const gambar = document.querySelector("#gambar");
 
         const tampilGambar = document.querySelector("#tampil_gambar");
@@ -221,7 +229,7 @@
             reader.readAsDataURL(this.files[0]);
         });
     </script>
-     <script>
+    <script>
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
         let next = document.querySelector('#next');
@@ -250,12 +258,12 @@
         // create a audio element
         let track = document.createElement('audio');
 
-        const albumId = {{$album_id}};
+        const albumId = {{ $album_id }};
         let All_song = [];
         console.log("iki lhoooooooooooo 23423u", All_song);
 
         function ambilDataLagu(albumId) {
-            console.log('iki opo',albumId);
+            console.log('iki opo', albumId);
             $.ajax({
                 url: '/ambil-lagu-album',
                 type: 'GET',

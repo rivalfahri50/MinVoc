@@ -115,10 +115,10 @@
 
                                     <div class="mb-3">
                                         <label for="upload" class="form-label judulnottebal">Upload Foto</label>
-                                        <input type="file" name="images" class="form-control form-i" id="images"
-                                            accept=".jpeg, .jpg, .png, .gif" required>
-                                        <span id="image-error" style="color: red;"></span>
+                                        <input type="file" name="images" class="form-control form-i" id="images" accept=".jpeg, .jpg, .png, .gif" required oninput="clearImageError('image-error-tambah')">
+                                        <span id="image-error-tambah" style="color: red;"></span>
                                     </div>
+
                             </div>
                             <div class="text-md-right">
                                 <button type="submit" href="#" class="btn" type="submit">Tambah</button>
@@ -128,20 +128,6 @@
                     </div>
                 </div>
 
-                <!-- JavaScript untuk validasi jenis file -->
-                <script>
-                    document.getElementById('images').addEventListener('submit', function() {
-                        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
-                        const file = this.files[0];
-                        if (file && !allowedTypes.includes(file.type)) {
-                            document.getElementById('image-error').innerText =
-                                'Jenis file tidak valid. Pilih file gambar (JPEG, JPG, PNG, GIF).';
-                            this.value = ''; // Mengosongkan input file
-                        } else {
-                            document.getElementById('image-error').innerText = '';
-                        }
-                    });
-                </script>
 
                 @foreach ($genres->reverse() as $item)
                     <div class="modal fade" id="exampleModalCenter{{ $item->id }}" tabindex="-1" role="dialog"
@@ -163,13 +149,9 @@
                                         </div>
                                         <div class="mb-3">
                                             <label for="upload" class="form-label judulnottebal">Upload Foto</label>
-                                            <input type="file" name="images" class="form-control form-i" id="image-input" accept=".jpeg, .jpg, .png, .gif">
-
+                                            <input type="file" name="images" class="form-control form-i" id="image-input" accept=".jpeg, .jpg, .png, .gif" required>
                                             <img id="preview-image" src="{{ $item->images ? asset('storage/' . $item->images) : '' }}" alt="Foto" width="50" class="fit">
-
-                                            @if ($errors->has('images'))
-                                                <span class="text-danger">{{ $errors->first('images', 'File gambar harus berupa JPEG, JPG, PNG, atau GIF.') }}</span>
-                                            @endif
+                                            <span id="image-error-edit" style="color: red;"></span>
                                         </div>
 
                                     </div>
@@ -181,6 +163,51 @@
                         </div>
                     </div>
                 @endforeach
+                 <!-- JavaScript untuk validasi jenis file -->
+                 <script>
+                    function clearImageError(errorId) {
+                        document.getElementById(errorId).innerText = '';
+                    }
+
+                    document.getElementById('images').addEventListener('change', function() {
+                        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+                        const file = this.files[0];
+                        const imageError = document.getElementById('image-error-tambah');
+
+                        if (file && !allowedTypes.includes(file.type)) {
+                            imageError.innerText = 'Jenis file tidak valid. Pilih file gambar (JPEG, JPG, PNG, GIF).';
+                            imageError.style.color = 'red'; // Mengubah warna teks menjadi merah
+                            this.value = ''; // Mengosongkan input file
+                        } else {
+                            imageError.innerText = '';
+                            imageError.style.color = ''; // Menghapus warna teks merah
+                        }
+                    });
+
+                    document.getElementById('image-input').addEventListener('change', function() {
+                        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+                        const file = this.files[0];
+                        const imageError = document.getElementById('image-error-edit');
+                        const previewImage = document.getElementById('preview-image');
+
+                        if (file && !allowedTypes.includes(file.type)) {
+                            imageError.innerText = 'Jenis file tidak valid. Pilih file gambar (JPEG, JPG, PNG, GIF).';
+                            imageError.style.color = 'red'; // Mengubah warna teks menjadi merah
+                            this.value = ''; // Mengosongkan input file
+                            previewImage.src = ''; // Menghapus gambar pratinjau
+                        } else {
+                            imageError.innerText = '';
+                            imageError.style.color = ''; // Menghapus warna teks merah
+
+                            const reader = new FileReader();
+                            reader.unload = function(e) {
+                                previewImage.src = e.target.result;
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    });
+                </script>
+
                 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
                 <script>

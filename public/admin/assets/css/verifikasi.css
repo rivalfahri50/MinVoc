@@ -63,15 +63,16 @@
     color: white;
 }
 
-.avatar {
-    width: 40px;
+.avatarbulat {
+    width: 30px;
+    height: 30px;
     margin-right: 10px;
     border-radius: 50px;
+    object-fit: cover;
 }
 
-.cell-content {
+.sejajar {
     display: flex;
-    align-items: center;
 }
 
 .table-cell h6,

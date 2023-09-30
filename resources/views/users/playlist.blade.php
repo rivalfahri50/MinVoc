@@ -58,9 +58,9 @@
                             class="card card-scroll coba text-decoration-none">
                             <div class="card-content">
                                 <div class="kotaktetap">
-                                    <img src="http://127.0.0.1:8000/storage/images/53e3eyfg734r-r4ry4rgg43ry-34rwerwrww3.png" class="img-fluid p-2" style="border-radius: 15px">
+                                    <img src="http://127.0.0.1:8000/storage/images/53e3eyfg734r-r4ry4rgg43ry-34rwerwrww3.jpg" class="img-fluid rounded-1">
                                 </div>
-                                <h1 class="mt-2 judul"> Lagu yang disukai</h1>
+                                <h5 class="mt-2 judul"> Lagu yang disukai</h5>
                                 <p class="teks">lagu-lagu yang kamu tambah ke favorit
                                 </p>
                             </div>
@@ -75,7 +75,7 @@
                                                 <img src="{{ asset('storage/' . $item->images) }}"
                                                     class="img-fluid rounded-1 fit">
                                             </div>
-                                            <h4 class="mt-2 judul">{{ $item->name }}</h4>
+                                            <h5 class="mt-2 judul">{{ $item->name }}</h5>
                                             <p class="teks overflow-cardtext">{{ $item->deskripsi === 'none' ? '' : "$item->deskripsi" }}
                                             </p>
                                         </div>

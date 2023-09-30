@@ -18,9 +18,9 @@
                                 <div class="mb-4">
                                     <h5 class="judul mb-3">Nama :</h5>
                                     <td class="table-cell">
-                                        <div class="cell-content">
+                                        <div class="sejajar">
                                             <img src="{{ asset('storage/' . $item->user->avatar) }}" alt="Face"
-                                                class="avatar">
+                                                class="avatarbulat">
                                             <div>
                                                 <p class="teksbiasa">{{ $item->user->name }}</p>
                                             </div>
@@ -29,11 +29,14 @@
                                 </div>
                                 <div class="mb-4">
                                     <h5 class="judul mb-3">Tanggal Pengajuan :</h5>
-                                    <input type="text" name="name" class="form-control form-i" id="namaproyek" value="{{ (new DateTime($item->pengajuan_verified_at))->format('d F Y') }}" readonly disabled>
+                                    <input type="text" name="name" class="form-control form-i" id="namaproyek"
+                                        value="{{ (new DateTime($item->pengajuan_verified_at))->format('d F Y') }}"
+                                        readonly disabled>
                                 </div>
                                 <div class="mb-4">
                                     <h5 class="judul mb-3">Disukai :</h5>
-                                    <input type="text" name="name" class="form-control form-i" id="namaproyek" value="{{ $item->likes }}" readonly disabled>
+                                    <input type="text" name="name" class="form-control form-i" id="namaproyek"
+                                        value="{{ $item->likes }}" readonly disabled>
                                 </div>
                             </div>
                             <div class="col-5">
@@ -155,11 +158,13 @@
 
             .avatar {
                 width: 40px;
+                height: 40px;
                 margin-right: 10px;
+                object-fit: cover;
             }
 
             .ktp {
-                width: 100px;
+                width: 150px;
                 margin-right: 10px;
                 border-radius: 0;
                 height: 100px;
@@ -264,51 +269,36 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                                @php
-                                    $artistCount = $artist
-                                        ->filter(function ($item) {
-                                            return $item->pengajuan_verified_at > 1;
-                                        })
-                                        ->count();
-                                @endphp
-
-                                @if (empty($artistCount))
-                                    <div style="justify-content: center; display: flex; padding: 50px 0;">
-                                        <img width="400" height="200" src="/icon-notFound/adminIcon.svg" alt="" srcset="">
-                                    </div>
-                                @endif
-                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
+                @php
+                    $artistCount = $artist
+                        ->filter(function ($item) {
+                            return $item->pengajuan_verified_at > 1;
+                        })
+                        ->count();
+                @endphp
 
+                @if (empty($artistCount))
+                    <div style="justify-content: center; display: flex; padding: 50px 0;">
+                        <img width="400" height="200" src="/icon-notFound/adminIcon.svg" alt=""
+                            srcset="">
+                    </div>
+                @endif
 
-
-                    {{-- @php
-                        $count = $artist
-                            ->filter(function ($item) {
-                                return $item->pengajuan === 0;
-                            })
-                            ->count();
-                    @endphp
-                    @if ($count == 0)
-                        <div style="justify-content: center; display: flex; padding: 50px 0;">
-                            <img width="400" height="200" src="/icon-notFound/adminIcon.svg" alt=""
-                                srcset="">
-                        </div>
-                    @endif --}}
-
+                <div class="text-center">
                     <div class="text-center">
-                        <div class="text-center">
-                            <ul class="pagination justify-content-center">
-                                <!-- Item-item pagination akan ditambahkan secara dinamis menggunakan JavaScript -->
-                            </ul>
-                        </div>
+                        <ul class="pagination justify-content-center">
+                            <!-- Item-item pagination akan ditambahkan secara dinamis menggunakan JavaScript -->
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- partial -->
+    </div>
+    <!-- partial -->
     </div>
     </div>
     <!-- page-body-wrapper ends -->

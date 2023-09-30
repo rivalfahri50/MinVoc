@@ -290,7 +290,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="#buat-album">
                                     <span class="menu-icon">
-                                        <i class="mdi mdi-plus-circle-outline"></i>
+                                        <span class="mdi mdi-plus-circle-outline submenu"></span>
                                     </span>
                                     <span class="menu-title">Buat Album</span>
                                 </a>
@@ -435,60 +435,57 @@
                                 @endif
                             </a>
                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-                                aria-labelledby="notificationDropdown">
-                                @foreach ($notifs as $item)
-                                    @if (count($notifs) > 0)
-                                        @if ($item)
-                                            <div class="dropdown-item preview-item" style="cursor: auto;">
-                                                @if ($item->message == null)
-                                                    <div>
-                                                        <img src="{{ asset('storage/' . $item->artis->user->avatar) }}"
-                                                            width="40" style="border-radius: 100%" alt=""
-                                                            srcset="">
-                                                    </div>
-                                                @endif
-                                                <div class="preview-item-content" style="margin-right: 3px">
-                                                    <p class="preview-subject mb-1" style="font-weight: bold">
-                                                        {{ $item->title }}</p>
-                                                    @if ($item->message !== null)
-                                                        <a class="text-muted ellipsis mb-0"
-                                                            style="font-size: 12px; font-weight: normal; cursor: pointer"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#alasan-{{ $item->code }}">Kl ik
-                                                            untuk melihat alasan</a>
-                                                    @else
-                                                        <p class="text-muted ellipsis mb-0 fw-light">
-                                                            {{ $item->artis->user->name }}
-                                                        </p>
-                                                    @endif
+                            aria-labelledby="notificationDropdown">
+                            @php
+                                $shownNotifications = [];
+                            @endphp
+                            @foreach ($notifs->reverse() as $item)
+                                @if ($item->created_at)
+                                    @php
+                                        $createdAt = $item->created_at->format('Y-m-d');
+                                        $title = $item->title;
+                                        $notificationKey = $createdAt . '_' . $title;
+                                    @endphp
+
+                                    @if (!in_array($notificationKey, $shownNotifications))
+                                        @php
+                                            $shownNotifications[] = $notificationKey;
+                                        @endphp
+
+                                        <div class="dropdown-item preview-item" style="cursor: auto;">
+                                            @if ($item->message == null)
+                                                <div>
+                                                    <img src="{{ asset('storage/' . $item->user->avatar) }}" class="avatarnotif">
                                                 </div>
-                                                <button type="submit" class="btn btnicon p-0"
-                                                    style="background: none; border: none; margin-bottom: 20px;"
-                                                    onclick="">
-                                                    <a href="/artis/delete-notif/{{ $item->id }}">
-                                                        <i class="far fa-times-circle text-danger"
-                                                            style="font-size: 11px;"></i>
-                                                    </a>
-                                                </button>
+                                            @endif
+                                            <div class="preview-item-content" style="margin-right: 5px">
+                                                <p class="preview-subject mb-1" style="font-weight: bold">
+                                                    {{ $item->title }}</p>
+                                                @if ($item->message !== null)
+                                                    <span class="text-muted ellipsis mb-0"
+                                                        style="font-size: 12px; font-weight: normal; cursor: pointer;"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#alasan-{{ $item->code }}">Klik
+                                                        untuk melihat alasan</span>
+                                                @else
+                                                    <p class="text-muted ellipsis mb-0">
+                                                        {{ $item->artis }}
+                                                    </p>
+                                                @endif
                                             </div>
-                                        @endif
-                                    @else
-                                        <div class="dropdown-item preview-item" style="gap: 15px; cursor: auto;">
-                                            <div class="preview-item-content">
-                                                <p class="preview-subject mb-1" style="font-weight: bold">None</p>
-                                                <a class="text-muted ellipsis mb-0"
-                                                    style="font-size: 12px; font-weight: normal; cursor: pointer"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#alasan-{{ $item->code }}">Klik
-                                                    untuk melihat alasan</a>
-                                                <p class="text-muted ellipsis mb-0">
-                                                    {{ $item->artis->user->name }}
-                                                </p>
-                                            </div>
+                                            <button type="submit" class="btn btnicon p-0"
+                                                style="background: none; border: none; margin-bottom: 20px;"
+                                                onclick="">
+                                                <a href="/artis-verified/delete-notif/{{ $item->code }}">
+                                                    <i class="far fa-times-circle text-danger"
+                                                        style="font-size: 11px;"></i>
+                                                </a>
+                                            </button>
                                         </div>
                                     @endif
-                                @endforeach
-                            </div>
+                                @endif
+                            @endforeach
+                        </div>
                         </li>
 
                         <li class="nav-item dropdown">
@@ -552,19 +549,19 @@
                 <div class="card window">
                     <div class="card-body">
                         <a href="#" class="close-button far fa-times-circle"></a>
-                        <h2 class="judul">Buat Album</h2>
+                        <h3 class="judulnottebal">Buat Album</h3>
                         <form class="row" action="{{ route('tambah.album.artis', auth()->user()->code) }}"
                             method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="col-md-12">
                                 <div class="mb-3">
-                                    <h3 class="form-label judul">Nama Album</h3>
+                                    <h6 class="form-label judulnottebal">Nama Album</h6>
                                     <input type="text" name="name" class="form-control" id="namaproyek"
                                         placeholder="Masukkan nama kategori musik" maxlength="55" required>
                                 </div>
                                 <div class="mb-3">
-                                    <h3 for="upload" class="form-label judul">Upload
-                                        Foto</h3>
+                                    <h6 for="upload" class="form-label judulnottebal">Upload
+                                        Foto</h6>
                                     <input type="file" name="image" class="form-control" id="namaproyek"
                                         accept="image/*" required>
                                 </div>

@@ -3,44 +3,7 @@
 @section('content')
     <link rel="stylesheet" href="/user/assets/css/dashboard.css">
     @include('partials.tambahkeplaylist')
-    <style>
-        .header {
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-            margin-bottom: 10px;
-            background-color: #957DAD;
-            overflow: hidden;
-        }
-
-        .table-cell {
-            flex: 1;
-            padding-left: 10%;
-            text-align: left;
-            padding: 10px;
-        }
-
-        .table-header {
-            color: white;
-        }
-
-
-        .table-cell h6,
-        .table-cell p {
-            margin: 0;
-            padding: 5px 0;
-        }
-
-        /*---- style untuk header dengan border lengkung ----*/
-        .headerlengkung th:first-child {
-            border-top-left-radius: 10px;
-            border-bottom-left-radius: 10px;
-        }
-
-        .headerlengkung th:last-child {
-            border-top-right-radius: 10px;
-            border-bottom-right-radius: 10px;
-        }
-    </style>
+    
     <div class="main-panel">
         <div class="content-wrapper">
             <style>
@@ -210,7 +173,7 @@
                     </div>
                 </div>
                 <div class="col-md-5 stretch-card billboardheight">
-                    <h3 class="card-title mb-4 judul" style="font-size: 20px; font-weight: 700">Artis yang disukai</h3>
+                    <h3 class="card-title mb-4 judul" style="font-size: 20px; font-weight: 700">Artis Terbaru</h3>
                     <div class="card datakiri scrollbar-down square thin">
                         <div class="card-body">
                             <div class="row" style="margin-top: -20px">
@@ -251,58 +214,53 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12">
+                <div class="col-12 mb-5">
                     <h3 class="card-title mt-2 judul" style="font-size: 20px; font-weight: 600">Lagu Yang Sering Didengar
                     </h3>
-                    <div class="table-header">
-                        <div class="table-row header headerlengkung row ml-0 mr-0 mb-0 ">
-                            <span class="table-cell ml-4 "> judul </span>
-                            <span class="table-cell " style=" margin-left:430px"> putar </span>
-                            <span class="table-cell " style=" margin-left:380px">
-                                <i class=" fa fa-clock"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="card datakanan scrollbar-down thin">
-                        <div class="card-body">
-                            <div class="row" style="margin-top: -20px">
-                                <div class="col-12">
-                                    <div class="preview-list">
-                                        @foreach ($song as $item)
-                                            @if ($item->is_approved)
-                                                <div class="preview-item">
-                                                    <div class="preview-thumbnail">
-                                                        <img src="{{ asset('storage/' . $item->image) }}" width="10%">
-                                                    </div>
-                                                    <div class="preview-item-content d-sm-flex flex-grow">
-                                                        <a href="#lagu-diputar"
-                                                            class="flex-grow text-decoration-none link"
-                                                            onclick="putar({{ $item->id }})">
-                                                            <h6 class="preview-subject" style="color: #4e4e4e;">
-                                                                {{ $item->judul }}</h6>
-                                                            <p class="text-muted mb-0" style="font-weight: 400">
-                                                                {{ $item->artist->user->name }}</p>
-                                                        </a>
-                                                    </div>
-                                                    <div style="padding-right:400px">
-                                                        <p>
-                                                            {{ number_format($item->didengar, 0, ',', '.') }}
-                                                        </p>
-                                                    </div>
-                                                    <i id="like-2{{ $item->id }}" data-id="{{ $item->id }}"
-                                                        onclick="toggleLike(this, {{ $item->id }})"
-                                                        class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
-                                                    <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                        <div class="text-group align-items-center">
-                                                            <p style="pointer-events: none;">{{ $item->waktu }}</p>
-                                                        </div>
+                    <div class="bordertabel">
+                        <table class="table">
+                            <thead class="table-header headertext-ungu">
+                                <tr class="header">
+                                    <th scope="col" class="sortable" data-sort="asc">
+                                        <i class="fas fa-caret-down ml-0"></i>
+                                    </th>
+                                    <th data-sort-col="judul"> Judul </th>
+                                    <th data-sort-col="artist"> Artis </th>
+                                    <th data-sort-col="waktu"> Waktu </th>
+                                    <th data-sort-col="tanggal"> Tanggal </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($song as $item)
+                                    @if ($item->is_approved)
+                                        <tr class="table-row baris" data-href="#lagu-diputar"
+                                            onclick="putar({{ $item->id }})">
+                                            <td class="table-cell" scope="row">1</td>
+                                            <td class="table-cell">
+                                                <div class="fototabelsejajar">
+                                                    <img src="{{ asset('storage/' . $item->image) }}">
+                                                    <div>
+                                                        <h6 class="texttitik">{{ $item->judul }}</h6>
                                                     </div>
                                                 </div>
-                                            @endIf
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
+                                            </td>
+                                            <td class="table-cell">
+                                                <h6>{{ $item->artist->user->name }}
+                                                </h6>
+                                            </td>
+                                            <td class="table-cell">{{ $item->waktu }}</td>
+                                            <td class="table-cell">{{ $item->created_at->diffForHumans() }}</td>
+                                        </tr>
+                                    @endIf
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-center">
+                            <ul class="pagination justify-content-center">
+                                <!-- Pagination links will be dynamically generated here -->
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -311,6 +269,202 @@
     </div>
     </div>
     </div>
+    {{-- untuk header sortir --}}
+    <script>
+        $(document).ready(function() {
+            var ascendingOrder = true; // Menyimpan status urutan saat ini
+
+            $(".sortable").on("click", function() {
+                // Mengubah urutan saat ini
+                ascendingOrder = !ascendingOrder;
+
+                // Mengubah ikon sesuai dengan urutan saat ini
+                if (ascendingOrder) {
+                    $(this).find("i").removeClass("fa-caret-up").addClass("fa-caret-down");
+                } else {
+                    $(this).find("i").removeClass("fa-caret-down").addClass("fa-caret-up");
+                }
+
+                // Memanggil fungsi untuk mengurutkan tabel
+                sortTable(ascendingOrder);
+            });
+
+            function sortTable(ascending) {
+                var rows = $(".table-row").toArray();
+
+                rows.sort(function(a, b) {
+                    var valA = parseInt($(a).find(".table-cell:first-child").text());
+                    var valB = parseInt($(b).find(".table-cell:first-child").text());
+
+                    if (ascending) {
+                        return valA - valB;
+                    } else {
+                        return valB - valA;
+                    }
+                });
+
+                // Mengganti urutan baris dalam tabel
+                for (var i = 0; i < rows.length; i++) {
+                    $(".table tbody").append(rows[i]);
+                }
+            }
+        });
+    </script>
+
+    {{-- untuk paginate --}}
+    <script>
+        $(document).ready(function() {
+            var itemsPerPage = 3;
+            var ascendingOrder = true; // Menyimpan status urutan saat ini
+            var currentPage = 1;
+
+            // Fungsi untuk menyimpan halaman saat ini ke local storage
+            function saveCurrentPageToLocalStorage(page) {
+                localStorage.setItem("currentPage", page);
+            }
+
+            // Fungsi untuk mendapatkan halaman saat ini dari local storage
+            function getCurrentPageFromLocalStorage() {
+                return parseInt(localStorage.getItem("currentPage")) || 1;
+            }
+
+            // Mendapatkan halaman saat ini dari local storage atau default ke 1
+            currentPage = getCurrentPageFromLocalStorage();
+
+            function showTableRows() {
+                var start = (currentPage - 1) * itemsPerPage;
+                var end = start + itemsPerPage;
+
+                // Mengambil semua baris tabel yang ada di tabel
+                var rows = $(".baris").toArray();
+
+                // Urutkan baris sesuai dengan urutan saat ini
+                rows.sort(function(a, b) {
+                    var valA = parseInt($(a).find(".table-cell:first-child").text());
+                    var valB = parseInt($(b).find(".table-cell:first-child").text());
+
+                    if (ascendingOrder) {
+                        return valA - valB;
+                    } else {
+                        return valB - valA;
+                    }
+                });
+
+                // Menyembunyikan semua baris tabel
+                $(".baris").hide();
+
+                // Menampilkan baris-baris yang sesuai dengan halaman saat ini
+                for (var i = start; i < end && i < rows.length; i++) {
+                    $(rows[i]).show();
+                }
+            }
+
+            function updatePagination() {
+                $(".pagination").empty();
+                var numPages = Math.ceil($(".baris").length / itemsPerPage);
+
+                var maxPaginationPages = 3; // Jumlah maksimum halaman pagination yang ditampilkan
+
+                // Menentukan halaman pertama yang akan ditampilkan
+                var startPage = Math.max(currentPage - Math.floor(maxPaginationPages / 2), 1);
+
+                // Menentukan halaman terakhir yang akan ditampilkan
+                var endPage = Math.min(startPage + maxPaginationPages - 1, numPages);
+
+                // Tambahkan tombol "Previous" jika ada halaman sebelumnya
+                if (currentPage > 1) {
+                    var prevButton = $("<a>")
+                        .addClass("page-item")
+                        .addClass("page-link")
+                        .attr("href", "#");
+
+                    var prevIcon = $("<i>").addClass("fa fa-chevron-left");
+                    prevButton.append(prevIcon);
+
+                    prevButton.click(function(event) {
+                        event.preventDefault(); // Menghentikan tindakan default
+                        currentPage--;
+                        showTableRows();
+                        updatePagination();
+                        saveCurrentPageToLocalStorage(currentPage);
+                    });
+
+                    $(".pagination").append($("<li>").append(prevButton));
+                }
+
+                for (var i = startPage; i <= endPage; i++) {
+                    var activeClass = i === currentPage ? "active" : "";
+                    var button = $("<a>")
+                        .addClass("page-item " + activeClass)
+                        .addClass("page-link")
+                        .attr("href", "#");
+
+                    button.text(i);
+
+                    button.click(function(event) {
+                        event.preventDefault(); // Menghentikan tindakan default
+                        currentPage = parseInt($(this).text());
+                        showTableRows();
+                        updatePagination();
+                        saveCurrentPageToLocalStorage(currentPage);
+                    });
+
+                    $(".pagination").append($("<li>").append(button));
+                }
+
+                // Tambahkan tombol "Next" jika ada lebih banyak halaman
+                if (currentPage < numPages) {
+                    var nextButton = $("<a>")
+                        .addClass("page-item")
+                        .addClass("page-link")
+                        .attr("href", "#");
+
+                    var nextIcon = $("<i>").addClass("fa fa-chevron-right");
+                    nextButton.append(nextIcon);
+
+                    nextButton.click(function(event) {
+                        event.preventDefault(); // Menghentikan tindakan default
+                        currentPage++;
+                        showTableRows();
+                        updatePagination();
+                        saveCurrentPageToLocalStorage(currentPage);
+                    });
+
+                    $(".pagination").append($("<li>").append(nextButton));
+                }
+
+                if (numPages <= 1) {
+                    $(".pagination").hide();
+                }
+            }
+
+            $(".sortable").on("click", function() {
+                ascendingOrder = !ascendingOrder;
+                showTableRows();
+                updatePagination();
+                saveCurrentPageToLocalStorage(currentPage);
+            });
+
+            showTableRows();
+            updatePagination();
+
+            saveCurrentPageToLocalStorage(currentPage); // Simpan halaman saat ini ke local storage
+        });
+    </script>
+
+    {{-- untuk href table --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const rows = document.querySelectorAll("tr[data-href]");
+
+            rows.forEach(row => {
+                row.addEventListener("click", () => {
+                    window.location.href = row.dataset.href;
+                })
+            })
+        });
+    </script>
+
     <script>
         var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         $(document).ready(function() {
@@ -471,13 +625,13 @@
     <script>
         function redirectArtis(id) {
             $.ajax({
-                url: `/artis/detail-artis/${id}`,
+                url: `/artis-verified/detail-artis/${id}`,
                 type: 'GET',
                 data: {
                     data: id
                 },
                 success: function(response) {
-                    window.location.href = `/artis/detail-artis/${id}`;
+                    window.location.href = `/artis-verified/detail-artis/${id}`;
                 },
             });
         }

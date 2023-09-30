@@ -53,10 +53,19 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="col-3 text-xxl-end">
+                            <div class="col-3">
                                 <div class="bottom-left-text">
-                                    <h3 class="m-0" style="font-weight: 600">{{ $albumDetail->name }}
+                                    <h3 class="my-1" style="font-weight: 400; font-size: 15px">Album
                                     </h3>
+                                    <h3 class="my-1" style="font-weight: 600; font-size: 30px">{{ $albumDetail->name }}
+                                    </h3>
+                                    <div style="display: flex; flex-direction: row; gap: 5px; align-items: center">
+                                        <span>
+                                            <img src="{{ asset('storage/' . $albumDetail->artis->user->avatar) }}" class="avatarpembuat">
+                                        </span>
+                                        <p class="m-0" style="font-weight: 300; font-size: 16px">{{ $albumDetail->artis->user->name }}
+                                        </div>
+                                    </p>
                                     <p style="font-size: 18px;">
                                         {{ $albumDetail->deskripsi == 'none' ? '' : "$albumDetail->deskripsi" }}
                                     </p>
@@ -70,7 +79,7 @@
                 <hr class="divider"> <!-- Divider -->
             </div>
             <div class="col-md-12 grid-margin stretch-card">
-                <h3 class="card-title judul">Temukan berbagai lagu</h3>
+                <h3 class="card-title judul">Temukan berbagai lagu {{ $albumDetail->artis->user->name }}</h3>
                 <form class="col-6 mb-4 p-0 nav-link search">
                     <input type="text" id="search_song" class="form-control rounded-4" placeholder="Cari musik">
                     <ul id="search-results-song"></ul>
@@ -189,7 +198,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
-
         const gambar = document.querySelector("#gambar");
 
         const tampilGambar = document.querySelector("#tampil_gambar");
@@ -206,7 +214,7 @@
             reader.readAsDataURL(this.files[0]);
         });
     </script>
-     <script>
+    <script>
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
         let next = document.querySelector('#next');
@@ -235,12 +243,12 @@
         // create a audio element
         let track = document.createElement('audio');
 
-        const albumId = {{$album_id}};
+        const albumId = {{ $album_id }};
         let All_song = [];
         console.log("iki lhoooooooooooo 23423u", All_song);
 
         function ambilDataLagu(albumId) {
-            console.log('iki opo',albumId);
+            console.log('iki opo', albumId);
             $.ajax({
                 url: '/ambil-lagu-album',
                 type: 'GET',

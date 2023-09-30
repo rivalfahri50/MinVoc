@@ -17,17 +17,19 @@
                                         <img src="{{ asset('storage/' . $song->image) }}" alt="Face" class="avatar">
                                     </div>
                                     <div style="margin-left: 10px;">
-                                        <h4 class="judul mt-4 clamp-text" style="font-size: 16px">{{ $song->judul }}</h4>
-                                        <div class="d-flex flex-row align-content-center">
-                                            <p class="text-muted m-1 clamp-text">{{ $song->artist->user->name }}</p>
+                                        <h4 class="judul mt-4 clamp-text" style="font-size: 20px; font-weight: 500">
+                                            {{ $song->judul }}</h4>
+                                        <div class="d-flex flex-row align-content-center" style=" display: flex; flex-direction: row; align-items: center">
+                                            <p class="text-muted m-1 clamp-text" style="font-size: 16px">{{ $song->artist->user->name }}</p>
+                                            <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
+                                                onclick="putar({{ $song->id }})">
+                                                <button onclick="togglePlayPause()" id="play"
+                                                    style="border: none; background: none;">
+                                                    <i id="playIcon" class="far fa-play-circle ukuraniconplaykhusus"
+                                                        style="color: #957DAD;"></i>
+                                                </button>
+                                            </a>
                                         </div>
-                                        <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
-                                            onclick="putar({{ $song->id }})">
-                                            <button onclick="togglePlayPause()" id="play" style="border: none; background: none;">
-                                                <i id="playIcon" class="far fa-play-circle ukuraniconplaykhusus"
-                                                    style="color: #957DAD;"></i>
-                                            </button>
-                                        </a>
                                     </div>
                                 </div>
                             </div>

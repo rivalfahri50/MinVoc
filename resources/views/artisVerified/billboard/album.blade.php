@@ -13,16 +13,24 @@
                                     <img src="{{ asset('storage/' . $album->image) }}" alt="Gambar">
                                 </div>
                             </div>
-                            <div class="col-3 text-xxl-end">
-                                <div class="bottom-left-text d-flex flex-column gap-2">
-                                    <p class="m-0" style="font-size: 20px; font-weight: 600">Album {{ $album->name }}
-                                    </p>
-                                    <div class="img-and-text">
-                                        <img class="img-ss rounded-circle"
-                                            src="{{ asset('storage/' . $album->artis->user->avatar) }}" alt="">
-                                        <p class="judulnottebal" style="font-size: 20px; font-weight: 500">
-                                            {{ $album->artis->user->name }}</p>
+                            <div class="col-3" style="margin-left: -30px;">
+                                <div class="bottom-left-text">
+                                    <h3 class="my-1" style="font-weight: 400; font-size: 15px">Album
+                                    </h3>
+                                    <h3 class="my-1" style="font-weight: 600; font-size: 30px">{{ $album->name }}
+                                    </h3>
+                                    <div style="display: flex; flex-direction: row; gap: 5px; align-items: center">
+                                        <span>
+                                            <img src="{{ asset('storage/' . $album->artis->user->avatar) }}" width="30"
+                                                style="border-radius: 30px">
+                                        </span>
+                                        <p class="m-0" style="font-weight: 300; font-size: 16px">
+                                            {{ $album->artis->user->name }}
                                     </div>
+                                    </p>
+                                    <p style="font-size: 18px;">
+                                        {{ $album->deskripsi == 'none' ? '' : "$album->deskripsi" }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -46,8 +54,7 @@
                                                         <img src="{{ asset('storage/' . $item->image) }}" width="10%">
                                                     </div>
                                                     <div class="preview-item-content d-sm-flex flex-grow">
-                                                        <a href="#lagu-diputar"
-                                                            class="flex-grow text-decoration-none link"
+                                                        <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
                                                             onclick="putar({{ $item->id }})">
                                                             <h6 class="preview-subject" style="color: #4e4e4e;">
                                                                 {{ $item->judul }}</h6>
@@ -55,15 +62,14 @@
                                                                 {{ $item->artist->user->name }}</p>
                                                         </a>
                                                     </div>
-                                                    <i id="like-6{{ $item->id }}"
-                                                        data-id="{{ $item->id }}"
+                                                    <i id="like-6{{ $item->id }}" data-id="{{ $item->id }}"
                                                         onclick="toggleLike(this, {{ $item->id }})"
                                                         class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
-                                                        <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                            <div class="text-group">
-                                                                <p>{{ $item->waktu }}</p>
-                                                            </div>
+                                                    <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                                        <div class="text-group">
+                                                            <p>{{ $item->waktu }}</p>
                                                         </div>
+                                                    </div>
                                                 </div>
                                             @endIf
                                         @endforeach
@@ -161,12 +167,12 @@
         // create a audio element
         let track = document.createElement('audio');
 
-        const albumId = {{$album_id}};
+        const albumId = {{ $album_id }};
         let All_song = [];
         console.log("iki lhoooooooooooo 23423u", All_song);
 
         function ambilDataLagu(albumId) {
-            console.log('iki opo',albumId);
+            console.log('iki opo', albumId);
             $.ajax({
                 url: '/ambil-lagu-album',
                 type: 'GET',
