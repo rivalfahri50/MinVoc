@@ -429,24 +429,24 @@
 
         function putar(id) {
             console.log('ID yang dikirim:', id);
-            id = id - 1;
-            const lagu = All_song[id];
-            // alert(All_song.length - 1 + " " + id);
+            id = parseInt(id); // Pastikan id berupa bilangan bulat
+            const lagu = All_song.find(song => song.id === id);
+            console.log('lagu yang dikirim :', lagu);
+
             if (lagu) {
                 const new_index_no = All_song.indexOf(lagu);
                 if (new_index_no >= 0) {
                     index_no = new_index_no;
-                    load_track(id);
+                    load_track(index_no);
                     playsong();
                 } else {
-                    index_no = 0;
+                    index_no = 0; // Atur ke 0 jika lagu tidak ditemukan
                     load_track(index_no);
                     playsong();
                 }
             } else {
                 console.error('Lagu dengan ID ' + id + ' tidak ditemukan dalam data lagu.');
             }
-
         }
 
         track.addEventListener('ended', function() {

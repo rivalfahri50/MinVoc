@@ -341,7 +341,9 @@
 
             @include('sweetalert::alert')
             @yield('content')
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+                integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+                crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             <script>
                 let previous = document.querySelector('#pre');
                 let play = document.querySelector('#play');
@@ -379,7 +381,7 @@
                         type: 'GET',
                         dataType: 'json',
                         success: function(data) {
-                            All_song = data.map(lagu => {
+                            All_song = data.filter(lagu => lagu.is_approved === 0).map(lagu => {
                                 return {
                                     id: lagu.id,
                                     judul: lagu.judul,
@@ -461,61 +463,7 @@
                         Playing_song = false;
                         play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>';
                     }
-
-                    // Periksa apakah index_no memiliki nilai yang benar
-                    if (index_no >= 0 && index_no < All_song.length) {
-                        // Perbarui playCount dengan songId yang sesuai
-                        const songId = All_song[index_no].id;
-                        console.log(All_song[index_no])
-                        updatePlayCount(songId);
-                        history(songId);
-
-                    }
                     track.addEventListener('timeupdate', updateDuration);
-                    playCount++;
-                }
-
-                var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-                function updatePlayCount(songId) {
-                    fetch(`/update-play-count/${songId}`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': csrfToken
-                            },
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log('Play count updated:', data.message);
-                        })
-                        .catch(error => {
-                            // Tangani error jika diperlukan
-                            console.error('Error updating play count:', error);
-                        });
-                }
-
-                function history(songId) {
-                    console.log('Mengirim riwayat untuk songId:', songId);
-                    $.ajax({
-                        url: '/simpan-riwayat',
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': csrfToken
-                        },
-                        data: {
-                            song_id: songId,
-                        },
-                        success: function(response) {
-                            console.log('Respon dari simpan-riwayat:', response);
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Error saat mengirim riwayat:', error);
-
-                            // Tambahkan ini untuk mencetak pesan kesalahan dari respons server
-                            // console.log('Pesan Kesalahan Server:', xhr.responseText);
-                        }
-                    });
                 }
 
                 // pause song
@@ -527,24 +475,24 @@
 
                 function putar(id) {
                     console.log('ID yang dikirim:', id);
-                    id = id - 1;
-                    const lagu = All_song[id];
-                    // alert(All_song.length - 1 + " " + id);
+                    id = parseInt(id); // Pastikan id berupa bilangan bulat
+                    const lagu = All_song.find(song => song.id === id);
+                    console.log('lagu yang dikirim :', lagu);
+
                     if (lagu) {
                         const new_index_no = All_song.indexOf(lagu);
                         if (new_index_no >= 0) {
                             index_no = new_index_no;
-                            load_track(id);
+                            load_track(index_no);
                             playsong();
                         } else {
-                            index_no = 0;
+                            index_no = 0; // Atur ke 0 jika lagu tidak ditemukan
                             load_track(index_no);
                             playsong();
                         }
                     } else {
                         console.error('Lagu dengan ID ' + id + ' tidak ditemukan dalam data lagu.');
                     }
-
                 }
 
                 track.addEventListener('ended', function() {

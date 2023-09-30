@@ -37,7 +37,7 @@ class ArtistController extends Controller
     {
         $title = "MusiCave";
         $songs = song::all();
-        $song = song::where('didengar', '>', '10')->orderByDesc('didengar')->get();
+        $song = song::where('didengar', '>', '1000')->orderByDesc('didengar')->get();
         $genres = genre::all();
         $artist = artist::with('user')->get();
         $playlists = playlist::all();
