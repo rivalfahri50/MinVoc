@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Like;
+use App\Models\projects;
 use App\Models\Song;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -93,6 +94,7 @@ class SongController extends Controller
         return response()->json($laguArtis);
     }
 
+
     public function ambilLaguAlbum(Request $request) {
         $albumId = $request->input('album_id');
         $query = Song::with('artist.user');
@@ -117,6 +119,12 @@ class SongController extends Controller
 
         $lagu = $query->get();
 
+        return response()->json($lagu);
+    }
+
+    public function ambilLaguProject(Request $request) {
+        $projectId = $request->input('project_id');
+        $lagu = projects::where('id', $projectId)->get();
         return response()->json($lagu);
     }
     }

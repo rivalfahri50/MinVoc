@@ -32,8 +32,6 @@ class penggunaController extends Controller
         $title = "MusiCave";
         $song = song::where('didengar', '>', '1000')->orderByDesc('didengar')->get();
         $songs = song::all();
-        // dd($songs);
-        // dd($songs);
         $genres = genre::all();
         $playlists = playlist::all();
         $artist = artist::with('user')->get();
@@ -274,17 +272,18 @@ class penggunaController extends Controller
 
     protected function billboard(string $code): Response
     {
+        $title = "MusiCave";
+        $billboard = billboard::where('code', $code)->first();
+        $artis_id = $billboard->artis_id;
+        $albums = album::where('artis_id', $billboard->artis_id)->get();
+        $songs = song::where('artis_id', $billboard->artis_id)->get();
+        $playlists = playlist::all();
+        $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
         try {
-            $title = "MusiCave";
-            $billboard = billboard::where('code', $code)->first();
-            $albums = album::where('artis_id', $billboard->artis_id)->get();
-            $songs = song::where('artis_id', $billboard->artis_id)->get();
-            $playlists = playlist::all();
-            $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
         } catch (Throwable) {
             return abort(404);
         }
-        return response()->view('users.billboard.billboard', compact('title', 'billboard', 'albums', 'songs', 'playlists', 'notifs'));
+        return response()->view('users.billboard.billboard', compact('title','billboard','artis_id','albums', 'songs', 'playlists', 'notifs'));
     }
 
     protected function detailPlaylist(string $code): Response

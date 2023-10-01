@@ -206,7 +206,7 @@
             await fetch('/ambil-lagu')
                 .then(response => response.json())
                 .then(data => {
-                    All_song = data.map(lagu => {
+                    All_song = data.filter(lagu => lagu.artis_id === 1).map(lagu => {
                         return {
                             id: lagu.id,
                             judul: lagu.judul,

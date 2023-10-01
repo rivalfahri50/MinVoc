@@ -50,7 +50,7 @@
                                                     </div>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group align-items-center">
-                                                            <i id="like-1{{ $item->id }}"
+                                                            <i id="like-disukai{{ $item->id }}"
                                                                 data-id="{{ $item->id }}"
                                                                 onclick="toggleLike(this, {{ $item->id }})"
                                                                 class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
@@ -71,6 +71,58 @@
             </div>
         </div>
     </div>
+    <script>
+        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        $(document).ready(function() {
+            $.ajax({
+                url: `/song/check`,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    console.log("jumlah like lagu yang disukai", response);
+                    response.forEach(function(item) {
+                        let songId = item.song_id;
+                        let like = document.getElementById(`like-disukai${item.song_id}`);
+                        if (like) {
+                            like.classList.toggle('fas');
+                        }
+                    })
+                }
+            });
+        });
+        function toggleLike(iconElement, songId) {
+            const isLiked = iconElement.classList.contains('fas');
+            $.ajax({
+                url: `/song/${songId}/like`,
+                type: 'POST',
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response);
+                    if (response.success) {
+                        if (isLiked) {
+                            iconElement.classList.remove('fas');
+                            iconElement.classList.add('far');
+                        } else {
+                            iconElement.classList.remove('far');
+                            iconElement.classList.add('fas');
+                        }
+                        updateSongLikeStatus(songId, !isLiked);
+                    }
+                },
+                error: function(response) {
+                    console.log(response);
+                }
+            })
+        }
+
+        function updateSongLikeStatus(songId, isLiked) {
+            const likeIcons = document.querySelectorAll(`.shared-icon-like[data-id="${songId}"]`);
+            likeIcons.forEach(likeIcon => {
+                likeIcon.classList.toggle('fas', isLiked);
+                likeIcon.classList.toggle('far', !isLiked);
+            });
+        }
+    </script>
     <script>
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
@@ -101,7 +153,7 @@
         let track = document.createElement('audio');
 
         let All_song = [];
-        console.log("iki lhoooooooooooo disukai", All_song);
+        console.log("jumlah lagu", All_song);
 
         function ambilDataLagu() {
             $.ajax({
@@ -299,25 +351,26 @@
 
         function putar(id) {
             console.log('ID yang dikirim:', id);
-            id = id - 1;
-            const lagu = All_song[id];
-            // alert(All_song.length - 1 + " " + id);
+            id = parseInt(id); // Pastikan id berupa bilangan bulat
+            const lagu = All_song.find(song => song.id === id);
+            console.log('lagu yang dikirim :', lagu);
+
             if (lagu) {
                 const new_index_no = All_song.indexOf(lagu);
                 if (new_index_no >= 0) {
                     index_no = new_index_no;
-                    load_track(id);
+                    load_track(index_no);
                     playsong();
                 } else {
-                    index_no = 0;
+                    index_no = 0; // Atur ke 0 jika lagu tidak ditemukan
                     load_track(index_no);
                     playsong();
                 }
             } else {
                 console.error('Lagu dengan ID ' + id + ' tidak ditemukan dalam data lagu.');
             }
-
         }
+
 
         track.addEventListener('ended', function() {
             next_song();

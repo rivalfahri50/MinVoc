@@ -425,9 +425,6 @@
                                                                             </span>
                                                                         </form>
                                                                     </button>
-                                                                    {{-- <a href="#lagu-diputar"
-                                                                        class="flex-grow text-decoration-none link btn"
-                                                                        onclick="putar({{ $item->id }})">Putar Lagu</a> --}}
                                                                     <a href="#lagu-diputar"
                                                                         class="flex-grow text-decoration-none link btn"
                                                                         onclick="putar({{ $item->id }})">Putar Lagu</a>
@@ -747,7 +744,7 @@
             });
         });
     </script>
-      <script>
+    <script>
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
         let next = document.querySelector('#next');
@@ -776,36 +773,43 @@
 
         // create a audio element
         let track = document.createElement('audio');
-
+        const projectId = {{ $project_id }};
         let All_song = [];
+        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-        async function ambilDataLagu() {
-            await fetch('/ambil-lagu')
-                .then(response => response.json())
-                .then(data => {
+        function ambiLaguProject(projectId) {
+            $.ajax({
+                url: '/get-lagu-project',
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    project_id: projectId
+                }),
+                success: function(data) {
+                    console.log('info',data);
                     All_song = data.map(lagu => {
                         return {
                             id: lagu.id,
                             judul: lagu.judul,
                             audio: lagu.audio,
-                            image: lagu.image,
-                            artistId: lagu.artist.user.name
+                            image: lagu.images,
+                            artistId: lagu.artist_id
                         };
                     });
-                    console.log(All_song);
-                    if (All_song.length > 0) {
-                        // Memanggil load_track dengan indeks 0 sebagai lagu pertama
-                        load_track(0);
-                    } else {
-                        console.error("Data lagu kosong.");
-                    }
-                })
-                .catch(error => {
+                    // ...
+                },
+                error: function(error) {
                     console.error('Error fetching data:', error);
-                });
+                }
+            });
         }
 
-        ambilDataLagu();
+        ambiLaguProject(projectId);
+
+
         // semua function
 
         // function load the track
@@ -952,24 +956,24 @@
 
         function putar(id) {
             console.log('ID yang dikirim:', id);
-            id = id - 1;
-            const lagu = All_song[id];
-            // alert(All_song.length - 1 + " " + id);
+            id = parseInt(id); // Pastikan id berupa bilangan bulat
+            const lagu = All_song.find(song => song.id === id);
+            console.log('lagu yang dikirim :', lagu);
+
             if (lagu) {
                 const new_index_no = All_song.indexOf(lagu);
                 if (new_index_no >= 0) {
                     index_no = new_index_no;
-                    load_track(id);
+                    load_track(index_no);
                     playsong();
                 } else {
-                    index_no = 0;
+                    index_no = 0; // Atur ke 0 jika lagu tidak ditemukan
                     load_track(index_no);
                     playsong();
                 }
             } else {
                 console.error('Lagu dengan ID ' + id + ' tidak ditemukan dalam data lagu.');
             }
-
         }
 
         track.addEventListener('ended', function() {

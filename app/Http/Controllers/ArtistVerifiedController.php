@@ -37,7 +37,7 @@ class ArtistVerifiedController extends Controller
     protected function index(): Response
     {
         $title = "MusiCave";
-        $song = song::where('didengar', '>', '10')->orderByDesc('didengar')->get();
+        $song = song::where('didengar', '>', '1000')->orderByDesc('didengar')->get();
         $songs = song::all();
         $genres = genre::all();
         $playlists = playlist::all();
@@ -856,12 +856,13 @@ class ArtistVerifiedController extends Controller
     {
         $title = "Kolaborasi";
         $datas = projects::with(['artis', 'artis2'])->get();
+        $project_id = $datas->first()->id;
         $artisUser = artist::where('user_id', auth()->user()->id)->first();
         $messages = messages::with(['sender.user', 'receiver', 'project'])->get();
         $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
         $artis = artist::with('user')->get();
 
-        return response()->view('artisVerified.kolaborasi', compact('title', 'datas', 'artisUser', 'messages', 'artis', 'notifs'));
+        return response()->view('artisVerified.kolaborasi', compact('title', 'datas','project_id', 'artisUser', 'messages', 'artis', 'notifs'));
     }
 
     protected function artisSelect()
@@ -895,6 +896,7 @@ class ArtistVerifiedController extends Controller
     protected function showData(string $id)
     {
         $data = DB::table('projects')->where('code', $id)->get();
+
         $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
         return response()->view('artisVerified.kolaborasi', compact('data', 'notifs'));
     }

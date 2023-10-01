@@ -192,14 +192,14 @@
 
         // create a audio element
         let track = document.createElement('audio');
-
+        const ArtistId = {{$artis_id}};
         let All_song = [];
 
-        async function ambilDataLagu() {
+        async function ambilDataLagu(ArtistId) {
             await fetch('/ambil-lagu')
                 .then(response => response.json())
                 .then(data => {
-                    All_song = data.filter(lagu => lagu.is_approved === 1).map(lagu => {
+                    All_song = data.filter(lagu => lagu.artis_id === 1).map(lagu => {
                         return {
                             id: lagu.id,
                             judul: lagu.judul,
@@ -221,7 +221,7 @@
                 });
         }
 
-        ambilDataLagu();
+        ambilDataLagu(ArtistId);
         // semua function
 
         // function load the track

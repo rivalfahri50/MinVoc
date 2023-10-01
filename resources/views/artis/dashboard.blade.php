@@ -380,7 +380,7 @@
         });
     </script>
 
-    <script>
+    {{-- <script>
         function redirectArtis(id) {
             $.ajax({
                 url: `/artis/detail-artis/${id}`,
@@ -431,7 +431,7 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(data) {
-                    All_song = data.filter(lagu => lagu.is_approved === 1 ).map(lagu => {
+                    All_song = data.filter(lagu => lagu.is_approved === 1).map(lagu => {
                         return {
                             id: lagu.id,
                             judul: lagu.judul,
@@ -773,8 +773,8 @@
             }
         }
     </script> --}}
-     {{-- lagu bawah --}}
-     <script>
+    {{-- lagu bawah --}}
+    <script>
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
         let next = document.querySelector('#next');

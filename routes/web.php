@@ -238,6 +238,7 @@ Route::controller(SongController::class)->group(function () {
     Route::get('/ambil-lagu', 'ambillagu');
     Route::get('/ambil-lagu-like', 'ambilLikeLagu');
     Route::get('/ambil-lagu-album', 'ambilLaguAlbum');
+    Route::post('/get-lagu-project', 'ambilLaguProject');
     Route::get('/ambil-lagu-playlist', 'ambilLaguPlaylist');
     Route::get('/ambil-lagu-artist/{artistId}', 'ambilLaguArtist');
     Route::post('/update-play-count/{song_id}', 'playCount');
