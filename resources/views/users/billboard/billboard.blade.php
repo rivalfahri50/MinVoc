@@ -60,7 +60,8 @@
                                                     </div>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group">
-                                                            <i id="like-billboard{{ $item->id }}" data-id="{{ $item->id }}"
+                                                            <i id="like-billboard{{ $item->id }}"
+                                                                data-id="{{ $item->id }}"
                                                                 onclick="toggleLike(this, {{ $item->id }})"
                                                                 class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                             <p style="pointer-events: none;">{{ $item->waktu }}</p>
@@ -163,7 +164,8 @@
             justplay();
         }
     </script>
-      <script>
+    
+    <script>
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
         let next = document.querySelector('#next');
@@ -192,7 +194,7 @@
 
         // create a audio element
         let track = document.createElement('audio');
-        const ArtistId = {{$artis_id}};
+        const ArtistId = {{ $artis_id }};
         let All_song = [];
 
         async function ambilDataLagu(ArtistId) {

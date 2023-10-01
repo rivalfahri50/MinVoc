@@ -95,6 +95,54 @@
     </div>
     </div>
     <script>
+        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        $(document).ready(function() {
+            $.ajax({
+                url: `/song/check`,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response);
+                    response.forEach(function(item) {
+                        let songId = item.song_id;
+                        let like = document.getElementById(`like${item.song_id}`);
+                        like.classList.toggle('fas');
+                    })
+                }
+            });
+        });
+
+        function toggleLike(iconElement, songId) {
+            let isLiked = iconElement.classList.contains('fas');
+
+            $.ajax({
+                url: `/song/${songId}/like`,
+                type: 'POST',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        if (isLiked) {
+                            iconElement.classList.remove('fas');
+                            iconElement.classList.add('far');
+                        } else {
+                            iconElement.classList.remove('far');
+                            iconElement.classList.add('fas');
+                        }
+                    }
+                }
+            })
+        }
+
+
+        function updateSongLikeStatus(songId, isLiked) {
+            let likeIcons = document.querySelectorAll(`.shared-icon-like[data-id="${songId}"]`);
+            likeIcons.forEach(likeIcon => {
+                likeIcon.classList.toggle('fas', isLiked);
+                likeIcon.classList.toggle('far', !isLiked);
+            });
+        }
+    </script>
+    <script>
         function togglePlayPause() {
             const playIcon = document.getElementById('playIcon');
 
@@ -115,7 +163,7 @@
             justplay();
         }
     </script>
-      <script>
+       <script>
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
         let next = document.querySelector('#next');
@@ -136,119 +184,22 @@
         let autoplay = 1;
         let playCount = 0;
         let prevVolume;
-        let currentTime = 1;
+        let slider_value = 0;
+
 
         let index_no = 0;
         let Playing_song = false;
 
         // create a audio element
         let track = document.createElement('audio');
-
-
+        const ArtistId = {{ $artis_id }};
         let All_song = [];
 
-        // const playButton = document.getElementById('playButton');
-        // const pauseButton = document.getElementById('pauseButton');
-        // const progress = document.getElementById('progress');
-        // const currentTime = document.getElementById('currentTime');
-        // const duration = document.getElementById('duration');
-
-        // function ambilDataLagu() {
-        // fetch('/ambil-lagu')
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         All_song = data.map(lagu => {
-        //             return {
-        //                 id: lagu.id,
-        //                 judul: lagu.judul,
-        //                 audio: lagu.audio,
-        //                 image: lagu.image,
-        //                 artistId: lagu.artist.user.name
-        //             };
-        //         });
-        //         play_song()
-        //     })
-        //     .catch(error => {
-        //         console.error('Error fetching data:', error);
-        //     });
-        // // }
-
-        // function play_song() {
-        //     const audioUrls = All_song.map(song => song.audio);
-        //     console.log(audioUrls);
-        //     const sound = new Howl({
-        //         src: [
-        //             ['http://127.0.0.1:8000/storage/musics/h0dTC0RQfUHTqfgHm7ncF54rwjo83T94eBdv1pxQ.mp3']
-        //         ],
-        //         html5: true,
-        //         onplay: () => {
-        //             playButton.disabled = true;
-        //             pauseButton.disabled = false;
-        //         },
-        //         onpause: () => {
-        //             playButton.disabled = false;
-        //             pauseButton.disabled = true;
-        //         },
-        //         onend: () => {
-        //             playButton.disabled = false;
-        //             pauseButton.disabled = true;
-        //         },
-        //         onload: () => {
-        //             // The audio file is loaded, so we can update the duration
-        //             duration.textContent = formatTime(sound.duration());
-        //         },
-        //         onseek: () => {
-        //             updateUI();
-        //         }
-        //     });
-
-        //     playButton.addEventListener('click', () => {
-        //         sound.play();
-        //     });
-
-        //     pauseButton.addEventListener('click', () => {
-        //         sound.pause();
-        //     });
-
-        //     sound.on('play', () => {
-        //         // Start a timer to update the progress bar and current time
-        //         updateProgressInterval = setInterval(updateUI, 100);
-        //     });
-
-        //     sound.on('pause', () => {
-        //         // Clear the timer when paused
-        //         clearInterval(updateProgressInterval);
-        //     });
-
-        //     progress.addEventListener('input', () => {
-        //         const seekTime = (progress.value / 100) * sound.duration();
-        //         sound.seek(seekTime);
-        //         updateUI();
-        //     });
-
-        //     let updateProgressInterval;
-
-        //     function updateUI() {
-        //         const currentTimeValue = sound.seek();
-        //         const durationValue = sound.duration();
-
-        //         const percentage = (currentTimeValue / durationValue) * 100;
-        //         progress.value = isNaN(percentage) ? 0 : percentage;
-        //         currentTime.textContent = formatTime(currentTimeValue);
-        //     }
-
-        //     function formatTime(seconds) {
-        //         const minutes = Math.floor(seconds / 60);
-        //         const remainingSeconds = Math.floor(seconds % 60);
-        //         return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
-        //     }
-        // }
-
-        async function ambilDataLagu() {
+        async function ambilDataLagu(ArtistId) {
             await fetch('/ambil-lagu')
                 .then(response => response.json())
                 .then(data => {
-                    All_song = data.map(lagu => {
+                    All_song = data.filter(lagu => lagu.artis_id === 1).map(lagu => {
                         return {
                             id: lagu.id,
                             judul: lagu.judul,
@@ -257,6 +208,7 @@
                             artistId: lagu.artist.user.name
                         };
                     });
+                    console.log(All_song);
                     if (All_song.length > 0) {
                         // Memanggil load_track dengan indeks 0 sebagai lagu pertama
                         load_track(0);
@@ -269,9 +221,8 @@
                 });
         }
 
-        console.log("audio media -> ", slider);
-
-        ambilDataLagu();
+        ambilDataLagu(ArtistId);
+        // semua function
 
         // function load the track
         function load_track(index_no) {
@@ -283,12 +234,11 @@
                 track_image.src = '{{ asset('storage') }}' + '/' + All_song[index_no].image;
                 track.load();
                 timer = setInterval(range_slider, 1000);
+
             } else {
-                console.log(All_song.length);
                 console.error("Index_no tidak valid.");
             }
         }
-
         load_track(0);
 
         // fungsi mute sound
@@ -303,7 +253,6 @@
             }
             updateMuteButtonIcon();
         }
-
         // fungsi untuk memeriksa lagu diputar atau tidak
         function justplay() {
             if (Playing_song == false) {
@@ -333,11 +282,9 @@
             // Periksa apakah index_no memiliki nilai yang benar
             if (index_no >= 0 && index_no < All_song.length) {
                 // Perbarui playCount dengan songId yang sesuai
-                let songId = All_song[index_no].id;
+                const songId = All_song[index_no].id;
                 console.log(All_song[index_no])
                 updatePlayCount(songId);
-                history(songId);
-
             }
             track.addEventListener('timeupdate', updateDuration);
             playCount++;
@@ -379,10 +326,12 @@
                 },
                 error: function(xhr, status, error) {
                     console.error('Error saat mengirim riwayat:', error);
+
+                    // Tambahkan ini untuk mencetak pesan kesalahan dari respons server
+                    // console.log('Pesan Kesalahan Server:', xhr.responseText);
                 }
             });
         }
-
         shuffleButton.addEventListener('click', function() {
             shuffle_song();
         });
@@ -391,10 +340,6 @@
         function shuffle_song() {
             let currentIndex = All_song.length,
                 randomIndex, temporaryValue;
-
-            if (track.paused === false) {
-                track.pause();
-            }
 
             // Selama masih ada elemen untuk diacak
             while (currentIndex !== 0) {
@@ -413,6 +358,7 @@
             load_track(index_no);
             playsong();
         }
+
         // pause song
         function pausesong() {
             track.pause();
@@ -423,10 +369,10 @@
         function putar(id) {
             console.log('ID yang dikirim:', id);
             id = id - 1;
-            let lagu = All_song[id];
+            const lagu = All_song[id];
             // alert(All_song.length - 1 + " " + id);
             if (lagu) {
-                let new_index_no = All_song.indexOf(lagu);
+                const new_index_no = All_song.indexOf(lagu);
                 if (new_index_no >= 0) {
                     index_no = new_index_no;
                     load_track(id);
@@ -439,6 +385,7 @@
             } else {
                 console.error('Lagu dengan ID ' + id + ' tidak ditemukan dalam data lagu.');
             }
+
         }
 
         track.addEventListener('ended', function() {
@@ -480,17 +427,19 @@
             track.volume = recent_volume.value / 100;
         }
 
+        // ubah posisi slider
+        // Fungsi untuk mengubah posisi slider
         function change_duration() {
-            let slider_value = parseInt(slider.value);
+            let slider_value = slider.value;
             if (!isNaN(track.duration) && isFinite(slider_value)) {
-                // track.duration * (slider_value / 100);
-                // console.log(slider);
-                slider.currentTime = track.duration * (slider_value / 100);
-                console.log(slider.currentTime);
+                track.currentTime = track.duration * (slider_value / 100);
+                console.log(track.duration * (slider_value / 100), slider_value, track.currentTime)
+
             }
         }
 
-        slider.addEventListener('click', function() {
+        slider.addEventListener('input', function() {
+            slider_value = parseInt(slider_value);
             change_duration();
             clearInterval(timer);
             Playing_song = true;
@@ -502,13 +451,17 @@
         // range slider
         function range_slider() {
             let position = 0;
+            // memperbaharui posisi slider
             if (!isNaN(track.duration)) {
                 position = track.currentTime * (100 / track.duration);
                 slider.value = position;
+                // console.log(track.duration);
             }
             if (track.ended) {
                 play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>';
                 if (autoplay == 1) {
+                    const songId = All_song[index_no].id;
+                    history(songId);
                     index_no += 1;
                     load_track(index_no);
                     playsong();
@@ -516,10 +469,10 @@
             }
 
             // kalkulasi waktu dari durasi audio
-            let durationElement = document.getElementById('duration');
-            let durationMinutes = Math.floor(track.duration / 60);
-            let durationSeconds = Math.floor(track.duration % 60);
-            let formattedDuration = `${durationMinutes}:${durationSeconds < 10 ? '0' : ''}${durationSeconds}`;
+            const durationElement = document.getElementById('duration');
+            const durationMinutes = Math.floor(track.duration / 60);
+            const durationSeconds = Math.floor(track.duration % 60);
+            const formattedDuration = `${durationMinutes}:${durationSeconds < 10 ? '0' : ''}${durationSeconds}`;
             durationElement.textContent = formattedDuration;
         }
 
@@ -538,13 +491,13 @@
         // Fungsi untuk mengupdate durasi waktu (waktu berjalan sesuai real time)
         function updateDuration() {
             // Menghitung durasi waktu yang telah berlalu
-            let currentMinutes = Math.floor(track.currentTime / 60);
-            let currentSeconds = Math.floor(track.currentTime % 60);
+            const currentMinutes = Math.floor(track.currentTime / 60);
+            const currentSeconds = Math.floor(track.currentTime % 60);
             // Memformat durasi waktu yang akan ditampilkan
-            let formattedCurrentTime = `${currentMinutes}:${currentSeconds < 10 ? '0' : ''}${currentSeconds}`;
+            const formattedCurrentTime = `${currentMinutes}:${currentSeconds < 10 ? '0' : ''}${currentSeconds}`;
             // console.log(formattedCurrentTime);
             // Menampilkan durasi waktu pada elemen yang sesuai
-            let currentTimeElement = document.getElementById('current-time');
+            const currentTimeElement = document.getElementById('current-time');
             currentTimeElement.textContent = formattedCurrentTime;
         }
 
@@ -566,13 +519,11 @@
             let slider_value = recent_volume.value / 100;
             track.volume = slider_value;
 
-
             // Update mute button icon and volume display
             updateMuteButtonIcon();
             volume_show.innerHTML = Math.round(slider_value * 100);
         });
 
-        console.log("SLIDER VALUE ->" + recent_volume);
 
         // Function to update mute button icon
         function updateMuteButtonIcon() {

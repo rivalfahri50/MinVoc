@@ -484,11 +484,12 @@ class ArtistController extends Controller
     {
         $title = "MusiCave";
         $billboard = billboard::where('code', $code)->first();
+        $artis_id = $billboard->artis_id;
         $albums = album::where('artis_id', $billboard->artis_id)->get();
         $songs = song::all();
         $playlists = playlist::all();
         $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
-        return response()->view('artis.billboard.billboard', compact('title', 'billboard', 'albums', 'songs', 'playlists', 'notifs'));
+        return response()->view('artis.billboard.billboard', compact('title', 'billboard','artis_id', 'albums', 'songs', 'playlists', 'notifs'));
     }
 
     protected function albumBillboard(string $code): Response

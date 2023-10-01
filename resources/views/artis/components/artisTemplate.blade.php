@@ -766,7 +766,7 @@
                 }
             </script>
 
-            <script>
+            {{-- <script>
                 var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                 $(document).ready(function() {
                     $.ajax({
@@ -864,7 +864,7 @@
                         likeIcon.classList.toggle('far', !isLiked);
                     });
                 }
-            </script>
+            </script> --}}
 
 
             {{-- <script>
