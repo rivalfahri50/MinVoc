@@ -61,12 +61,7 @@
 
                 "order": [],
 
-                'columnDefs': [{
-                    'targets': [2],
-                    'orderable': false,
-                }],
-
-                "bStateSave": true,
+                "ordering": false,
 
                 "language": {
                     "sProcessing": "Sedang memproses...",

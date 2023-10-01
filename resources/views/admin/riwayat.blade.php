@@ -77,6 +77,10 @@
 
                 "order": [],
 
+                "bStateSave": true,
+
+                "ordering": false,
+
                 "language": {
                     "sProcessing": "Sedang memproses...",
                     "sLengthMenu": "Tampilkan _MENU_ entri",
@@ -93,19 +97,7 @@
                         "sNext": "&#8594;",
                         "sLast": "Terakhir"
                     }
-                },
-
-                "bStateSave": true,
-
-                'columnDefs': [{
-
-                    'targets': [3],
-                    /* column index */
-
-                    'orderable': false,
-                    /* true or false */
-
-                }]
+                }
             });
         });
     </script>

@@ -104,10 +104,7 @@
 
                 "order": [],
 
-                'columnDefs': [{
-                    'targets': [2],
-                    'orderable': false,
-                }],
+                "ordering": false,
 
                 "bStateSave": true,
 
