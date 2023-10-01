@@ -71,12 +71,9 @@
                         <table class="table table-sortable" id="myTable">
                             <thead>
                                 <tr class="table-row table-header">
-                                    <th class="table-cell" data-sortable="true">Jumlah <i class="fas fa-sort"
-                                            data-order="asc"></th>
-                                    <th class="table-cell" data-sortable="true">Penghasilan <i class="fas fa-sort"
-                                            data-order="asc"></th>
-                                    <th class="table-cell" data-sortable="true">Tanggal <i class="fas fa-sort"
-                                            data-order="asc"></th>
+                                    <th class="table-cell" data-sortable="true">Jumlah</th>
+                                    <th class="table-cell" data-sortable="true">Penghasilan</th>
+                                    <th class="table-cell" data-sortable="true">Tanggal</th>
                                 </tr>
                             </thead>
                             @if (session('results'))
@@ -144,7 +141,6 @@
     </div>
 
 
-    <script src="/user/assets/js/tablesort.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>

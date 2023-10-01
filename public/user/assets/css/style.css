@@ -15959,7 +15959,9 @@ input[type="button"].btn-block {
 .jsgrid .jsgrid-pager .jsgrid-pager-page a:focus {
   z-index: 3;
   outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(149, 125, 173, 0.25);
+  box-shadow: 0 0 10px 0 rgb(119 76 161 / 25%);
+  color: #957DAD;
+  background: inherit;
 }
 
 /*>>> DISINI WARNA OTHER:klik PAGINATION <<<*/

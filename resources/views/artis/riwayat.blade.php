@@ -2,17 +2,18 @@
 
 @section('content')
     <div class="main-panel">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
         <link rel="stylesheet" href="/user/assets/css/riwayat.css">
         <div class="content-wrapper">
             <div class="row">
                 <div class="col-lg-12 grid-margin stretch-card">
                     <div class="table-container">
-                        <table class="table table-sortable">
+                        <table id="jstabel" class="table">
                             <thead>
                                 <tr class="table-row table-header">
-                                    <th class="table-cell">Artis <i class="fas fa-sort" data-order="asc"></th>
-                                    <th class="table-cell">Kategori <i class="fas fa-sort" data-order="asc"></th>
-                                    <th class="table-cell">Tanggal <i class="fas fa-sort" data-order="asc"></th>
+                                    <th class="table-cell">Lagu</th>
+                                    <th class="table-cell">Kategori</th>
+                                    <th class="table-cell">Tanggal</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -32,17 +33,11 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="text-center">
-                        <div class="text-center">
-                            <ul class="pagination justify-content-center">
-                            </ul>
-                        </div>
-                    </div>
                 </div>
                 @if (count($uniqueRows) === 0)
                     <div style="justify-content: center; display: flex; padding: 50px 0;">
                         <img width="400" height="200" src="/user/assets/images/logo-user.svg" alt=""
-                                srcset="">
+                            srcset="">
                     </div>
                 @endif
             </div>
@@ -52,116 +47,49 @@
     </div>
 
 
-    <script src="/user/assets/js/tablesort.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
     <script>
-        $(document).ready(function() {
-            var itemsPerPage = 5;
+        jQuery.noConflict();
 
-            // Fungsi untuk menyimpan halaman saat ini ke local storage
-            function saveCurrentPageToLocalStorage(page) {
-                localStorage.setItem("currentPage", page);
-            }
+        jQuery(document).ready(function($) {
+            $('#jstabel').DataTable({
+                "lengthMenu": [
+                    [5, 10, 15, -1],
+                    [5, 10, 15, "All"]
+                ],
+                "pageLength": 5,
 
-            // Fungsi untuk mendapatkan halaman saat ini dari local storage
-            function getCurrentPageFromLocalStorage() {
-                return parseInt(localStorage.getItem("currentPage")) || 1;
-            }
+                "order": [],
 
-            // Mendapatkan halaman saat ini dari local storage atau default ke 1
-            var currentPage = getCurrentPageFromLocalStorage();
+                'columnDefs': [{
+                    'targets': [2],
+                    'orderable': false,
+                }],
 
-            function showTableRows() {
-                var start = (currentPage - 1) * itemsPerPage;
-                var end = start + itemsPerPage;
-                $(".baris").hide();
-                $(".baris").slice(start, end).show();
-            }
+                "bStateSave": true,
 
-            function updatePagination() {
-                $(".pagination").empty();
-                var numPages = Math.ceil($(".baris").length / itemsPerPage);
-
-                var maxPaginationPages = 3; // Jumlah maksimum halaman pagination yang ditampilkan
-
-                // Menentukan halaman pertama yang akan ditampilkan
-                var startPage = Math.max(currentPage - Math.floor(maxPaginationPages / 2), 1);
-
-                // Menentukan halaman terakhir yang akan ditampilkan
-                var endPage = Math.min(startPage + maxPaginationPages - 1, numPages);
-
-                // Tambahkan tombol "Previous" jika ada halaman sebelumnya
-                if (currentPage > 1) {
-                    var prevButton = $("<a>")
-                        .addClass("page-item")
-                        .addClass("page-link")
-                        .attr("href", "#");
-
-                    var prevIcon = $("<i>").addClass("fa fa-chevron-left");
-                    prevButton.append(prevIcon);
-
-                    prevButton.click(function(event) {
-                        event.preventDefault(); // Menghentikan tindakan default
-                        currentPage--;
-                        showTableRows();
-                        updatePagination();
-                        saveCurrentPageToLocalStorage(currentPage);
-                    });
-
-                    $(".pagination").append($("<li>").append(prevButton));
+                "language": {
+                    "sProcessing": "Sedang memproses...",
+                    "sLengthMenu": "Tampilkan _MENU_ entri",
+                    "sZeroRecords": "Tidak ditemukan Data",
+                    "sInfo": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                    "sInfoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
+                    "sInfoFiltered": "(disaring dari _MAX_ entri keseluruhan)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Cari:",
+                    "sUrl": "",
+                    "oPaginate": {
+                        "sFirst": "Pertama",
+                        "sPrevious": "&#8592;",
+                        "sNext": "&#8594;",
+                        "sLast": "Terakhir"
+                    }
                 }
-
-                for (var i = startPage; i <= endPage; i++) {
-                    var activeClass = i === currentPage ? "active" : "";
-                    var button = $("<a>")
-                        .addClass("page-item " + activeClass)
-                        .addClass("page-link")
-                        .attr("href", "#");
-
-                    button.text(i);
-
-                    button.click(function(event) {
-                        event.preventDefault(); // Menghentikan tindakan default
-                        currentPage = parseInt($(this).text());
-                        showTableRows();
-                        updatePagination();
-                        saveCurrentPageToLocalStorage(currentPage);
-                    });
-
-                    $(".pagination").append($("<li>").append(button));
-                }
-
-                // Tambahkan tombol "Next" jika ada lebih banyak halaman
-                if (currentPage < numPages) {
-                    var nextButton = $("<a>")
-                        .addClass("page-item")
-                        .addClass("page-link")
-                        .attr("href", "#");
-
-                    var nextIcon = $("<i>").addClass("fa fa-chevron-right");
-                    nextButton.append(nextIcon);
-
-                    nextButton.click(function(event) {
-                        event.preventDefault(); // Menghentikan tindakan default
-                        currentPage++;
-                        showTableRows();
-                        updatePagination();
-                        saveCurrentPageToLocalStorage(currentPage);
-                    });
-
-                    $(".pagination").append($("<li>").append(nextButton));
-                }
-
-                if (numPages <= 1) {
-                    $(".pagination").hide();
-                }
-            }
-
-            showTableRows();
-            updatePagination();
-
-            saveCurrentPageToLocalStorage(currentPage); // Simpan halaman saat ini ke local storage
+            });
         });
     </script>
 @endsection

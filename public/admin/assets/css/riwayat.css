@@ -24,11 +24,6 @@
 
 /*---- style INTI untuk table ----*/
 
-.table-container {
-    max-width: 100%;
-    overflow-x: auto;
-}
-
 .table {
     display: flex;
     flex-direction: column;
@@ -94,7 +89,7 @@
 .table-container {
     position: relative;
     max-width: 100%;
-    overflow-x: auto;
+    margin-bottom: 20px;
 }
 
 .table-header {
@@ -103,11 +98,6 @@
     background-color: #957dad;
     color: white;
     z-index: 1;
-}
-
-
-.table-container {
-    margin-bottom: 20px;
 }
 
 .table-sortable th {
@@ -189,4 +179,17 @@
 
 .pagination li:hover {
     background-color: #ddd;
+}
+
+.pagination li:hover {
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0 rgba(199,199,199,1);
+}
+
+table.dataTable>tbody>tr {
+    background-color: #eaeaea;
+
+    /* untuk data tidak ada */
+    display: flex;
+    justify-content: center;
 }
