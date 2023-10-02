@@ -160,11 +160,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($song as $item)
+                                @foreach ($song as $no => $item)
                                     @if ($item->is_approved)
                                         <tr class="table-row baris" data-href="#lagu-diputar"
                                             onclick="putar({{ $item->id }})">
-                                            <td class="table-cell" scope="row">1</td>
+                                            <td class="table-cell" scope="row">{{ $no + 1}}</td>
                                             <td class="table-cell">
                                                 <div class="fototabelsejajar">
                                                     <img src="{{ asset('storage/' . $item->image) }}">

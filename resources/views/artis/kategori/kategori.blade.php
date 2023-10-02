@@ -49,10 +49,9 @@
                                                         </a>
                                                         <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                             <div class="text-group">
-                                                                <i id="like-genre{{ $item->id }}"
-                                                                    data-id="{{ $item->id }}"
+                                                                <i id="like-3{{ $item->id }}" data-id="{{ $item->id }}"
                                                                     onclick="toggleLike(this, {{ $item->id }})"
-                                                                    class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
+                                                                    class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2">
                                                                 </i>
                                                                 <p>{{ $item->waktu }}</p>
                                                             </div>
@@ -72,6 +71,7 @@
     </div>
     </div>
     </div>
+
     <script>
         var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         $(document).ready(function() {
@@ -80,18 +80,19 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
-                    console.log(response);
                     response.forEach(function(item) {
-                        let songId = item.song_id;
-                        let like = document.getElementById(`like-genre${item.song_id}`);
-                        like.classList.toggle('fas');
+                        const songId = item.song_id;
+                        const like = document.getElementById(`like-3${item.song_id}`);
+                        if (like) {
+                            like.classList.toggle('fas');
+                        }
                     })
                 }
             });
         });
 
         function toggleLike(iconElement, songId) {
-            let isLiked = iconElement.classList.contains('fas');
+            const isLiked = iconElement.classList.contains('fas');
 
             $.ajax({
                 url: `/song/${songId}/like`,
@@ -113,14 +114,13 @@
 
 
         function updateSongLikeStatus(songId, isLiked) {
-            let likeIcons = document.querySelectorAll(`.shared-icon-like[data-id="${songId}"]`);
+            const likeIcons = document.querySelectorAll(`.shared-icon-like[data-id="${songId}"]`);
             likeIcons.forEach(likeIcon => {
                 likeIcon.classList.toggle('fas', isLiked);
                 likeIcon.classList.toggle('far', !isLiked);
             });
         }
     </script>
-
 
     {{-- script audio player berdasarkan genrenya --}}
     <script>
