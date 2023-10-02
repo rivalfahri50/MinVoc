@@ -32,7 +32,7 @@ class AdminController extends Controller
     {
         $title = "MusiCave";
         $totalPengguna = User::where('role_id', 3)->count();
-        $totalLagu = song::count();
+        $totalLagu = song::where('is_approved', 1)->count();
         $totalArtist = artist::count();
         $songs = song::all();
         $adminId = admin::where('id', 1)->first()->id;
@@ -272,7 +272,7 @@ class AdminController extends Controller
             [
                 'code' => Str::uuid(),
                 'artis_id' => $song->artis_id,
-                'title' => $song->judul . "di setujui oleh admin",
+                'title' => $song->judul . " di setujui oleh admin",
                 'user_id' => $user->id,
                 'is_reject' => false
             ]
@@ -588,31 +588,32 @@ class AdminController extends Controller
             [
                 'code' => Str::uuid(),
                 'title' => $music->judul . " ditolak oleh admin",
-                'user_id' => $user->id,
+                'user_id' => $user->user_id,
                 'is_reject' => false
             ]
         );
+
+        if (!$music) {
+            return redirect()->back()->with('error', 'Record not found.');
+        }
+
+        if (Storage::disk('public')->exists($music->audio)) {
+            Storage::disk('public')->delete($music->audio);
+        }
+
+        if (Storage::disk('public')->exists($music->image)) {
+            Storage::disk('public')->delete($music->image);
+        }
+
+        $music->delete();
         try {
 
-            if (!$music) {
-                return redirect()->back()->with('error', 'Record not found.');
-            }
-
-            if (Storage::disk('public')->exists($music->audio)) {
-                Storage::disk('public')->delete($music->audio);
-            }
-
-            if (Storage::disk('public')->exists($music->image)) {
-                Storage::disk('public')->delete($music->image);
-            }
-
-            $music->delete();
         } catch (\Throwable $th) {
             Alert::warning('message', 'Lagu Sedang Digunakan');
             return redirect()->back()->with('error', 'Failed to delete record.');
         }
 
-        Alert::success('message', 'Success Menghapus');
+        Alert::success('message', 'Success Menolak Lagu');
         return redirect()->back()->with('success', 'Record deleted successfully.');
     }
 

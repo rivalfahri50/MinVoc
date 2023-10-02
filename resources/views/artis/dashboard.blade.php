@@ -183,6 +183,7 @@
                         </div>
                     </div>
                 </div>
+                // coba script js di letakan di sini.
             </div>
         </div>
     </div>
@@ -244,7 +245,6 @@
                 }
             })
         }
-
 
         function updateSongLikeStatus(songId, isLiked) {
             let likeIcons = document.querySelectorAll(`.shared-icon-like[data-id="${songId}"]`);
@@ -450,7 +450,7 @@
         });
     </script>
 
-    {{-- <script>
+    <script>
         function redirectArtis(id) {
             $.ajax({
                 url: `/artis/detail-artis/${id}`,
@@ -463,7 +463,9 @@
                 },
             });
         }
+    </script>
 
+    {{-- <script>
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
         let next = document.querySelector('#next');

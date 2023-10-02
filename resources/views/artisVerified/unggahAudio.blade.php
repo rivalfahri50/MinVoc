@@ -113,7 +113,7 @@
                                         <td class="table-cell">{{ $item->genre->name }}</td>
                                         <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
                                         <td class="table-cell {{ $item->is_approved == 0 ? 'text-warning' : 'text-success' }}"
-                                            style="font-weight: 600">
+                                            style="font-weight: 400">
                                             {{ $item->is_approved == 0 ? 'Menunggu' : 'Telah Terbit' }}</td>
                                     </tr>
                                 @endIf
@@ -121,12 +121,18 @@
                         </tbody>
                     </table>
                 </div>
-                @if (count($datas) == 0)
+                @php
+                    $filteredData = $datas->filter(function ($item) use ($artis) {
+                        return $item->artis_id == $artis->id && ($item->is_approved == true || $item->is_approved == false);
+                    });
+                @endphp
+
+                @if ($filteredData->count() == 0)
                     <table>
-                        <span
-                            style="display: flex; justify-content: center; margin-top: 14px; margin-bottom: 4px; font-size: 14px; color: #4f4f4f">
-                            Tidak ada dalam history pencairan dana.
-                        </span>
+                        <div style="justify-content: center; display: flex; padding: 50px 0;">
+                            <img width="400" height="200" src="/user/assets/images/logo-user.svg" alt=""
+                                srcset="">
+                        </div>
                     </table>
                 @endif
                 <div class="text-center">

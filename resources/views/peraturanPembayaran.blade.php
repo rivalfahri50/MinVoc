@@ -115,11 +115,6 @@
             <div class="row">
                 <div class="col-md-12">
                     <h3 class="judul">Atur Pembayaran</h3>
-                    {{-- <span style="font-size: 14px; margin-bottom: 10px">
-                        Di Musicave, kami menerapkan aturan pembayaran yang adil untuk kolaborasi. Riwayat musik Anda adalah
-                        kumpulan perjalanan musikal Anda yang memukau. Dan yang terbaik, Anda dapat dengan mudah mengunggah
-                        karya musik orisinal Anda untuk menciptakan hubungan yang lebih dalam dengan para penggemar Anda.
-                    </span> --}}
                     <div class="card mb-3">
                         <div class="card-body">
                             <form action="{{ route('peraturan') }}" method="post" enctype="multipart/form-data">
@@ -204,21 +199,23 @@
                                                         data-bs-target="#edit-{{ $item->code }}">
                                                         <i class="far fa-edit text-primary"></i>
                                                     </button>
-                                                    {{-- <button class="btn btnicon confirmButtonReject" type="submit"> --}}
                                                     <a class="btn btnicon confirmButtonReject"
                                                         href="/admin/delete-pencairan/{{ $item->code }}">
                                                         <i class="far fa-times-circle text-danger"></i>
                                                     </a>
-                                                    {{-- <form method="GET"
-                                                            action="/admin/pencairan-reject/{{ $item->id }}">
-                                                            @csrf --}}
-                                                    {{-- </form> --}}
-                                                    {{-- </button> --}}
                                                 </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
+                                {{-- @if (count($tipePembayaran) == 0)
+                                    <table class="py-3">
+                                        <span
+                                            style="display: flex; justify-content: center; margin-top: 14px; margin-bottom: 4px; font-size: 14px; color: #4f4f4f">
+                                            Peraturan masih belum dibuat.
+                                        </span>
+                                    </table>
+                                @endif --}}
                             </div>
                         </div>
                     </div>

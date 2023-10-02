@@ -403,6 +403,7 @@ class ArtistController extends Controller
         $artis = artist::where('user_id', auth()->user()->id)->first();
         $genres = genre::all();
         $albums = album::all();
+        // dd($datas->where('artis_id', $artis->id)->where('is_approved', true)->orWhere('is_approved', false));
         $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
         return response()->view('artis.unggahAudio', compact('title', 'datas', 'genres', 'albums', 'artis', 'notifs'));
     }
@@ -489,7 +490,7 @@ class ArtistController extends Controller
         $songs = song::all();
         $playlists = playlist::all();
         $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
-        return response()->view('artis.billboard.billboard', compact('title', 'billboard','artis_id', 'albums', 'songs', 'playlists', 'notifs'));
+        return response()->view('artis.billboard.billboard', compact('title', 'billboard', 'artis_id', 'albums', 'songs', 'playlists', 'notifs'));
     }
 
     protected function albumBillboard(string $code): Response
