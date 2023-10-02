@@ -228,20 +228,20 @@ class penggunaController extends Controller
     {
         $title = "MusiCave";
         $playlists = playlist::all();
-        $song = song::where('judul', 'like', '%' .  $request->input('search') . '%')->first();
-        $user = user::where('name', 'like', '%' .  $request->input('search') . '%')->first();
+        $user = user::where('code', 'like', '%' .  $code . '%')->first();
+        $song = song::where('code', 'like', '%' .  $code . '%')->first();
         $totalDidengar = DB::table('riwayat')->where('user_id', auth()->user()->id)->sum('song_id');
         $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
 
         if ($song) {
             $songs = song::all();
             $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
-            return view('artis.search.songSearch', compact('song', 'title', 'songs', 'playlists', 'notifs'));
+            return view('users.search.songSearch', compact('song', 'title', 'songs', 'playlists', 'notifs'));
         } else if ($user) {
             $artis = artist::where('user_id', $user->id)->first();
             $songs = song::where('artis_id', $artis->id)->get();
             $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
-            return view('artis.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
+            return view('users.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
         } else {
             return response()->view('users.searchNotFound', compact('title', 'notifs'));
         }

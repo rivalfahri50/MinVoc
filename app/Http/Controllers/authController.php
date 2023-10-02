@@ -235,7 +235,7 @@ class authController extends Controller
 
     protected function logout()
     {
-        User::where('id', auth()->user()->id)->update(['is_login' => true]);
+        User::where('id', auth()->user()->id)->update(['is_login' => false]);
         try {
             Auth::logout();
         } catch (\Throwable $th) {

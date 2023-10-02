@@ -206,7 +206,7 @@
                                         </tr>
                                     </thead>
                                     @if (session('results'))
-                                        @if (session('results'))
+                                        @if (count(session('results')) >= 1)
                                             <tbody>
                                                 @foreach (session('results')->reverse() as $item)
                                                     <tr class="table-row baris">
@@ -218,13 +218,13 @@
                                                             </div>
                                                         </td>
                                                         <td class="table-cell">{{ $item->status }}</td>
-                                                        <td class="table-cell">
-                                                            {{ $item->created_at->format('j F Y') }}</td>
+                                                        <td class="table-cell">{{ $item->created_at->format('j F Y') }}
+                                                        </td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
                                         @else
-                                            <table class="py-3">
+                                            <table>
                                                 <span
                                                     style="display: flex; justify-content: center; margin-top: 14px; margin-bottom: 4px; font-size: 14px; color: #4f4f4f">
                                                     Tidak ada dalam history pencairan dana.

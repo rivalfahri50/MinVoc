@@ -402,7 +402,7 @@ class ArtistController extends Controller
         $datas = song::with('artist')->get();
         $artis = artist::where('user_id', auth()->user()->id)->first();
         $genres = genre::all();
-        $albums = album::all();
+        $albums = album::with('artis')->get();
         $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
         return response()->view('artis.unggahAudio', compact('title', 'datas', 'genres', 'albums', 'artis', 'notifs'));
     }
@@ -489,7 +489,7 @@ class ArtistController extends Controller
         $songs = song::all();
         $playlists = playlist::all();
         $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
-        return response()->view('artis.billboard.billboard', compact('title', 'billboard','artis_id', 'albums', 'songs', 'playlists', 'notifs'));
+        return response()->view('artis.billboard.billboard', compact('title', 'billboard', 'artis_id', 'albums', 'songs', 'playlists', 'notifs'));
     }
 
     protected function albumBillboard(string $code): Response
@@ -583,7 +583,6 @@ class ArtistController extends Controller
         $totalDidengar = DB::table('riwayat')->where('user_id', auth()->user()->id)->sum('song_id');
         $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
 
-
         if ($song) {
             $songs = song::all();
             $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
@@ -619,8 +618,8 @@ class ArtistController extends Controller
     {
         $title = "MusiCave";
         $playlists = playlist::all();
-        $song = song::where('judul', 'like', '%' .  $request->input('search') . '%')->first();
-        $user = user::where('name', 'like', '%' .  $request->input('search') . '%')->first();
+        $user = user::where('code', 'like', '%' .  $code . '%')->first();
+        $song = song::where('code', 'like', '%' .  $code . '%')->first();
         $totalDidengar = DB::table('riwayat')->where('user_id', auth()->user()->id)->sum('song_id');
         $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
 

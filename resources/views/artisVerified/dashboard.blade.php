@@ -252,10 +252,10 @@
                                             </td>
                                             <td class="table-cell">{{ number_format($item->didengar, 0, ',', '.') }}</td>
                                             <td class="table-cell"> <i id="like-bawah{{ $item->id }}"
-                                                data-id="{{ $item->id }}"
-                                                onclick="toggleLike(this, {{ $item->id }})"
-                                                class="shared-icon-like {{ $item->isLiked == '1' ? 'fas' : 'far' }} fa-heart pr-2"></i>
-                                            {{ $item->waktu }}</td>
+                                                    data-id="{{ $item->id }}"
+                                                    onclick="toggleLike(this, {{ $item->id }})"
+                                                    class="shared-icon-like {{ $item->isLiked == '1' ? 'fas' : 'far' }} fa-heart pr-2"></i>
+                                                {{ $item->waktu }}</td>
                                         </tr>
                                     @endIf
                                 @endforeach
@@ -629,7 +629,8 @@
         }
     </script>
 
-    {{-- <script>
+    {{-- untuk detail artis --}}
+    <script>
         function redirectArtis(id) {
             $.ajax({
                 url: `/artis-verified/detail-artis/${id}`,
@@ -642,7 +643,9 @@
                 },
             });
         }
+    </script>
 
+    {{-- <script>
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
         let next = document.querySelector('#next');
