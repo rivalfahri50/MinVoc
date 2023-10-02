@@ -172,10 +172,12 @@
                                     </h3>
                                     <div style="display: flex; flex-direction: row; gap: 5px; align-items: center">
                                         <span>
-                                            <img src="{{ asset('storage/' . $playlistDetail->user->avatar) }}" class="avatarpembuat">
+                                            <img src="{{ asset('storage/' . $playlistDetail->user->avatar) }}"
+                                                class="avatarpembuat">
                                         </span>
-                                        <p class="m-0" style="font-weight: 300; font-size: 16px">{{ $playlistDetail->user->name }}
-                                        </div>
+                                        <p class="m-0" style="font-weight: 300; font-size: 16px">
+                                            {{ $playlistDetail->user->name }}
+                                    </div>
                                     </p>
                                 </div>
                             </div>
@@ -187,7 +189,8 @@
                 <hr class="divider"> <!-- Divider -->
             </div>
             <div class="col-md-12 grid-margin stretch-card">
-                <h3 class="card-title judul">{{ $playlistDetail->deskripsi == 'none' ? '' : "$playlistDetail->deskripsi" }}</h3>
+                <h3 class="card-title judul">{{ $playlistDetail->deskripsi == 'none' ? '' : "$playlistDetail->deskripsi" }}
+                </h3>
                 <form class="col-6 mb-4 p-0 nav-link search">
                     <input type="text" id="search_song" class="form-control rounded-4" placeholder="Cari musik">
                     <ul id="search-results-song"></ul>
@@ -211,10 +214,10 @@
                                                     </a>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group">
-                                                            <i id="audio-player-like-icon like"
+                                                            <i id="like-playlist{{ $item->id }}"
                                                                 data-id="{{ $item->id }}"
                                                                 onclick="toggleLike(this, {{ $item->id }})"
-                                                                class="shared-icon-like {{ $item->likes > 0 ? 'fas' : 'far' }} fa-heart pr-2"></i>
+                                                                class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                             <p>{{ $item->waktu }}</p>
                                                             @if (count($playlists) > 0)
                                                                 <a data-bs-toggle="modal"
@@ -335,6 +338,58 @@
             reader.readAsDataURL(this.files[0]);
         });
     </script>
+
+    <script>
+        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        $(document).ready(function() {
+            $.ajax({
+                url: `/song/check`,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    console.log('like pada playlist',response);
+                    response.forEach(function(item) {
+                        const songId = item.song_id;
+                        const like = document.getElementById(`like-playlist${item.song_id}`);
+                        if (like) {
+                            like.classList.toggle('fas');
+                        }
+                    })
+                }
+            });
+        });
+
+        function toggleLike(iconElement, songId) {
+            const isLiked = iconElement.classList.contains('fas');
+
+            $.ajax({
+                url: `/song/${songId}/like`,
+                type: 'POST',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        if (isLiked) {
+                            iconElement.classList.remove('fas');
+                            iconElement.classList.add('far');
+                        } else {
+                            iconElement.classList.remove('far');
+                            iconElement.classList.add('fas');
+                        }
+                    }
+                }
+            })
+        }
+
+
+        function updateSongLikeStatus(songId, isLiked) {
+            const likeIcons = document.querySelectorAll(`.shared-icon-like[data-id="${songId}"]`);
+            likeIcons.forEach(likeIcon => {
+                likeIcon.classList.toggle('fas', isLiked);
+                likeIcon.classList.toggle('far', !isLiked);
+            });
+        }
+    </script>
+
     <script>
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
@@ -365,10 +420,9 @@
         let track = document.createElement('audio');
         const playlistId = {{ $playlist_id }};
         let All_song = [];
-        console.log("iki lhoooooooooooo", All_song);
 
         function ambilDataLagu(playlistId) {
-            console.log('opo y', playlistId);
+            console.log('id playlist', playlistId);
             $.ajax({
                 url: '/ambil-lagu-playlist',
                 type: 'GET',
@@ -385,7 +439,7 @@
                         };
                     });
                     All_song = All_song.filter(lagu => lagu.playlist_id == playlistId)
-                    console.log("data lagu yang diambil:", All_song);
+                    console.log("data lagu sesuai playlist:", All_song);
                     if (All_song.length > 0) {
                         // Memanggil load_track dengan indeks 0 sebagai lagu pertama
                         load_track(0);

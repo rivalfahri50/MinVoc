@@ -61,10 +61,12 @@
                                     </h3>
                                     <div style="display: flex; flex-direction: row; gap: 5px; align-items: center">
                                         <span>
-                                            <img src="{{ asset('storage/' . $albumDetail->artis->user->avatar) }}" class="avatarpembuat">
+                                            <img src="{{ asset('storage/' . $albumDetail->artis->user->avatar) }}"
+                                                class="avatarpembuat">
                                         </span>
-                                        <p class="m-0" style="font-weight: 300; font-size: 16px">{{ $albumDetail->artis->user->name }}
-                                        </div>
+                                        <p class="m-0" style="font-weight: 300; font-size: 16px">
+                                            {{ $albumDetail->artis->user->name }}
+                                    </div>
                                     </p>
                                     <p style="font-size: 18px;">
                                         {{ $albumDetail->deskripsi == 'none' ? '' : "$albumDetail->deskripsi" }}
@@ -103,7 +105,7 @@
                                                     </a>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group">
-                                                            <i id="like-2{{ $item->id }}"
+                                                            <i id="like-album{{ $item->id }}"
                                                                 data-id="{{ $item->id }}"
                                                                 onclick="toggleLike(this, {{ $item->id }})"
                                                                 class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
@@ -214,6 +216,58 @@
             reader.readAsDataURL(this.files[0]);
         });
     </script>
+
+    <script>
+        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        $(document).ready(function() {
+            $.ajax({
+                url: `/song/check`,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    console.log('like pada album', response);
+                    response.forEach(function(item) {
+                        const songId = item.song_id;
+                        const like = document.getElementById(`like-album${item.song_id}`);
+                        if (like) {
+                            like.classList.toggle('fas');
+                        }
+                    })
+                }
+            });
+        });
+
+        function toggleLike(iconElement, songId) {
+            const isLiked = iconElement.classList.contains('fas');
+
+            $.ajax({
+                url: `/song/${songId}/like`,
+                type: 'POST',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        if (isLiked) {
+                            iconElement.classList.remove('fas');
+                            iconElement.classList.add('far');
+                        } else {
+                            iconElement.classList.remove('far');
+                            iconElement.classList.add('fas');
+                        }
+                    }
+                }
+            })
+        }
+
+
+        function updateSongLikeStatus(songId, isLiked) {
+            const likeIcons = document.querySelectorAll(`.shared-icon-like[data-id="${songId}"]`);
+            likeIcons.forEach(likeIcon => {
+                likeIcon.classList.toggle('fas', isLiked);
+                likeIcon.classList.toggle('far', !isLiked);
+            });
+        }
+    </script>
+
     <script>
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
@@ -245,10 +299,9 @@
 
         const albumId = {{ $album_id }};
         let All_song = [];
-        console.log("iki lhoooooooooooo 23423u", All_song);
 
         function ambilDataLagu(albumId) {
-            console.log('iki opo', albumId);
+            console.log('id album', albumId);
             $.ajax({
                 url: '/ambil-lagu-album',
                 type: 'GET',
@@ -269,7 +322,7 @@
                     });
 
                     All_song_album = All_song.filter(lagu => lagu.album_id == albumId);
-                    console.log(All_song_album);
+                    console.log('lagu pada album',All_song_album);
                     if (All_song.length > 0) {
                         // Memanggil load_track dengan indeks 0 sebagai lagu pertama
                         load_track(0);

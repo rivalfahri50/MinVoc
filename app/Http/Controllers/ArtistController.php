@@ -603,6 +603,7 @@ class ArtistController extends Controller
         $title = 'MusiCave';
         try {
             $artis = artist::where('code', $code)->first();
+            $artis_id = $artis->id;
             $user = User::where('id', $artis->user_id)->first();
             $songs = song::where('artis_id', $artis->id)->get();
             $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
@@ -611,7 +612,7 @@ class ArtistController extends Controller
         } catch (\Throwable $th) {
             abort(404);
         }
-        return view('artis.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
+        return view('artis.search.artisSearch', compact('user','artis_id','title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
     }
 
     public function search_result(Request $request, string $code)

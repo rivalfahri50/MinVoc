@@ -49,7 +49,7 @@
                                                         </a>
                                                         <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                             <div class="text-group">
-                                                                <i id="like{{ $item->id }}"
+                                                                <i id="like-genre{{ $item->id }}"
                                                                     data-id="{{ $item->id }}"
                                                                     onclick="toggleLike(this, {{ $item->id }})"
                                                                     class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
@@ -83,7 +83,7 @@
                     console.log(response);
                     response.forEach(function(item) {
                         let songId = item.song_id;
-                        let like = document.getElementById(`like${item.song_id}`);
+                        let like = document.getElementById(`like-genre${item.song_id}`);
                         like.classList.toggle('fas');
                     })
                 }
@@ -155,7 +155,6 @@
 
         let genreId = {{ $genre_id }};
         let All_song = [];
-        console.log("iki lhoooooooooooo ", All_song);
 
         function ambilDataLagu(genreId) {
             console.log("genreId yang dikirim", genreId);
@@ -178,7 +177,6 @@
                             genre_id: lagu.genre_id
                         };
                     });
-                    console.log("genreId yang diterima:", genreId);
                     console.log("Data lagu sebelum filter:", All_song);
 
                     // Filter lagu berdasarkan genre_id yang sesuai

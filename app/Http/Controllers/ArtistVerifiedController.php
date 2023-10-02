@@ -514,6 +514,7 @@ class ArtistVerifiedController extends Controller
         try {
             $title = "MusiCave";
             $billboard = billboard::where('code', $code)->first();
+            $artis_id = $billboard->artis_id;
             $albums = album::where('artis_id', $billboard->artis_id)->get();
             $songs = song::where('artis_id', $billboard->artis_id)->get();
             $playlists = playlist::all();
@@ -521,7 +522,7 @@ class ArtistVerifiedController extends Controller
         } catch (\Throwable $th) {
             abort(404);
         }
-        return response()->view('artisVerified.billboard.billboard', compact('title', 'billboard', 'albums', 'songs', 'playlists', 'notifs'));
+        return response()->view('artisVerified.billboard.billboard', compact('title', 'billboard', 'artis_id','albums', 'songs', 'playlists', 'notifs'));
     }
 
     protected function albumBillboard(string $code): Response

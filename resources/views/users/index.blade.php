@@ -72,9 +72,9 @@
                                                     </div>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group align-items-center">
-                                                            <i id="like{{ $item->id }}" data-id="{{ $item->id }}"
+                                                            <i id="like-atas{{ $item->id }}" data-id="{{ $item->id }}"
                                                                 onclick="toggleLike(this, {{ $item->id }})"
-                                                                class="shared-icon-like {{ $item->isLiked == '1' ? 'fas' : 'far' }} fa-heart pr-2"></i>
+                                                                class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                             <p style="pointer-events: none;">{{ $item->waktu }}</p>
                                                             @if (count($playlists) > 0)
                                                                 <a data-bs-toggle="modal"
@@ -179,10 +179,10 @@
                                                 </div>
                                             </td>
                                             <td class="table-cell">{{ number_format($item->didengar, 0, ',', '.') }}</td>
-                                            <td class="table-cell"> <i id="like-suka{{ $item->id }}"
+                                            <td class="table-cell"> <i id="like-bawah{{ $item->id }}"
                                                     data-id="{{ $item->id }}"
                                                     onclick="toggleLike(this, {{ $item->id }})"
-                                                    class="shared-icon-like {{ $item->isLiked == '1' ? 'fas' : 'far' }} fa-heart pr-2"></i>
+                                                    class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                 {{ $item->waktu }}</td>
                                         </tr>
                                     @endIf
@@ -422,10 +422,10 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
-                    console.log(response);
+                    console.log('like atas',response);
                     response.forEach(function(item) {
                         const songId = item.song_id;
-                        const like = document.getElementById(`like${item.song_id}`);
+                        const like = document.getElementById(`like-atas${item.song_id}`);
                         like.classList.toggle('fas');
                     })
                 }
@@ -437,10 +437,10 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
-                    console.log(response);
+                    console.log('like bawah',response);
                     response.forEach(function(item) {
                         const songId = item.song_id;
-                        const like = document.getElementById(`like-suka${item.song_id}`);
+                        const like = document.getElementById(`like-bawah${item.song_id}`);
                         if (like) {
                             like.classList.toggle('fas');
                         }
@@ -898,7 +898,7 @@
         let track = document.createElement('audio');
 
         let All_song = [];
-        console.log("iki lhoooooooooooo", All_song);
+
 
         function ambilDataLagu() {
             $.ajax({
@@ -918,7 +918,7 @@
                     });
                     All_song.sort((a, b) => b.didengar - a.didengar);
                     // untuk menurutkan lagu yang tampil pada browser :)
-                    console.log("data lagu yang diambil:", All_song);
+                    console.log("data lagu bawah:", All_song);
 
                     if (All_song.length > 0) {
                         // Memanggil load_track dengan indeks 0 sebagai lagu pertama

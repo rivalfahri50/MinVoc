@@ -165,10 +165,9 @@
 
         const albumId = {{ $album_id }};
         let All_song = [];
-        console.log("iki lhoooooooooooo 23423u", All_song);
 
         function ambilDataLagu(albumId) {
-            console.log('iki opo', albumId);
+            console.log('id album', albumId);
             $.ajax({
                 url: '/ambil-lagu-album',
                 type: 'GET',

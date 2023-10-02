@@ -48,7 +48,7 @@
                                                 </div>
                                                 <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                     <div class="text-group align-items-center">
-                                                        <i id="like-like{{ $item->id }}" data-id="{{ $item->id }}"
+                                                        <i id="like-disukai{{ $item->id }}" data-id="{{ $item->id }}"
                                                             onclick="toggleLike(this, {{ $item->id }})"
                                                             class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                         </i>
@@ -93,10 +93,10 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
-                    // console.log(response);
+                    console.log('jumlah lagu yang disukai',response);
                     response.forEach(function(item) {
                         const songId = item.song_id;
-                        const like = document.getElementById(`like-like${item.song_id}`);
+                        const like = document.getElementById(`like-disukai${item.song_id}`);
                         if (like) {
                             like.classList.toggle('fas');
                         }
@@ -167,7 +167,6 @@
         let track = document.createElement('audio');
 
         let All_song = [];
-        console.log("iki lhoooooooooooo disukai", All_song);
 
         function ambilDataLagu() {
             $.ajax({
@@ -189,7 +188,7 @@
                     const laguDisukai = All_song.filter(lagu => {
                         return daftarLikePengguna.includes(lagu.id);
                     });
-                    console.log('iki lhoo',laguDisukai);
+                    console.log('lagu yang disukai',laguDisukai);
 
                     if (laguDisukai.length > 0) {
                         loadPlaylist(laguDisukai);
