@@ -451,7 +451,8 @@
         });
     </script>
 
-    {{-- <script>
+    {{-- untuk detail artis --}}
+    <script>
         function redirectArtis(id) {
             $.ajax({
                 url: `/artis/detail-artis/${id}`,
@@ -464,7 +465,9 @@
                 },
             });
         }
+    </script>
 
+    {{-- <script>
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
         let next = document.querySelector('#next');

@@ -482,7 +482,7 @@
     {{-- ini untuk like pada halaman ini --}}
 
     {{-- lagu atas --}}
-    {{-- <script>
+    <script>
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
         let next = document.querySelector('#next');
@@ -864,7 +864,7 @@
                 recent_volume.value = track.volume * 100;
             }
         }
-    </script> --}}
+    </script>
     {{-- end lagu atas --}}
 
     {{-- lagu bawah --}}

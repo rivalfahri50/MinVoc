@@ -25,12 +25,18 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="col-9 text-xxl-end">
-                                <div class="bottom-left-text">
-                                    <h3 class="m-0" style="font-weight: 600">{{ $playlistDetail->name }}
+                            <div class="col-md-8 d-flex align-items-end">
+                                <div class="card-body pb-0">
+                                    <h3 class="my-1" style="font-weight: 600; font-size: 30px">{{ $playlistDetail->name }}
                                     </h3>
-                                    <p style="font-size: 18px;">
-                                        {{ $playlistDetail->deskripsi == 'none' ? '' : "$playlistDetail->deskripsi" }}
+                                    <div style="display: flex; flex-direction: row; gap: 5px; align-items: center">
+                                        <span>
+                                            <img src="{{ asset('storage/' . $playlistDetail->user->avatar) }}"
+                                                class="avatarpembuat">
+                                        </span>
+                                        <p class="m-0" style="font-weight: 300; font-size: 16px">
+                                            {{ $playlistDetail->user->name }}
+                                    </div>
                                     </p>
                                 </div>
                             </div>
@@ -152,7 +158,6 @@
     </div>
 
     <script>
-
         const gambar = document.querySelector("#gambar");
 
         const tampilGambar = document.querySelector("#tampil_gambar");
@@ -169,7 +174,7 @@
             reader.readAsDataURL(this.files[0]);
         });
     </script>
-     <script>
+    <script>
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
         let next = document.querySelector('#next');
@@ -197,7 +202,7 @@
 
         // create a audio element
         let track = document.createElement('audio');
-        const playlistId = {{$playlist_id}};
+        const playlistId = {{ $playlist_id }};
         let All_song = [];
         console.log("iki lhoooooooooooo", All_song);
 
@@ -215,7 +220,7 @@
                             audio: lagu.audio,
                             image: lagu.image,
                             artistId: lagu.artist.user.name,
-                            playlist_id:lagu.playlist_id,
+                            playlist_id: lagu.playlist_id,
                         };
                     });
                     All_song = All_song.filter(lagu => lagu.playlist_id == playlistId)

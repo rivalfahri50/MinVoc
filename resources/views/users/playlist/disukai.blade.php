@@ -11,7 +11,7 @@
                         <div class="row">
                             <div class="col-3">
                                 <div class="card coba">
-                                    <img src="http://127.0.0.1:8000/storage/images/53e3eyfg734r-r4ry4rgg43ry-34rwerwrww3.jpg"
+                                    <img src="http://127.0.0.1:8000/storage/images/53e3eyfg734r-r4ry4rgg43ry-34rwerwrww3.png"
                                         class="img-fluid rounded-1 p-2">
                                 </div>
                             </div>
