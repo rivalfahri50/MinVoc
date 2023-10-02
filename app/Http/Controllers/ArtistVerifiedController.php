@@ -915,7 +915,6 @@ class ArtistVerifiedController extends Controller
 
     protected function Project(Request $request, string $code)
     {
-        $statusPersetujuan = Cache::get('status_persetujuan_' . auth()->user()->id);
         $validate = Validator::make(
             $request->only('images', 'name', 'audio', 'range'),
             [
@@ -945,8 +944,6 @@ class ArtistVerifiedController extends Controller
             ]
         );
 
-        setlocale(LC_MONETARY, 'id_ID');
-
         if ($validate->fails()) {
             return redirect()->back()
                 ->withErrors($validate)
@@ -967,6 +964,7 @@ class ArtistVerifiedController extends Controller
         $uangTetap = isset($pendapatan->pendapatanArtis) != null ? $pendapatan->pendapatanArtis : 28000;
         $uangYangDiterima = ($range / 100) * $uangTetap;
 
+        // dd($uangTetap - $uangYangDiterima);
 
         if (isset($project->request_project_artis_id_1) || isset($project->request_project_artis_id_2)) {
             $sisaPengasilan = $uangTetap - $uangYangDiterima;
