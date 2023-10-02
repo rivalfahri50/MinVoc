@@ -744,6 +744,7 @@
             });
         });
     </script>
+
     <script>
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
@@ -773,10 +774,11 @@
 
         // create a audio element
         let track = document.createElement('audio');
-        const projectId = {{ $project_id }};
         let All_song = [];
+        const projectId = {{ $project_id }};
         var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
+        // Fungsi untuk memuat data lagu dari API
         function ambiLaguProject(projectId) {
             $.ajax({
                 url: '/get-lagu-project',
@@ -789,17 +791,17 @@
                     project_id: projectId
                 }),
                 success: function(data) {
-                    console.log('info',data);
                     All_song = data.map(lagu => {
                         return {
                             id: lagu.id,
                             judul: lagu.judul,
                             audio: lagu.audio,
                             image: lagu.images,
-                            artistId: lagu.artis.user.name
+                            artistId: lagu.artist_id
                         };
                     });
-                    // ...
+                    // Setelah data lagu dimuat, panggil fungsi untuk memuat lagu pertama
+                    load_track(0);
                 },
                 error: function(error) {
                     console.error('Error fetching data:', error);
@@ -954,11 +956,12 @@
             play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>'
         }
 
+        // Fungsi untuk memutar lagu berdasarkan ID
         function putar(id) {
             console.log('ID yang dikirim:', id);
             id = parseInt(id); // Pastikan id berupa bilangan bulat
             const lagu = All_song.find(song => song.id === id);
-            console.log('lagu yang dikirim :', lagu);
+            console.log('lagu yang dikirim:', lagu);
 
             if (lagu) {
                 const new_index_no = All_song.indexOf(lagu);

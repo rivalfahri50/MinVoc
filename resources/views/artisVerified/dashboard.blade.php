@@ -230,11 +230,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($song as $item)
+                                @foreach ($song as $no => $item)
                                     @if ($item->is_approved)
                                         <tr class="table-row baris" data-href="#lagu-diputar"
                                             onclick="putar({{ $item->id }})">
-                                            <td class="table-cell" scope="row">1</td>
+                                            <td class="table-cell" scope="row">{{ $no + 1 }}</td>
                                             <td class="table-cell">
                                                 <div class="fototabelsejajar">
                                                     <img src="{{ asset('storage/' . $item->image) }}">
@@ -252,10 +252,10 @@
                                             </td>
                                             <td class="table-cell">{{ number_format($item->didengar, 0, ',', '.') }}</td>
                                             <td class="table-cell"> <i id="like-bawah{{ $item->id }}"
-                                                data-id="{{ $item->id }}"
-                                                onclick="toggleLike(this, {{ $item->id }})"
-                                                class="shared-icon-like {{ $item->isLiked == '1' ? 'fas' : 'far' }} fa-heart pr-2"></i>
-                                            {{ $item->waktu }}</td>
+                                                    data-id="{{ $item->id }}"
+                                                    onclick="toggleLike(this, {{ $item->id }})"
+                                                    class="shared-icon-like {{ $item->isLiked == '1' ? 'fas' : 'far' }} fa-heart pr-2"></i>
+                                                {{ $item->waktu }}</td>
                                         </tr>
                                     @endIf
                                 @endforeach
@@ -629,7 +629,8 @@
         }
     </script>
 
-    {{-- <script>
+    {{-- untuk detail artis --}}
+    <script>
         function redirectArtis(id) {
             $.ajax({
                 url: `/artis-verified/detail-artis/${id}`,
@@ -642,7 +643,10 @@
                 },
             });
         }
-
+    </script>
+    
+    {{-- lagu atas --}}
+    <script>
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
         let next = document.querySelector('#next');
@@ -663,8 +667,7 @@
         let autoplay = 1;
         let playCount = 0;
         let prevVolume;
-        let slider_value = 0;
-
+        let currentTime = 1;
 
         let index_no = 0;
         let Playing_song = false;
@@ -673,12 +676,15 @@
         let track = document.createElement('audio');
 
         let All_song = [];
+        console.log("iki lhoooooooooooo", All_song);
 
-        async function ambilDataLagu() {
-            await fetch('/ambil-lagu')
-                .then(response => response.json())
-                .then(data => {
-                    All_song = data.filter(lagu => lagu.didengar >= 1000).map(lagu => {
+        function ambilDataLagu() {
+            $.ajax({
+                url: '/ambil-lagu',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    All_song = data.filter(lagu => lagu.is_approved === 1).map(lagu => {
                         return {
                             id: lagu.id,
                             judul: lagu.judul,
@@ -687,39 +693,37 @@
                             artistId: lagu.artist.user.name
                         };
                     });
-                    All_song.sort((a, b) => b.didengar - a.didengar);
-                    console.log(All_song);
+                    console.log("data lagu yang diambil:", All_song);
                     if (All_song.length > 0) {
                         // Memanggil load_track dengan indeks 0 sebagai lagu pertama
                         load_track(0);
                     } else {
                         console.error("Data lagu kosong.");
                     }
-                })
-                .catch(error => {
+                },
+                error: function(error) {
                     console.error('Error fetching data:', error);
-                });
+                }
+            });
         }
 
         ambilDataLagu();
-        // semua function
 
         // function load the track
         function load_track(index_no) {
             if (index_no >= 0 && index_no < All_song.length) {
-                console.log("tester " + index_no);
                 track.src = '{{ asset('storage') }}' + '/' + All_song[index_no].audio;
                 title.innerHTML = All_song[index_no].judul;
                 artist.innerHTML = All_song[index_no].artistId;
                 track_image.src = '{{ asset('storage') }}' + '/' + All_song[index_no].image;
                 track.load();
                 timer = setInterval(range_slider, 1000);
-
             } else {
                 console.error("Index_no tidak valid.");
             }
         }
         load_track(0);
+        // semua function
 
         // fungsi mute sound
         function mute_sound() {
@@ -733,6 +737,11 @@
             }
             updateMuteButtonIcon();
         }
+        // track.addEventListener('loadedmetadata', function() {
+        //     slider.max = track.duration;
+        // });
+
+
         // fungsi untuk memeriksa lagu diputar atau tidak
         function justplay() {
             if (Playing_song == false) {
@@ -763,8 +772,10 @@
             if (index_no >= 0 && index_no < All_song.length) {
                 // Perbarui playCount dengan songId yang sesuai
                 const songId = All_song[index_no].id;
+                // history(songId);
                 console.log(All_song[index_no])
                 updatePlayCount(songId);
+
             }
             track.addEventListener('timeupdate', updateDuration);
             playCount++;
@@ -812,8 +823,10 @@
                 }
             });
         }
+
         shuffleButton.addEventListener('click', function() {
             shuffle_song();
+            console.log(shuffleButton);
         });
 
 
@@ -839,6 +852,7 @@
             playsong();
         }
 
+
         // pause song
         function pausesong() {
             track.pause();
@@ -846,7 +860,7 @@
             play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>'
         }
 
-        function putar(id) {
+        function putaran(id) {
             console.log('ID yang dikirim:', id);
             id = id - 1;
             const lagu = All_song[id];
@@ -869,18 +883,16 @@
         }
 
         track.addEventListener('ended', function() {
-            // Panggil fungsi untuk memutar lagu selanjutnya
             next_song();
         });
 
         // fungsi untuk memutar lagu sesudahnya
         function next_song() {
-            let nextIndex = index_no;
-            do {
-                nextIndex = (nextIndex + 1) % All_song.length;
-            } while (All_song[nextIndex].didengar <= 1000);
-
-            index_no = nextIndex;
+            if (index_no < All_song.length - 1) {
+                index_no += 1;
+            } else {
+                index_no = 0;
+            }
             load_track(index_no);
             playsong();
             if (autoplay == 1) {
@@ -893,11 +905,11 @@
 
         // fungsi untuk memutar lagu sebelumnya
         function previous_song() {
-            let prevIndex = index_no;
-            do {
-                prevIndex = (prevIndex - 1 + All_song.length) % All_song.length;
-            } while (All_song[prevIndex].didengar <= 1000);
-            index_no = prevIndex;
+            if (index_no > 0) {
+                index_no -= 1;
+            } else {
+                index_no = All_song.length - 1;
+            }
             load_track(index_no);
             playsong();
         }
@@ -915,12 +927,10 @@
             if (!isNaN(track.duration) && isFinite(slider_value)) {
                 track.currentTime = track.duration * (slider_value / 100);
                 console.log(track.duration * (slider_value / 100), slider_value, track.currentTime)
-
             }
         }
 
         slider.addEventListener('input', function() {
-            slider_value = parseInt(slider_value);
             change_duration();
             clearInterval(timer);
             Playing_song = true;
@@ -936,7 +946,6 @@
             if (!isNaN(track.duration)) {
                 position = track.currentTime * (100 / track.duration);
                 slider.value = position;
-                // console.log(track.duration);
             }
             if (track.ended) {
                 play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>';
@@ -1019,8 +1028,10 @@
                 recent_volume.value = track.volume * 100;
             }
         }
-    </script> --}}
-    <script>
+    </script>
+
+    {{-- lagu bawah --}}
+    {{-- <script>
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
         let next = document.querySelector('#next');
@@ -1411,5 +1422,5 @@
                 recent_volume.value = track.volume * 100;
             }
         }
-    </script>
+    </script> --}}
 @endsection

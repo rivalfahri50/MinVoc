@@ -129,10 +129,24 @@ class SongController extends Controller
         return response()->json($lagu);
     }
 
+    // public function ambilLaguProject(Request $request)
+    // {
+    //     $projectId = $request->input('project_id');
+    //     $lagu = projects::where('id', $projectId)->get();
+    //     return response()->json($lagu);
+    // }
     public function ambilLaguProject(Request $request)
     {
-        $projectId = $request->input('project_id');
-        $lagu = projects::where('id', $projectId)->get();
+        $projectId = $request->input('id');
+        $query = projects::with('artis.user');
+
+        // Tambahkan filter berdasarkan album_id jika ada
+        if ($projectId) {
+            $query->where('project_id', $projectId);
+        }
+
+        $lagu = $query->get();
+
         return response()->json($lagu);
     }
 }

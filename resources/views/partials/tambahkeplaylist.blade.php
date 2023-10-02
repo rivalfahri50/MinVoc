@@ -72,7 +72,7 @@
                             <h6 for="namaartis" class="form-label judulnottebal mb-2" style="font-weight: 100">Nama
                                 Playlist</h6>
                             <select name="playlist_id" class="form-select" id="namaartis">
-                                @foreach ($playlists as $item)
+                                @foreach ($playlists->where('user_id', auth()->user()->id) as $item)
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>

@@ -48,7 +48,7 @@
                                 <select name="album" class="form-select" style="border-radius: 13px"
                                     aria-label="Default select example">
                                     <option value="" disabled selected>Album</option>
-                                    @foreach ($albums as $item)
+                                    @foreach ($albums->where('artis_id', $artis->id) as $item)
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
                                     @endforeach
                                 </select>

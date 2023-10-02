@@ -437,7 +437,7 @@ class ArtistVerifiedController extends Controller
         $datas = song::with('artist')->get();
         $artis = artist::where('user_id', auth()->user()->id)->first();
         $genres = genre::all();
-        $albums = album::all();
+        $albums = album::with('artis')->get();
         $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
         return response()->view('artisVerified.unggahAudio', compact('title', 'datas', 'genres', 'albums', 'artis', 'notifs'));
     }
@@ -661,20 +661,20 @@ class ArtistVerifiedController extends Controller
     {
         $title = "MusiCave";
         $playlists = playlist::all();
-        $song = song::where('judul', 'like', '%' .  $request->input('search') . '%')->first();
-        $user = user::where('name', 'like', '%' .  $request->input('search') . '%')->first();
+        $user = user::where('code', 'like', '%' .  $code . '%')->first();
+        $song = song::where('code', 'like', '%' .  $code . '%')->first();
         $totalDidengar = DB::table('riwayat')->where('user_id', auth()->user()->id)->sum('song_id');
         $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
 
         if ($song) {
             $songs = song::all();
             $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
-            return view('artis.search.songSearch', compact('song', 'title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
+            return view('artisverified.search.songSearch', compact('song', 'title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
         } else if ($user) {
             $artis = artist::where('user_id', $user->id)->first();
             $songs = song::where('artis_id', $artis->id)->get();
             $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
-            return view('artis.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
+            return view('artisverified.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
         } else {
             return response()->view('artisverified.searchNotFound', compact('title', 'notifs'));
         }
@@ -857,7 +857,7 @@ class ArtistVerifiedController extends Controller
     {
         $title = "Kolaborasi";
         $datas = projects::with(['artis', 'artis2'])->get();
-        $project_id = $datas->first()->id;
+        $project_id = empty($datas->first()->id) ? 0 : $datas->first()->id;
         $artisUser = artist::where('user_id', auth()->user()->id)->first();
         $messages = messages::with(['sender.user', 'receiver', 'project'])->get();
         $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
@@ -915,7 +915,6 @@ class ArtistVerifiedController extends Controller
 
     protected function Project(Request $request, string $code)
     {
-        $statusPersetujuan = Cache::get('status_persetujuan_' . auth()->user()->id);
         $validate = Validator::make(
             $request->only('images', 'name', 'audio', 'range'),
             [
@@ -945,8 +944,6 @@ class ArtistVerifiedController extends Controller
             ]
         );
 
-        setlocale(LC_MONETARY, 'id_ID');
-
         if ($validate->fails()) {
             return redirect()->back()
                 ->withErrors($validate)
@@ -967,6 +964,7 @@ class ArtistVerifiedController extends Controller
         $uangTetap = isset($pendapatan->pendapatanArtis) != null ? $pendapatan->pendapatanArtis : 28000;
         $uangYangDiterima = ($range / 100) * $uangTetap;
 
+        // dd($uangTetap - $uangYangDiterima);
 
         if (isset($project->request_project_artis_id_1) || isset($project->request_project_artis_id_2)) {
             $sisaPengasilan = $uangTetap - $uangYangDiterima;
