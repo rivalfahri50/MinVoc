@@ -796,7 +796,7 @@
                             judul: lagu.judul,
                             audio: lagu.audio,
                             image: lagu.images,
-                            artistId: lagu.artist_id
+                            artistId: lagu.artis.user.name
                         };
                     });
                     // ...

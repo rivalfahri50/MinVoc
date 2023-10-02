@@ -25,6 +25,7 @@ class SongController extends Controller
 
         return response()->json($lagu);
     }
+
     protected function ambilLikeLagu(Request $request)
     {
         $user = Auth::user();
@@ -86,16 +87,8 @@ class SongController extends Controller
         }
     }
 
-    public function ambilLaguArtist($artistId){
-         // Mengambil lagu berdasarkan artistId yang diberikan
-         $laguArtis = Song::whereHas('artis_id', function ($query) use ($artistId) {
-            $query->where('id', $artistId);
-        })->get();
-        return response()->json($laguArtis);
-    }
-
-
-    public function ambilLaguAlbum(Request $request) {
+    public function ambilLaguAlbum(Request $request)
+    {
         $albumId = $request->input('album_id');
         $query = Song::with('artist.user');
 
@@ -108,7 +101,21 @@ class SongController extends Controller
 
         return response()->json($lagu);
     }
-    public function ambilLaguPlaylist(Request $request) {
+
+    public function ambilLaguArtist(Request $request)
+    {
+        $artistId = $request->input('artis_id');
+        $query = Song::with('artist.user');
+        if ($artistId) {
+            $query->where('artis_id', $artistId);
+        }
+        $lagu = $query->get();
+        // Kemudian, Anda dapat mengembalikan data lagu sebagai respons JSON
+        return response()->json($lagu);
+    }
+
+    public function ambilLaguPlaylist(Request $request)
+    {
         $playlistId = $request->input('playlist_id');
         $query = Song::with('artist.user');
 
@@ -122,9 +129,10 @@ class SongController extends Controller
         return response()->json($lagu);
     }
 
-    public function ambilLaguProject(Request $request) {
+    public function ambilLaguProject(Request $request)
+    {
         $projectId = $request->input('project_id');
         $lagu = projects::where('id', $projectId)->get();
         return response()->json($lagu);
     }
-    }
+}

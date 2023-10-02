@@ -46,7 +46,7 @@
                             <div class="row" style="margin-top: -20px">
                                 <div class="col-12">
                                     <div class="preview-list">
-                                        @foreach ($songs->reverse() as $item)
+                                        @foreach ($songs as $item)
                                             @if ($item->is_approved)
                                                 <div class="preview-item">
                                                     <div class="preview-thumbnail">
@@ -61,7 +61,7 @@
                                                                 {{ $item->artist->user->name }}</p>
                                                         </a>
                                                     </div>
-                                                    <i id="like-1{{ $item->id }}" data-id="{{ $item->id }}"
+                                                    <i id="like-album{{ $item->id }}" data-id="{{ $item->id }}"
                                                         onclick="toggleLike(this, {{ $item->id }})"
                                                         class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
@@ -83,6 +83,58 @@
     </div>
     </div>
     </div>
+
+    <script>
+        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        $(document).ready(function() {
+            $.ajax({
+                url: `/song/check`,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    // console.log(response);
+                    response.forEach(function(item) {
+                        const songId = item.song_id;
+                        const like = document.getElementById(`like-album${item.song_id}`);
+                        if (like) {
+                            like.classList.toggle('fas');
+                        }
+                    })
+                }
+            });
+        });
+
+        function toggleLike(iconElement, songId) {
+            const isLiked = iconElement.classList.contains('fas');
+
+            $.ajax({
+                url: `/song/${songId}/like`,
+                type: 'POST',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        if (isLiked) {
+                            iconElement.classList.remove('fas');
+                            iconElement.classList.add('far');
+                        } else {
+                            iconElement.classList.remove('far');
+                            iconElement.classList.add('fas');
+                        }
+                    }
+                }
+            })
+        }
+
+
+        function updateSongLikeStatus(songId, isLiked) {
+            const likeIcons = document.querySelectorAll(`.shared-icon-like[data-id="${songId}"]`);
+            likeIcons.forEach(likeIcon => {
+                likeIcon.classList.toggle('fas', isLiked);
+                likeIcon.classList.toggle('far', !isLiked);
+            });
+        }
+    </script>
+
 
     <script>
         let previous = document.querySelector('#pre');
@@ -115,10 +167,9 @@
 
         const albumId = {{ $album_id }};
         let All_song = [];
-        console.log("iki lhoooooooooooo 23423u", All_song);
 
         function ambilDataLagu(albumId) {
-            console.log('iki opo', albumId);
+            console.log('id album', albumId);
             $.ajax({
                 url: '/ambil-lagu-album',
                 type: 'GET',

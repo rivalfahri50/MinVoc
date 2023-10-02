@@ -170,103 +170,7 @@
 
         let All_song = [];
 
-        // const playButton = document.getElementById('playButton');
-        // const pauseButton = document.getElementById('pauseButton');
-        // const progress = document.getElementById('progress');
-        // const currentTime = document.getElementById('currentTime');
-        // const duration = document.getElementById('duration');
-
-        // function ambilDataLagu() {
-        // fetch('/ambil-lagu')
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         All_song = data.map(lagu => {
-        //             return {
-        //                 id: lagu.id,
-        //                 judul: lagu.judul,
-        //                 audio: lagu.audio,
-        //                 image: lagu.image,
-        //                 artistId: lagu.artist.user.name
-        //             };
-        //         });
-        //         play_song()
-        //     })
-        //     .catch(error => {
-        //         console.error('Error fetching data:', error);
-        //     });
-        // // }
-
-        // function play_song() {
-        //     const audioUrls = All_song.map(song => song.audio);
-        //     console.log(audioUrls);
-        //     const sound = new Howl({
-        //         src: [
-        //             ['http://127.0.0.1:8000/storage/musics/h0dTC0RQfUHTqfgHm7ncF54rwjo83T94eBdv1pxQ.mp3']
-        //         ],
-        //         html5: true,
-        //         onplay: () => {
-        //             playButton.disabled = true;
-        //             pauseButton.disabled = false;
-        //         },
-        //         onpause: () => {
-        //             playButton.disabled = false;
-        //             pauseButton.disabled = true;
-        //         },
-        //         onend: () => {
-        //             playButton.disabled = false;
-        //             pauseButton.disabled = true;
-        //         },
-        //         onload: () => {
-        //             // The audio file is loaded, so we can update the duration
-        //             duration.textContent = formatTime(sound.duration());
-        //         },
-        //         onseek: () => {
-        //             updateUI();
-        //         }
-        //     });
-
-        //     playButton.addEventListener('click', () => {
-        //         sound.play();
-        //     });
-
-        //     pauseButton.addEventListener('click', () => {
-        //         sound.pause();
-        //     });
-
-        //     sound.on('play', () => {
-        //         // Start a timer to update the progress bar and current time
-        //         updateProgressInterval = setInterval(updateUI, 100);
-        //     });
-
-        //     sound.on('pause', () => {
-        //         // Clear the timer when paused
-        //         clearInterval(updateProgressInterval);
-        //     });
-
-        //     progress.addEventListener('input', () => {
-        //         const seekTime = (progress.value / 100) * sound.duration();
-        //         sound.seek(seekTime);
-        //         updateUI();
-        //     });
-
-        //     let updateProgressInterval;
-
-        //     function updateUI() {
-        //         const currentTimeValue = sound.seek();
-        //         const durationValue = sound.duration();
-
-        //         const percentage = (currentTimeValue / durationValue) * 100;
-        //         progress.value = isNaN(percentage) ? 0 : percentage;
-        //         currentTime.textContent = formatTime(currentTimeValue);
-        //     }
-
-        //     function formatTime(seconds) {
-        //         const minutes = Math.floor(seconds / 60);
-        //         const remainingSeconds = Math.floor(seconds % 60);
-        //         return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
-        //     }
-        // }
-
+        function ambilDataLagu();
         $.ajax({
             url: '/ambil-lagu',
             type: 'GET',
@@ -281,7 +185,7 @@
                         artistId: lagu.artist.user.name
                     };
                 });
-                console.log("data lagu yang diambil:", All_song);
+                console.log("data lagu:", All_song);
                 if (All_song.length > 0) {
                     // Memanggil load_track dengan indeks 0 sebagai lagu pertama
                     load_track(0);

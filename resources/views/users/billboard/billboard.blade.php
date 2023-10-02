@@ -94,6 +94,7 @@
     </div>
     </div>
     </div>
+
     <script>
         var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         $(document).ready(function() {
@@ -143,6 +144,7 @@
             });
         }
     </script>
+
     <script>
         function togglePlayPause() {
             const playIcon = document.getElementById('playIcon');
@@ -164,7 +166,7 @@
             justplay();
         }
     </script>
-    
+
     <script>
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
@@ -201,7 +203,7 @@
             await fetch('/ambil-lagu')
                 .then(response => response.json())
                 .then(data => {
-                    All_song = data.filter(lagu => lagu.artis_id === 1).map(lagu => {
+                    All_song = data.filter(lagu => lagu.artis_id === ArtistId).map(lagu => {
                         return {
                             id: lagu.id,
                             judul: lagu.judul,
@@ -210,7 +212,7 @@
                             artistId: lagu.artist.user.name
                         };
                     });
-                    console.log(All_song);
+                    console.log('data lagu biilboard',All_song);
                     if (All_song.length > 0) {
                         // Memanggil load_track dengan indeks 0 sebagai lagu pertama
                         load_track(0);
@@ -370,24 +372,24 @@
 
         function putar(id) {
             console.log('ID yang dikirim:', id);
-            id = id - 1;
-            const lagu = All_song[id];
-            // alert(All_song.length - 1 + " " + id);
+            id = parseInt(id); // Pastikan id berupa bilangan bulat
+            const lagu = All_song.find(song => song.id === id);
+            console.log('lagu yang dikirim :', lagu);
+
             if (lagu) {
                 const new_index_no = All_song.indexOf(lagu);
                 if (new_index_no >= 0) {
                     index_no = new_index_no;
-                    load_track(id);
+                    load_track(index_no);
                     playsong();
                 } else {
-                    index_no = 0;
+                    index_no = 0; // Atur ke 0 jika lagu tidak ditemukan
                     load_track(index_no);
                     playsong();
                 }
             } else {
                 console.error('Lagu dengan ID ' + id + ' tidak ditemukan dalam data lagu.');
             }
-
         }
 
         track.addEventListener('ended', function() {
