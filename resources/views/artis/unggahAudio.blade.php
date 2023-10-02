@@ -8,6 +8,12 @@
             .over {
                 width: 100px;
             }
+
+            .pjg {
+                white-space: nowrap !important;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
         </style>
         <div class="content-wrapper">
             <div class="row mt-4">
@@ -106,7 +112,7 @@
                                                     <img width="50" src="{{ asset('storage/' . $item->image) }}"
                                                         alt="Face" class="avatar">
                                                     <div class="over">
-                                                        <h6>{{ $item->judul }}</h6>
+                                                        <h6 class="pjg">{{ $item->judul }}</h6>
                                                         <p class="text-muted m-0">{{ $item->artist->user->name }}</p>
                                                     </div>
                                                 </div>

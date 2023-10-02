@@ -11,14 +11,13 @@
                 <div class="col-md-12 mb-4">
                     <div class="row">
                         <div class="col-4">
-                            <div class="card coba" style="display: flex; width: 450px; height: 180px;">
+                            <div class="card coba ukuran">
                                 <div class="card-body" style="display: flex;">
                                     <div class="image-container">
-                                        <img src="{{ asset('storage/' . $song->image) }}" style="border-radius: 10px"
-                                            alt="Face" class="avatar">
+                                        <img src="{{ asset('storage/' . $song->image) }}" alt="Face" class="avatar">
                                     </div>
-                                    <div style="margin-left: 10px;">
-                                        <h4 class="judul mt-4 clamp-text" style="font-size: 20px; font-weight: 500">
+                                    <div class="teks-container">
+                                        <h4 class="judul clamp-text">
                                             {{ $song->judul }}</h4>
                                         <div class="d-flex flex-row align-content-center" style=" display: flex; flex-direction: row; align-items: center">
                                             <p class="text-muted m-1 clamp-text" style="font-size: 16px">{{ $song->artist->user->name }}</p>
