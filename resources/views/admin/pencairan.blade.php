@@ -1,6 +1,6 @@
 @extends('admin.components.adminTemplate')
 @section('content')
-    <link rel="stylesheet" href="/admin/assets/css/riwayat.css">
+    <link rel="stylesheet" href="/admin/assets/css/persetujuan.css">
     <!-- partial | ISI -->
     <div class="main-panel">
         <style>
@@ -77,11 +77,11 @@
             <div class="col-lg-12 grid-margin stretch-card">
                 <h3 class="judul mb-3">Pencairan Penghasilan</h3>
                 <div class="table-container">
-                    <table class="table table-sortable">
-                        <thead>
-                            <tr class="table-row table-header">
-                                <th class="table-cell">Artis<i class="fas fa-sort" data-order="asc"></th>
-                                <th class="table-cell">Tanggal<i class="fas fa-sort" data-order="asc"></th>
+                    <table class="table">
+                        <thead class="table-header">
+                            <tr class="table-row">
+                                <th class="table-cell">Artis</th>
+                                <th class="table-cell">Tanggal</th>
                                 <th class="table-cell">Jumlah</th>
                                 <th class="table-cell">Aksi</th>
                             </tr>
@@ -149,8 +149,6 @@
     </div>
     </div>
 
-
-    <script src="/user/assets/js/tablesort.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>

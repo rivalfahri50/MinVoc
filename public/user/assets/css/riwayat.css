@@ -1,6 +1,5 @@
 .table-container {
     max-width: 100%;
-    overflow-x: auto;
 }
 
 .table {
@@ -101,5 +100,14 @@
 }
 
 .pagination li:hover {
-    background-color: #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0 rgba(199,199,199,1);
+}
+
+table.dataTable>tbody>tr {
+    background-color: #eaeaea;
+
+    /* untuk data tidak ada */
+    display: flex;
+    justify-content: center;
 }
