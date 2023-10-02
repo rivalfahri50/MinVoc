@@ -103,11 +103,11 @@
 }
 
 .cards::-webkit-scrollbar-thumb {
-    background: #957DAD;
+    background: none;
 }
 
 .cards::-webkit-scrollbar-track {
-    background: #eaeaea;
+    background: none;
 }
 
 @media (min-width: 500px) {
@@ -195,4 +195,17 @@
     content: "\f04c";
     margin-left: 20%;
     color: #957DAD;
+}
+
+
+
+.fotoartisbill {
+    width: 250px;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.deskbill {
+    font-size: 1.1rem;
 }

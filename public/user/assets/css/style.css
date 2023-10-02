@@ -16019,7 +16019,7 @@ input[type="button"].btn-block {
 .page-item.disabled .jsgrid .jsgrid-pager .jsgrid-pager-page a,
 .jsgrid .jsgrid-pager .jsgrid-pager-page .page-item.disabled a,
 .jsgrid .jsgrid-pager .disabled.jsgrid-pager-page a {
-  color: #6c757d;
+  color: #dee2e6;
   /* pointer-events: none; */
   cursor: auto;
   background-color: #fff;

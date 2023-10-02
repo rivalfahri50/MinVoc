@@ -187,11 +187,12 @@
                                 @endif
                             </div>
                         </div>
+
                         <div class="modal fade" id="caripenghasilan" data-bs-backdrop="static" data-bs-keyboard="false"
                             tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content border-0" style="background-color: white">
-                                    <div class="modal-header border-0">
+                                    <div class="modal-header pb-0 border-0">
                                         <h1 class="modal-title fs-5 judul" id="staticBackdropLabel">Detail</h1>
                                         <button type="button" class="btn-unstyled link" data-bs-dismiss="modal"
                                             aria-label="Close">
@@ -203,10 +204,10 @@
                                         @csrf
                                         <div class="modal-body border-0">
                                             <div class="col-md-12" style="font-size: 13px;">
-                                                <div class="mb-3 pcard jarak" style="height: 100%;">
+                                                <div class="mb-3">
                                                     <p for="namakategori" class="form-label judulnottebal">Total Penghasilan
                                                     </p>
-                                                    <h3 class="judul">Rp
+                                                    <h3 class="angka fw-bold">Rp
                                                         {{ number_format($totalpenghasilan, 2, ',', '.') }}
                                                     </h3>
                                                 </div>
@@ -226,6 +227,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-8 row no-gutters">
                             <div class="card px-3">
                                 <h3 class="judul" style="font-weight: 500; margin-left: -6px">Informasi</h3>

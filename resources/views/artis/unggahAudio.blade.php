@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="main-panel">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
         <link rel="stylesheet" href="/user/assets/css/unggah.css">
         <style>
             .over {
@@ -86,8 +87,8 @@
                     </form>
                 </div>
                 <div class="col-lg-12 grid-margin stretch-card">
-                    <div class="table-container">
-                        <table class="table table-sortable">
+                    <div>
+                        <table id="onlypaginate" class="table">
                             <thead>
                                 <tr class="table-row table-header">
                                     <th class="table-cell">Artis</th>
@@ -144,8 +145,8 @@
                 </div>
             </div>
         </div>
-        <script src="/user/assets/js/tablesort.js"></script>
     </div>
+
     <script>
         const gambar = document.querySelector("#tamel");
         const tampilGambar = document.querySelector("#tampil_tamel");
@@ -162,106 +163,44 @@
             reader.readAsDataURL(this.files[0]);
         });
     </script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
     <script>
-        // $(document).ready(function() {
-        //     var itemsPerPage = 4;
+        jQuery.noConflict();
 
-        //     function saveCurrentPageToLocalStorage(page) {
-        //         localStorage.setItem("currentPage", page);
-        //     }
+        jQuery(document).ready(function($) {
+            $('#onlypaginate').DataTable({
+                "pageLength": 3,
 
-        //     function getCurrentPageFromLocalStorage() {
-        //         return parseInt(localStorage.getItem("currentPage")) || 1;
-        //     }
+                "ordering": false,
 
-        //     var currentPage = getCurrentPageFromLocalStorage();
+                "bStateSave": true,
 
-        //     function showTableRows() {
-        //         var start = (currentPage - 1) * itemsPerPage;
-        //         var end = start + itemsPerPage;
-        //         $(".baris").hide();
-        //         $(".baris").slice(start, end).show();
-        //     }
+                "lengthChange": true,
 
-        //     function updatePagination() {
-        //         $(".pagination").empty();
-        //         var numPages = Math.ceil($(".baris").length / itemsPerPage);
+                "searching": false,
 
-        //         var maxPaginationPages = 3;
+                "sDom": "t<'row'<'col-md-12'p>>",
 
-        //         var startPage = Math.max(currentPage - Math.floor(maxPaginationPages / 2), 1);
-
-        //         var endPage = Math.min(startPage + maxPaginationPages - 1, numPages);
-
-        //         if (currentPage > 1) {
-        //             var prevButton = $("<a>")
-        //                 .addClass("page-item")
-        //                 .addClass("page-link")
-        //                 .attr("href", "#");
-
-        //             var prevIcon = $("<i>").addClass("fa fa-chevron-left");
-        //             prevButton.append(prevIcon);
-
-        //             prevButton.click(function(event) {
-        //                 event.preventDefault();
-        //                 currentPage--;
-        //                 showTableRows();
-        //                 updatePagination();
-        //                 saveCurrentPageToLocalStorage(currentPage);
-        //             });
-
-        //             $(".pagination").append($("<li>").append(prevButton));
-        //         }
-
-        //         for (var i = startPage; i <= endPage; i++) {
-        //             var activeClass = i === currentPage ? "active" : "";
-        //             var button = $("<a>")
-        //                 .addClass("page-item " + activeClass)
-        //                 .addClass("page-link")
-        //                 .attr("href", "#");
-
-        //             button.text(i);
-
-        //             button.click(function(event) {
-        //                 event.preventDefault();
-        //                 currentPage = parseInt($(this).text());
-        //                 showTableRows();
-        //                 updatePagination();
-        //                 saveCurrentPageToLocalStorage(currentPage);
-        //             });
-
-        //             $(".pagination").append($("<li>").append(button));
-        //         }
-
-        //         if (currentPage < numPages) {
-        //             var nextButton = $("<a>")
-        //                 .addClass("page-item")
-        //                 .addClass("page-link")
-        //                 .attr("href", "#");
-
-        //             var nextIcon = $("<i>").addClass("fa fa-chevron-right");
-        //             nextButton.append(nextIcon);
-
-        //             nextButton.click(function(event) {
-        //                 event.preventDefault();
-        //                 currentPage++;
-        //                 showTableRows();
-        //                 updatePagination();
-        //                 saveCurrentPageToLocalStorage(currentPage);
-        //             });
-
-        //             $(".pagination").append($("<li>").append(nextButton));
-        //         }
-
-        //         if (numPages <= 1) {
-        //             $(".pagination").hide();
-        //         }
-        //     }
-
-        //     showTableRows();
-        //     updatePagination();
-
-        //     saveCurrentPageToLocalStorage(currentPage);
-        // });
+                "language": {
+                    "sProcessing": "Sedang memproses...",
+                    "sLengthMenu": "Tampilkan _MENU_ entri",
+                    "sZeroRecords": "Tidak ditemukan Data",
+                    "sInfo": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                    "sInfoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
+                    "sInfoFiltered": "(disaring dari _MAX_ entri keseluruhan)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Cari:",
+                    "sUrl": "",
+                    "oPaginate": {
+                        "sFirst": "Pertama",
+                        "sPrevious": "&#8592;",
+                        "sNext": "&#8594;",
+                        "sLast": "Terakhir"
+                    }
+                }
+            });
+        });
     </script>
 @endsection

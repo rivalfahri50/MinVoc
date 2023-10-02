@@ -4,6 +4,7 @@
 
 
 @section('content')
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="/user/assets/css/unggah.css">
     <style>
         select {
@@ -86,8 +87,8 @@
                 </div>
             </form>
             <div class="col-lg-12 grid-margin stretch-card">
-                <div class="table-container">
-                    <table class="table table-sortable">
+                <div>
+                    <table id="onlypaginate" class="table">
                         <thead>
                             <tr class="table-row table-header">
                                 <th class="table-cell">Lagu</th>
@@ -135,15 +136,50 @@
                         </div>
                     </table>
                 @endif
-                <div class="text-center">
-                    <div class="text-center">
-                        <ul class="pagination justify-content-center">
-                        </ul>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        jQuery.noConflict();
+
+        jQuery(document).ready(function($) {
+            $('#onlypaginate').DataTable({
+                "pageLength": 3,
+
+                "ordering": false,
+
+                "bStateSave": true,
+
+                "lengthChange": true,
+
+                "searching": false,
+
+                "sDom": "t<'row'<'col-md-12'p>>",
+
+                "language": {
+                    "sProcessing": "Sedang memproses...",
+                    "sLengthMenu": "Tampilkan _MENU_ entri",
+                    "sZeroRecords": "Tidak ditemukan Data",
+                    "sInfo": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                    "sInfoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
+                    "sInfoFiltered": "(disaring dari _MAX_ entri keseluruhan)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Cari:",
+                    "sUrl": "",
+                    "oPaginate": {
+                        "sFirst": "Pertama",
+                        "sPrevious": "&#8592;",
+                        "sNext": "&#8594;",
+                        "sLast": "Terakhir"
+                    }
+                }
+            });
+        });
+    </script>
 
     <script>
         const gambar = document.querySelector("#tamel");
@@ -159,44 +195,6 @@
             });
 
             reader.readAsDataURL(this.files[0]);
-        });
-
-        $(document).ready(function() {
-            var itemsPerPage = 5;
-
-            $(".table-row").hide();
-
-            $(".table-row").slice(0, itemsPerPage).show();
-
-            var numPages = Math.ceil($(".table-row").length / itemsPerPage);
-
-            for (var i = 1; i <= numPages; i++) {
-                $(".pagination").append("<li class='page-item'><a class='page-link' href='#'>" + i + "</a></li>");
-            }
-
-            if (numPages <= 1) {
-                $(".pagination").hide();
-            }
-
-            $(".pagination a").click(function(e) {
-                e.preventDefault();
-                var page = $(this).text();
-                var start = (page - 1) * itemsPerPage;
-                var end = start + itemsPerPage;
-                $(".table-row").hide();
-                $(".table-row").slice(start, end).show();
-                $(".pagination a").removeClass("active");
-                $(this).addClass("active");
-            });
-
-            $(".pagination .prev").click(function(e) {
-                e.preventDefault();
-                var activePage = $(".pagination .active").text();
-                var prevPage = parseInt(activePage) - 1;
-                if (prevPage >= 1) {
-                    $(".pagination a").eq(prevPage - 1).click();
-                }
-            });
         });
     </script>
 @endsection
