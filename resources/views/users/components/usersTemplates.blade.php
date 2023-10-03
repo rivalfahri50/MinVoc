@@ -410,7 +410,7 @@
                                         </svg>
                                     </span>
                                     <input type="text" id="search" name="search" class="form-control"
-                                        placeholder="cari di sini" style="border-radius: 0px 15px 15px 0px">
+                                        placeholder="cari di sini" value="" style="border-radius: 0px 15px 15px 0px">
                                 </div>
                             </form>
                             <ul id="search-results"></ul>

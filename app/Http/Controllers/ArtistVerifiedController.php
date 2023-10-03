@@ -730,6 +730,7 @@ class ArtistVerifiedController extends Controller
             return view('artisverified.search.songSearch', compact('song', 'title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
         } else if ($user) {
             $artis = artist::where('user_id', $user->id)->first();
+            $artis_id = $artis->id;
             $songs = song::where('artis_id', $artis->id)->get();
             $notifs = notif::with('user.artist.song', 'song')->where('user_id', auth()->user()->id)->get();
             return view('artisverified.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
@@ -973,6 +974,7 @@ class ArtistVerifiedController extends Controller
 
     protected function Project(Request $request, string $code)
     {
+        $statusPersetujuan = Cache::get('status_persetujuan_' . auth()->user()->id);
         $validate = Validator::make(
             $request->only('images', 'name', 'audio', 'range'),
             [
@@ -1002,6 +1004,8 @@ class ArtistVerifiedController extends Controller
             ]
         );
 
+        setlocale(LC_MONETARY, 'id_ID');
+
         if ($validate->fails()) {
             return redirect()->back()
                 ->withErrors($validate)
@@ -1022,7 +1026,6 @@ class ArtistVerifiedController extends Controller
         $uangTetap = isset($pendapatan->pendapatanArtis) != null ? $pendapatan->pendapatanArtis : 28000;
         $uangYangDiterima = ($range / 100) * $uangTetap;
 
-        // dd($uangTetap - $uangYangDiterima);
 
         if (isset($project->request_project_artis_id_1) || isset($project->request_project_artis_id_2)) {
             $sisaPengasilan = $uangTetap - $uangYangDiterima;

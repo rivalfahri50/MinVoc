@@ -138,7 +138,7 @@
                                         @php
                                             $i = 0;
                                         @endphp
-                                        @foreach ($songs as $item)
+                                        @foreach ($songs->reverse() as $item)
                                             @if ($item->is_approved)
                                                 <div class="preview-item">
                                                     <div class="preview-thumbnail">
@@ -644,7 +644,7 @@
             });
         }
     </script>
-    
+
     {{-- lagu atas --}}
     <script>
         let previous = document.querySelector('#pre');
@@ -888,7 +888,18 @@
 
         // fungsi untuk memutar lagu sesudahnya
         function next_song() {
-            if (index_no < All_song.length - 1) {
+            if (index_no > 0) {
+                index_no -= 1;
+            } else {
+                index_no = All_song.length - 1;
+            }
+            load_track(index_no);
+            playsong();
+        }
+
+        // fungsi untuk memutar lagu sebelumnya
+        function previous_song() {
+              if (index_no < All_song.length - 1) {
                 index_no += 1;
             } else {
                 index_no = 0;
@@ -901,17 +912,6 @@
                     track.play();
                 }, 1000); // Delay 1 detik sebelum memulai lagu selanjutnya
             }
-        }
-
-        // fungsi untuk memutar lagu sebelumnya
-        function previous_song() {
-            if (index_no > 0) {
-                index_no -= 1;
-            } else {
-                index_no = All_song.length - 1;
-            }
-            load_track(index_no);
-            playsong();
         }
 
         // ubah volume

@@ -239,9 +239,10 @@ class penggunaController extends Controller
             return view('users.search.songSearch', compact('song', 'title', 'songs', 'playlists', 'notifs'));
         } else if ($user) {
             $artis = artist::where('user_id', $user->id)->first();
+            $artis_id = $artis->id;
             $songs = song::where('artis_id', $artis->id)->get();
             $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
-            return view('users.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
+            return view('users.search.artisSearch', compact('user','artis_id','title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
         } else {
             return response()->view('users.searchNotFound', compact('title', 'notifs'));
         }
@@ -255,18 +256,18 @@ class penggunaController extends Controller
         $user = user::where('name', 'like', '%' .  $request->input('search') . '%')->first();
         $totalDidengar = DB::table('riwayat')->where('user_id', auth()->user()->id)->sum('song_id');
         $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
-
+        $search = $request->search;
         if ($song) {
             $songs = song::all();
             $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
-            return view('users.search.songSearch', compact('song', 'title', 'songs', 'playlists', 'notifs'));
+            return view('users.search.songSearch', compact('song','search', 'title', 'songs', 'playlists', 'notifs'));
         } else if ($user) {
             $artis = artist::where('user_id', $user->id)->first();
             $songs = song::where('artis_id', $artis->id)->get();
             $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
-            return view('users.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
+            return view('users.search.artisSearch', compact('user','search','artis_id','title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
         } else {
-            return response()->view('users.searchNotFound', compact('title', 'notifs'));
+            return response()->view('users.searchNotFound', compact('title','search', 'notifs'));
         }
     }
 

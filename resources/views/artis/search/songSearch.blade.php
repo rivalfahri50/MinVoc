@@ -19,14 +19,14 @@
                                     <div class="teks-container">
                                         <h4 class="judul clamp-text">
                                             {{ $song->judul }}</h4>
-                                        <div class="d-flex flex-row align-content-center" style=" display: flex; flex-direction: row; align-items: center">
-                                            <p class="text-muted m-1 clamp-text" style="font-size: 16px">{{ $song->artist->user->name }}</p>
+                                        <div class="d-flex flex-row align-content-center"
+                                            style=" display: flex; flex-direction: row; align-items: center">
+                                            <p class="text-muted m-1 clamp-text" style="font-size: 16px">
+                                                {{ $song->artist->user->name }}</p>
                                             <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
                                                 onclick="putar({{ $song->id }})">
-                                                <button onclick="togglePlayPause()" id="play"
-                                                    style="border: none; background: none;">
-                                                    <i id="playIcon" class="far fa-play-circle ukuraniconplaykhusus"
-                                                        style="color: #957DAD;"></i>
+                                                <button onclick="justplay()" id="playPauseButton">
+                                                    <i class="far fa-play-circle fr" aria-hidden="true"></i>
                                                 </button>
                                             </a>
                                         </div>
@@ -59,8 +59,7 @@
                                                     </a>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group">
-                                                            <i id="like{{ $item->id }}"
-                                                                data-id="{{ $item->id }}"
+                                                            <i id="like{{ $item->id }}" data-id="{{ $item->id }}"
                                                                 onclick="toggleLike(this, {{ $item->id }})"
                                                                 class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                             </i>
@@ -96,8 +95,6 @@
                     //     // Panggil fungsi justplay() jika diperlukan
                     //     justplay();
                     // }
-
-
                 </script>
             </div>
             <!-- page-body-wrapper ends -->
@@ -120,6 +117,7 @@
                 }
             });
         });
+
         function toggleLike(iconElement, songId) {
             let isLiked = iconElement.classList.contains('fas');
 
@@ -150,7 +148,8 @@
             });
         }
     </script>
-     <script>
+
+    <script>
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
         let next = document.querySelector('#next');
@@ -181,32 +180,35 @@
 
         let All_song = [];
 
-        $.ajax({
-            url: '/ambil-lagu',
-            type: 'GET',
-            dataType: 'json',
-            success: function(data) {
-                All_song = data.map(lagu => {
-                    return {
-                        id: lagu.id,
-                        judul: lagu.judul,
-                        audio: lagu.audio,
-                        image: lagu.image,
-                        artistId: lagu.artist.user.name
-                    };
-                });
-                console.log("data lagu yang diambil:", All_song);
-                if (All_song.length > 0) {
-                    // Memanggil load_track dengan indeks 0 sebagai lagu pertama
-                    load_track(0);
-                } else {
-                    console.error("Data lagu kosong.");
+        function ambilDataLagu() {
+            $.ajax({
+                url: '/ambil-lagu',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    All_song = data.map(lagu => {
+                        return {
+                            id: lagu.id,
+                            judul: lagu.judul,
+                            audio: lagu.audio,
+                            image: lagu.image,
+                            artistId: lagu.artist.user.name
+                        };
+                    });
+                    console.log("data lagu yang diambil:", All_song);
+                    if (All_song.length > 0) {
+                        // Memanggil load_track dengan indeks 0 sebagai lagu pertama
+                        load_track(0);
+                    } else {
+                        console.error("Data lagu kosong.");
+                    }
+                },
+                error: function(error) {
+                    console.error('Error fetching data:', error);
                 }
-            },
-            error: function(error) {
-                console.error('Error fetching data:', error);
-            }
-        });
+            });
+        }
+        console.log("audio media -> ", slider);
 
         ambilDataLagu();
 
@@ -257,15 +259,18 @@
 
         // play song
         function playsong() {
+            let playPauseButton = document.getElementById("playPauseButton");
             if (track.paused) {
                 track.play();
                 Playing_song = true;
                 play.innerHTML = '<i class="far fa-pause-circle fr" aria-hidden="true"></i>';
+                playPauseButton.innerHTML = '<i class="far fa-pause-circle fr" aria-hidden="true"></i>';
             } else {
                 track.pause();
                 Playing_song = false;
                 play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>';
-            }
+                playPauseButton.innerHTML = '<i class="far fa-play-circle fr" aria-hidden="true"></i>';
+            }console.log( playPauseButton.innerHTML);
 
             // Periksa apakah index_no memiliki nilai yang benar
             if (index_no >= 0 && index_no < All_song.length) {
@@ -352,9 +357,11 @@
         }
         // pause song
         function pausesong() {
+            let playPauseButton = document.getElementById("playPauseButton");
             track.pause();
             Playing_song = false;
-            play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>'
+            play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>';
+            playPauseButton.innerHTML = '<i class="far fa-play-circle fr" aria-hidden="true"></i>';
         }
 
         function putar(id) {
