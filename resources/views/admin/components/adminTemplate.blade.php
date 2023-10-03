@@ -115,7 +115,7 @@
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
                 cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Ya, Hapus!',
+                confirmButtonText: 'Ya!',
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -131,7 +131,7 @@
         }
 
         function deleteSong(code) {
-            confirmDelete('Yakin menghapus Lagu ini?', function() {
+            confirmDelete('Yakin menolak Lagu ini?', function() {
                 window.location.href = '/admin/hapus-music/' + code;
             });
         }

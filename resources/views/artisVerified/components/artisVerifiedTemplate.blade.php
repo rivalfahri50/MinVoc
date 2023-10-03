@@ -401,36 +401,67 @@
                                                 $shownNotifications[] = $notificationKey;
                                             @endphp
 
-                                            <div class="dropdown-item preview-item" style="cursor: auto;">
-                                                @if ($item->message == null)
+                                            @if ($item->type == 'lagu')
+                                                <div class="dropdown-item preview-item" style="cursor: auto;">
                                                     <div>
-                                                        <img src="{{ asset('storage/' . $item->user->avatar) }}" class="avatarnotif">
+                                                        <img src="{{ asset('storage/' . $item->song->image) }}"
+                                                            class="avatarnotif">
                                                     </div>
-                                                @endif
-                                                <div class="preview-item-content" style="margin-right: 5px">
-                                                    <p class="preview-subject mb-1" style="font-weight: bold">
-                                                        {{ $item->title }}</p>
-                                                    @if ($item->message !== null)
+                                                    <div class="preview-item-content" style="margin-right: 5px">
+                                                        <p class="preview-subject mb-1" style="font-weight: bold">
+                                                            {{ $item->title }}</p>
+                                                    </div>
+                                                    <button type="submit" class="btn btnicon p-0"
+                                                        style="background: none; border: none; margin-bottom: 3px;"
+                                                        onclick="">
+                                                        <a href="/artis-verified/delete-notif/{{ $item->code }}">
+                                                            <i class="far fa-times-circle text-danger"
+                                                                style="font-size: 11px;"></i>
+                                                        </a>
+                                                    </button>
+                                                </div>
+                                            @endif
+                                            @if ($item->type == 'verifikasi')
+                                                <div class="dropdown-item preview-item" style="cursor: auto;">
+                                                    <div>
+                                                        <img src="{{ asset('storage/' . $item->user->avatar) }}"
+                                                            class="avatarnotif">
+                                                    </div>
+                                                    <div class="preview-item-content" style="margin-right: 5px">
+                                                        <p class="preview-subject mb-1" style="font-weight: bold">
+                                                            {{ $item->title }}</p>
                                                         <span class="text-muted ellipsis mb-0"
                                                             style="font-size: 12px; font-weight: normal; cursor: pointer;"
                                                             data-bs-toggle="modal"
                                                             data-bs-target="#alasan-{{ $item->code }}">Klik
                                                             untuk melihat alasan</span>
-                                                    @else
-                                                        <p class="text-muted ellipsis mb-0">
-                                                            {{ $item->artis }}
-                                                        </p>
-                                                    @endif
+                                                    </div>
+                                                    <button type="submit" class="btn btnicon p-0"
+                                                        style="background: none; border: none; margin-bottom: 3px;"
+                                                        onclick="">
+                                                        <a href="/artis-verified/delete-notif/{{ $item->code }}">
+                                                            <i class="far fa-times-circle text-danger"
+                                                                style="font-size: 11px;"></i>
+                                                        </a>
+                                                    </button>
                                                 </div>
-                                                <button type="submit" class="btn btnicon p-0"
-                                                    style="background: none; border: none; margin-bottom: 3px"
-                                                    onclick="">
-                                                    <a href="/artis-verified/delete-notif/{{ $item->code }}">
-                                                        <i class="far fa-times-circle text-danger"
-                                                            style="font-size: 11px;"></i>
-                                                    </a>
-                                                </button>
-                                            </div>
+                                            @endif
+                                            @if ($item->type == 'pencairan')
+                                                <div class="dropdown-item preview-item" style="cursor: auto;">
+                                                    <div class="preview-item-content" style="margin-right: 5px">
+                                                        <p class="preview-subject mb-1" style="font-weight: bold">
+                                                            {{ $item->title }}</p>
+                                                    </div>
+                                                    <button type="submit" class="btn btnicon p-0"
+                                                        style="background: none; border: none; margin-bottom: 3px;"
+                                                        onclick="">
+                                                        <a href="/artis-verified/delete-notif/{{ $item->code }}">
+                                                            <i class="far fa-times-circle text-danger"
+                                                                style="font-size: 11px;"></i>
+                                                        </a>
+                                                    </button>
+                                                </div>
+                                            @endif
                                         @endif
                                     @endif
                                 @endforeach

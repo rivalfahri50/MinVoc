@@ -17,6 +17,7 @@ class song extends Model
         'waktu',
         'didengar',
         'likes',
+        'type',
         'is_approved',
         'genre_id',
         'album_id',

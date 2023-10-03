@@ -15,6 +15,25 @@
                 text-overflow: ellipsis;
             }
         </style>
+        <script>
+            function confirmDelete(songCode) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "Apakah Yakin Untuk Menghapus Lagu!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya!',
+                    cancelButtonText: 'Tidak'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = `/artis/delete-song/${songCode}`;
+                    }
+                });
+            }
+        </script>
+
         <div class="content-wrapper">
             <div class="row mt-4">
                 <div class="col-12">
@@ -119,9 +138,22 @@
                                             </td>
                                             <td class="table-cell">{{ $item->genre->name }}</td>
                                             <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
-                                            <td class="table-cell {{ $item->is_approved == 0 ? 'text-warning' : 'text-success' }}"
-                                                style="font-weight: 400">
-                                                {{ $item->is_approved == 0 ? 'Menunggu' : 'Telah Terbit' }}</td>
+                                            @if ($item->is_approved == 0 && $item->type == 'tolak')
+                                                <td class="table-cell text-danger"
+                                                    style="font-weight: 400; display: flex; flex-direction: row; align-items: center; gap: 5px">
+                                                    <span>
+                                                        Di Tolak
+                                                    </span>
+                                                    <a onclick="confirmDelete('{{ $item->code }}')">
+                                                        <span class="mdi mdi-delete-outline fs-5"></span>
+                                                    </a>
+                                                </td>
+                                            @endif
+                                            @if (($item->is_approved == 0 && $item->type == 'pengajuan') || ($item->is_approved == 1 && $item->type == 'setuju'))
+                                                <td class="table-cell {{ $item->is_approved == 0 ? 'text-warning' : 'text-success' }}"
+                                                    style="font-weight: 400">
+                                                    {{ $item->is_approved == 0 ? 'Menunggu' : 'Telah Terbit' }}</td>
+                                            @endif
                                         </tr>
                                     @endIf
                                 @endforeach

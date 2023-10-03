@@ -119,6 +119,8 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
     })->name('peraturan.artis');
     Route::get('/delete-notif/{code}', 'deleteNotif');
     Route::get('/detail-artis/{code}', 'detailArtis');
+    Route::get('/filter', 'filterDate')->name('filter.date.artis');
+    Route::get('/delete-song/{code}', 'deleteSong');
 
     Route::post('/search', 'pencarian_input')->name('pencarian.artis');
     Route::post('/tambah_playlist/{code}', 'tambah_playlist')->name('tambah.playlist.artis');
@@ -174,6 +176,7 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
     Route::get('/filter', 'filterDate')->name('filter.date');
     Route::get('/filter-pencairan', 'filterDatePencairan')->name('filter.date.pencairan');
     Route::get('/detail-artis/{code}', 'detailArtis');
+    Route::get('/delete-song/{code}', 'deleteSong');
 
     Route::post('/pencairan/{code}', 'pencairanDana')->name('pencairan.artiVerified');
     Route::post('/undangColab/{code}', 'undangColab')->name('undangColab');

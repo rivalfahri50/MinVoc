@@ -113,9 +113,22 @@
                                         </td>
                                         <td class="table-cell">{{ $item->genre->name }}</td>
                                         <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
-                                        <td class="table-cell {{ $item->is_approved == 0 ? 'text-warning' : 'text-success' }}"
-                                            style="font-weight: 400">
-                                            {{ $item->is_approved == 0 ? 'Menunggu' : 'Telah Terbit' }}</td>
+                                        @if ($item->is_approved == 0 && $item->type == 'tolak')
+                                            <td class="table-cell text-danger"
+                                                style="font-weight: 400; display: flex; flex-direction: row; align-items: center; gap: 5px">
+                                                <span>
+                                                    Di Tolak
+                                                </span>
+                                                <a href="/artis-verified/delete-song/{{ $item->code }}">
+                                                    <span class="mdi mdi-delete-outline fs-5"></span>
+                                                </a>
+                                            </td>
+                                        @endif
+                                        @if (($item->is_approved == 0 && $item->type == 'pengajuan') || ($item->is_approved == 1 && $item->type == 'setuju'))
+                                            <td class="table-cell {{ $item->is_approved == 0 ? 'text-warning' : 'text-success' }}"
+                                                style="font-weight: 400">
+                                                {{ $item->is_approved == 0 ? 'Menunggu' : 'Telah Terbit' }}</td>
+                                        @endif
                                     </tr>
                                 @endIf
                             @endforeach

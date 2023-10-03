@@ -15,11 +15,17 @@ class notif extends Model
         'message',
         'title',
         'user_id',
+        'song_id',
+        'type',
         'is_reject',
     ];
 
     public function user()
     {
         return $this->hasOne(User::class, 'id', 'user_id');
+    }
+    public function song()
+    {
+        return $this->hasOne(Song::class, 'id', 'song_id');
     }
 }

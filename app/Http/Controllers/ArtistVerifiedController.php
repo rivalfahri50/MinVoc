@@ -493,6 +493,7 @@ class ArtistVerifiedController extends Controller
                 'audio' => $audioPath,
                 'waktu' => $formattedDuration,
                 'is_approved' => false,
+                'type' => 'pengajuan',
                 'genre_id' => $request->input('genre'),
                 'album_id' => $request->input('album') == null ? null : $request->input('album'),
                 'artis_id' => $artis->id,
@@ -522,7 +523,7 @@ class ArtistVerifiedController extends Controller
         } catch (\Throwable $th) {
             abort(404);
         }
-        return response()->view('artisVerified.billboard.billboard', compact('title', 'billboard', 'artis_id','albums', 'songs', 'playlists', 'notifs'));
+        return response()->view('artisVerified.billboard.billboard', compact('title', 'billboard', 'artis_id', 'albums', 'songs', 'playlists', 'notifs'));
     }
 
     protected function albumBillboard(string $code): Response
@@ -569,13 +570,34 @@ class ArtistVerifiedController extends Controller
 
     protected function deleteNotif(Request $request, string $code)
     {
+        $notif = notif::where('code', $code)->first();
+        $notif->delete();
         try {
-            $notif = notif::where('code', $code)->first();
-            $notif->delete();
         } catch (\Throwable $th) {
             abort(404);
         }
         return redirect()->back();
+    }
+
+    protected function deleteSong(Request $request, string $code)
+    {
+        try {
+            $music = song::where('code', $code)->first();
+
+            if (Storage::disk('public')->exists($music->audio)) {
+                Storage::disk('public')->delete($music->audio);
+            }
+
+            if (Storage::disk('public')->exists($music->image)) {
+                Storage::disk('public')->delete($music->image);
+            }
+
+            $music->delete();
+            Alert::success('message', 'berhasil menghapus lagu!');
+        } catch (\Throwable $th) {
+            return back();
+        }
+        return back();
     }
 
     protected function search(Request $request)
@@ -863,7 +885,7 @@ class ArtistVerifiedController extends Controller
         $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
         $artis = artist::with('user')->get();
 
-        return response()->view('artisVerified.kolaborasi', compact('title', 'datas','project_id', 'artisUser', 'messages', 'artis', 'notifs'));
+        return response()->view('artisVerified.kolaborasi', compact('title', 'datas', 'project_id', 'artisUser', 'messages', 'artis', 'notifs'));
     }
 
     protected function artisSelect()

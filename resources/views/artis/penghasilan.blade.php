@@ -190,10 +190,24 @@
                     </div>
                 </div>
 
-                {{-- @dd($projects) --}}
-
                 <div class="col-md-12">
-                    <h3 class="judul">Riwayat Penghasilan Masuk</h3>
+                    <div class="row mb-2">
+                        <div class="col-md-4">
+                            <h3 class="judul" style="font-size: 18px">Riwayat Penghasilan Masuk</h3>
+                        </div>
+                        <div class="col-md-8">
+                            <form method="get" action="{{ route('filter.date.artis') }}"
+                                class="form-inline justify-content-end">
+                                <label class="mr-2">Cari Tanggal</label>
+                                <input type="date" name="start_date" id="start_date" class="form-control mr-2"
+                                    placeholder="Dari tanggal" value="{{ old('start_date') }}">
+                                <label class="mr-2">-</label>
+                                <input type="date" name="end_date" id="end_date" class="form-control mr-2"
+                                    placeholder="Sampai tanggal" value="{{ old('end_date') }}">
+                                <button type="submit" name="submit" class="btn">Cari</button>
+                            </form>
+                        </div>
+                    </div>
                     <div class="card mb-3">
                         <div class="table-body">
                             <div class="table-container">
