@@ -4,46 +4,6 @@
     <div class="main-panel">
         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
         <link rel="stylesheet" href="/user/assets/css/riwayat.css">
-        <style>
-            /* CSS untuk styling pagination */
-            .pagination {
-                margin-top: 20px;
-            }
-
-            .page-item:first-child .page-link {
-                border-top-left-radius: 0;
-                border-bottom-left-radius: 0;
-                border-radius: 10px;
-            }
-
-            .page-item:last-child .page-link {
-                border-top-right-radius: 0;
-                border-bottom-right-radius: 0;
-                border-radius: 10px;
-            }
-
-            .pagination li {
-                display: inline;
-                margin-right: 5px;
-            }
-
-            .pagination li a {
-                text-decoration: none;
-            }
-
-            .page-link.active {
-                background-color: #957DAD;
-                border: 1px solid #957DAD;
-            }
-
-            .pagination li.active a {
-                color: #fff;
-            }
-
-            .pagination li:hover {
-                background-color: #ddd;
-            }
-        </style>
         <div class="content-wrapper">
             <div class="row">
                 <div class="col-lg-12 grid-margin stretch-card">

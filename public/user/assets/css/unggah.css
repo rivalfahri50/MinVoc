@@ -128,3 +128,18 @@ label:hover {
 .label-with-image {
     background-image: none; /* Atur latar belakang menjadi kosong ketika gambar sudah ada */
 }
+
+table.dataTable>tbody>tr {
+    background-color: #eaeaea;
+}
+
+div.dataTables_wrapper div.dataTables_paginate ul.pagination {
+    margin: 2px 0;
+    white-space: nowrap;
+    justify-content: center;
+}
+
+.pagination li:hover {
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0 rgba(199,199,199,1);
+}

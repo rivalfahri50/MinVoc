@@ -19,7 +19,7 @@
                             <tbody>
                                 @foreach ($uniqueRows->reverse() as $item)
                                     @if ($item->user_id === auth()->user()->id)
-                                        <tr class="table-row baris">
+                                        <tr class="table-row">
                                             <td class="table-cell">
                                                 <h6>{{ $item->song->judul }}</h6>
                                                 <p class="text-muted m-0">{{ $item->song->artist->user->name }}</p>
@@ -34,12 +34,12 @@
                         </table>
                     </div>
                 </div>
-                @if (count($uniqueRows) === 0)
+                {{-- @if (count($uniqueRows) === 0)
                     <div style="justify-content: center; display: flex; padding: 50px 0;">
                         <img width="400" height="200" src="/user/assets/images/logo-user.svg" alt=""
                             srcset="">
                     </div>
-                @endif
+                @endif --}}
             </div>
         </div>
     </div>
@@ -66,7 +66,7 @@
                 "language": {
                     "sProcessing": "Sedang memproses...",
                     "sLengthMenu": "Tampilkan _MENU_ entri",
-                    "sZeroRecords": "Tidak ditemukan Data",
+                    "sZeroRecords": "<img src='/user/assets/images/logo-user.svg'>",
                     "sInfo": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
                     "sInfoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
                     "sInfoFiltered": "(disaring dari _MAX_ entri keseluruhan)",

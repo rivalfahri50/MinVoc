@@ -129,7 +129,7 @@
                             </button>
                         </div>
                     </div>
-                    <h3 class="card-title mt-2 judul" style="font-size: 20px; font-weight: 600">Lagu Yang Disarankan</h3>
+                    <h3 class="card-title mt-2 judul" style="font-size: 20px; font-weight: 600">Lagu Terbaru</h3>
                     <div class="card datakanan scrollbar-down thin">
                         <div class="card-body">
                             <div class="row" style="margin-top: -20px">

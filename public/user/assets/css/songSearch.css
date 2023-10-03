@@ -5,24 +5,22 @@
 
 .image-container {
     width: 130px; /* Set a fixed width */
-    overflow: hidden; /* Hide any overflow if the image exceeds the container size */
 }
 
 .avatar {
-    width: 100%;
+    width: 130px;
     height: 100%;
-    border-radius: 0;
+    border-radius: 5px;
     object-fit: cover;
 }
 
 /* Limit the number of words and add ellipsis for overflow */
 .clamp-text {
     display: -webkit-box;
-    -webkit-line-clamp: 2; /* Limit the number of lines to 2 */
+    -webkit-line-clamp: 3; /* Limit the number of lines to 2 */
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-height: 40px; /* Adjust this to control the maximum height */
 }
 
 .cell-content {
@@ -85,4 +83,17 @@ hr {
 .ukuraniconplaykhusus:before {
     font-size: 20px;
     color: #957dad;
+}
+
+.teks-container {
+    margin-left: 10px;
+    display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+}
+
+.ukuran {
+    display: flex;
+    width: 450px;
+    height: 180px;
 }

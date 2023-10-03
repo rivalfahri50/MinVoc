@@ -17,7 +17,9 @@ return new class extends Migration
             $table->string('title');
             $table->text('message')->nullable();
             $table->foreignId('user_id')->nullable()->constrained('users');
+            $table->foreignId('song_id')->nullable()->constrained('songs')->onDelete('cascade');;
             $table->boolean('is_reject')->default(false);
+            $table->enum('type', ['pencairan', 'lagu', 'verifikasi'])->nullable();
             $table->timestamps();
         });
     }

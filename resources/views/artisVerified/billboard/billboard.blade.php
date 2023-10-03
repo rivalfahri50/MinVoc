@@ -14,13 +14,12 @@
                                     <div class="preview-list">
                                         <div class="d-flex flex-column gap-3" style="color: #6C6C6C;">
                                             <span class="fw-bold fs-4">{{ $billboard->artis->user->name }}</span>
-                                            <span class="fs-5">{{ $billboard->deskripsi }}.</span>
+                                            <span class="deskbill">{{ $billboard->deskripsi }}.</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-4 d-flex text-right justify-content-center">
-                                    <img src="{{ asset('storage/' . $billboard->image_artis) }}" alt=""
-                                        class="d-block" style="width: 250px; height: 350px; object-fit: cover;">
+                                    <img src="{{ asset('storage/' . $billboard->image_artis) }}" class="d-block fotoartisbill">
                                 </div>
                             </div>
                         </div>

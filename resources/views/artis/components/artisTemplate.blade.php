@@ -417,14 +417,14 @@
                                             </svg>
                                         </span>
                                         <input type="text" id="search" name="search" class="form-control"
-                                            placeholder="cari di sini" value="{{ old('search')}}" style="border-radius: 0px 15px 15px 0px">
+                                            placeholder="cari di sini" style="border-radius: 0px 15px 15px 0px" value="{{ old('search') }}" >
                                     </div>
                                 </form>
                                 <ul id="search-results"></ul>
                             </li>
                         </ul>
-
                     </ul>
+
                     <ul class="navbar-nav navbar-nav-right">
                         <li class="nav-item dropdown">
                             <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown"
@@ -435,57 +435,72 @@
                                 @endif
                             </a>
                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-                            aria-labelledby="notificationDropdown">
-                            @php
-                                $shownNotifications = [];
-                            @endphp
-                            @foreach ($notifs->reverse() as $item)
-                                @if ($item->created_at)
-                                    @php
-                                        $createdAt = $item->created_at->format('Y-m-d');
-                                        $title = $item->title;
-                                        $notificationKey = $createdAt . '_' . $title;
-                                    @endphp
-
-                                    @if (!in_array($notificationKey, $shownNotifications))
+                                aria-labelledby="notificationDropdown">
+                                @php
+                                    $shownNotifications = [];
+                                @endphp
+                                @foreach ($notifs->reverse() as $item)
+                                    @if ($item->created_at)
                                         @php
-                                            $shownNotifications[] = $notificationKey;
+                                            $createdAt = $item->created_at->format('Y-m-d');
+                                            $title = $item->title;
+                                            $notificationKey = $createdAt . '_' . $title;
                                         @endphp
 
-                                        <div class="dropdown-item preview-item" style="cursor: auto;">
-                                            @if ($item->message == null)
-                                                <div>
-                                                    <img src="{{ asset('storage/' . $item->user->avatar) }}" class="avatarnotif">
+                                        @if (!in_array($notificationKey, $shownNotifications))
+                                            @php
+                                                $shownNotifications[] = $notificationKey;
+                                            @endphp
+
+                                            @if ($item->type == 'lagu')
+                                                <div class="dropdown-item preview-item" style="cursor: auto;">
+                                                    <div>
+                                                        <img src="{{ asset('storage/' . $item->song->image) }}"
+                                                            class="avatarnotif">
+                                                    </div>
+                                                    <div class="preview-item-content" style="margin-right: 5px">
+                                                        <p class="preview-subject mb-1" style="font-weight: bold">
+                                                            {{ $item->title }}</p>
+                                                    </div>
+                                                    <button type="submit" class="btn btnicon p-0"
+                                                        style="background: none; border: none; margin-bottom: 3px;"
+                                                        onclick="">
+                                                        <a href="/artis/delete-notif/{{ $item->code }}">
+                                                            <i class="far fa-times-circle text-danger"
+                                                                style="font-size: 11px;"></i>
+                                                        </a>
+                                                    </button>
                                                 </div>
                                             @endif
-                                            <div class="preview-item-content" style="margin-right: 5px">
-                                                <p class="preview-subject mb-1" style="font-weight: bold">
-                                                    {{ $item->title }}</p>
-                                                @if ($item->message !== null)
-                                                    <span class="text-muted ellipsis mb-0"
-                                                        style="font-size: 12px; font-weight: normal; cursor: pointer;"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#alasan-{{ $item->code }}">Klik
-                                                        untuk melihat alasan</span>
-                                                @else
-                                                    <p class="text-muted ellipsis mb-0">
-                                                        {{ $item->artis }}
-                                                    </p>
-                                                @endif
-                                            </div>
-                                            <button type="submit" class="btn btnicon p-0"
-                                                style="background: none; border: none; margin-bottom: 20px;"
-                                                onclick="">
-                                                <a href="/artis-verified/delete-notif/{{ $item->code }}">
-                                                    <i class="far fa-times-circle text-danger"
-                                                        style="font-size: 11px;"></i>
-                                                </a>
-                                            </button>
-                                        </div>
+                                            @if ($item->type == 'verifikasi')
+                                                <div class="dropdown-item preview-item" style="cursor: auto;">
+                                                    <div>
+                                                        <img src="{{ asset('storage/' . $item->user->avatar) }}"
+                                                            class="avatarnotif">
+                                                    </div>
+                                                    <div class="preview-item-content" style="margin-right: 5px">
+                                                        <p class="preview-subject mb-1" style="font-weight: bold">
+                                                            {{ $item->title }}</p>
+                                                        <span class="text-muted ellipsis mb-0"
+                                                            style="font-size: 12px; font-weight: normal; cursor: pointer;"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#alasan-{{ $item->code }}">Klik
+                                                            untuk melihat alasan</span>
+                                                    </div>
+                                                    <button type="submit" class="btn btnicon p-0"
+                                                        style="background: none; border: none; margin-bottom: 3px;"
+                                                        onclick="">
+                                                        <a href="/artis/delete-notif/{{ $item->code }}">
+                                                            <i class="far fa-times-circle text-danger"
+                                                                style="font-size: 11px;"></i>
+                                                        </a>
+                                                    </button>
+                                                </div>
+                                            @endif
+                                        @endif
                                     @endif
-                                @endif
-                            @endforeach
-                        </div>
+                                @endforeach
+                            </div>
                         </li>
 
                         <li class="nav-item dropdown">
@@ -540,6 +555,7 @@
             @include('sweetalert::alert')
             @yield('content')
 
+
             {{-- <button id="playButton">Play</button>
             <button id="pauseButton">Pause</button>
             <input type="range" id="progress" min="0" value="0">
@@ -580,7 +596,8 @@
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header pb-0">
-                                <h3 class="modal-title judul" style="font-size: 20px" id="exampleModalLabel">Pengajuan verifikasi
+                                <h3 class="modal-title judul" style="font-size: 20px" id="exampleModalLabel">
+                                    Pengajuan verifikasi
                                     akun ditolak
                                 </h3>
                                 <button type="button" style="background: none; border: none;"

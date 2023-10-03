@@ -50,7 +50,7 @@ class AdminController extends Controller
     protected function persetujuan(): Response
     {
         $title = "MusiCave";
-        $persetujuan = song::where('is_approved', false)->get();
+        $persetujuan = song::where('is_approved', false)->where('type', 'pengajuan')->get();
         return response()->view('admin.persetujuan', compact('title', 'persetujuan'));
     }
     protected function show($id): Response
@@ -201,11 +201,12 @@ class AdminController extends Controller
                     ->Where('artist_id', $id->id);
             })->get();
         }
-
         notif::create([
             'code' => Str::uuid(),
             'title' => 'pengajuan pencairan uang berhasil',
             'user_id' => $id->user_id,
+            'is_reject' => false,
+            'type' => 'pencairan'
         ]);
 
         foreach ($penghasilan as $key) {
@@ -274,10 +275,13 @@ class AdminController extends Controller
                 'artis_id' => $song->artis_id,
                 'title' => $song->judul . " di setujui oleh admin",
                 'user_id' => $user->id,
-                'is_reject' => false
+                'song_id' => $song->id,
+                'is_reject' => false,
+                'type' => 'lagu'
             ]
         );
         $song->is_approved = true;
+        $song->type = 'setuju';
         $song->update();
         $persetujuan = song::all();
         $notifs = notif::where('user_id', auth()->user()->id)->get();
@@ -524,6 +528,7 @@ class AdminController extends Controller
             $artis->is_verified = true;
             $artis->verification_status = "success";
             $user->role_id = 1;
+            $user->is_login = false;
             $artis->update();
             $user->update();
         } catch (\Throwable $th) {
@@ -537,7 +542,6 @@ class AdminController extends Controller
     protected function hapusVerified(Request $request, string $code)
     {
         $artis = artist::where('code', $code)->first();
-
         try {
             notif::create([
                 'code' => Str::uuid(),
@@ -545,7 +549,8 @@ class AdminController extends Controller
                 'title' => "Pengajuan verifikasi akun ditolak",
                 'message' => $request->input('alasan'),
                 'user_id' => $artis->user_id,
-                'is_reject' => false
+                'is_reject' => false,
+                'type' => 'verifikasi'
             ]);
 
             $artis->image = "none";
@@ -581,40 +586,30 @@ class AdminController extends Controller
 
     protected function hapusMusic(Request $request, string $code)
     {
-        $music = song::where('code', $code)->first();
-        $user = artist::where('id', $music->artis_id)->first();
-
-        notif::create(
-            [
-                'code' => Str::uuid(),
-                'title' => $music->judul . " ditolak oleh admin",
-                'user_id' => $user->user_id,
-                'is_reject' => false
-            ]
-        );
-
-        if (!$music) {
-            return redirect()->back()->with('error', 'Record not found.');
-        }
-
-        if (Storage::disk('public')->exists($music->audio)) {
-            Storage::disk('public')->delete($music->audio);
-        }
-
-        if (Storage::disk('public')->exists($music->image)) {
-            Storage::disk('public')->delete($music->image);
-        }
-
-        $music->delete();
         try {
+            $music = song::where('code', $code)->first();
+            $user = artist::where('id', $music->artis_id)->first();
 
+            notif::create(
+                [
+                    'code' => Str::uuid(),
+                    'title' => $music->judul . " ditolak oleh admin",
+                    'user_id' => $user->user_id,
+                    'song_id' => $music->id,
+                    'is_reject' => false,
+                    'type' => 'lagu'
+                ]
+            );
+
+            $music->type = 'tolak';
+            $music->update();
         } catch (\Throwable $th) {
             Alert::warning('message', 'Lagu Sedang Digunakan');
-            return redirect()->back()->with('error', 'Failed to delete record.');
+            return redirect()->back()->with('message', 'lagu gagal di tolak publish.');
         }
 
         Alert::success('message', 'Success Menolak Lagu');
-        return redirect()->back()->with('success', 'Record deleted successfully.');
+        return redirect()->back()->with('message', 'lagu berhasil di tolak publish.');
     }
 
     protected function hapusBillboard(Request $request, string $code)

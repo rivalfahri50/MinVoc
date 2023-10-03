@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('didengar')->default(0);
             $table->integer('likes')->default(0);
             $table->boolean('is_approved')->default(false);
+            $table->enum('type', ['setuju', 'tolak', 'pengajuan']);
             $table->timestamps();
         });
     }
