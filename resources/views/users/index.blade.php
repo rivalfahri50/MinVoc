@@ -72,7 +72,8 @@
                                                     </div>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group align-items-center">
-                                                            <i id="like-atas{{ $item->id }}" data-id="{{ $item->id }}"
+                                                            <i id="like-atas{{ $item->id }}"
+                                                                data-id="{{ $item->id }}"
                                                                 onclick="toggleLike(this, {{ $item->id }})"
                                                                 class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                             <p style="pointer-events: none;">{{ $item->waktu }}</p>
@@ -164,14 +165,14 @@
                                     @if ($item->is_approved)
                                         <tr class="table-row baris" data-href="#lagu-diputar"
                                             onclick="putar({{ $item->id }})">
-                                            <td class="table-cell" scope="row">{{ $no + 1}}</td>
+                                            <td class="table-cell" scope="row">{{ $no + 1 }}</td>
                                             <td class="table-cell">
                                                 <div class="fototabelsejajar">
                                                     <img src="{{ asset('storage/' . $item->image) }}">
                                                     <div>
                                                         <a href="#lagu-diputar"
                                                             class="flex-grow text-decoration-none link"
-                                                            onclick="putaran({{ $item->id }})">
+                                                            onclick="putar({{ $item->id }})">
                                                             <h6 class="preview-subject">{{ $item->judul }}</h6>
                                                             <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
                                                         </a>
@@ -422,7 +423,7 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
-                    console.log('like atas',response);
+                    console.log('like atas', response);
                     response.forEach(function(item) {
                         const songId = item.song_id;
                         const like = document.getElementById(`like-atas${item.song_id}`);
@@ -437,7 +438,7 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
-                    console.log('like bawah',response);
+                    console.log('like bawah', response);
                     response.forEach(function(item) {
                         const songId = item.song_id;
                         const like = document.getElementById(`like-bawah${item.song_id}`);
@@ -514,13 +515,13 @@
         let All_song = [];
         console.log("iki lhoooooooooooo", All_song);
 
-        function ambilDataLagu() {
+        function ambilLagu() {
             $.ajax({
                 url: '/ambil-lagu',
                 type: 'GET',
                 dataType: 'json',
                 success: function(data) {
-                    All_song = data.filter(lagu => lagu.is_approved === 1 ).map(lagu => {
+                    All_song = data.filter(lagu => lagu.is_approved === 1).map(lagu => {
                         return {
                             id: lagu.id,
                             judul: lagu.judul,
@@ -543,7 +544,7 @@
             });
         }
 
-        ambilDataLagu();
+        ambilLagu();
 
         // function load the track
         function load_track(index_no) {
@@ -662,20 +663,35 @@
 
         shuffleButton.addEventListener('click', function() {
             shuffle_song();
+            shuffleList();
             console.log(shuffleButton);
         });
+
+        function shuffleList() {
+            const songList =  All_song[id];;
+            const songItems = Array.from(songList.children);
+
+            // Mengacak elemen-elemen daftar lagu
+            const shuffledItems = shuffleArray(songItems);
+
+            // Menghapus semua elemen daftar lagu dari tampilan
+            songList.innerHTML = "";
+
+            // Memasukkan elemen-elemen yang telah diacak kembali ke daftar
+            shuffledItems.forEach((item) => {
+                songList.appendChild(item);
+            });
+        }
 
 
         function shuffle_song() {
             let currentIndex = All_song.length,
                 randomIndex, temporaryValue;
-
             // Selama masih ada elemen untuk diacak
             while (currentIndex !== 0) {
                 // Pilih elemen yang tersisa secara acak
                 randomIndex = Math.floor(Math.random() * currentIndex);
                 currentIndex--;
-
                 // Tukar elemen terpilih dengan elemen saat ini
                 temporaryValue = All_song[currentIndex];
                 All_song[currentIndex] = All_song[randomIndex];
@@ -900,7 +916,7 @@
         let All_song = [];
 
 
-        function ambilDataLagu() {
+        function ambilLaguDidengar() {
             $.ajax({
                 url: '/ambil-lagu',
                 type: 'GET',
@@ -933,7 +949,7 @@
             });
         }
 
-        ambilDataLagu();
+        ambilLagu();
 
         // function load the track
         function load_track(index_no) {

@@ -39,7 +39,7 @@
                             <div class="row" style="margin-top: -20px">
                                 <div class="col-12">
                                     <div class="preview-list">
-                                        @foreach ($songs->reverse() as $item)
+                                        @foreach ($songs as $item)
                                             <div class="preview-item">
                                                 <div class="preview-thumbnail">
                                                     <img src="{{ asset('storage/' . $item->image) }}" width="10%">
@@ -54,7 +54,8 @@
                                                         <div class="text-group">
                                                             <i id="like{{ $item->id }}" data-id="{{ $item->id }}"
                                                                 onclick="toggleLike(this, {{ $item->id }})"
-                                                                class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
+                                                                class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2">
+                                                            </i>
                                                             <p>{{ $item->waktu }}</p>
                                                         </div>
                                                     </div>
@@ -139,6 +140,7 @@
         }
     </script>
      <script>
+        console.log('oooooooooooooooooooooo');
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
         let next = document.querySelector('#next');
@@ -166,41 +168,39 @@
 
         // create a audio element
         let track = document.createElement('audio');
-
-
+        const artistId = {{$artis_id}};
         let All_song = [];
 
-        function ambilDataLagu();
-        $.ajax({
-            url: '/ambil-lagu',
-            type: 'GET',
-            dataType: 'json',
-            success: function(data) {
-                All_song = data.map(lagu => {
-                    return {
-                        id: lagu.id,
-                        judul: lagu.judul,
-                        audio: lagu.audio,
-                        image: lagu.image,
-                        artistId: lagu.artist.user.name
-                    };
-                });
-                console.log("data lagu:", All_song);
-                if (All_song.length > 0) {
-                    // Memanggil load_track dengan indeks 0 sebagai lagu pertama
-                    load_track(0);
-                } else {
-                    console.error("Data lagu kosong.");
+        function ambilDataLagu(artistId) {
+            $.ajax({
+                url: '/ambil-lagu',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    All_song = data.filter(lagu => lagu.artis_id === artistId).map(lagu => {
+                        return {
+                            id: lagu.id,
+                            judul: lagu.judul,
+                            audio: lagu.audio,
+                            image: lagu.image,
+                            artistId: lagu.artist.user.name
+                        };
+                    });
+                    console.log("data lagu yang diambil:", All_song);
+                    if (All_song.length > 0) {
+                        // Memanggil load_track dengan indeks 0 sebagai lagu pertama
+                        load_track(0);
+                    } else {
+                        console.error("Data lagu kosong.");
+                    }
+                },
+                error: function(error) {
+                    console.error('Error fetching data:', error);
                 }
-            },
-            error: function(error) {
-                console.error('Error fetching data:', error);
-            }
-        });
+            });
+        }
 
-        console.log("audio media -> ", slider);
-
-        ambilDataLagu();
+        ambilDataLagu(artistId);
 
         // function load the track
         function load_track(index_no) {
@@ -351,17 +351,18 @@
 
         function putar(id) {
             console.log('ID yang dikirim:', id);
-            id = id - 1;
-            let lagu = All_song[id];
-            // alert(All_song.length - 1 + " " + id);
+            id = parseInt(id); // Pastikan id berupa bilangan bulat
+            const lagu = All_song.find(song => song.id === id);
+            console.log('lagu yang dikirim :', lagu);
+
             if (lagu) {
-                let new_index_no = All_song.indexOf(lagu);
+                const new_index_no = All_song.indexOf(lagu);
                 if (new_index_no >= 0) {
                     index_no = new_index_no;
-                    load_track(id);
+                    load_track(index_no);
                     playsong();
                 } else {
-                    index_no = 0;
+                    index_no = 0; // Atur ke 0 jika lagu tidak ditemukan
                     load_track(index_no);
                     playsong();
                 }
