@@ -712,7 +712,7 @@
         // function load the track
         function load_track(index_no) {
             if (index_no >= 0 && index_no < All_song.length) {
-                track.src = '{{ asset('storage') }}' + '/' + All_song[index_no].audio;
+                track.src = `https://drive.google.com/uc?export=view&id=${All_song[index_no].audio}`;
                 title.innerHTML = All_song[index_no].judul;
                 artist.innerHTML = All_song[index_no].artistId;
                 track_image.src = '{{ asset('storage') }}' + '/' + All_song[index_no].image;
@@ -1031,7 +1031,7 @@
     </script>
 
     {{-- lagu bawah --}}
-    {{-- <script>
+    <script>
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
         let next = document.querySelector('#next');
@@ -1101,7 +1101,7 @@
         // function load the track
         function load_track(index_no) {
             if (index_no >= 0 && index_no < All_song.length) {
-                track.src = '{{ asset('storage') }}' + '/' + All_song[index_no].audio;
+                track.src = `https://drive.google.com/uc?export=view&id=${All_song[index_no].audio}`;
                 title.innerHTML = All_song[index_no].judul;
                 artist.innerHTML = All_song[index_no].artistId;
                 track_image.src = '{{ asset('storage') }}' + '/' + All_song[index_no].image;
@@ -1422,5 +1422,5 @@
                 recent_volume.value = track.volume * 100;
             }
         }
-    </script> --}}
+    </script>
 @endsection

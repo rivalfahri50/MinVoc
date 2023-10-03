@@ -190,7 +190,7 @@
 
                         <div class="modal fade" id="caripenghasilan" data-bs-backdrop="static" data-bs-keyboard="false"
                             tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-dialog modal-dialog-centered modal-sm">
                                 <div class="modal-content border-0" style="background-color: white">
                                     <div class="modal-header pb-0 border-0">
                                         <h1 class="modal-title fs-5 judul" id="staticBackdropLabel">Detail</h1>
@@ -218,10 +218,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="modal-footer border-0">
+                                        <div class="modal-footer pt-0 border-0">
                                             <button type="submit" class="btn rounded-3">
                                                 <a class="btn-link"
-                                                    style="color: inherit; text-decoration: none;">Setujui</a></button>
+                                                    style="color: inherit; text-decoration: none;">Ajukan</a></button>
                                         </div>
                                     </form>
                                 </div>

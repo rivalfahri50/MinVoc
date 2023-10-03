@@ -66,7 +66,7 @@
                 "language": {
                     "sProcessing": "Sedang memproses...",
                     "sLengthMenu": "Tampilkan _MENU_ entri",
-                    "sZeroRecords": "<img src='/user/assets/images/logo-user.svg'>",
+                    "sZeroRecords": "Tidak ditemukan Data",
                     "sInfo": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
                     "sInfoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
                     "sInfoFiltered": "(disaring dari _MAX_ entri keseluruhan)",
