@@ -430,16 +430,18 @@
                                                                         onclick="putar({{ $item->id }})">Putar Lagu</a>
                                                                 @else
                                                                     @if (
-                                                                        $item->status !== 'accept' &&
+                                                                        $item->status != 'accept' &&
                                                                             (($item->status === 'pending' && $item->is_take) || $artisUser->id == $item->artist_id))
-                                                                        <form
-                                                                            action="{{ route('lirikAndChat.artisVerified', $item->code) }}"
-                                                                            method="GET">
-                                                                            <button type="submit" class="btn-unstyled">
-                                                                                <i
-                                                                                    class="fa-regular fa-comment-dots fs-5 text-info ml-1"></i>
-                                                                            </button>
-                                                                        </form>
+                                                                        @if ($item->is_take == true)
+                                                                            <form
+                                                                                action="{{ route('lirikAndChat.artisVerified', $item->code) }}"
+                                                                                method="GET">
+                                                                                <button type="submit" class="btn-unstyled">
+                                                                                    <i
+                                                                                        class="fa-regular fa-comment-dots fs-5 text-info ml-1"></i>
+                                                                                </button>
+                                                                            </form>
+                                                                        @endif
                                                                         <button type="submit" class="confirmButton"
                                                                             data-item="{{ $item->code }}">
                                                                             <form
@@ -818,7 +820,7 @@
         function load_track(index_no) {
             if (index_no >= 0 && index_no < All_song.length) {
                 console.log("tester " + index_no);
-                track.src = '{{ asset('storage') }}' + '/' + All_song[index_no].audio;
+                track.src = `https://drive.google.com/uc?export=view&id=${All_song[index_no].audio}`;
                 title.innerHTML = All_song[index_no].judul;
                 artist.innerHTML = All_song[index_no].artistId;
                 track_image.src = '{{ asset('storage') }}' + '/' + All_song[index_no].image;
@@ -1018,14 +1020,11 @@
             track.volume = recent_volume.value / 100;
         }
 
-        // ubah posisi slider
-        // Fungsi untuk mengubah posisi slider
         function change_duration() {
             let slider_value = slider.value;
             if (!isNaN(track.duration) && isFinite(slider_value)) {
                 track.currentTime = track.duration * (slider_value / 100);
                 console.log(track.duration * (slider_value / 100), slider_value, track.currentTime)
-
             }
         }
 

@@ -451,8 +451,8 @@
         });
     </script>
 
-     {{-- lagu atas --}}
-     <script>
+    {{-- lagu atas --}}
+    <script>
         function redirectArtis(id) {
             $.ajax({
                 url: `/artis/detail-artis/${id}`,
@@ -534,7 +534,7 @@
         function load_track(index_no) {
             if (index_no >= 0 && index_no < All_song.length) {
                 console.log("tester " + index_no);
-                track.src = '{{ asset('storage') }}' + '/' + All_song[index_no].audio;
+                track.src = `https://drive.google.com/uc?export=view&id=${All_song[index_no].audio}`;
                 title.innerHTML = All_song[index_no].judul;
                 artist.innerHTML = All_song[index_no].artistId;
                 track_image.src = '{{ asset('storage') }}' + '/' + All_song[index_no].image;
@@ -738,15 +738,12 @@
         }
 
         function change_duration() {
-            let slider_value = parseInt(slider.value);
+            let slider_value = slider.value;
             if (!isNaN(track.duration) && isFinite(slider_value)) {
-                // track.duration * (slider_value / 100);
-                // console.log(slider);
-                slider.currentTime = track.duration * (slider_value / 100);
-                console.log(slider.currentTime);
+                track.currentTime = track.duration * (slider_value / 100);
+                console.log(track.duration * (slider_value / 100), slider_value, track.currentTime)
             }
         }
-
         slider.addEventListener('click', function() {
             change_duration();
             clearInterval(timer);
@@ -916,7 +913,7 @@
         // function load the track
         function load_track(index_no) {
             if (index_no >= 0 && index_no < All_song.length) {
-                track.src = '{{ asset('storage') }}' + '/' + All_song[index_no].audio;
+                track.src = `https://drive.google.com/uc?export=view&id=${All_song[index_no].audio}`;
                 title.innerHTML = All_song[index_no].judul;
                 artist.innerHTML = All_song[index_no].artistId;
                 track_image.src = '{{ asset('storage') }}' + '/' + All_song[index_no].image;

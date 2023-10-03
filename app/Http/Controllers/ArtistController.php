@@ -31,6 +31,14 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Input;
 use RealRashid\SweetAlert\Facades\Alert;
 use Throwable;
+use Google_Client;
+use Google_Service_Drive;
+use GuzzleHttp\Psr7\Utils;
+use GuzzleHttp\Psr7\stream_for;
+use Google_Service_Drive_DriveFile;
+use GuzzleHttp\Psr7\Request as Psr7Request;
+use GuzzleHttp\Client as GuzzleClient;
+
 
 class ArtistController extends Controller
 {
@@ -453,14 +461,11 @@ class ArtistController extends Controller
                 ->withInput();
         }
 
-        $artis = artist::where('user_id', Auth::user()->id)->first();
 
         try {
             DB::beginTransaction();
             $code = Str::uuid();
             $image = $request->file('image')->store('images', 'public');
-            $audioPath = $request->file('audio')->store('musics', 'public');
-            // dd($audioPath);
             $getID3 = new getID3();
 
             $audioInfo = $getID3->analyze($request->file('audio')->path());
@@ -471,11 +476,41 @@ class ArtistController extends Controller
 
             $artis = artist::where('user_id', Auth::user()->id)->first();
 
+            $client = new Google_Client();
+            $client->setAuthConfig(public_path('client_secret_650886155711-77aeuhp9hlvh6vncaejjbic959d04snl.apps.googleusercontent.com.json'));
+            $client->setAccessType('offline');
+            $client->setScopes(['https://www.googleapis.com/auth/drive']);
+            $client->setAccessToken(['access_token' => 'ya29.a0AfB_byDhu6puzaX7YsaNmwUVVCR-Hb8sYOxGW4PAwKMxW5MivyU10oJuhPiRlA_W0ZQsLSZ_NPz_1cxPEJ0dCx9j-JXPpbSUTF3ScdrfP8ce1CJsEsT0U2X3Ud2dtqRqt7pRcsHmBu4Q_WvyW5u0VIQztGNEpcX-zLoUaCgYKAV4SARESFQGOcNnCV-sp6LMyU3VCvJwvgZA8BA0171', 'refresh_token' => '1//04COM2mA9b_b0CgYIARAAGAQSNwF-L9IryJ_9yA4kVUaDFlRDP0PiP72e1DqAyqznHgdmAi1kwvxJ8SoGoxtjEmRlH0w2XRL5-EI']);
+
+            if ($client->isAccessTokenExpired()) {
+                $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
+            }
+
+            $driveService = new Google_Service_Drive($client);
+
+            $audioFile = $request->file('audio');
+
+            $mimeType = 'audio/mpeg';
+            $fileExtension = 'mp3';
+
+            $fileMetadata = new Google_Service_Drive_DriveFile([
+                'name' => $audioFile->getClientOriginalName(),
+                'mimeType' => $mimeType,
+            ]);
+
+            $fileContent = file_get_contents($audioFile->getRealPath());
+
+            $file = $driveService->files->create($fileMetadata, [
+                'data' => $fileContent,
+                'mimeType' => $mimeType,
+                'uploadType' => 'multipart',
+            ]);
+
             song::create([
                 'code' => $code,
                 'judul' => $request->input('judul'),
                 'image' => $image,
-                'audio' => $audioPath,
+                'audio' => $file->id,
                 'waktu' => $formattedDuration,
                 'type' => 'pengajuan',
                 'is_approved' => false,

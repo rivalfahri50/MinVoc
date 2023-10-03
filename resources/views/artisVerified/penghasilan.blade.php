@@ -221,7 +221,7 @@
                                         <div class="modal-footer border-0">
                                             <button type="submit" class="btn rounded-3">
                                                 <a class="btn-link"
-                                                    style="color: inherit; text-decoration: none;">Setujui</a></button>
+                                                    style="color: inherit; text-decoration: none;">Ajukan</a></button>
                                         </div>
                                     </form>
                                 </div>
