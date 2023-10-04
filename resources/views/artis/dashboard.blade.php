@@ -56,7 +56,7 @@
                                         @php
                                             $i = 0;
                                         @endphp
-                                        @foreach ($songs->reverse() as $item)
+                                        @foreach ($songs as $item)
                                             @if ($item->is_approved)
                                                 <div class="preview-item">
                                                     <div class="preview-thumbnail">
@@ -452,7 +452,7 @@
     </script>
 
     {{-- lagu atas --}}
-    <script>
+    {{-- <script>
         function redirectArtis(id) {
             $.ajax({
                 url: `/artis/detail-artis/${id}`,
@@ -841,7 +841,7 @@
                 recent_volume.value = track.volume * 100;
             }
         }
-    </script>
+    </script> --}}
 
     {{-- lagu bawah --}}
     <script>
@@ -875,6 +875,36 @@
 
         let All_song = [];
 
+        function ambilDataLaguDidengar() {
+            $.ajax({
+                url: '/ambil-lagu',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    All_song = data.filter(lagu => lagu.is_approved === 1).map(lagu => {
+                        return {
+                            id: lagu.id,
+                            judul: lagu.judul,
+                            audio: lagu.audio,
+                            image: lagu.image,
+                            artistId: lagu.artist.user.name
+                        };
+                    });
+                    console.log("data lagu yang diambil:", All_song);
+                    if (All_song.length > 0) {
+                        // Memanggil load_track dengan indeks 0 sebagai lagu pertama
+                        load_track();
+                    } else {
+                        console.error("Data lagu kosong.");
+                    }
+                },
+                error: function(error) {
+                    console.error('Error fetching data:', error);
+                }
+            });
+        }
+        ambilDataLaguDidengar();
+
         function ambilDataLagu() {
             $.ajax({
                 url: '/ambil-lagu',
@@ -897,7 +927,7 @@
 
                     if (All_song.length > 0) {
                         // Memanggil load_track dengan indeks 0 sebagai lagu pertama
-                        load_track(0);
+                        load_track();
                     } else {
                         console.error("Data lagu kosong.");
                     }
@@ -907,7 +937,6 @@
                 }
             });
         }
-
         ambilDataLagu();
 
         // function load the track
@@ -960,13 +989,12 @@
         // play song
         function playsong() {
             if (track.paused) {
-                if (All_song[index_no].didengar > 1000) {
-                    // console.log(didengar);
+                if (index_no >= 0 && index_no < All_song.length) {
                     track.play();
                     Playing_song = true;
                     play.innerHTML = '<i class="far fa-pause-circle fr" aria-hidden="true"></i>';
                 } else {
-                    console.log('Lagu ini belum memiliki cukup nilai didengar');
+                    console.log('Tidak ada lagu yang dipilih.');
                 }
             } else {
                 track.pause();
@@ -1065,6 +1093,30 @@
             play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>'
         }
 
+        function putaran(id) {
+            console.log('ID yang dikirim:', id);
+            id = parseInt(id); // Pastikan id berupa bilangan bulat
+            const lagu = All_song.find(song => song.id === id);
+            console.log('lagu yang dikirim :', lagu);
+
+            if (lagu) {
+                const new_index_no = All_song.indexOf(lagu);
+                if (new_index_no >= 0) {
+                    index_no = new_index_no;
+                    load_track(index_no);
+                    playsong();
+                    ambilDataLaguDidengar();
+                } else {
+                    index_no = 0; // Atur ke 0 jika lagu tidak ditemukan
+                    load_track(index_no);
+                    playsong();
+                }
+            } else {
+                console.error('Lagu dengan ID ' + id + ' tidak ditemukan dalam data lagu.');
+            }
+
+        }
+
         function putar(id) {
             console.log('ID yang dikirim:', id);
             id = parseInt(id); // Pastikan id berupa bilangan bulat
@@ -1077,6 +1129,7 @@
                     index_no = new_index_no;
                     load_track(index_no);
                     playsong();
+                    ambilDataLagu();
                 } else {
                     index_no = 0; // Atur ke 0 jika lagu tidak ditemukan
                     load_track(index_no);
@@ -1087,18 +1140,17 @@
             }
         }
 
+
         track.addEventListener('ended', function() {
             next_song();
         });
 
-        // fungsi untuk memutar lagu sesudahnya
         function next_song() {
-            let nextIndex = index_no;
-            do {
-                nextIndex = (nextIndex + 1) % All_song.length;
-            } while (All_song[nextIndex].didengar <= 1000);
-
-            index_no = nextIndex;
+            if (index_no < All_song.length - 1) {
+                index_no += 1;
+            } else {
+                index_no = 0;
+            }
             load_track(index_no);
             playsong();
             if (autoplay == 1) {
@@ -1111,11 +1163,11 @@
 
         // fungsi untuk memutar lagu sebelumnya
         function previous_song() {
-            let prevIndex = index_no;
-            do {
-                prevIndex = (prevIndex - 1 + All_song.length) % All_song.length;
-            } while (All_song[prevIndex].didengar <= 1000);
-            index_no = prevIndex;
+            if (index_no > 0) {
+                index_no -= 1;
+            } else {
+                index_no = All_song.length - 1;
+            }
             load_track(index_no);
             playsong();
         }
@@ -1233,6 +1285,21 @@
                 volume_show.innerHTML = Math.round(track.volume * 100);
                 recent_volume.value = track.volume * 100;
             }
+        }
+    </script>
+
+    <script>
+        function redirectArtis(id) {
+            $.ajax({
+                url: `/artis/detail-artis/${id}`,
+                type: 'GET',
+                data: {
+                    data: id
+                },
+                success: function(response) {
+                    window.location.href = `/artis/detail-artis/${id}`;
+                },
+            });
         }
     </script>
 @endsection

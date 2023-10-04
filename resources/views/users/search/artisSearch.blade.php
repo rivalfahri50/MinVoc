@@ -430,8 +430,6 @@
             track.volume = recent_volume.value / 100;
         }
 
-        // ubah posisi slider
-        // Fungsi untuk mengubah posisi slider
         function change_duration() {
             let slider_value = slider.value;
             if (!isNaN(track.duration) && isFinite(slider_value)) {

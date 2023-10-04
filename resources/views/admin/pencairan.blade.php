@@ -25,7 +25,7 @@
                             text: 'Apakah Anda yakin ingin menolak pengajuan pencairan ini?',
                             icon: 'warning',
                             showCancelButton: true,
-                            confirmButtonText: 'Ya, Hapus!',
+                            confirmButtonText: 'Tolak!',
                             cancelButtonText: 'Batal'
                         }).then((result) => {
                             if (result.isConfirmed) {

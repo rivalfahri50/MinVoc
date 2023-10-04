@@ -418,68 +418,6 @@
                     </ul>
                     <ul class="navbar-nav navbar-nav-right">
                         <li class="nav-item dropdown">
-                            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown"
-                                href="#" data-toggle="dropdown">
-                                <i class="mdi mdi-bell"></i>
-                                @if (count($notifs) > 0)
-                                    <span class="count bg-danger"></span>
-                                @endif
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-                            aria-labelledby="notificationDropdown">
-                            @php
-                                $shownNotifications = [];
-                            @endphp
-                            @foreach ($notifs->reverse() as $item)
-                                @if ($item->created_at)
-                                    @php
-                                        $createdAt = $item->created_at->format('Y-m-d');
-                                        $title = $item->title;
-                                        $notificationKey = $createdAt . '_' . $title;
-                                    @endphp
-
-                                    @if (!in_array($notificationKey, $shownNotifications))
-                                        @php
-                                            $shownNotifications[] = $notificationKey;
-                                        @endphp
-
-                                        <div class="dropdown-item preview-item" style="cursor: auto;">
-                                            @if ($item->message == null)
-                                                <div>
-                                                    <img src="{{ asset('storage/' . $item->user->avatar) }}"
-                                                        width="40" style="border-radius: 100%">
-                                                </div>
-                                            @endif
-                                            <div class="preview-item-content" style="margin-right: 5px">
-                                                <p class="preview-subject mb-1" style="font-weight: bold">
-                                                    {{ $item->title }}</p>
-                                                @if ($item->message !== null)
-                                                    <span class="text-muted ellipsis mb-0"
-                                                        style="font-size: 12px; font-weight: normal; cursor: pointer;"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#alasan-{{ $item->code }}">Klik
-                                                        untuk melihat alasan</span>
-                                                @else
-                                                    <p class="text-muted ellipsis mb-0">
-                                                        {{ $item->artis }}
-                                                    </p>
-                                                @endif
-                                            </div>
-                                            <button type="submit" class="btn btnicon p-0"
-                                                style="background: none; border: none; margin-bottom: 20px;"
-                                                onclick="">
-                                                <a href="/artis-verified/delete-notif/{{ $item->code }}">
-                                                    <i class="far fa-times-circle text-danger"
-                                                        style="font-size: 11px;"></i>
-                                                </a>
-                                            </button>
-                                        </div>
-                                    @endif
-                                @endif
-                            @endforeach
-                        </div>
-                        </li>
-                        <li class="nav-item dropdown">
                             <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                                 <div class="navbar-profile profile-picture">
                                     <img class="img-xs rounded-circle"
@@ -557,46 +495,6 @@
             @endforeach
 
             <script>
-                $(document).ready(function() {
-                    $('#search_song').on('keyup', function() {
-                        var query = $(this).val();
-                        $.ajax({
-                            url: '/pengguna/search_song/',
-                            type: 'GET',
-                            data: {
-                                query: query
-                            },
-                            dataType: 'json',
-                            success: function(response) {
-                                var results = response.results;
-                                var $previewList = $('.preview-list');
-                                $previewList.empty();
-
-                                $.each(results, function(index, result) {
-
-                                    var $previewItem = $(
-                                        '<div class="preview-item" data-song-id="' + result
-                                        .id + '">');
-
-                                    $previewItem.append(
-                                        '<div class="preview-thumbnail"><img src="http://127.0.0.1:8000/storage/' +
-                                        result.image + '" width="10%"></div>');
-                                    $previewItem.append(
-                                        '<div class="preview-item-content d-sm-flex flex-grow"><div class="flex-grow"><h6 class="preview-subject">' +
-                                        result.judul + '</h6><p class="text-muted mb-0">' +
-                                        result.artist.user.name +
-                                        '</p></div><div class="mr-auto text-sm-right pt-2 pt-sm-0"><div class="text-group"><i onclick="myFunction(this)" class="far fa-heart pr-2"></i><p>' +
-                                        result.waktu +
-                                        '</p><i class="fas fa-ellipsis-v"></i></div></div></div>'
-                                    );
-
-                                    $previewList.append($previewItem);
-                                });
-                            }
-                        });
-                    });
-                });
-
                 $(document).ready(function() {
                     $('#search').on('keyup', function() {
                         var query = $(this).val();

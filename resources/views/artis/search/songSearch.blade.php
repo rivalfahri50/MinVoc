@@ -5,6 +5,14 @@
 
     @include('partials.tambahkeplaylist')
 
+    <style>
+        .gayaputarlagu {
+            font-size: 0.8rem;
+            height: 1.5rem;
+            line-height: 1px;
+        }
+    </style>
+
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="row">
@@ -25,8 +33,8 @@
                                                 {{ $song->artist->user->name }}</p>
                                             <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
                                                 onclick="putar({{ $song->id }})">
-                                                <button onclick="justplay()" id="playPauseButton">
-                                                    <i class="far fa-play-circle fr" aria-hidden="true"></i>
+                                                <button type="button" class="btn gayaputarlagu">
+                                                    Putar Lagu
                                                 </button>
                                             </a>
                                         </div>
@@ -270,7 +278,8 @@
                 Playing_song = false;
                 play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>';
                 playPauseButton.innerHTML = '<i class="far fa-play-circle fr" aria-hidden="true"></i>';
-            }console.log( playPauseButton.innerHTML);
+            }
+            console.log(playPauseButton.innerHTML);
 
             // Periksa apakah index_no memiliki nilai yang benar
             if (index_no >= 0 && index_no < All_song.length) {
@@ -425,16 +434,14 @@
         }
 
         function change_duration() {
-            let slider_value = parseInt(slider.value);
+            let slider_value = slider.value;
             if (!isNaN(track.duration) && isFinite(slider_value)) {
-                // track.duration * (slider_value / 100);
-                // console.log(slider);
-                slider.currentTime = track.duration * (slider_value / 100);
-                console.log(slider.currentTime);
+                track.currentTime = track.duration * (slider_value / 100);
+                console.log(track.duration * (slider_value / 100), slider_value, track.currentTime)
             }
         }
 
-        slider.addEventListener('click', function() {
+        slider.addEventListener('input', function() {
             change_duration();
             clearInterval(timer);
             Playing_song = true;
@@ -446,6 +453,7 @@
         // range slider
         function range_slider() {
             let position = 0;
+            // memperbaharui posisi slider
             if (!isNaN(track.duration)) {
                 position = track.currentTime * (100 / track.duration);
                 slider.value = position;
@@ -453,6 +461,8 @@
             if (track.ended) {
                 play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>';
                 if (autoplay == 1) {
+                    const songId = All_song[index_no].id;
+                    history(songId);
                     index_no += 1;
                     load_track(index_no);
                     playsong();
@@ -460,10 +470,10 @@
             }
 
             // kalkulasi waktu dari durasi audio
-            let durationElement = document.getElementById('duration');
-            let durationMinutes = Math.floor(track.duration / 60);
-            let durationSeconds = Math.floor(track.duration % 60);
-            let formattedDuration = `${durationMinutes}:${durationSeconds < 10 ? '0' : ''}${durationSeconds}`;
+            const durationElement = document.getElementById('duration');
+            const durationMinutes = Math.floor(track.duration / 60);
+            const durationSeconds = Math.floor(track.duration % 60);
+            const formattedDuration = `${durationMinutes}:${durationSeconds < 10 ? '0' : ''}${durationSeconds}`;
             durationElement.textContent = formattedDuration;
         }
 

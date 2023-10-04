@@ -105,6 +105,24 @@
                 color: #c0c0c0;
             }
         </style>
+        <script>
+            function confirmDelete(code) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "Apakah Yakin Untuk Menghapus Konfigurasi!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya!',
+                    cancelButtonText: 'Tidak'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = `/admin/delete-pencairan/${code}`;
+                    }
+                });
+            }
+        </script>
         @php
             $selectedOptions = [];
             foreach ($tipePembayaran as $item) {
@@ -199,8 +217,7 @@
                                                         data-bs-target="#edit-{{ $item->code }}">
                                                         <i class="far fa-edit text-primary"></i>
                                                     </button>
-                                                    <a class="btn btnicon confirmButtonReject"
-                                                        href="/admin/delete-pencairan/{{ $item->code }}">
+                                                    <a class="btn btnicon confirmButtonReject" onclick="confirmDelete('{{ $item->code }}')">
                                                         <i class="far fa-times-circle text-danger"></i>
                                                     </a>
                                                 </td>
@@ -308,7 +325,7 @@
             });
         });
     </script>
-    
+
     <script>
         $(document).on('click', '.edit-button', function() {
             const itemId = $(this).data('id');

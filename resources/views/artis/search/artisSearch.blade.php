@@ -111,7 +111,6 @@
         });
         function toggleLike(iconElement, songId) {
             let isLiked = iconElement.classList.contains('fas');
-
             $.ajax({
                 url: `/song/${songId}/like`,
                 type: 'POST',
@@ -140,7 +139,6 @@
         }
     </script>
      <script>
-        console.log('oooooooooooooooooooooo');
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
         let next = document.querySelector('#next');
@@ -411,12 +409,10 @@
         }
 
         function change_duration() {
-            let slider_value = parseInt(slider.value);
+            let slider_value = slider.value;
             if (!isNaN(track.duration) && isFinite(slider_value)) {
-                // track.duration * (slider_value / 100);
-                // console.log(slider);
-                slider.currentTime = track.duration * (slider_value / 100);
-                console.log(slider.currentTime);
+                track.currentTime = track.duration * (slider_value / 100);
+                console.log(track.duration * (slider_value / 100), slider_value, track.currentTime)
             }
         }
 
