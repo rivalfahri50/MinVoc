@@ -54,9 +54,6 @@
                             <div class="row" style="margin-top: -20px">
                                 <div class="col-12">
                                     <div class="preview-list">
-                                        {{-- @php
-                                            $index_no = 0;
-                                        @endphp --}}
                                         @foreach ($songs as $item)
                                             @if ($item->is_approved)
                                                 <div class="preview-item">
@@ -480,7 +477,6 @@
             });
         }
     </script>
-    {{-- ini untuk like pada halaman ini --}}
 
     <script>
         function redirectArtis(id) {
@@ -747,28 +743,6 @@
             play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>'
         }
 
-        function putar(id) {
-            id = parseInt(id); // Pastikan id berupa bilangan bulat
-            const lagu = All_song.find(song => song.id === id);
-            console.log('lagu yang dikirim :', lagu);
-
-            if (lagu) {
-                const new_index_no = All_song.indexOf(lagu);
-                if (new_index_no >= 0) {
-                    index_no = new_index_no;
-                    load_track(index_no);
-                    playsong();
-                    ambilDataLagu();
-                } else {
-                    index_no = 0; // Atur ke 0 jika lagu tidak ditemukan
-                    load_track(index_no);
-                    playsong();
-                }
-            } else {
-                console.error('Lagu dengan ID ' + id + ' tidak ditemukan dalam data lagu.');
-            }
-        }
-
         function putaran(id) {
             console.log('ID yang dikirim:', id);
             id = parseInt(id); // Pastikan id berupa bilangan bulat
@@ -791,6 +765,29 @@
                 console.error('Lagu dengan ID ' + id + ' tidak ditemukan dalam data lagu.');
             }
 
+        }
+
+        function putar(id) {
+            console.log('ID yang dikirim:', id);
+            id = parseInt(id); // Pastikan id berupa bilangan bulat
+            const lagu = All_song.find(song => song.id === id);
+            console.log('lagu yang dikirim :', lagu);
+
+            if (lagu) {
+                const new_index_no = All_song.indexOf(lagu);
+                if (new_index_no >= 0) {
+                    index_no = new_index_no;
+                    load_track(index_no);
+                    playsong();
+                    ambilDataLagu();
+                } else {
+                    index_no = 0; // Atur ke 0 jika lagu tidak ditemukan
+                    load_track(index_no);
+                    playsong();
+                }
+            } else {
+                console.error('Lagu dengan ID ' + id + ' tidak ditemukan dalam data lagu.');
+            }
         }
 
 
@@ -940,5 +937,4 @@
             }
         }
     </script>
-    {{-- end lagu atas --}}
 @endsection

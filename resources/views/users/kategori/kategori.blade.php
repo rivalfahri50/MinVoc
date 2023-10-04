@@ -274,10 +274,7 @@
 
             // Periksa apakah index_no memiliki nilai yang benar
             if (index_no >= 0 && index_no < All_song.length) {
-                // Perbarui playCount dengan songId yang sesuai
                 const songId = All_song[index_no].id;
-                // history(songId);
-                console.log(All_song[index_no])
                 updatePlayCount(songId);
 
             }
@@ -331,10 +328,8 @@
         document.addEventListener("DOMContentLoaded", function() {
             // Tempatkan kode Anda di sini
             let shuffleButton = document.querySelector('#shuffle_button');
-            console.log('info', shuffleButton);
             shuffleButton.addEventListener('click', function() {
                 shuffle_song();
-                console.log(shuffleButton);
             });
         });
 

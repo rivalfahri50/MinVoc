@@ -364,8 +364,8 @@
                                         aria-hidden="true"></i></button>
                                 <button onclick="previous_song()" id="pre"><i class="fa fa-step-backward"
                                         aria-hidden="true"></i></button>
-                                <button onclick="justplay()" id="play"><i class="far fa-play-circle fr"
-                                        aria-hidden="true"></i></button>
+                                    <button onclick="justplay()" id="play"><i class="far fa-play-circle fr"
+                                            aria-hidden="true"></i></button>
                                 <button onclick="next_song()" id="next"><i class="fa fa-step-forward"
                                         aria-hidden="true"></i></button>
                             </div>

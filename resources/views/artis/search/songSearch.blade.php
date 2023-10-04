@@ -5,14 +5,6 @@
 
     @include('partials.tambahkeplaylist')
 
-    <style>
-        .gayaputarlagu {
-            font-size: 0.8rem;
-            height: 1.5rem;
-            line-height: 1px;
-        }
-    </style>
-
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="row">
@@ -33,8 +25,8 @@
                                                 {{ $song->artist->user->name }}</p>
                                             <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
                                                 onclick="putar({{ $song->id }})">
-                                                <button type="button" class="btn gayaputarlagu">
-                                                    Putar Lagu
+                                                <button onclick="justplay()" id="playPauseButton">
+                                                    <i class="far fa-play-circle fr" aria-hidden="true"></i>
                                                 </button>
                                             </a>
                                         </div>

@@ -52,7 +52,7 @@
                                                     </a>
                                                     <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                         <div class="text-group">
-                                                            <i id="like{{ $item->id }}" data-id="{{ $item->id }}"
+                                                            <i id="like-3{{ $item->id }}" data-id="{{ $item->id }}"
                                                                 onclick="toggleLike(this, {{ $item->id }})"
                                                                 class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2">
                                                             </i>
@@ -72,27 +72,6 @@
         </div>
     </div>
     <script>
-        function togglePlayPause() {
-            const playIcon = document.getElementById('playIcon');
-
-            if (isPlaying) {
-                // Jika sedang diputar, ganti menjadi pause
-                playIcon.classList.remove('fa-pause-circle');
-                playIcon.classList.add('fa-play-circle');
-            } else {
-                // Jika sedang tidak diputar, ganti menjadi play
-                playIcon.classList.remove('fa-play-circle');
-                playIcon.classList.add('fa-pause-circle');
-            }
-
-            // Ubah status pemutaran
-            isPlaying = !isPlaying;
-
-            // Panggil fungsi justplay() jika diperlukan
-            justplay();
-        }
-    </script>
-    <script>
         var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         $(document).ready(function() {
             $.ajax({
@@ -100,12 +79,10 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
-                    console.log(response);
                     response.forEach(function(item) {
-                        let songId = item.song_id;
-                        let like = document.getElementById(`like${item.song_id}`);
-                        if (like)
-                        {
+                        const songId = item.song_id;
+                        const like = document.getElementById(`like-3${item.song_id}`);
+                        if (like) {
                             like.classList.toggle('fas');
                         }
                     })
@@ -114,12 +91,12 @@
         });
 
         function toggleLike(iconElement, songId) {
-            let isLiked = iconElement.classList.contains('fas');
+            const isLiked = iconElement.classList.contains('fas');
             $.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-});
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
             $.ajax({
                 url: `/song/${songId}/like`,
                 type: 'POST',
@@ -140,7 +117,7 @@
 
 
         function updateSongLikeStatus(songId, isLiked) {
-            let likeIcons = document.querySelectorAll(`.shared-icon-like[data-id="${songId}"]`);
+            const likeIcons = document.querySelectorAll(`.shared-icon-like[data-id="${songId}"]`);
             likeIcons.forEach(likeIcon => {
                 likeIcon.classList.toggle('fas', isLiked);
                 likeIcon.classList.toggle('far', !isLiked);
@@ -220,12 +197,11 @@
                 track.load();
                 timer = setInterval(range_slider, 1000);
             } else {
-                console.log(All_song.length);
                 console.error("Index_no tidak valid.");
             }
         }
-
         load_track(0);
+        // semua function
 
         // fungsi mute sound
         function mute_sound() {
@@ -269,10 +245,10 @@
             // Periksa apakah index_no memiliki nilai yang benar
             if (index_no >= 0 && index_no < All_song.length) {
                 // Perbarui playCount dengan songId yang sesuai
-                let songId = All_song[index_no].id;
+                const songId = All_song[index_no].id;
+                // history(songId);
                 console.log(All_song[index_no])
                 updatePlayCount(songId);
-                history(songId);
 
             }
             track.addEventListener('timeupdate', updateDuration);
@@ -315,22 +291,22 @@
                 },
                 error: function(xhr, status, error) {
                     console.error('Error saat mengirim riwayat:', error);
+
+                    // Tambahkan ini untuk mencetak pesan kesalahan dari respons server
+                    // console.log('Pesan Kesalahan Server:', xhr.responseText);
                 }
             });
         }
 
         shuffleButton.addEventListener('click', function() {
             shuffle_song();
+            console.log(shuffleButton);
         });
 
 
         function shuffle_song() {
             let currentIndex = All_song.length,
                 randomIndex, temporaryValue;
-
-            if (track.paused === false) {
-                track.pause();
-            }
 
             // Selama masih ada elemen untuk diacak
             while (currentIndex !== 0) {
@@ -349,6 +325,8 @@
             load_track(index_no);
             playsong();
         }
+
+
         // pause song
         function pausesong() {
             track.pause();
@@ -379,7 +357,6 @@
         }
 
         track.addEventListener('ended', function() {
-            // Panggil fungsi untuk memutar lagu selanjutnya
             next_song();
         });
 
@@ -417,6 +394,8 @@
             track.volume = recent_volume.value / 100;
         }
 
+        // ubah posisi slider
+        // Fungsi untuk mengubah posisi slider
         function change_duration() {
             let slider_value = slider.value;
             if (!isNaN(track.duration) && isFinite(slider_value)) {
@@ -425,7 +404,7 @@
             }
         }
 
-        slider.addEventListener('click', function() {
+        slider.addEventListener('input', function() {
             change_duration();
             clearInterval(timer);
             Playing_song = true;
@@ -437,6 +416,7 @@
         // range slider
         function range_slider() {
             let position = 0;
+            // memperbaharui posisi slider
             if (!isNaN(track.duration)) {
                 position = track.currentTime * (100 / track.duration);
                 slider.value = position;
@@ -444,6 +424,8 @@
             if (track.ended) {
                 play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>';
                 if (autoplay == 1) {
+                    const songId = All_song[index_no].id;
+                    history(songId);
                     index_no += 1;
                     load_track(index_no);
                     playsong();
@@ -501,13 +483,11 @@
             let slider_value = recent_volume.value / 100;
             track.volume = slider_value;
 
-
             // Update mute button icon and volume display
             updateMuteButtonIcon();
             volume_show.innerHTML = Math.round(slider_value * 100);
         });
 
-        console.log("SLIDER VALUE ->" + recent_volume);
 
         // Function to update mute button icon
         function updateMuteButtonIcon() {

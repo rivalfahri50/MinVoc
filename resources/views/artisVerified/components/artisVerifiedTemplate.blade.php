@@ -366,7 +366,8 @@
                                             </svg>
                                         </span>
                                         <input type="text" id="search" name="search" class="form-control"
-                                            placeholder="cari di sini" value="" style="border-radius: 0px 15px 15px 0px">
+                                            placeholder="cari di sini" value=""
+                                            style="border-radius: 0px 15px 15px 0px">
                                     </div>
                                 </form>
                                 <ul id="search-results"></ul>
@@ -606,20 +607,162 @@
                 //     });
                 // });
             </script>
-<script>
-    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    $(document).ready(function() {
-        $.ajax({
-            url: /song/check,
-            type: 'GET',
-            dataType: 'json',
-            success: function(response) {
-                // console.log(response);
-                response.forEach(function(item) {
-                    const songId = item.song_id;
-                    const like = document.getElementById(like${item.song_id});
-                    if (like) {
-                        like.classList.toggle('fas');
+            
+            <script>
+                var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                $(document).ready(function() {
+                    $.ajax({
+                        url: `/song/check`,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(response) {
+                            // console.log(response);
+                            response.forEach(function(item) {
+                                const songId = item.song_id;
+                                const like = document.getElementById(`like${item.song_id}`);
+                                if (like) {
+                                    like.classList.toggle('fas');
+                                }
+                            })
+                        }
+                    });
+                });
+
+                function toggleLike(iconElement, songId) {
+                    const isLiked = iconElement.classList.contains('fas');
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        url: `/song/${songId}/like`,
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.success) {
+                                if (isLiked) {
+                                    iconElement.classList.remove('fas');
+                                    iconElement.classList.add('far');
+                                } else {
+                                    iconElement.classList.remove('far');
+                                    iconElement.classList.add('fas');
+                                }
+                            }
+                        }
+                    })
+                }
+
+                function updateSongLikeStatus(songId, isLiked) {
+                    const likeIcons = document.querySelectorAll(`.shared-icon-like[data-id="${songId}"]`);
+                    likeIcons.forEach(likeIcon => {
+                        likeIcon.classList.toggle('fas', isLiked);
+                        likeIcon.classList.toggle('far', !isLiked);
+                    });
+                }
+            </script>
+
+            {{-- <script>
+                let previous = document.querySelector('#pre');
+                let play = document.querySelector('#play');
+                let next = document.querySelector('#next');
+                let title = document.querySelector('#title');
+                let artist = document.querySelector('#artist');
+
+                let muteButton = document.querySelector('#volume_icon')
+                let recent_volume = document.querySelector('#volume');
+                let volume_show = document.querySelector('#volume_show');
+
+                let slider = document.querySelector('#duration_slider');
+                let show_duration = document.querySelector('#show_duration');
+                let track_image = document.querySelector('#track_image');
+                let shuffleButton = document.querySelector('#shuffle_button');
+                let auto_play = document.querySelector('#auto');
+
+                let timer;
+                let autoplay = 1;
+                let playCount = 0;
+                let prevVolume;
+                let slider_value = 0;
+
+
+                let index_no = 0;
+                let Playing_song = false;
+
+                // create a audio element
+                let track = document.createElement('audio');
+
+                let All_song = [];
+
+                function ambilDataLagu() {
+                    // fetch('/ambil-lagu')
+                    //     .then(response => response.json())
+                    //     .then(data => {
+                    //         All_song = data.map(lagu => {
+                    //             return {
+                    //                 id: lagu.id,
+                    //                 judul: lagu.judul,
+                    //                 audio: lagu.audio,
+                    //                 image: lagu.image,
+                    //                 artistId: lagu.artist.user.name
+                    //             };
+                    //         });
+                    //         console.log(All_song);
+                    //         if (All_song.length > 0) {
+                    //             // Memanggil load_track dengan indeks 0 sebagai lagu pertama
+                    //             load_track(0);
+                    //         } else {
+                    //             console.error("Data lagu kosong.");
+                    //         }
+                    //     })
+                    //     .catch(error => {
+                    //         console.error('Error fetching data:', error);
+                    //     });
+                    $.ajax({
+                        url: '/ambil-lagu',
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            All_song = data.map(lagu => {
+                                return {
+                                    id: lagu.id,
+                                    judul: lagu.judul,
+                                    audio: lagu.audio,
+                                    image: lagu.image,
+                                    artistId: lagu.artist.user.name
+                                };
+                            });
+                            console.log("data lagu yang diambil:", All_song);
+                            if (All_song.length > 0) {
+                                // Memanggil load_track dengan indeks 0 sebagai lagu pertama
+                                load_track(0);
+                            } else {
+                                console.error("Data lagu kosong.");
+                            }
+                        },
+                        error: function(error) {
+                            console.error('Error fetching data:', error);
+                        }
+                    });
+                }
+
+                ambilDataLagu();
+                // semua function
+
+                // function load the track
+                function load_track(index_no) {
+                    if (index_no >= 0 && index_no < All_song.length) {
+                        console.log("tester " + index_no);
+                        track.src = '{{ asset('storage') }}' + '/' + All_song[index_no].audio;
+                        title.innerHTML = All_song[index_no].judul;
+                        artist.innerHTML = All_song[index_no].artistId;
+                        track_image.src = '{{ asset('storage') }}' + '/' + All_song[index_no].image;
+                        track.load();
+                        timer = setInterval(range_slider, 1000);
+
+                    } else {
+                        console.error("Index_no tidak valid.");
                     }
                 })
             }

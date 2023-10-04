@@ -701,7 +701,7 @@ class ArtistController extends Controller
             return view('artis.search.songSearch', compact('song', 'title', 'songs', 'playlists', 'notifs'));
         } else if ($user) {
             $artis = artist::where('user_id', $user->id)->first();
-            $artis_id = $artis->id;
+            $artis_id = $artis->id; 
             $songs = song::where('artis_id', $artis->id)->get();
             $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
             return view('artis.search.artisSearch', compact('user', 'artis_id', 'title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
