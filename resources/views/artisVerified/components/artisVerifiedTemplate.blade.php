@@ -366,7 +366,8 @@
                                             </svg>
                                         </span>
                                         <input type="text" id="search" name="search" class="form-control"
-                                            placeholder="cari di sini" value="" style="border-radius: 0px 15px 15px 0px">
+                                            placeholder="cari di sini" value=""
+                                            style="border-radius: 0px 15px 15px 0px">
                                     </div>
                                 </form>
                                 <ul id="search-results"></ul>
@@ -661,6 +662,61 @@
                 //         $(this).find('i').toggleClass('mdi-chevron-right mdi-chevron-down');
                 //     });
                 // });
+            </script>
+            
+            <script>
+                var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                $(document).ready(function() {
+                    $.ajax({
+                        url: `/song/check`,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(response) {
+                            // console.log(response);
+                            response.forEach(function(item) {
+                                const songId = item.song_id;
+                                const like = document.getElementById(`like${item.song_id}`);
+                                if (like) {
+                                    like.classList.toggle('fas');
+                                }
+                            })
+                        }
+                    });
+                });
+
+                function toggleLike(iconElement, songId) {
+                    const isLiked = iconElement.classList.contains('fas');
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        url: `/song/${songId}/like`,
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.success) {
+                                if (isLiked) {
+                                    iconElement.classList.remove('fas');
+                                    iconElement.classList.add('far');
+                                } else {
+                                    iconElement.classList.remove('far');
+                                    iconElement.classList.add('fas');
+                                }
+                            }
+                        }
+                    })
+                }
+
+                function updateSongLikeStatus(songId, isLiked) {
+                    const likeIcons = document.querySelectorAll(`.shared-icon-like[data-id="${songId}"]`);
+                    likeIcons.forEach(likeIcon => {
+                        likeIcon.classList.toggle('fas', isLiked);
+                        likeIcon.classList.toggle('far', !isLiked);
+                    });
+                }
             </script>
 
             {{-- <script>

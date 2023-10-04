@@ -92,6 +92,7 @@
             justplay();
         }
     </script>
+
       <script>
         var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         $(document).ready(function() {
@@ -139,6 +140,7 @@
             });
         }
     </script>
+
      <script>
         console.log('oooooooooooooooooooooo');
         let previous = document.querySelector('#pre');

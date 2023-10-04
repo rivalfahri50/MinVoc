@@ -4,6 +4,13 @@
     <link rel="stylesheet" href="/user/assets/css/songSearch.css">
 
     @include('partials.tambahkeplaylist')
+    <style>
+        .gayaputarlagu {
+            font-size: 0.8rem;
+            height: 1.5rem;
+            line-height: 1px;
+        }
+    </style>
 
     <div class="main-panel">
         <div class="content-wrapper">
@@ -19,17 +26,14 @@
                                     <div class="teks-container">
                                         <h4 class="judul clamp-text">
                                             {{ $song->judul }}</h4>
-                                        <div class="d-flex flex-row align-content-center"
-                                            style=" display: flex; flex-direction: row; align-items: center">
-                                            <p class="text-muted m-1 clamp-text" style="font-size: 16px">
-                                                {{ $song->artist->user->name }}</p>
-                                            <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
-                                                onclick="putar({{ $song->id }})">
-                                                <button onclick="justplay()" id="playPauseButton">
-                                                    <i class="far fa-play-circle fr" aria-hidden="true"></i>
-                                                </button>
-                                            </a>
-                                        </div>
+                                        <p class="text-muted m-1 clamp-text" style="font-size: 16px">
+                                            {{ $song->artist->user->name }}</p>
+                                        <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
+                                            onclick="putar({{ $song->id }})">
+                                            <button type="button" class="btn gayaputarlagu">
+                                                Putar Lagu
+                                            </button>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -270,7 +274,8 @@
                 Playing_song = false;
                 play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>';
                 playPauseButton.innerHTML = '<i class="far fa-play-circle fr" aria-hidden="true"></i>';
-            }console.log( playPauseButton.innerHTML);
+            }
+            console.log(playPauseButton.innerHTML);
 
             // Periksa apakah index_no memiliki nilai yang benar
             if (index_no >= 0 && index_no < All_song.length) {

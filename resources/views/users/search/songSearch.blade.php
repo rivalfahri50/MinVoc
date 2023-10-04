@@ -4,7 +4,13 @@
     <link rel="stylesheet" href="/user/assets/css/songSearch.css">
 
     @include('partials.tambahkeplaylist')
-
+    <style>
+        .gayaputarlagu {
+            font-size: 0.8rem;
+            height: 1.5rem;
+            line-height: 1px;
+        }
+    </style>
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="row">
@@ -19,21 +25,15 @@
                                     <div class="teks-container">
                                         <h4 class="judul clamp-text">
                                             {{ $song->judul }}</h4>
-                                        <div class="d-flex flex-row align-content-center" style=" display: flex; flex-direction: row; align-items: center">
-                                            <p class="text-muted m-1 clamp-text" style="font-size: 16px">{{ $song->artist->user->name }}</p>
-                                            <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
-                                                onclick="putar({{ $song->id }})">
-                                                <button onclick="togglePlayPause()" id="play"
-                                                    style="border: none; background: none;">
-                                                    <i id="playIcon" class="far fa-play-circle ukuraniconplaykhusus"
-                                                        style="color: #957DAD;"></i>
-                                                </button>
-                                            </a>
-                                        </div>
+                                        <p class="text-muted m-1 clamp-text" style="font-size: 16px">
+                                            {{ $song->artist->user->name }}</p>
+                                        <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
+                                            onclick="putar({{ $song->id }})">
+                                            <button type="button" class="btn gayaputarlagu">
+                                                Putar Lagu
+                                            </button>
+                                        </a>
                                     </div>
-                                    {{-- <script>
-                                        var isPlaying = false; // Default status pemutaran lagu
-                                    </script> --}}
                                 </div>
                             </div>
                         </div>
@@ -94,6 +94,7 @@
             </div>
             <!-- page-body-wrapper ends -->
         </div>
+    </div>
         <script>
             var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             $(document).ready(function() {
@@ -144,28 +145,6 @@
                 });
             }
         </script>
-            // function togglePlayPause() {
-            //     const playIcon = document.getElementById('playIcon');
-
-            //     if (isPlaying) {
-            //         // Jika sedang diputar, ganti menjadi pause
-            //         playIcon.classList.remove('fa-pause-circle');
-            //         playIcon.classList.add('fa-play-circle');
-            //     } else {
-            //         // Jika sedang tidak diputar, ganti menjadi play
-            //         playIcon.classList.remove('fa-play-circle');
-            //         playIcon.classList.add('fa-pause-circle');
-            //     }
-
-            //     // Ubah status pemutaran
-            //     isPlaying = !isPlaying;
-
-            //     // Panggil fungsi justplay() jika diperlukan
-            //     justplay();
-            // }
-        </script>
-
-    </div>
     <script>
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');

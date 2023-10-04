@@ -708,8 +708,9 @@ class ArtistVerifiedController extends Controller
             return view('artisVerified.search.songSearch', compact('song', 'title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
         } else if ($user) {
             $artis = artist::where('user_id', $user->id)->first();
+            $artis_id = $artis->id;
             $songs = song::where('artis_id', $artis->id)->get();
-            return view('artisVerified.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs', 'artis', 'totalDidengar'));
+            return view('artisVerified.search.artisSearch', compact('user', 'artis_id','title', 'songs', 'playlists', 'notifs', 'artis', 'totalDidengar'));
         } else {
             return response()->view('artisverified.searchNotFound', compact('title', 'notifs'));
         }
@@ -733,7 +734,7 @@ class ArtistVerifiedController extends Controller
             $artis_id = $artis->id;
             $songs = song::where('artis_id', $artis->id)->get();
             $notifs = notif::with('user.artist.song', 'song')->where('user_id', auth()->user()->id)->get();
-            return view('artisverified.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
+            return view('artisverified.search.artisSearch', compact('user','artis_id', 'title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
         } else {
             return response()->view('artisverified.searchNotFound', compact('title', 'notifs'));
         }
@@ -749,10 +750,11 @@ class ArtistVerifiedController extends Controller
             $notifs = notif::with('user.artist.song', 'song')->where('user_id', auth()->user()->id)->get();
             $totalDidengar = DB::table('riwayat')->where('user_id', auth()->user()->id)->sum('song_id');
             $playlists = playlist::all();
+            $artis_id = $artis->id;
         } catch (\Throwable $th) {
             abort(404);
         }
-        return view('artisVerified.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
+        return view('artisVerified.search.artisSearch', compact('user', 'artis_id','title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
     }
 
 
