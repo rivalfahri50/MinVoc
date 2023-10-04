@@ -35,14 +35,14 @@
                         <div class="col-2">
                             <div class="card coba">
                                 <h3 class="angka m-0">{{ $totalLagu }}<span
-                                        class="fas fa-microphone-alt small ikon"></span></h3>
+                                        class="fas fa-music small ikon"></span></h3>
                                 <h4 class="judul mb-3">Lagu</h4>
                                 <p class="teks">Sejak 2023</p>
                             </div>
                         </div>
                         <div class="col-2">
                             <div class="card coba">
-                                <h3 class="angka m-0">{{ $totalArtist }} <span class="fas fa-music small ikon"></span></h3>
+                                <h3 class="angka m-0">{{ $totalArtist }} <span class="fas fa-microphone-alt small ikon"></span></h3>
                                 <h4 class="judul mb-3">Artis</h4>
                                 <p class="teks">Sejak 2023</p>
                             </div>

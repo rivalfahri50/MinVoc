@@ -7,79 +7,83 @@
                 <div class="d-flex">
                     <form class="login100-form validate-form" action="{{ route('storeSignIn') }}" method="POST">
                         @csrf
-                        <div class="d-flex mb-3 flex-column">
-                            <span style="font-size: 2pc; font-weight: bolder;" class="mb-3">
-                                Masuk
-                            </span>
-                            <span style="color: #5f5f5f; font-weight: 400" class="mb-3">
-                                Selamat datang di <span style="color: #957DAD; font-weight: 600">MusiCave</span>
-                            </span>
-                        </div>
-
-                        @if (session()->has('success'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('success') }}
+                        <div class="box">
+                            <div class="d-flex mb-3 flex-column">
+                                <span style="font-size: 2pc; font-weight: bolder;" class="mb-3">
+                                    Masuk
+                                </span>
+                                <span style="color: #5f5f5f; font-weight: 400" class="mb-3">
+                                    Selamat datang di <span style="color: #957DAD; font-weight: 600">MusiCave</span>
+                                </span>
                             </div>
-                        @endif
-                        @if (session()->has('failed'))
-                            <div class="alert alert-danger" role="alert">
-                                {{ session('failed') }}
-                            </div>
-                        @endif
 
-                        <div class="mb-3">
-                            <input name="email" placeholder="Email" type="text" class="form-control rounded-3"
-                                id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ old('email') }}">
-                            @if ($errors->has('email'))
-                                <div class="text-danger mt-1 my-1">
-                                    {{ $errors->first('email') }}
+                            @if (session()->has('success'))
+                                <div class="alert alert-success" role="alert">
+                                    {{ session('success') }}
                                 </div>
                             @endif
-                        </div>
-
-                        <div class="mb-3">
-                            <input name="password" placeholder="Kata Sandi" type="password" class="form-control rounded-3"
-                                id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ old('password') }}">
-                            @if ($errors->has('password'))
-                                <div class="text-danger mt-1 my-1">
-                                    {{ $errors->first('password') }}
+                            @if (session()->has('failed'))
+                                <div class="alert alert-danger" role="alert">
+                                    {{ session('failed') }}
                                 </div>
                             @endif
-                        </div>
 
-                        <div class="flex-sb-m w-full p-t-3 p-b-32">
-                            <div class="contact100-form-checkbox">
-                                <input class="input-checkbox100" id="ckb1" type="checkbox" name="kebijakan_privasi">
-                                <label class="label-checkbox100" for="ckb1">
-                                    <a href="/kebijakan-privasi" style="text-decoration: none;">
-                                        <span>Kebijakan Privasi</span>
+                            <div class="mb-3">
+                                <input name="email" placeholder="Email" type="text" class="form-control rounded-3"
+                                    id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ old('email') }}">
+                                @if ($errors->has('email'))
+                                    <div class="text-danger mt-1 my-1">
+                                        {{ $errors->first('email') }}
+                                    </div>
+                                @endif
+                            </div>
+
+                            <div class="mb-3">
+                                <input name="password" placeholder="Kata Sandi" type="password"
+                                    class="form-control rounded-3" id="exampleInputEmail1" aria-describedby="emailHelp"
+                                    value="{{ old('password') }}">
+                                @if ($errors->has('password'))
+                                    <div class="text-danger mt-1 my-1">
+                                        {{ $errors->first('password') }}
+                                    </div>
+                                @endif
+                            </div>
+
+                            <div class="flex-sb-m w-full p-t-3 p-b-32">
+                                <div class="contact100-form-checkbox">
+                                    <input class="input-checkbox100" id="ckb1" type="checkbox"
+                                        name="kebijakan_privasi">
+                                    <label class="label-checkbox100" for="ckb1">
+                                        <a href="/kebijakan-privasi" style="text-decoration: none;">
+                                            <span>Kebijakan Privasi</span>
+                                        </a>
+                                    </label>
+
+                                    @error('kebijakan_privasi')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+
+                                <div>
+                                    <a style="text-decoration: none; font-family: Poppins" href="{{ route('lupaSandi') }}"
+                                        class="txt1">
+                                        Tidak Ingat Kata Sandi
                                     </a>
-                                </label>
-
-                                @error('kebijakan_privasi')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
+                                </div>
                             </div>
 
-                   
-                            <div>
-                                <a style="text-decoration: none; font-family: Poppins" href="{{ route('lupaSandi') }}"
-                                    class="txt1">
-                                    Tidak Ingat Kata Sandi
-                                </a>
+                            <div class="container-login100-form-btn">
+                                <button class="login100">
+                                    Masuk
+                                </button>
                             </div>
-                        </div>
 
-                        <div class="container-login100-form-btn">
-                            <button class="login100">
-                                Masuk
-                            </button>
-                        </div>
-
-                        <div class="flex-sb-m w-full p-t-3 p-b-32 mt-4">
-                            <div style="color: black; font-weight: 600; font-size: 13px">
-                                <span>belum punya akun? klik <a href="/buat-akun"
-                                        style="font-weight: 600; color: #957DAD; text-decoration: none">daftar</a></span>
+                            <div class="flex-sb-m w-full p-t-3 p-b-32 mt-4">
+                                <div style="color: black; font-weight: 600; font-size: 13px">
+                                    <span>belum punya akun? klik <a href="/buat-akun"
+                                            style="font-weight: 600; color: #957DAD; text-decoration: none">daftar</a></span>
+                                </div>
                             </div>
                         </div>
                     </form>
