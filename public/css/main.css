@@ -194,8 +194,8 @@ iframe {
     border: 2px solid #957dad;
 }
 
-#pengguna, #artis
-{
+#pengguna,
+#artis {
     display: none;
 }
 
@@ -407,7 +407,7 @@ input.input100 {
     transform: scaleX(1.1) scaleY(1.3);
 }
 
-.input100:focus + .focus-input100 {
+.input100:focus+.focus-input100 {
     visibility: visible;
     opacity: 1;
 
@@ -433,7 +433,7 @@ input.input100 {
     height: 48px;
 }
 
-.input100:focus + .focus-input100 + .label-input100 {
+.input100:focus+.focus-input100+.label-input100 {
     top: 14px;
     font-size: 13px;
 }
@@ -442,7 +442,7 @@ input.input100 {
     height: 48px !important;
 }
 
-.has-val + .focus-input100 + .label-input100 {
+.has-val+.focus-input100+.label-input100 {
     top: 14px;
     font-size: 13px;
 }
@@ -494,7 +494,7 @@ input.input100 {
     transform: translateY(-50%);
 }
 
-.input-checkbox100:checked + .label-checkbox100::before {
+.input-checkbox100:checked+.label-checkbox100::before {
     color: #6675df;
 }
 
@@ -565,8 +565,7 @@ input.input100 {
     transition: all 0.4s;
 }
 
-.login100:hover
-{
+.login100:hover {
     background-color: #a48dba;
 }
 
@@ -574,12 +573,15 @@ input.input100 {
     background-color: #a48dba;
     color: white;
     fill: #957dad;
+
     .svg1 {
         fill: white;
     }
+
     .svg2 {
         fill: white;
     }
+
     .selected:hover {
         fill: white;
     }
@@ -615,6 +617,40 @@ input.input100 {
         padding-left: 15px;
         padding-right: 15px;
         padding-top: 70px;
+        display: flex;
+        align-items: center;
+    }
+
+    .wrap-login100 {
+        width: 50%;
+        background: #fff;
+        overflow: hidden;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: stretch;
+        flex-direction: row-reverse;
+    }
+
+    .wrap-login100 {
+        width: 100%;
+        background: #fff;
+        overflow: hidden;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: flex;
+        justify-content: center;
+    }
+
+    .box {}
+
+    .flex-sb-m {
+        gap: 10vw;
     }
 }
 
