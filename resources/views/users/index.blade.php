@@ -478,7 +478,22 @@
         }
     </script>
 
-    {{-- untuk lagu atas dan bawah --}}
+    <script>
+        function redirectArtis(id) {
+            $.ajax({
+                url: `/artis/detail-artis/${id}`,
+                type: 'GET',
+                data: {
+                    data: id
+                },
+                success: function(response) {
+                    window.location.href = `/pengguna/detail-artis/${id}`;
+                },
+            });
+        }
+    </script>
+
+    {{-- lagu bawah --}}
     <script>
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');

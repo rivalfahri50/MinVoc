@@ -164,7 +164,6 @@ class penggunaController extends Controller
             return abort(404);
         }
         return redirect()->back();
-        // return response()->view('users.playlist', compact('title', 'playlists', 'notifs'));
     }
 
     protected function ubahPlaylist(Request $request, string $code)
@@ -216,10 +215,11 @@ class penggunaController extends Controller
         return redirect()->back();
     }
 
-    protected function search_song(Request $request)
+    protected function search_song(Request $request, string $code)
     {
         $query = $request->input('query');
-        $results = song::with('artist.user')->where('judul', 'like', '%' . $query . '%')->get();
+        $playlist = playlist::where('code', $code)->first();
+        $results = song::with('artist.user')->where('playlist_id', $playlist->id)->where('judul', 'like', '%' . $query . '%')->get();
 
         return response()->json(['results' => $results]);
     }
@@ -263,6 +263,7 @@ class penggunaController extends Controller
             return view('users.search.songSearch', compact('song','search', 'title', 'songs', 'playlists', 'notifs'));
         } else if ($user) {
             $artis = artist::where('user_id', $user->id)->first();
+            $artis_id = $artis->id;
             $songs = song::where('artis_id', $artis->id)->get();
             $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
             return view('users.search.artisSearch', compact('user','search','artis_id','title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
@@ -469,11 +470,12 @@ class penggunaController extends Controller
             $songs = song::where('artis_id', $artis->id)->get();
             $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
             $totalDidengar = DB::table('riwayat')->where('user_id', auth()->user()->id)->sum('song_id');
+            $artis_id = $artis->id;
             $playlists = playlist::all();
         } catch (\Throwable $th) {
             abort(404);
         }
-        return view('users.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
+        return view('users.search.artisSearch', compact('user', 'title', 'songs', 'playlists', 'notifs', 'totalDidengar', 'artis_id'));
     }
 
     protected function deleteNotif(Request $request, string $code)

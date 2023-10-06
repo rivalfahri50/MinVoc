@@ -57,19 +57,6 @@
                                                                 class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2">
                                                             </i>
                                                             <p>{{ $item->waktu }}</p>
-                                                            @if (count($playlists) > 0)
-                                                                <a data-bs-toggle="modal"
-                                                                    data-bs-target="#staticBackdrop-{{ $item->code }}"
-                                                                    style="color: #957dad">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" x="0px"
-                                                                        y="0px" width="20" height="20"
-                                                                        viewBox="0 2 24 24">
-                                                                        <path fill="#957DAD"
-                                                                            d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 11 L 7 11 L 7 13 L 11 13 L 11 17 L 13 17 L 13 13 L 17 13 L 17 11 L 13 11 L 13 7 L 11 7 z">
-                                                                        </path>
-                                                                    </svg>
-                                                                </a>
-                                                            @endif
                                                         </div>
                                                     </div>
                                                 </div>
@@ -137,7 +124,6 @@
             });
         }
     </script>
-
     <script>
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
@@ -168,7 +154,6 @@
         let track = document.createElement('audio');
         const artistId = {{ $artis_id }};
         let All_song = [];
-        console.log("iki lhoooooooooooo", All_song);
 
         function ambilDataLagu(artistId) {
             $.ajax({
@@ -204,6 +189,7 @@
         // function load the track
         function load_track(index_no) {
             if (index_no >= 0 && index_no < All_song.length) {
+                console.log("tester " + index_no);
                 track.src = `https://drive.google.com/uc?export=view&id=${All_song[index_no].audio}`;
                 title.innerHTML = All_song[index_no].judul;
                 artist.innerHTML = All_song[index_no].artistId;
@@ -229,10 +215,6 @@
             }
             updateMuteButtonIcon();
         }
-        // track.addEventListener('loadedmetadata', function() {
-        //     slider.max = track.duration;
-        // });
-
 
         // fungsi untuk memeriksa lagu diputar atau tidak
         function justplay() {
@@ -451,10 +433,10 @@
             }
 
             // kalkulasi waktu dari durasi audio
-            const durationElement = document.getElementById('duration');
-            const durationMinutes = Math.floor(track.duration / 60);
-            const durationSeconds = Math.floor(track.duration % 60);
-            const formattedDuration = `${durationMinutes}:${durationSeconds < 10 ? '0' : ''}${durationSeconds}`;
+            let durationElement = document.getElementById('duration');
+            let durationMinutes = Math.floor(track.duration / 60);
+            let durationSeconds = Math.floor(track.duration % 60);
+            let formattedDuration = `${durationMinutes}:${durationSeconds < 10 ? '0' : ''}${durationSeconds}`;
             durationElement.textContent = formattedDuration;
         }
 
@@ -473,13 +455,13 @@
         // Fungsi untuk mengupdate durasi waktu (waktu berjalan sesuai real time)
         function updateDuration() {
             // Menghitung durasi waktu yang telah berlalu
-            const currentMinutes = Math.floor(track.currentTime / 60);
-            const currentSeconds = Math.floor(track.currentTime % 60);
+            let currentMinutes = Math.floor(track.currentTime / 60);
+            let currentSeconds = Math.floor(track.currentTime % 60);
             // Memformat durasi waktu yang akan ditampilkan
-            const formattedCurrentTime = `${currentMinutes}:${currentSeconds < 10 ? '0' : ''}${currentSeconds}`;
+            let formattedCurrentTime = `${currentMinutes}:${currentSeconds < 10 ? '0' : ''}${currentSeconds}`;
             // console.log(formattedCurrentTime);
             // Menampilkan durasi waktu pada elemen yang sesuai
-            const currentTimeElement = document.getElementById('current-time');
+            let currentTimeElement = document.getElementById('current-time');
             currentTimeElement.textContent = formattedCurrentTime;
         }
 

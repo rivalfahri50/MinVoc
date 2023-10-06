@@ -110,7 +110,7 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
     Route::get('/verified', 'verified');
     Route::get('/hapus-playlist/{code}', 'hapusPlaylist')->name('hapus.playlist.artis');
     Route::get('/hapus-album/{code}', 'hapusAlbum')->name('hapus.albums.artis');
-    Route::get('/search_song', 'search_song')->name('search.song.artis');
+    Route::get('/search_song/{code}', 'search_song')->name('search.song.artis');
     Route::get('/search/{code}', 'search_result');
     Route::get('/hapusSongPlaylist/{code}', 'hapusSongPlaylist')->name('hapusSongPlaylist.artis');
     Route::get('/peraturan', function () {
@@ -165,7 +165,7 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
     Route::get('/hapus-playlist/{code}', 'hapusPlaylist')->name('hapus.playlist.artisVerified');
     Route::get('/hapus-album/{code}', 'hapusAlbum')->name('hapus.albums.artisVerified');
     Route::get('/hapusSongPlaylist/{code}', 'hapusSongPlaylist')->name('hapusSongPlaylist.artisVerified');
-    Route::get('/search_song', 'search_song')->name('search.song.artisVerified');
+    Route::get('/search_song/{code}', 'search_song')->name('search.song.artisVerified');
     Route::get('/search/{code}', 'search_result');
     Route::get('/peraturan', function () {
         $notifs = notif::where('user_id', auth()->user()->id)->get();
@@ -217,7 +217,7 @@ Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(pengguna
     Route::get('/search', 'search')->name('search');
     Route::get('/toggle-like', 'like')->name('toggle-like');
     Route::get('/hapus-playlist/{code}', 'hapusPlaylist')->name('hapus.playlist.user');
-    Route::get('/search_song', 'search_song')->name('search.song.pengguna');
+    Route::get('/search_song/{code}', 'search_song')->name('search.song.pengguna');
     Route::get('/search/{code}', 'search_result');
     Route::get('/hapusSongPlaylist/{code}', 'hapusSongPlaylist')->name('hapusSongPlaylist');
     Route::get('/peraturan', function () {

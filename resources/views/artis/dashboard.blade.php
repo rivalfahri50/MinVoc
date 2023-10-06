@@ -1287,4 +1287,19 @@
             }
         }
     </script>
+
+    <script>
+        function redirectArtis(id) {
+            $.ajax({
+                url: `/artis/detail-artis/${id}`,
+                type: 'GET',
+                data: {
+                    data: id
+                },
+                success: function(response) {
+                    window.location.href = `/artis/detail-artis/${id}`;
+                },
+            });
+        }
+    </script>
 @endsection

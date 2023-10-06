@@ -539,7 +539,7 @@ class ArtistController extends Controller
         $billboard = billboard::where('code', $code)->first();
         $artis_id = $billboard->artis_id;
         $albums = album::where('artis_id', $billboard->artis_id)->get();
-        $songs = song::all();
+        $songs = song::where('artis_id', $billboard->artis_id)->get();
         $playlists = playlist::all();
         $notifs = notif::with('user.artist.song', 'song')->where('user_id', auth()->user()->id)->get();
         return response()->view('artis.billboard.billboard', compact('title', 'billboard', 'artis_id', 'albums', 'songs', 'playlists', 'notifs'));
@@ -607,11 +607,12 @@ class ArtistController extends Controller
         return response()->json(['results' => $results]);
     }
 
-    public function search_song(Request $request)
+    public function search_song(Request $request, string $code)
     {
         $query = $request->input('query');
         $id = $request->input('id');
-        $results = song::with('artist.user')->where('judul', 'like', '%' . $query . '%')->where('album_id', $id)->get();
+        $playlist = playlist::where('code', $code)->first();
+        $results = song::with('artist.user')->where('playlist_id', $playlist->id)->where('judul', 'like', '%' . $query . '%')->where('album_id', $id)->get();
 
         return response()->json(['results' => $results]);
     }
@@ -656,14 +657,15 @@ class ArtistController extends Controller
         if ($song) {
             $songs = song::all();
             $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
-            return view('artis.search.songSearch', compact('song', 'search','title', 'songs', 'playlists', 'notifs'));
+            return view('artis.search.songSearch', compact('song', 'search', 'title', 'songs', 'playlists', 'notifs'));
         } else if ($user) {
             $artis = artist::where('user_id', $user->id)->first();
+            $artis_id = $artis->id;
             $songs = song::where('artis_id', $artis->id)->get();
             $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
-            return view('artis.search.artisSearch', compact('user','title', 'search','songs', 'playlists', 'notifs', 'totalDidengar'));
+            return view('artis.search.artisSearch', compact('user', 'artis_id', 'title', 'search', 'songs', 'playlists', 'notifs', 'totalDidengar'));
         } else {
-            return response()->view('artis.searchNotFound', compact('title','search', 'notifs'));
+            return response()->view('artis.searchNotFound', compact('title', 'search', 'notifs'));
         }
     }
 
@@ -702,7 +704,7 @@ class ArtistController extends Controller
             $artis_id = $artis->id; 
             $songs = song::where('artis_id', $artis->id)->get();
             $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
-            return view('artis.search.artisSearch', compact('user','artis_id','title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
+            return view('artis.search.artisSearch', compact('user', 'artis_id', 'title', 'songs', 'playlists', 'notifs', 'totalDidengar'));
         } else {
             return response()->view('artis.searchNotFound', compact('title', 'notifs'));
         }

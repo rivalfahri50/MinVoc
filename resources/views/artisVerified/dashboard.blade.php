@@ -277,7 +277,7 @@
     </div>
     </div>
     </div>
-    {{-- untuk header sortir --}}
+{{-- untuk header sortir --}}
     <script>
         $(document).ready(function() {
             var ascendingOrder = true; // Menyimpan status urutan saat ini
@@ -473,122 +473,47 @@
         });
     </script>
 
+    {{-- ini untuk like pada halaman ini --}}
     <script>
+        function redirectArtis(id) {
+            $.ajax({
+                url: /pengguna/detail-artis/${id},
+                type: 'GET',
+                data: {
+                    data: id
+                },
+                success: function(response) {
+                    window.location.href = /pengguna/detail-artis/${id};
+                },
+            });
+        }
+
         var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         $(document).ready(function() {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
             $.ajax({
-                url: `/artist/check`,
+                url: /song/check,
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
-                    console.log("like artis", response);
+                    console.log('like atas', response);
                     response.forEach(function(item) {
-                        const artistId = item.artist_id;
-                        const like = document.getElementById(`like-artist${item.artist_id}`);
+                        const songId = item.song_id;
+                        const like = document.getElementById(like-atas${item.song_id});
                         like.classList.toggle('fas');
                     })
-
-                },
-                error: function(response) {
-                    console.log(response)
-                }
-            });
-            $.ajax({
-                url: `/artist/count`,
-                type: 'GET',
-                dataType: 'json',
-                success: function(response) {
-                    let totalLikes = 0;
-                    response.forEach(function(item) {
-                        totalLikes += item.likes;
-                        const artistId = item.artist_id;
-                        console.log("datas" + item.likes);
-                    })
-                    const count = document.getElementById('likeCount');
-                    if (count) {
-                        count.textContent = totalLikes;
-                    }
-                },
-                error: function(response) {
-
-                }
-            })
-        });
-
-        function likeArtist(iconElement, artistId) {
-            const isLiked = iconElement.classList.contains('fas');
-
-            $.ajax({
-                url: `/artist/${artistId}/like`,
-                type: 'POST',
-                dataType: 'json',
-                success: function(response) {
-                    if (response.success) {
-                        const likeCountElement = document.getElementById(`likeCount${artistId}`);
-                        if (likeCountElement) {
-                            likeCountElement.textContent = response.likes;
-                        }
-                        if (isLiked) {
-                            iconElement.classList.remove('fas');
-                            iconElement.classList.add('far');
-                        } else {
-                            iconElement.classList.remove('far');
-                            iconElement.classList.add('fas');
-                        }
-                        updateLikeStatus(artistId, !isLiked);
-                    }
-                },
-                error: function(response) {
-                    console.log(response);
-                }
-
-            })
-        }
-
-
-        function updateLikeStatus(artistId, isLiked) {
-            const likeIcons = document.querySelectorAll(`.like[data-id="${artistId}"]`);
-            likeIcons.forEach(likeIcon => {
-                likeIcon.classList.toggle('fas', isLiked);
-                likeIcon.classList.toggle('far', !isLiked);
-            });
-        }
-    </script>
-
-    <script>
-        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        $(document).ready(function() {
-            $.ajax({
-                url: `/song/check`,
-                type: 'GET',
-                dataType: 'json',
-                success: function(response) {
-                    console.log("like lagu atas", response);
-                    response.forEach(function(item) {
-                        let songId = item.song_id;
-                        let like = document.getElementById(`like-atas${item.song_id}`);
-                        if (like) {
-                            like.classList.toggle('fas');
-                        }
-                    })
                 }
             });
         });
         $(document).ready(function() {
             $.ajax({
-                url: `/song/check`,
+                url: /song/check,
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
-                    console.log("like lagu bawah", response);
+                    console.log('like bawah', response);
                     response.forEach(function(item) {
-                        let songId = item.song_id;
-                        let like = document.getElementById(`like-bawah${item.song_id}`);
+                        const songId = item.song_id;
+                        const like = document.getElementById(like-bawah${item.song_id});
                         if (like) {
                             like.classList.toggle('fas');
                         }
@@ -599,12 +524,12 @@
 
         function toggleLike(iconElement, songId) {
             const isLiked = iconElement.classList.contains('fas');
+
             $.ajax({
-                url: `/song/${songId}/like`,
+                url: /song/${songId}/like,
                 type: 'POST',
                 dataType: 'json',
                 success: function(response) {
-                    console.log(response);
                     if (response.success) {
                         if (isLiked) {
                             iconElement.classList.remove('fas');
@@ -613,17 +538,14 @@
                             iconElement.classList.remove('far');
                             iconElement.classList.add('fas');
                         }
-                        updateSongLikeStatus(songId, !isLiked);
                     }
-                },
-                error: function(response) {
-                    console.log(response);
                 }
             })
         }
 
+
         function updateSongLikeStatus(songId, isLiked) {
-            const likeIcons = document.querySelectorAll(`.shared-icon-like[data-id="${songId}"]`);
+            const likeIcons = document.querySelectorAll(.shared-icon-like[data-id="${songId}"]);
             likeIcons.forEach(likeIcon => {
                 likeIcon.classList.toggle('fas', isLiked);
                 likeIcon.classList.toggle('far', !isLiked);
@@ -648,7 +570,7 @@
     </script>
 
     {{-- lagu atas --}}
-    {{-- <script>
+    <script>
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
         let next = document.querySelector('#next');
@@ -678,9 +600,8 @@
         let track = document.createElement('audio');
 
         let All_song = [];
-        console.log("iki lhoooooooooooo", All_song);
 
-        function ambilDataLagu() {
+        function ambilDataLaguDidengar() {
             $.ajax({
                 url: '/ambil-lagu',
                 type: 'GET',
@@ -698,7 +619,7 @@
                     console.log("data lagu yang diambil:", All_song);
                     if (All_song.length > 0) {
                         // Memanggil load_track dengan indeks 0 sebagai lagu pertama
-                        load_track(0);
+                        load_track();
                     } else {
                         console.error("Data lagu kosong.");
                     }
@@ -1030,7 +951,7 @@
                 recent_volume.value = track.volume * 100;
             }
         }
-    </script> --}}
+    </script>
 
     {{-- lagu bawah --}}
     <script>
@@ -1063,36 +984,7 @@
         let track = document.createElement('audio');
 
         let All_song = [];
-
-        function ambilDataLaguDidengar() {
-            $.ajax({
-                url: '/ambil-lagu',
-                type: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    All_song = data.filter(lagu => lagu.is_approved === 1).map(lagu => {
-                        return {
-                            id: lagu.id,
-                            judul: lagu.judul,
-                            audio: lagu.audio,
-                            image: lagu.image,
-                            artistId: lagu.artist.user.name
-                        };
-                    });
-                    console.log("data lagu yang diambil:", All_song);
-                    if (All_song.length > 0) {
-                        // Memanggil load_track dengan indeks 0 sebagai lagu pertama
-                        load_track();
-                    } else {
-                        console.error("Data lagu kosong.");
-                    }
-                },
-                error: function(error) {
-                    console.error('Error fetching data:', error);
-                }
-            });
-        }
-        ambilDataLaguDidengar();
+        console.log("iki lhoooooooooooo", All_song);
 
         function ambilDataLagu() {
             $.ajax({
@@ -1131,7 +1023,7 @@
         // function load the track
         function load_track(index_no) {
             if (index_no >= 0 && index_no < All_song.length) {
-                track.src = `https://drive.google.com/uc?export=view&id=${All_song[index_no].audio}`;
+                track.src = https://drive.google.com/uc?export=view&id=${All_song[index_no].audio};
                 title.innerHTML = All_song[index_no].judul;
                 artist.innerHTML = All_song[index_no].artistId;
                 track_image.src = '{{ asset('storage') }}' + '/' + All_song[index_no].image;
@@ -1206,7 +1098,7 @@
         var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
         function updatePlayCount(songId) {
-            fetch(`/update-play-count/${songId}`, {
+            fetch(/update-play-count/${songId}, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1409,7 +1301,7 @@
             const durationElement = document.getElementById('duration');
             const durationMinutes = Math.floor(track.duration / 60);
             const durationSeconds = Math.floor(track.duration % 60);
-            const formattedDuration = `${durationMinutes}:${durationSeconds < 10 ? '0' : ''}${durationSeconds}`;
+            const formattedDuration = ${durationMinutes}:${durationSeconds < 10 ? '0' : ''}${durationSeconds};
             durationElement.textContent = formattedDuration;
         }
 
@@ -1431,7 +1323,7 @@
             const currentMinutes = Math.floor(track.currentTime / 60);
             const currentSeconds = Math.floor(track.currentTime % 60);
             // Memformat durasi waktu yang akan ditampilkan
-            const formattedCurrentTime = `${currentMinutes}:${currentSeconds < 10 ? '0' : ''}${currentSeconds}`;
+            const formattedCurrentTime = ${currentMinutes}:${currentSeconds < 10 ? '0' : ''}${currentSeconds};
             // console.log(formattedCurrentTime);
             // Menampilkan durasi waktu pada elemen yang sesuai
             const currentTimeElement = document.getElementById('current-time');
@@ -1474,6 +1366,20 @@
                 volume_show.innerHTML = Math.round(track.volume * 100);
                 recent_volume.value = track.volume * 100;
             }
+        }
+    </script>
+    <script>
+        function redirectArtis(id) {
+            $.ajax({
+                url: `/artis-verified/detail-artis/${id}`,
+                type: 'GET',
+                data: {
+                    data: id
+                },
+                success: function(response) {
+                    window.location.href = `/artis-verified/detail-artis/${id}`;
+                },
+            });
         }
     </script>
 @endsection

@@ -347,7 +347,7 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
-                    console.log('like pada playlist',response);
+                    console.log('like pada playlist', response);
                     response.forEach(function(item) {
                         const songId = item.song_id;
                         const like = document.getElementById(`like-playlist${item.song_id}`);
@@ -388,6 +388,57 @@
                 likeIcon.classList.toggle('far', !isLiked);
             });
         }
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#search_song').on('keyup', function() {
+                var query = $(this).val();
+                let playlist_id = '{{ $playlistDetail->code }}';
+                $.ajax({
+                    url: `/pengguna/search_song/${playlist_id}`,
+                    type: 'GET',
+                    data: {
+                        query: query
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        var results = response.results;
+                        var $previewList = $('.preview-list');
+                        $previewList.empty();
+
+                        $.each(results, function(index, result) {
+                            var $previewItem = $(
+                                '<div class="preview-item" data-song-id="' + result
+                                .id + '">');
+                            $previewItem.append(
+                                '<div class="preview-thumbnail"><img src="http://127.0.0.1:8000/storage/' +
+                                result.image + '" width="10%"></div>');
+                            $previewItem.append(
+                                '<div class="preview-item-content d-sm-flex flex-grow"><div class="flex-grow"><h6 class="preview-subject">' +
+                                result.judul + '</h6><p class="text-muted mb-0">' +
+                                result.artist.user.name +
+                                '</p></div><div class="mr-auto text-sm-right pt-2 pt-sm-0"><div class="text-group"><i onclick="myFunction(this)" class="far fa-heart pr-2"></i><p>' +
+                                result.waktu + '</p>' +
+                                `<p><form action="/pengguna/hapusSongPlaylist/${result.code}" method="get">
+                                <button type="submit" class="iconminus"><i class="far fa-minus-square text-danger" style="font-size: 19px"></i></button></form></p>` +
+                                `<p><a data-bs-toggle="modal"
+                                                                    data-bs-target="#staticBackdrop-${result.code}"
+                                                                    style="color: #957dad">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" x="0px"
+                                                                        y="0px" width="20" height="20"
+                                                                        viewBox="0 2 24 24">
+                                                                        <path fill="#957DAD"
+                                                                            d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 11 L 7 11 L 7 13 L 11 13 L 11 17 L 13 17 L 13 13 L 17 13 L 17 11 L 13 11 L 13 7 L 11 7 z">
+                                                                        </path>
+                                                                    </svg></a></p></div></div></div>`
+                            );
+                            $previewList.append($previewItem);
+                        });
+                    }
+                });
+            });
+        });
     </script>
 
     <script>
