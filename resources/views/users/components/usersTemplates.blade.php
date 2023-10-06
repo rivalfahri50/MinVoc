@@ -470,30 +470,6 @@
             @include('sweetalert::alert')
             @yield('content')
 
-            @foreach ($notifs->reverse() as $item)
-                <div class="modal fade" id="alasan-{{ $item->code }}" tabindex="-1"
-                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header pb-0">
-                                <h3 class="modal-title judul" id="exampleModalLabel">Pengajuan verifikasi
-                                    akun ditolak
-                                </h3>
-                                <button type="button" style="background: none; border: none;"
-                                    class="close-button far fa-times-circle" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                                </button>
-                            </div>
-                            <div class="modal-body pt-1">
-                                <p style="padding: 5px;">
-                                    {{ $item->message }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-
             <script>
                 $(document).ready(function() {
                     $('#search').on('keyup', function() {

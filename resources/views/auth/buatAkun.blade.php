@@ -10,13 +10,13 @@
         }
 
         .ikon {
-            width: fit-content; 
-            padding-right: 0; 
+            width: fit-content;
+            padding-right: 0;
             font-size: 1.2rem;
         }
 
         .tek {
-            width: fit-content; 
+            width: fit-content;
             padding-left: 0;
         }
     </style>
@@ -44,32 +44,31 @@
                             @endif
 
                             <div class="d-flex mt-2 mb-4" style="gap: 15px">
-                                <div class="container-login100-form-btn">
+                                <label for="pengguna" class="container-login100-form-btn">
                                     <span id="button1" style="width: 100%" class="login100-form-btn rounded-4 selected">
                                         <input type="radio" id="pengguna" name="role" value="pengguna">
-                                        <label for="pengguna" class="row labelcontainer">
+                                        <div class="row labelcontainer">
                                             <div class="ikon">
                                                 <i class="fa-solid fa-headphones"></i>
                                             </div>
                                             <div class="tek">Pengguna</div>
-                                        </label>
+                                        </div>
                                     </span>
-                                </div>
-                                {{-- <input type="radio" name="role" placeholder="admin" value="admin"> --}}
-                                <div class="container-login100-form-btn">
-                                    <span id="button2" style="width: 100%"
+                                </label>
+                                <label class="container-login100-form-btn">
+                                    <span for="artis" id="button2" style="width: 100%"
                                         class="login100-form-btn d-flex gap-3 rounded-4 selected">
                                         <input type="radio" id="artis" name="role" value="artis">
-                                        <label for="artis" class="row labelcontainer">
+                                        <div class="row labelcontainer">
                                             <div class="ikon">
                                                 <i class="fas fa-microphone-alt"></i>
                                             </div>
                                             <div class="tek">
                                                 Artis
                                             </div>
-                                        </label>
+                                        </div>
                                     </span>
-                                </div>
+                                </label>
                             </div>
 
                             @error('role')

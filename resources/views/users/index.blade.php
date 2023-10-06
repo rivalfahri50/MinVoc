@@ -553,7 +553,6 @@
                 }
             });
         }
-        ambilDataLaguDidengar();
 
         function ambilDataLagu() {
             $.ajax({
@@ -587,9 +586,9 @@
                 }
             });
         }
-        ambilDataLagu();
+        ambilDataLaguDidengar()
+        ambilDataLagu()
 
-        // function load the track
         function load_track(index_no) {
             if (index_no >= 0 && index_no < All_song.length) {
                 track.src = `https://drive.google.com/uc?export=view&id=${All_song[index_no].audio}`;
@@ -603,7 +602,6 @@
             }
         }
         load_track(0);
-        // semua function
 
         // fungsi mute sound
         function mute_sound() {
@@ -747,7 +745,7 @@
             console.log('ID yang dikirim:', id);
             id = parseInt(id); // Pastikan id berupa bilangan bulat
             const lagu = All_song.find(song => song.id === id);
-            console.log('lagu yang dikirim :', lagu);
+            console.log('lagu yang dikirim :', All_song);
 
             if (lagu) {
                 const new_index_no = All_song.indexOf(lagu);
@@ -788,6 +786,7 @@
             } else {
                 console.error('Lagu dengan ID ' + id + ' tidak ditemukan dalam data lagu.');
             }
+
         }
 
 

@@ -234,7 +234,7 @@
         function load_track(index_no) {
             if (index_no >= 0 && index_no < All_song.length) {
                 console.log("tester " + index_no);
-                track.src = '{{ asset('storage') }}' + '/' + All_song[index_no].audio;
+                track.src = `https://drive.google.com/uc?export=view&id=${All_song[index_no].audio}`;
                 title.innerHTML = All_song[index_no].judul;
                 artist.innerHTML = All_song[index_no].artistId;
                 track_image.src = '{{ asset('storage') }}' + '/' + All_song[index_no].image;
