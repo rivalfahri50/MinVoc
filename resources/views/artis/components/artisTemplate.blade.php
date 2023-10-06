@@ -281,7 +281,7 @@
                         <span class="menu-title">Album</span>
                         <a href="#ui-basic" data-toggle="collapse" aria-expanded="false" aria-controls="ui-basic">
                             <span class="menu-arrow gh">
-                                <i class="mdi mdi-chevron-right"></i>
+                                <i class="mdi mdi-chevron-down"></i>
                             </span>
                         </a>
                     </a>
