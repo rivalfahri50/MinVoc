@@ -189,9 +189,11 @@
                                                     <div
                                                         class="preview-item-content d-sm-flex flex-grow align-items-center">
                                                         <div class="flex-grow">
-                                                            <h6 class="preview-subject"
-                                                                onclick="redirectArtis('{{ $item->code }}')"
-                                                                style="cursor: pointer">{{ $item->user->name }}</h6>
+                                                            <h6 class="preview-subject" onclick="redirectArtis('{{ $item->code }}')" style="cursor: pointer">{{ $item->user->name }}
+                                                                <span
+                                                                    class="mdi mdi-check-decagram text-primary verified-text"></span>
+                                                            </h6>
+                                                            
                                                             <p class="text-muted mb-0" style="font-weight: 400">
                                                                 <span
                                                                     id="likeCount{{ $item->id }}">{{ number_format($item->likes, 0, ',', '.') }}</span>

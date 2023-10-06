@@ -161,6 +161,26 @@
         .pagination li:hover {
             background-color: #ddd;
         }
+
+
+        .verified-profile {
+            position: absolute;
+            bottom: 3px;
+            right: 23px;
+            font-size: 15px;
+        }
+
+        .verified-drop {
+            position: absolute;
+            top: 37px;
+            left: 50px;
+            font-size: 12px;
+        }
+
+        .verified-text {
+            position: absolute;
+            margin-left: 3px;
+        }
     </style>
     <script>
         // INI SCRIPT UNTUK HASIL SEARCH TAMPIL/TIDAK
@@ -474,6 +494,7 @@
                                     <img class="img-xs rounded-circle"
                                         src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
                                 </div>
+                                <span class="mdi mdi-check-decagram text-primary verified-profile"></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                                 aria-labelledby="profileDropdown">
@@ -481,6 +502,7 @@
                                     style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
                                     <img class="img-xs rounded-circle" style="object-fit: cover;"
                                         src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="">
+                                    <span class="mdi mdi-check-decagram text-primary verified-drop"></span>
                                     <p class="mb-0 d-none d-sm-block navbar-profile-name"
                                         style="width: 60px; overflow: hidden; text-overflow: ellipsis; height: 15px;">
                                         {{ auth()->user()->name }}</p>
@@ -607,7 +629,7 @@
                 //     });
                 // });
             </script>
-            
+
             <script>
                 var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                 $(document).ready(function() {

@@ -472,67 +472,67 @@ class ArtistController extends Controller
                 ->withInput();
         }
 
+
+        DB::beginTransaction();
+        $code = Str::uuid();
+        $image = $request->file('image')->store('images', 'public');
+        $getID3 = new getID3();
+
+        $audioInfo = $getID3->analyze($request->file('audio')->path());
+        $durationInSeconds = $audioInfo['playtime_seconds'];
+        $durationMinutes = floor($durationInSeconds / 60);
+        $durationSeconds = $durationInSeconds % 60;
+        $formattedDuration = sprintf('%02d:%02d', $durationMinutes, $durationSeconds);
+
+        $artis = artist::where('user_id', Auth::user()->id)->first();
+
+        $client = new Google_Client();
+        $client->setAuthConfig(public_path('client_secret_351376302605-gpiholslclg7qng4barme2pbc9p7uk6a.apps.googleusercontent.com.json'));
+        $client->setAccessType('offline');
+        $client->setScopes(['https://www.googleapis.com/auth/drive']);
+        $client->setAccessToken(['access_token' => 'ya29.a0AfB_byAn7PyPttpEskjiqUmUKcn2ujCrfXiP_uJUH5FJoGu_KuQ2FjUZ-UyW6izVdfj6idyyfUYA9mgtMMBQmhnevUF-TOpihxvy7WmAQRfL2Q_I8yW-_-WoDw2eo51-YzKxdCkTp19JRqXm1Yv-VRrZc3iitYmRG65RaCgYKASoSARASFQGOcNnC9DdQMQBGI-GbcgPem2kjMQ0171', 'refresh_token' => '1//049ykOLkzjfFoCgYIARAAGAQSNwF-L9Irbn3FX82sowJi_jWc-qDo4Ia9A-mfA-2xNOBwP8-J5jZi5zKxJ5LgA3hB8kGxDCd9fTQ']);
+
+        if ($client->isAccessTokenExpired()) {
+            $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
+        }
+
+        $driveService = new Google_Service_Drive($client);
+
+        $audioFile = $request->file('audio');
+
+        $mimeType = 'audio/mpeg';
+        $fileExtension = 'mp3';
+
+        $fileMetadata = new Google_Service_Drive_DriveFile([
+            'name' => $audioFile->getClientOriginalName(),
+            'mimeType' => $mimeType,
+        ]);
+
+        $fileContent = file_get_contents($audioFile->getRealPath());
+
+        $file = $driveService->files->create($fileMetadata, [
+            'data' => $fileContent,
+            'mimeType' => $mimeType,
+            'uploadType' => 'multipart',
+        ]);
+
+        song::create([
+            'code' => $code,
+            'judul' => $request->input('judul'),
+            'image' => $image,
+            'audio' => $file->id,
+            'waktu' => $formattedDuration,
+            'type' => 'pengajuan',
+            'is_approved' => false,
+            'genre_id' => $request->input('genre'),
+            'album_id' => $request->input('album') == null ? null : $request->input('album'),
+            'artis_id' => $artis->id,
+        ]);
+        DB::commit();
+
+        $penghasilanArtist = (int) $artis->penghasilan + 200000;
+        $artis->update(['penghasilan' => $penghasilanArtist]);
         try {
-            $code = Str::uuid();
-            $image = $request->file('image')->store('images', 'public');
-            $getID3 = new getID3();
-
-            $audioInfo = $getID3->analyze($request->file('audio')->path());
-            $durationInSeconds = $audioInfo['playtime_seconds'];
-            $durationMinutes = floor($durationInSeconds / 60);
-            $durationSeconds = $durationInSeconds % 60;
-            $formattedDuration = sprintf('%02d:%02d', $durationMinutes, $durationSeconds);
-            DB::beginTransaction();
-
-            $artis = artist::where('user_id', Auth::user()->id)->first();
-
-            set_time_limit(100);
-
-            $client = new Google_Client();
-            $client->setAuthConfig(public_path('client_secret_650886155711-77aeuhp9hlvh6vncaejjbic959d04snl.apps.googleusercontent.com.json'));
-            $client->setAccessType('offline');
-            $client->setScopes(['https://www.googleapis.com/auth/drive']);
-            $client->setAccessToken(['access_token' => 'ya29.a0AfB_byCw4TdOqUZzRdxurIFpye75fsncnOmjuK2GYEclK8SJ8fJV0-R7BzGrkd54EbHzXgseP7Lh-W2GYgoLkRf_CuXU5XMgvkr7aSi7Rdvrd9Jsgr-AIZB0Bp68LktE8creCM-I10H4m4lNXCM6gqbOQdLOFAzQOJgCaCgYKAR8SARESFQGOcNnC_9xTMkaUdE23RB2OhTUVmA0171', 'refresh_token' => '1//04IbH0HuIbMpXCgYIARAAGAQSNwF-L9IrnXirpXtzqTu-T8j1_3fdgQ-eXiIfmp0jC4kyHoTK7lXIZp74D71iWQrwQRtXJON6R6Q']);
-
-            if ($client->isAccessTokenExpired()) {
-                $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
-            }
-
-            $driveService = new Google_Service_Drive($client);
-
-            $audioFile = $request->file('audio');
-
-            $mimeType = 'audio/mpeg';
-
-            $fileMetadata = new Google_Service_Drive_DriveFile([
-                'name' => $audioFile->getClientOriginalName(),
-                'mimeType' => $mimeType,
-            ]);
-
-            $fileContent = file_get_contents($audioFile->getRealPath());
-
-            $file = $driveService->files->create($fileMetadata, [
-                'data' => $fileContent,
-                'mimeType' => $mimeType,
-                'uploadType' => 'multipart',
-            ]);
-
-            song::create([
-                'code' => $code,
-                'judul' => $request->input('judul'),
-                'image' => $image,
-                'audio' => $file->id,
-                'waktu' => $formattedDuration,
-                'type' => 'pengajuan',
-                'is_approved' => false,
-                'genre_id' => $request->input('genre'),
-                'album_id' => $request->input('album') == null ? null : $request->input('album'),
-                'artis_id' => $artis->id,
-            ]);
-            DB::commit();
-
-            $penghasilanArtist = (int) $artis->penghasilan + 200000;
-            $artis->update(['penghasilan' => $penghasilanArtist]);
 
             Alert::success('message', 'Lagu berhasil di upload, tunggu admin untuk publish');
             return redirect('/artis/unggahAudio')->with('success', 'Song uploaded successfully.');
