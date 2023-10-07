@@ -344,10 +344,10 @@ class ArtistController extends Controller
         return redirect()->back();
     }
 
-    protected function deleteSong(Request $request, string $code)
+    protected function deleteSong(string $code)
     {
         try {
-            $music = song::where('is_approved', true)->where('code', $code)->first();
+            $music = song::where('code', $code)->first();
             $music->delete();
             Alert::success('message', 'berhasil menghapus lagu!');
         } catch (\Throwable $th) {
@@ -432,7 +432,7 @@ class ArtistController extends Controller
     protected function viewUnggahAudio(Request $request): Response
     {
         try {
-            $datas = song::with('artist')->where('is_approved', true)->get();
+            $datas = song::with('artist')->get();
             $artis = artist::where('user_id', auth()->user()->id)->first();
             $genres = genre::all();
             $albums = album::with('artis')->get();
@@ -501,7 +501,6 @@ class ArtistController extends Controller
         $audioFile = $request->file('audio');
 
         $mimeType = 'audio/mpeg';
-        $fileExtension = 'mp3';
 
         $fileMetadata = new Google_Service_Drive_DriveFile([
             'name' => $audioFile->getClientOriginalName(),

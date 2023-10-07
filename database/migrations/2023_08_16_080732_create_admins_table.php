@@ -24,13 +24,6 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
-
-        admin::create([
-            'user_id' => 1,
-            'name' => 'admin',
-            'email' => 'untukprojects123@gmail.com',
-            'password' => '$2y$10$eSfmaLKIg86V0xg2R1pVP.BKIusL1PRv48mxqFq5LZeImpgpul30i',
-        ]);
     }
 
     /**

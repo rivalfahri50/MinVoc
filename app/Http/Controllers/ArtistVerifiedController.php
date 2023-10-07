@@ -449,7 +449,7 @@ class ArtistVerifiedController extends Controller
     protected function viewUnggahAudio(Request $request): Response
     {
         try {
-            $datas = song::with('artist')->where('is_approved', true)->get();
+            $datas = song::with('artist')->get();
             $artis = artist::where('user_id', auth()->user()->id)->first();
             $genres = genre::all();
             $albums = album::with('artis')->get();
@@ -513,7 +513,7 @@ class ArtistVerifiedController extends Controller
             if ($client->isAccessTokenExpired()) {
                 $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
             }
-
+ 
             $driveService = new Google_Service_Drive($client);
 
             $audioFile = $request->file('audio');
@@ -633,7 +633,7 @@ class ArtistVerifiedController extends Controller
         return redirect()->back();
     }
 
-    protected function deleteSong(Request $request, string $code)
+    protected function deleteSong(string $code)
     {
         try {
             $music = song::where('code', $code)->first();

@@ -3,20 +3,31 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\admin;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        User::create([
+            'code' => Str::uuid(),
+            'avatar' => 'images/default.png',
+            'deskripsi' => 'none',
+            'name' => 'admin',
+            'is_login' => true,
+            'email' => 'untukprojects123@gmail.com',
+            'password' => '$2y$10$eSfmaLKIg86V0xg2R1pVP.BKIusL1PRv48mxqFq5LZeImpgpul30i',
+        ]);
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        admin::create([
+            'user_id' => 1,
+            'name' => 'admin',
+            'email' => 'untukprojects123@gmail.com',
+            'password' => '$2y$10$eSfmaLKIg86V0xg2R1pVP.BKIusL1PRv48mxqFq5LZeImpgpul30i',
+        ]);
     }
 }
