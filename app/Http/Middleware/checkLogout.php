@@ -16,10 +16,18 @@ class checkLogout
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // dd(Auth::user());
-        if (Auth::check()) {
-            return back();
-        }
-        return $next($request);
+        // dd(Auth::logout());
+        // if (Auth::check() && !Auth::logout())
+        // {
+        // }
+        // dd(Auth::logout());
+        // if (empty(Auth::user())) {
+        //     return back();
+        // }
+        // dd(Auth::check());
+        // if (Auth::check()) {
+            return $next($request);
+        // }
+        // return redirect('/masuk'); 
     }
 }

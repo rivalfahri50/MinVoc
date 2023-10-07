@@ -160,7 +160,7 @@ class authController extends Controller
         } catch (\Throwable $th) {
             return abort(404);
         }
-        return redirect()->route('login')->withErrors(['password' => 'Kredensial tidak valid.'])->withInput();
+        return redirect()->route('pengguna')->withErrors(['password' => 'password tidak valid.'])->withInput();
     }
 
     protected function storeSignUp(Request $request)
@@ -201,31 +201,6 @@ class authController extends Controller
         $defaultRole = role::where('name', $request->only('role'))->first();
 
         try {
-            // if ($request->input('name')) {
-            //     $user = User::create(
-            //         [
-            //             'code' => $code,
-            //             'role_id' => $defaultRole->id,
-            //             'deskripsi' => "none",
-            //             'name' => $request->input('name'),
-            //             'email' => $request->input('email'),
-            //             'password' => $request->input('password')
-            //         ]
-            //     );
-
-            //     if ($user->role_id == 2) {
-            //         artist::create([
-            //             'code' => Str::uuid(),
-            //             'user_id' => $user->id,
-            //             'is_verified' => false
-            //         ]);
-            //     } else if ($user->role_id == 1) {
-            //         artist::create([
-            //             'user_id' => $user->id,
-            //             'is_verified' => true
-            //         ]);
-            //     }
-            // }
             DB::transaction(function () use ($request, $code, $defaultRole) {
                 $user = User::create([
                     'code' => $code,
@@ -258,13 +233,11 @@ class authController extends Controller
     protected function logout()
     {
         try {
-            if (!Auth::check()) {
-            }
             User::where('id', auth()->user()->id)->update(['is_login' => false]);
             Auth::logout();
-        } catch (\Throwable $th) {
             return redirect()->route('pengguna');
+        } catch (\Throwable $th) {
+            return back();
         }
-        return redirect()->route('pengguna');
     }
 }
