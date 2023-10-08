@@ -500,12 +500,6 @@
                         });
                     });
                 });
-                $(document).ready(function() {
-                    $('.menu-arrow').click(function() {
-                        $(this).find('i').toggleClass('mdi-chevron-right mdi-chevron-down');
-                    });
-
-                });
             </script>
 
             <script>

@@ -543,7 +543,7 @@
             <div id="buat-album">
                 <div class="card window">
                     <div class="card-body">
-                        <a href="" class="close-button far fa-times-circle"></a>
+                        <a href="#" class="close-button far fa-times-circle"></a>
                         <h3 class="judulnottebal">Buat Album</h3>
                         <form class="row" action="{{ route('tambah.album.artisVerified', auth()->user()->code) }}"
                             method="POST" enctype="multipart/form-data">

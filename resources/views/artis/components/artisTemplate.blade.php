@@ -143,13 +143,6 @@
             color: inherit;
         }
 
-        .dropdown-item:hover,
-        .dropdown-item:focus {
-            color: inherit;
-            text-decoration: none;
-            background-color: inherit;
-        }
-
         .popupalasan:hover {
             color: #957DAD
         }

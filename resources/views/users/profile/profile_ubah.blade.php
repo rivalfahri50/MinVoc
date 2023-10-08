@@ -61,8 +61,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="p-5">
+                    <div class="col-md-6 tengahvertical">
+                        <div>
                             <input type="file" id="gambar" accept="image/*" name="avatar"
                                 class="form-control" onchange="previewImage()">
                             @if ($errors->has('avatar'))

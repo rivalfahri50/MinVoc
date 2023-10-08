@@ -147,7 +147,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 mb-5">
+                <div class="col-12" style="margin-bottom: 4rem;">
                     <h3 class="card-title mt-2 judul" style="font-size: 20px; font-weight: 600">Lagu Yang Sering Didengar
                     </h3>
                     <div class="bordertabel">

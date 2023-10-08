@@ -226,6 +226,10 @@
                 max-width: 100px;
                 /* Ganti dengan lebar maksimum yang Anda inginkan */
             }
+
+            .select2-container--classic .select2-dropdown {
+                background-color: #e9ecef !important;
+            }
         </style>
 
         <script>

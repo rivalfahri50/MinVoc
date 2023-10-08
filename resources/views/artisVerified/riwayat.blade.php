@@ -70,11 +70,11 @@
 
                 "language": {
                     "sProcessing": "Sedang memproses...",
-                    "sLengthMenu": "Tampilkan _MENU_ entri",
+                    "sLengthMenu": "Tampilkan _MENU_ data",
                     "sZeroRecords": "Tidak ditemukan Data",
-                    "sInfo": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
-                    "sInfoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
-                    "sInfoFiltered": "(disaring dari _MAX_ entri keseluruhan)",
+                    "sInfo": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                    "sInfoEmpty": "Menampilkan 0 sampai 0 dari 0 data",
+                    "sInfoFiltered": "(disaring dari _MAX_ data keseluruhan)",
                     "sInfoPostFix": "",
                     "sSearch": "Cari:",
                     "sUrl": "",

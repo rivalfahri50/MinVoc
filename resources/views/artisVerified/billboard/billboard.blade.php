@@ -31,11 +31,11 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="cards d-flex justify-content-center z-3 gap-4"
+                    <div class="cards z-3"
                         style="margin-top: -150px; margin-left: 12px;">
                         @foreach ($albums as $item)
-                            <a href="{{ route('albumBillboard.artisVerified', $item->code) }}">
-                                <img src="{{ asset('storage/' . $item->image) }}" width="170"
+                            <a href="{{ route('albumBillboard.artisVerified', $item->code) }}" class="card cardi card-scroll rounded-4">
+                                <img src="{{ asset('storage/' . $item->image) }}" width="100%" height="100%"
                                     class="img-fluid rounded-4 fit">
                             </a>
                         @endforeach

@@ -61,8 +61,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="p-5">
+                    <div class="col-md-6  tengahvertical">
+                        <div>
                             <input type="file" id="gambar" accept="image/*" name="avatar"
                                 class="form-control" onchange="previewImage()">
                             @if ($errors->has('avatar'))
@@ -76,7 +76,7 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="nama" class="form-label"
-                                style="font-size: 20px; font-weight: 600; color: #957dad">Nama pengguna</label>
+                                style="font-size: 20px; font-weight: 600; color: #957dad">Nama</label>
                             <input type="text" class="form-control" name="name" id="nama" aria-describedby="validationServer03Feedback" maxlength="55">
                             @if ($errors->has('name'))
                                 <div class="text-danger mt-1 my-1">
