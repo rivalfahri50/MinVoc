@@ -189,7 +189,8 @@
                 <hr class="divider"> <!-- Divider -->
             </div>
             <div class="col-md-12 grid-margin stretch-card">
-                <h3 class="card-title judul">{{ $playlistDetail->deskripsi == 'none' ? '' : "$playlistDetail->deskripsi" }}
+                <h3 class="card-title judul">
+                    {{ $playlistDetail->deskripsi == 'none' ? '' : "$playlistDetail->deskripsi" }}
                 </h3>
                 <form class="col-6 mb-4 p-0 nav-link search">
                     <input type="text" id="search_song" class="form-control rounded-4" placeholder="Cari musik">
@@ -347,7 +348,6 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
-                    console.log('like pada playlist', response);
                     response.forEach(function(item) {
                         const songId = item.song_id;
                         const like = document.getElementById(`like-playlist${item.song_id}`);
@@ -415,10 +415,15 @@
                                 '<div class="preview-thumbnail"><img src="http://127.0.0.1:8000/storage/' +
                                 result.image + '" width="10%"></div>');
                             $previewItem.append(
-                                '<div class="preview-item-content d-sm-flex flex-grow"><div class="flex-grow"><h6 class="preview-subject">' +
+                                `<div class="preview-item-content d-sm-flex flex-grow" href="#lagu-diputar" onclick="putar(${result.id})"><div class="flex-grow"><h6 class="preview-subject">` +
                                 result.judul + '</h6><p class="text-muted mb-0">' +
                                 result.artist.user.name +
-                                '</p></div><div class="mr-auto text-sm-right pt-2 pt-sm-0"><div class="text-group"><i onclick="myFunction(this)" class="far fa-heart pr-2"></i><p>' +
+                                `</p></div><div class="mr-auto text-sm-right pt-2 pt-sm-0"><div class="text-group">
+                                    <i id="like-playlist{ ${result.id} }"
+                                                                data-id=" ${result.id} "
+                                                                onclick="toggleLike(this, ${result.id})"
+                                                                class="shared-icon-like ( ${result.isLiked} ? 'fas' : 'far' ) fa-heart pr-2"></i>
+                                    <p>` +
                                 result.waktu + '</p>' +
                                 `<p><form action="/pengguna/hapusSongPlaylist/${result.code}" method="get">
                                 <button type="submit" class="iconminus"><i class="far fa-minus-square text-danger" style="font-size: 19px"></i></button></form></p>` +
@@ -473,7 +478,6 @@
         let All_song = [];
 
         function ambilDataLagu(playlistId) {
-            console.log('id playlist', playlistId);
             $.ajax({
                 url: '/ambil-lagu-playlist',
                 type: 'GET',
@@ -490,7 +494,6 @@
                         };
                     });
                     All_song = All_song.filter(lagu => lagu.playlist_id == playlistId)
-                    console.log("data lagu sesuai playlist:", All_song);
                     if (All_song.length > 0) {
                         // Memanggil load_track dengan indeks 0 sebagai lagu pertama
                         load_track(0);
@@ -569,8 +572,6 @@
             if (index_no >= 0 && index_no < All_song.length) {
                 // Perbarui playCount dengan songId yang sesuai
                 const songId = All_song[index_no].id;
-                // history(songId);
-                console.log(All_song[index_no])
                 updatePlayCount(songId);
 
             }
@@ -589,17 +590,9 @@
                     },
                 })
                 .then(response => response.json())
-                .then(data => {
-                    console.log('Play count updated:', data.message);
-                })
-                .catch(error => {
-                    // Tangani error jika diperlukan
-                    console.error('Error updating play count:', error);
-                });
         }
 
         function history(songId) {
-            console.log('Mengirim riwayat untuk songId:', songId);
             $.ajax({
                 url: '/simpan-riwayat',
                 method: 'POST',
@@ -609,21 +602,11 @@
                 data: {
                     song_id: songId,
                 },
-                success: function(response) {
-                    console.log('Respon dari simpan-riwayat:', response);
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error saat mengirim riwayat:', error);
-
-                    // Tambahkan ini untuk mencetak pesan kesalahan dari respons server
-                    // console.log('Pesan Kesalahan Server:', xhr.responseText);
-                }
             });
         }
 
         shuffleButton.addEventListener('click', function() {
             shuffle_song();
-            console.log(shuffleButton);
         });
 
 
@@ -658,10 +641,8 @@
         }
 
         function putar(id) {
-            console.log('ID yang dikirim:', id);
             id = parseInt(id); // Pastikan id berupa bilangan bulat
             const lagu = All_song.find(song => song.id === id);
-            console.log('lagu yang dikirim :', lagu);
 
             if (lagu) {
                 const new_index_no = All_song.indexOf(lagu);
@@ -723,7 +704,6 @@
             let slider_value = slider.value;
             if (!isNaN(track.duration) && isFinite(slider_value)) {
                 track.currentTime = track.duration * (slider_value / 100);
-                console.log(track.duration * (slider_value / 100), slider_value, track.currentTime)
             }
         }
 
@@ -782,7 +762,6 @@
             const currentSeconds = Math.floor(track.currentTime % 60);
             // Memformat durasi waktu yang akan ditampilkan
             const formattedCurrentTime = `${currentMinutes}:${currentSeconds < 10 ? '0' : ''}${currentSeconds}`;
-            // console.log(formattedCurrentTime);
             // Menampilkan durasi waktu pada elemen yang sesuai
             const currentTimeElement = document.getElementById('current-time');
             currentTimeElement.textContent = formattedCurrentTime;

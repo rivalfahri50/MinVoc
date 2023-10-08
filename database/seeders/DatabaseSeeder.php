@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
             'avatar' => 'images/default.png',
             'deskripsi' => 'none',
             'name' => 'admin',
-            'is_login' => true,
+            'is_login' => false,
+            'role_id' => 4,
             'email' => 'untukprojects123@gmail.com',
             'password' => '$2y$10$eSfmaLKIg86V0xg2R1pVP.BKIusL1PRv48mxqFq5LZeImpgpul30i',
         ]);

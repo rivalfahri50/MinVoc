@@ -53,8 +53,13 @@
                                             <img src="{{ asset('storage/' . $item->image) }}"
                                                 class="img-fluid rounded-1 try">
                                         </div>
-                                        <h5 class="mt-2 judul overflow-cardtext" style="font-weight: bold">{{ $item->name }}</h5>
-                                        <span class="judul" style="font-size: 12px">Dari {{ $item->artis->user->name }}</span>
+                                        <h5 class="mt-2 judul overflow-cardtext" style="font-weight: bold">
+                                            {{ $item->name }}</h5>
+                                        <span class="judul" style="font-size: 12px">Dari {{ $item->artis->user->name }}
+                                            @if ($item->artis->is_verified)
+                                                <span class="mdi mdi-check-decagram text-primary verified-text"></span>
+                                            @endif
+                                        </span>
                                     </div>
                                 </a>
                                 {{-- @endif --}}

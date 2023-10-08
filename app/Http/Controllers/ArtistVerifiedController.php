@@ -271,7 +271,7 @@ class ArtistVerifiedController extends Controller
         } catch (\Throwable $th) {
             return abort(404);
         }
-        return response()->view('artisVerified.playlist', compact('playlists', 'albums', 'notifs'));
+        return back();
     }
 
 
@@ -505,24 +505,26 @@ class ArtistVerifiedController extends Controller
             set_time_limit(100);
 
             $client = new Google_Client();
-            $client->setAuthConfig(public_path('client_secret_650886155711-77aeuhp9hlvh6vncaejjbic959d04snl.apps.googleusercontent.com.json'));
+            $client->setAuthConfig(public_path('client_secret_650886155711-kicsqkf7mkv4seobd0nac0hdecn5ls19.apps.googleusercontent.com.json'));
             $client->setAccessType('offline');
             $client->setScopes(['https://www.googleapis.com/auth/drive']);
-            $client->setAccessToken(['access_token' => 'ya29.a0AfB_byDhu6puzaX7YsaNmwUVVCR-Hb8sYOxGW4PAwKMxW5MivyU10oJuhPiRlA_W0ZQsLSZ_NPz_1cxPEJ0dCx9j-JXPpbSUTF3ScdrfP8ce1CJsEsT0U2X3Ud2dtqRqt7pRcsHmBu4Q_WvyW5u0VIQztGNEpcX-zLoUaCgYKAV4SARESFQGOcNnCV-sp6LMyU3VCvJwvgZA8BA0171', 'refresh_token' => '1//04COM2mA9b_b0CgYIARAAGAQSNwF-L9IryJ_9yA4kVUaDFlRDP0PiP72e1DqAyqznHgdmAi1kwvxJ8SoGoxtjEmRlH0w2XRL5-EI']);
+            $client->setAccessToken(['access_token' => 'ya29.a0AfB_byBD6_Puy1ZXUNn9CpqKcCIVYZVsfTbzd4TJHUNsrxz6GK2GL7vUu3bQVA2NYy6aA0WQcDyxooctxWn00KHTzIH3wqfBC3zEKdOKJ87uXw_Fvpkp-oHHFc5X_CccHscghT4xsMYOFcGkYDK6Q7ejxgWg63-GpZMeaCgYKAQQSARASFQGOcNnCbY8yDmQ30IdNr7bqAvfwhw0171', 'refresh_token' => '1//043Jy6R0i1qnrCgYIARAAGAQSNwF-L9IracePxtaK2JqA96DE5GuxX70HlDxBJcpkC6qtqf9KihfGE_RvxICUZ1EwbFb-f6wGwko']);
 
             if ($client->isAccessTokenExpired()) {
                 $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
             }
- 
+
             $driveService = new Google_Service_Drive($client);
 
             $audioFile = $request->file('audio');
 
             $mimeType = 'audio/mpeg';
+            $folderId = '1c9T4C7K0smKaf8VupBgF9gRs7NxGUTHT';
 
             $fileMetadata = new Google_Service_Drive_DriveFile([
                 'name' => $audioFile->getClientOriginalName(),
                 'mimeType' => $mimeType,
+                'parents' => [$folderId],
             ]);
 
             $fileContent = file_get_contents($audioFile->getRealPath());
@@ -560,7 +562,7 @@ class ArtistVerifiedController extends Controller
     protected function billboard(string $code): Response
     {
         try {
-            $billboard = billboard::where('code', $code)->first();
+            $billboard = billboard::with('artis')->where('code', $code)->first();
             $artis_id = $billboard->artis_id;
             $albums = album::where('artis_id', $billboard->artis_id)->get();
             $songs = song::where('is_approved', true)->where('artis_id', $billboard->artis_id)->get();
@@ -1088,10 +1090,10 @@ class ArtistVerifiedController extends Controller
             $admin->update(['penghasilan' => $penghasilanBaru]);
 
             $client = new Google_Client();
-            $client->setAuthConfig(public_path('client_secret_650886155711-77aeuhp9hlvh6vncaejjbic959d04snl.apps.googleusercontent.com.json'));
+            $client->setAuthConfig(public_path('client_secret_650886155711-kicsqkf7mkv4seobd0nac0hdecn5ls19.apps.googleusercontent.com.json'));
             $client->setAccessType('offline');
             $client->setScopes(['https://www.googleapis.com/auth/drive']);
-            $client->setAccessToken(['access_token' => 'ya29.a0AfB_byDhu6puzaX7YsaNmwUVVCR-Hb8sYOxGW4PAwKMxW5MivyU10oJuhPiRlA_W0ZQsLSZ_NPz_1cxPEJ0dCx9j-JXPpbSUTF3ScdrfP8ce1CJsEsT0U2X3Ud2dtqRqt7pRcsHmBu4Q_WvyW5u0VIQztGNEpcX-zLoUaCgYKAV4SARESFQGOcNnCV-sp6LMyU3VCvJwvgZA8BA0171', 'refresh_token' => '1//04COM2mA9b_b0CgYIARAAGAQSNwF-L9IryJ_9yA4kVUaDFlRDP0PiP72e1DqAyqznHgdmAi1kwvxJ8SoGoxtjEmRlH0w2XRL5-EI']);
+            $client->setAccessToken(['access_token' => 'ya29.a0AfB_byBD6_Puy1ZXUNn9CpqKcCIVYZVsfTbzd4TJHUNsrxz6GK2GL7vUu3bQVA2NYy6aA0WQcDyxooctxWn00KHTzIH3wqfBC3zEKdOKJ87uXw_Fvpkp-oHHFc5X_CccHscghT4xsMYOFcGkYDK6Q7ejxgWg63-GpZMeaCgYKAQQSARASFQGOcNnCbY8yDmQ30IdNr7bqAvfwhw0171', 'refresh_token' => '1//043Jy6R0i1qnrCgYIARAAGAQSNwF-L9IracePxtaK2JqA96DE5GuxX70HlDxBJcpkC6qtqf9KihfGE_RvxICUZ1EwbFb-f6wGwko']);
 
             if ($client->isAccessTokenExpired()) {
                 $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
@@ -1102,10 +1104,12 @@ class ArtistVerifiedController extends Controller
             $audioFile = $request->file('audio');
 
             $mimeType = 'audio/mpeg';
+            $folderId = '1c9T4C7K0smKaf8VupBgF9gRs7NxGUTHT';
 
             $fileMetadata = new Google_Service_Drive_DriveFile([
                 'name' => $audioFile->getClientOriginalName(),
                 'mimeType' => $mimeType,
+                'parents' => [$folderId],
             ]);
 
             $fileContent = file_get_contents($audioFile->getRealPath());

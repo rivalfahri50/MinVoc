@@ -107,20 +107,16 @@
 
             if (storedData !== null) {
                 checkbox.checked = true;
-                console.log('Data ditemukan:', storedData);
 
                 const dataElement = document.getElementById('dataElement');
                 if (dataElement) {
                     dataElement.textContent = storedData;
                 }
-            } else {
-                console.log('Data tidak ditemukan.');
             }
         });
 
         window.addEventListener('unload', function() {
             const dataKey = 'dataKey';
-
             localStorage.removeItem(dataKey);
         });
     </script>

@@ -38,10 +38,14 @@
                                                 class="avatarpembuat">
                                         </span>
                                         <p class="m-0" style="font-weight: 300; font-size: 16px">
-                                            {{ $albumDetail->artis->user->name }}</p>
-                                        <span class="mdi mdi-check-decagram text-primary" style="height: 18px;"></span>
+                                            {{ $albumDetail->artis->user->name }}
+                                            @if ($albumDetail->artis->is_verified)
+                                                <span class="mdi mdi-check-decagram text-primary"
+                                                    style="height: 12px;"></span>
+                                            @endif
+                                        </p>
                                     </div>
-                                    
+
                                     </p>
                                     <p style="font-size: 18px;">
                                         {{ $albumDetail->deskripsi == 'none' ? '' : "$albumDetail->deskripsi" }}
@@ -114,10 +118,10 @@
         }
 
         /* .shorten {
-                        width: 500px;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                    } */
+                            width: 500px;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                        } */
     </style>
 
     <div id="popup">

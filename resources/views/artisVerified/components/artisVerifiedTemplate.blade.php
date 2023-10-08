@@ -2,9 +2,9 @@
 <html lang="en">
 
 <head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{{ $title }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -161,7 +161,6 @@
         .pagination li:hover {
             background-color: #ddd;
         }
-
 
         .verified-profile {
             position: absolute;
@@ -623,11 +622,6 @@
                         });
                     });
                 });
-                // $(document).ready(function() {
-                //     $('.menu-arrow').click(function() {
-                //         $(this).find('i').toggleClass('mdi-chevron-right mdi-chevron-down');
-                //     });
-                // });
             </script>
 
             <script>
@@ -672,6 +666,35 @@
                                     iconElement.classList.add('fas');
                                 }
                             }
+                        }
+                    })
+                }
+
+                function likeArtist(iconElement, artistId) {
+                    let isLiked = iconElement.classList.contains('fas');
+                    $.ajax({
+                        url: `/artist/${artistId}/like`,
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function(response) {
+                            console.log(response);
+                            if (response.success) {
+                                const likeCountElement = document.getElementById(`likeCount${artistId}`);
+                                if (likeCountElement) {
+                                    likeCountElement.textContent = response.likes;
+                                }
+                                if (isLiked) {
+                                    iconElement.classList.remove('fas');
+                                    iconElement.classList.add('far');
+                                } else {
+                                    iconElement.classList.remove('far');
+                                    iconElement.classList.add('fas');
+                                }
+                                updateLikeStatus(artistId, !isLiked);
+                            }
+                        },
+                        error: function(response) {
+                            console.log(response);
                         }
                     })
                 }

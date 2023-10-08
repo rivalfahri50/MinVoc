@@ -18,7 +18,12 @@
                             </div>
                             <div class="col-9">
                                 <div class="bottom-left-text">
-                                    <h3 class="judul">{{ $user->name }}</h3>
+                                    <h3 class="judul">{{ $user->name }}
+                                        @if ($user->artist)
+                                            <span class="mdi mdi-check-decagram text-primary verified-text"></span>
+                                        @endif
+                                    </h3>
+                                    {{-- @dd($user) --}}
                                     <p class="m-0" style="color: #957dad; font-weight: 400;">{{ $totalDidengar }}
                                         didengar
                                         <span class="fas fa-circle mr-2 ml-2"

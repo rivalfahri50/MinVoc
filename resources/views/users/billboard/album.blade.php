@@ -21,10 +21,14 @@
                                     </h3>
                                     <div style="display: flex; flex-direction: row; gap: 5px; align-items: center">
                                         <span>
-                                            <img src="{{ asset('storage/' . $album->artis->user->avatar) }}" class="avatarpembuat">
+                                            <img src="{{ asset('storage/' . $album->artis->user->avatar) }}"
+                                                class="avatarpembuat">
                                         </span>
                                         <p class="m-0" style="font-weight: 300; font-size: 16px">
                                             {{ $album->artis->user->name }}
+                                            @if ($album->artis->is_verified)
+                                                <span class="mdi mdi-check-decagram text-primary verified-text"></span>
+                                            @endif
                                     </div>
                                     </p>
                                     <p style="font-size: 18px;">

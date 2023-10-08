@@ -36,6 +36,10 @@
                                         </span>
                                         <p class="m-0" style="font-weight: 300; font-size: 16px">
                                             {{ $playlistDetail->user->name }}
+                                            @if ($playlistDetail->user->role_id == 1)
+                                                <span class="mdi mdi-check-decagram text-primary verified-text"></span>
+                                            @endif
+                                        </p>
                                     </div>
                                     </p>
                                 </div>
@@ -199,7 +203,7 @@
                                 '<div class="preview-item" data-song-id="' + result
                                 .id + '">');
 
-                                $previewItem.append(
+                            $previewItem.append(
                                 '<div class="preview-thumbnail"><img src="http://127.0.0.1:8000/storage/' +
                                 result.image + '" width="10%"></div>');
                             $previewItem.append(

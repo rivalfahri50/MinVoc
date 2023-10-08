@@ -16,10 +16,6 @@ class adminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        dd(Auth::check());
-        // if (Auth::user()->role_id != 4) {
-        //     return back();
-        // }
         if (!Auth::check() && Auth::logout() && auth()->user()->is_login === false) {
             return back();
         } else if (Auth::guard('admin')->check() && Auth::user()->role_id == 4) {

@@ -13,13 +13,18 @@
                                 <div class="col-7">
                                     <div class="preview-list">
                                         <div class="d-flex flex-column gap-3" style="color: #6C6C6C;">
-                                            <span class="fw-bold fs-4">{{ $billboard->artis->user->name }}</span>
+                                            <span class="fw-bold fs-4">{{ $billboard->artis->user->name }}
+                                                @if ($billboard->artis->is_verified)
+                                                    <span class="mdi mdi-check-decagram text-primary verified-text"></span>
+                                                @endif
+                                            </span>
                                             <span class="deskbill">{{ $billboard->deskripsi }}.</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-4 d-flex text-right justify-content-center">
-                                    <img src="{{ asset('storage/' . $billboard->image_artis) }}" class="d-block fotoartisbill">
+                                    <img src="{{ asset('storage/' . $billboard->image_artis) }}"
+                                        class="d-block fotoartisbill">
                                 </div>
                             </div>
                         </div>
@@ -198,7 +203,7 @@
 
         // create a audio element
         let track = document.createElement('audio');
-        const artistId = {{$artis_id}};
+        const artistId = {{ $artis_id }};
         let All_song = [];
 
         async function ambilDataLagu(artistId) {

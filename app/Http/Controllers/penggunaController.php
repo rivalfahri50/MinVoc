@@ -269,7 +269,7 @@ class penggunaController extends Controller
         try {
             $playlists = playlist::all();
             $song = song::where('is_approved', true)->where('judul', 'like', '%' .  $request->input('search') . '%')->first();
-            $user = user::where('is_approved', true)->where('name', 'like', '%' .  $request->input('search') . '%')->first();
+            $user = user::where('name', 'like', '%' .  $request->input('search') . '%')->first();
             $totalDidengar = DB::table('riwayat')->where('user_id', auth()->user()->id)->sum('song_id');
             $notifs = notif::with('user.artist.song')->where('user_id', auth()->user()->id)->get();
             $search = $request->search;
@@ -277,7 +277,7 @@ class penggunaController extends Controller
                 $songs = song::where('is_approved', true)->get();
                 return view('users.search.songSearch', compact('song', 'search', 'songs', 'playlists'));
             } else if ($user) {
-                $artis = artist::where('user_id', $user->id)->first();
+                $artis = artist::with('user')->where('user_id', $user->id)->first();
                 $artis_id = $artis->id;
                 $songs = song::where('is_approved', true)->where('artis_id', $artis->id)->get();
                 return view('users.search.artisSearch', compact('user', 'search', 'artis_id', 'songs', 'playlists', 'totalDidengar'));
@@ -293,7 +293,7 @@ class penggunaController extends Controller
     {
 
         try {
-            $billboard = billboard::where('code', $code)->first();
+            $billboard = billboard::with('artis')->where('code', $code)->first();
             $artis_id = $billboard->artis_id;
             $albums = album::where('artis_id', $billboard->artis_id)->get();
             $songs = song::where('is_approved', true)->where('artis_id', $billboard->artis_id)->get();
