@@ -1,6 +1,7 @@
 @extends('artis.components.artisTemplate')
 
 @section('content')
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="/admin/assets/css/dashboard.css">
     <!-- partial | ISI -->
     <div class="main-panel">
@@ -210,76 +211,68 @@
                     </div>
                     <div class="card mb-3">
                         <div class="table-body">
-                            <div class="table-container">
-                                <table class="table">
-                                    <thead class="table-header">
-                                        <tr class="table-row header headerlengkung">
-                                            <th class="table-cell">Jumlah</th>
-                                            <th class="table-cell">project</th>
-                                            <th class="table-cell">Tanggal</th>
-                                        </tr>
-                                    </thead>
-                                    @if (session('results'))
-                                        @if (count(session('results')) >= 1)
-                                            <tbody>
-                                                @foreach (session('results')->reverse() as $item)
-                                                    <tr class="table-row baris">
-                                                        <td class="table-cell">
-                                                            <div class="cell-content">
-                                                                <h6 class="text-success">Rp.
-                                                                    {{ number_format($item->penghasilan, 2, ',', '.') }}
-                                                                </h6>
-                                                            </div>
-                                                        </td>
-                                                        <td class="table-cell">{{ $item->status }}</td>
-                                                        <td class="table-cell">{{ $item->created_at->format('j F Y') }}
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        @else
-                                            <table>
-                                                <span
-                                                    style="display: flex; justify-content: center; margin-top: 14px; margin-bottom: 4px; font-size: 14px; color: #4f4f4f">
-                                                    Tidak ada dalam history pencairan dana.
-                                                </span>
-                                            </table>
-                                        @endif
+                            <table class="table" id="onlypaginate">
+                                <thead class="table-header">
+                                    <tr class="table-row header headerlengkung">
+                                        <th class="table-cell">Jumlah</th>
+                                        <th class="table-cell">project</th>
+                                        <th class="table-cell">Tanggal</th>
+                                    </tr>
+                                </thead>
+                                @if (session('results'))
+                                    @if (count(session('results')) >= 1)
+                                        <tbody>
+                                            @foreach (session('results')->reverse() as $item)
+                                                <tr class="table-row baris">
+                                                    <td class="table-cell">
+                                                        <div class="cell-content">
+                                                            <h6 class="text-success">Rp.
+                                                                {{ number_format($item->penghasilan, 2, ',', '.') }}
+                                                            </h6>
+                                                        </div>
+                                                    </td>
+                                                    <td class="table-cell">{{ $item->status }}</td>
+                                                    <td class="table-cell">{{ $item->created_at->format('j F Y') }}
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
                                     @else
-                                        @if (count($penghasilanArtis) >= 1)
-                                            <tbody>
-                                                @foreach ($penghasilanArtis->reverse() as $item)
-                                                    <tr class="table-row baris">
-                                                        <td class="table-cell">
-                                                            <div class="cell-content">
-                                                                <h6 class="text-success">Rp.
-                                                                    {{ number_format($item->penghasilan, 2, ',', '.') }}
-                                                                </h6>
-                                                            </div>
-                                                        </td>
-                                                        <td class="table-cell">{{ $item->status }}</td>
-                                                        <td class="table-cell">{{ $item->created_at->format('j F Y') }}
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        @else
-                                            <table>
-                                                <span
-                                                    style="display: flex; justify-content: center; margin-top: 14px; margin-bottom: 4px; font-size: 14px; color: #4f4f4f">
-                                                    Tidak ada dalam history pencairan dana.
-                                                </span>
-                                            </table>
-                                        @endif
+                                        {{-- <table>
+                                            <span
+                                                style="display: flex; justify-content: center; margin-top: 14px; margin-bottom: 4px; font-size: 14px; color: #4f4f4f">
+                                                Tidak ada dalam history pencairan dana.
+                                            </span>
+                                        </table> --}}
                                     @endif
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-center">
-                            <ul class="pagination justify-content-center">
-                            </ul>
+                                @else
+                                    @if (count($penghasilanArtis) >= 1)
+                                        <tbody>
+                                            @foreach ($penghasilanArtis->reverse() as $item)
+                                                <tr class="table-row baris">
+                                                    <td class="table-cell">
+                                                        <div class="cell-content">
+                                                            <h6 class="text-success">Rp.
+                                                                {{ number_format($item->penghasilan, 2, ',', '.') }}
+                                                            </h6>
+                                                        </div>
+                                                    </td>
+                                                    <td class="table-cell">{{ $item->status }}</td>
+                                                    <td class="table-cell">{{ $item->created_at->format('j F Y') }}
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    @else
+                                        {{-- <table>
+                                            <span
+                                                style="display: flex; justify-content: center; margin-top: 14px; margin-bottom: 4px; font-size: 14px; color: #4f4f4f">
+                                                Tidak ada dalam history pencairan dana.
+                                            </span>
+                                        </table> --}}
+                                    @endif
+                                @endif
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -288,116 +281,59 @@
     </div>
 
 
-    <script src="/user/assets/js/tablesort.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
     <script>
-        $(document).ready(function() {
-            var itemsPerPage = 4;
+        jQuery.noConflict();
 
-            // Fungsi untuk menyimpan halaman saat ini ke local storage
-            function saveCurrentPageToLocalStorage(page) {
-                localStorage.setItem("currentPage", page);
-            }
+        jQuery(document).ready(function($) {
+            $('#onlypaginate').DataTable({
+                "pageLength": 3,
 
-            // Fungsi untuk mendapatkan halaman saat ini dari local storage
-            function getCurrentPageFromLocalStorage() {
-                return parseInt(localStorage.getItem("currentPage")) || 1;
-            }
+                "ordering": false,
 
-            // Mendapatkan halaman saat ini dari local storage atau default ke 1
-            var currentPage = getCurrentPageFromLocalStorage();
+                "bStateSave": true,
 
-            function showTableRows() {
-                var start = (currentPage - 1) * itemsPerPage;
-                var end = start + itemsPerPage;
-                $(".baris").hide();
-                $(".baris").slice(start, end).show();
-            }
+                "lengthChange": true,
 
-            function updatePagination() {
-                $(".pagination").empty();
-                var numPages = Math.ceil($(".baris").length / itemsPerPage);
+                "searching": false,
 
-                var maxPaginationPages = 3; // Jumlah maksimum halaman pagination yang ditampilkan
+                "sDom": "t<'row'<'col-md-12'p>>",
 
-                // Menentukan halaman pertama yang akan ditampilkan
-                var startPage = Math.max(currentPage - Math.floor(maxPaginationPages / 2), 1);
+                "pagingType": 'full_numbers',
 
-                // Menentukan halaman terakhir yang akan ditampilkan
-                var endPage = Math.min(startPage + maxPaginationPages - 1, numPages);
+                "language": {
+                    "sProcessing": "Sedang memproses...",
+                    "sLengthMenu": "Tampilkan _MENU_ entri",
+                    "sZeroRecords": "Tidak ada dalam history pencairan dana.",
+                    "sInfo": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                    "sInfoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
+                    "sInfoFiltered": "(disaring dari _MAX_ entri keseluruhan)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Cari:",
+                    "sUrl": "",
+                    "oPaginate": {
+                        "sFirst": "<<",
+                        "sPrevious": "&#8592;",
+                        "sNext": "&#8594;",
+                        "sLast": ">>"
+                    }
+                },
 
-                // Tambahkan tombol "Previous" jika ada halaman sebelumnya
-                if (currentPage > 1) {
-                    var prevButton = $("<a>")
-                        .addClass("page-item")
-                        .addClass("page-link")
-                        .attr("href", "#");
-
-                    var prevIcon = $("<i>").addClass("fa fa-chevron-left");
-                    prevButton.append(prevIcon);
-
-                    prevButton.click(function(event) {
-                        event.preventDefault(); // Menghentikan tindakan default
-                        currentPage--;
-                        showTableRows();
-                        updatePagination();
-                        saveCurrentPageToLocalStorage(currentPage);
-                    });
-
-                    $(".pagination").append($("<li>").append(prevButton));
+                "fnDrawCallback": function(oSettings) {
+                    var pgr = $(oSettings.nTableWrapper).find('.dataTables_paginate')
+                    if (oSettings._iDisplayLength > oSettings.fnRecordsDisplay()) {
+                        pgr.hide();
+                    } else {
+                        pgr.show()
+                    }
                 }
-
-                for (var i = startPage; i <= endPage; i++) {
-                    var activeClass = i === currentPage ? "active" : "";
-                    var button = $("<a>")
-                        .addClass("page-item " + activeClass)
-                        .addClass("page-link")
-                        .attr("href", "#");
-
-                    button.text(i);
-
-                    button.click(function(event) {
-                        event.preventDefault(); // Menghentikan tindakan default
-                        currentPage = parseInt($(this).text());
-                        showTableRows();
-                        updatePagination();
-                        saveCurrentPageToLocalStorage(currentPage);
-                    });
-
-                    $(".pagination").append($("<li>").append(button));
-                }
-
-                // Tambahkan tombol "Next" jika ada lebih banyak halaman
-                if (currentPage < numPages) {
-                    var nextButton = $("<a>")
-                        .addClass("page-item")
-                        .addClass("page-link")
-                        .attr("href", "#");
-
-                    var nextIcon = $("<i>").addClass("fa fa-chevron-right");
-                    nextButton.append(nextIcon);
-
-                    nextButton.click(function(event) {
-                        event.preventDefault(); // Menghentikan tindakan default
-                        currentPage++;
-                        showTableRows();
-                        updatePagination();
-                        saveCurrentPageToLocalStorage(currentPage);
-                    });
-
-                    $(".pagination").append($("<li>").append(nextButton));
-                }
-
-                if (numPages <= 1) {
-                    $(".pagination").hide();
-                }
-            }
-
-            showTableRows();
-            updatePagination();
-
-            saveCurrentPageToLocalStorage(currentPage); // Simpan halaman saat ini ke local storage
+            });
         });
     </script>
+
     <script>
         /* ============Dengan Rupiah=========== */
         var harga = document.getElementById('harga');
