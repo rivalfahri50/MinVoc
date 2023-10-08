@@ -3,12 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\admin;
+use App\Models\artist;
+use App\Models\aturanPembayaran;
 use App\Models\Like;
+use App\Models\penghasilan;
 use App\Models\projects;
 use App\Models\Song;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class SongController extends Controller
@@ -81,6 +86,21 @@ class SongController extends Controller
         $song = Song::find($song_id);
         if ($song) {
             $song->increment('didengar');
+            if ($song->didengar % 1000 === 0) {
+                $admin = admin::where('user_id', 1)->first();
+                $penghasilanSaatIni = $admin->penghasilan;
+                $jumlahTambahan = 200;
+                $penghasilanBaru = $penghasilanSaatIni + $jumlahTambahan;
+                $admin->update(['penghasilan' => $penghasilanBaru]);
+
+                $pendapatan = aturanPembayaran::where('opsi_id', 1)->first();
+                $artist_id =  song::findOrFail($song_id)->artist->id;
+
+                $penghasilanArtist = isset($pendapatan->pendapatanArtis) != null ? $pendapatan->pendapatanArtis : 2000;
+                artist::findOrFail($artist_id)->update(['penghasilan' => song::findOrFail($song_id)->artist->penghasilan + $penghasilanArtist]);
+                // $cek_penghasilan = penghasilan::create(['artist_id' => $artist_id, 'bulan' => Carbon::now()->format('m'), 'penghasilan' => (string)$penghasilanArtist, 'status' => "riwayat lagu"]);
+                penghasilan::create(['artist_id' => $artist_id, 'bulan' => Carbon::now()->format('m'), 'penghasilan' => (string)$penghasilanArtist, 'status' => "riwayat lagu"]);
+            }
             return response()->json(['message' => 'play count update sukses']);
         } else {
             return response()->json(['message' => 'song not found'], 404);

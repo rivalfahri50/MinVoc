@@ -890,7 +890,7 @@
                             artistId: lagu.artist.user.name
                         };
                     });
-                    console.log("data lagu yang diambil:", All_song);
+                    console.log("data lagu yang diambil:", data);
                     if (All_song.length > 0) {
                         // Memanggil load_track dengan indeks 0 sebagai lagu pertama
                         load_track();
@@ -923,7 +923,7 @@
                     });
                     All_song.sort((a, b) => b.didengar - a.didengar);
                     // untuk menurutkan lagu yang tampil pada browser :)
-                    console.log("data lagu bawah:", All_song);
+                    console.log("data lagu bawah:", data);
 
                     if (All_song.length > 0) {
                         // Memanggil load_track dengan indeks 0 sebagai lagu pertama
@@ -1095,9 +1095,9 @@
 
         function putaran(id) {
             console.log('ID yang dikirim:', id);
-            id = parseInt(id); // Pastikan id berupa bilangan bulat
+            // id = parseInt(id); // Pastikan id berupa bilangan bulat
             const lagu = All_song.find(song => song.id === id);
-            console.log('lagu yang dikirim :', lagu);
+            console.log('lagu yang dikirim :', id);
 
             if (lagu) {
                 const new_index_no = All_song.indexOf(lagu);
@@ -1119,7 +1119,7 @@
 
         function putar(id) {
             console.log('ID yang dikirim:', id);
-            id = parseInt(id); // Pastikan id berupa bilangan bulat
+            // id = parseInt(id); // Pastikan id berupa bilangan bulat
             const lagu = All_song.find(song => song.id === id);
             console.log('lagu yang dikirim :', lagu);
 

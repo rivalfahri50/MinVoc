@@ -139,29 +139,28 @@ class authController extends Controller
                 ->withInput();
         }
 
-
-        if (Auth::attempt($credentials)) {
-            User::where('id', auth()->user()->id)->update(['is_login' => true]);
-            $user = auth()->user();
-            switch ($user->role_id) {
-                case 3:
-                    return redirect()->intended(route('user.dashboard'));
-                case 2:
-                    return redirect()->intended(route('artist.dashboard'));
-                case 1:
-                    return redirect()->intended(route('artist-verified.dashboard'));
-                case 4:
-                    if (auth('admin')->attempt($credentials)) {
-                        return redirect()->intended(route('admin.dashboard'));
-                    }
-                    break;
-            }
-        }
         try {
+            if (Auth::attempt($credentials)) {
+                User::where('id', auth()->user()->id)->update(['is_login' => true]);
+                $user = auth()->user();
+                switch ($user->role_id) {
+                    case 3:
+                        return redirect()->intended(route('user.dashboard'));
+                    case 2:
+                        return redirect()->intended(route('artist.dashboard'));
+                    case 1:
+                        return redirect()->intended(route('artist-verified.dashboard'));
+                    case 4:
+                        if (auth('admin')->attempt($credentials)) {
+                            return redirect()->intended(route('admin.dashboard'));
+                        }
+                        break;
+                }
+            }
         } catch (\Throwable $th) {
             return abort(404);
         }
-        return back()->withErrors(['password' => 'Kredensial tidak valid..']);
+        return redirect()->route('pengguna')->withErrors(['password' => 'password tidak valid.'])->withInput();
     }
 
     protected function storeSignUp(Request $request)
@@ -202,17 +201,15 @@ class authController extends Controller
         $defaultRole = role::where('name', $request->only('role'))->first();
 
         try {
-            if ($request->input('name')) {
-                $user = User::create(
-                    [
-                        'code' => $code,
-                        'role_id' => $defaultRole->id,
-                        'deskripsi' => "none",
-                        'name' => $request->input('name'),
-                        'email' => $request->input('email'),
-                        'password' => $request->input('password')
-                    ]
-                );
+            DB::transaction(function () use ($request, $code, $defaultRole) {
+                $user = User::create([
+                    'code' => $code,
+                    'role_id' => $defaultRole->id,
+                    'deskripsi' => "none",
+                    'name' => $request->input('name'),
+                    'email' => $request->input('email'),
+                    'password' => Hash::make($request->input('password')), // Mengenkripsi kata sandi
+                ]);
 
                 if ($user->role_id == 2) {
                     artist::create([
@@ -226,7 +223,7 @@ class authController extends Controller
                         'is_verified' => true
                     ]);
                 }
-            }
+            });
         } catch (Throwable $e) {
             return response()->redirectTo('/buat-akun')->with('failed', "Gagal untuk register!!");
         }
@@ -235,12 +232,12 @@ class authController extends Controller
 
     protected function logout()
     {
-        User::where('id', auth()->user()->id)->update(['is_login' => false]);
         try {
+            User::where('id', auth()->user()->id)->update(['is_login' => false]);
             Auth::logout();
+            return redirect()->route('pengguna');
         } catch (\Throwable $th) {
-            return abort(404);
+            return back();
         }
-        return redirect("/masuk");
     }
 }

@@ -50,7 +50,7 @@ class AdminController extends Controller
     protected function persetujuan(): Response
     {
         $title = "MusiCave";
-        $persetujuan = song::where('is_approved', false)->where('type', 'pengajuan')->get();
+        $persetujuan = song::where('type', 'pengajuan')->get();
         return response()->view('admin.persetujuan', compact('title', 'persetujuan'));
     }
     protected function show($id): Response
