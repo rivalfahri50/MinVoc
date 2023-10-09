@@ -378,23 +378,19 @@ class ArtistController extends Controller
 
     protected function filterDate(Request $request)
     {
-        try {
-            $request->validate([
-                'start_date' => 'nullable|date',
-                'end_date' => 'nullable|date|after_or_equal:start_date',
-            ]);
+        $request->validate([
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+        ]);
 
-            $startDate = $request->start_date;
-            $endDate = $request->end_date;
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
 
-            $start_date = Carbon::parse($startDate)->startOfDay();
-            $end_date = Carbon::parse($endDate)->endOfDay();
+        $start_date = Carbon::parse($startDate)->startOfDay();
+        $end_date = Carbon::parse($endDate)->endOfDay();
 
-            $results = penghasilan::with('artist')->whereBetween('created_at', [$start_date, $end_date])->where('is_submit', '===', 0)
-                ->get();
-        } catch (\Throwable $th) {
-            return abort(404);
-        }
+        $results = penghasilan::with('artist')->whereBetween('created_at', [$start_date, $end_date])->where('is_submit', '===', 0)->where('artist_id', $artis->id)
+            ->get();
         return redirect()->back()->with(['results' => $results])->withInput();
     }
 

@@ -641,89 +641,74 @@
                 });
             </script>
 
-            <script>
-                var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                $(document).ready(function() {
-                    $.ajax({
-                        url: `/song/check`,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(response) {
-                            // console.log(response);
-                            response.forEach(function(item) {
-                                const songId = item.song_id;
-                                const like = document.getElementById(`like${item.song_id}`);
-                                if (like) {
-                                    like.classList.toggle('fas');
-                                }
-                            })
-                        }
-                    });
-                });
+<script>
+    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    $(document).ready(function() {
+        $.ajax({
+            url: `/song/check`,
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                // console.log(response);
+                response.forEach(function(item) {
+                    const songId = item.song_id;
+                    const like = document.getElementById(`like-1${item.song_id}`);
+                    if (like) {
+                        like.classList.toggle('fas');
+                    }
+                })
+            }
+        });
+    });
+    $(document).ready(function() {
+        $.ajax({
+            url: `/song/check`,
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                // console.log(response);
+                response.forEach(function(item) {
+                    const songId = item.song_id;
+                    const like = document.getElementById(`like-2${item.song_id}`);
+                    if (like) {
+                        like.classList.toggle('fas');
+                    }
+                })
+            }
+        });
+    });
 
-                function toggleLike(iconElement, songId) {
-                    const isLiked = iconElement.classList.contains('fas');
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
 
-                    $.ajax({
-                        url: `/song/${songId}/like`,
-                        type: 'POST',
-                        dataType: 'json',
-                        success: function(response) {
-                            if (response.success) {
-                                if (isLiked) {
-                                    iconElement.classList.remove('fas');
-                                    iconElement.classList.add('far');
-                                } else {
-                                    iconElement.classList.remove('far');
-                                    iconElement.classList.add('fas');
-                                }
-                            }
-                        }
-                    })
+    function toggleLike(iconElement, songId) {
+        const isLiked = iconElement.classList.contains('fas');
+
+        $.ajax({
+            url: `/song/${songId}/like`,
+            type: 'POST',
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    if (isLiked) {
+                        iconElement.classList.remove('fas');
+                        iconElement.classList.add('far');
+                    } else {
+                        iconElement.classList.remove('far');
+                        iconElement.classList.add('fas');
+                    }
                 }
+            }
+        })
+    }
 
-                function likeArtist(iconElement, artistId) {
-                    let isLiked = iconElement.classList.contains('fas');
-                    $.ajax({
-                        url: `/artist/${artistId}/like`,
-                        type: 'POST',
-                        dataType: 'json',
-                        success: function(response) {
-                            console.log(response);
-                            if (response.success) {
-                                const likeCountElement = document.getElementById(`likeCount${artistId}`);
-                                if (likeCountElement) {
-                                    likeCountElement.textContent = response.likes;
-                                }
-                                if (isLiked) {
-                                    iconElement.classList.remove('fas');
-                                    iconElement.classList.add('far');
-                                } else {
-                                    iconElement.classList.remove('far');
-                                    iconElement.classList.add('fas');
-                                }
-                                updateLikeStatus(artistId, !isLiked);
-                            }
-                        },
-                        error: function(response) {
-                            console.log(response);
-                        }
-                    })
-                }
 
-                function updateSongLikeStatus(songId, isLiked) {
-                    const likeIcons = document.querySelectorAll(`.shared-icon-like[data-id="${songId}"]`);
-                    likeIcons.forEach(likeIcon => {
-                        likeIcon.classList.toggle('fas', isLiked);
-                        likeIcon.classList.toggle('far', !isLiked);
-                    });
-                }
-            </script>
+    function updateSongLikeStatus(songId, isLiked) {
+        const likeIcons = document.querySelectorAll(`.shared-icon-like[data-id="${songId}"]`);
+        likeIcons.forEach(likeIcon => {
+            likeIcon.classList.toggle('fas', isLiked);
+            likeIcon.classList.toggle('far', !isLiked);
+        });
+    }
+</script>
 
             <script src="/user/assets/vendors/js/vendor.bundle.base.js"></script>
             <script src="/user/assets/vendors/chart.js/Chart.min.js"></script>

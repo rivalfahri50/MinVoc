@@ -198,15 +198,11 @@
                         $previewList.empty();
 
                         $.each(results, function(index, result) {
-                            console.log(results);
                             var $previewItem = $(
                                 '<div class="preview-item" data-song-id="' + result
-                                .id + '">');
-
-                            $previewItem.append(
-                                '<div class="preview-thumbnail"><img src="http://127.0.0.1:8000/storage/' +
-                                result.image + '" width="10%"></div>');
-                            $previewItem.append(
+                                .id +
+                                '"><div class="preview-thumbnail"><img src="http://127.0.0.1:8000/storage/' +
+                                result.image + '" width="10%"></div>' +
                                 `<div class="preview-item-content d-sm-flex flex-grow"><div class="flex-grow" onclick="putar(${result.id})"><h6 class="preview-subject">` +
                                 result.judul + '</h6><p class="text-muted mb-0">' +
                                 result.artist.user.name +
@@ -220,7 +216,6 @@
                                 `</p>
                                         </div></div></div>`
                             );
-
                             $previewList.append($previewItem);
                         });
                     }
@@ -294,7 +289,6 @@
 
         ambilDataLagu(playlistId);
 
-        // function load the track
         function load_track(index_no) {
             if (index_no >= 0 && index_no < All_song.length) {
                 track.src = `https://drive.google.com/uc?export=view&id=${All_song[index_no].audio}`;

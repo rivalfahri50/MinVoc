@@ -688,7 +688,9 @@ class ArtistVerifiedController extends Controller
         $start_date = Carbon::parse($startDate)->startOfDay();
         $end_date = Carbon::parse($endDate)->endOfDay();
 
-        $results = penghasilan::with('artist')->whereBetween('created_at', [$start_date, $end_date])->where('is_submit', '===', 0)
+        $artis = artist::where('user_id', auth()->user()->id)->first();
+
+        $results = penghasilan::with('artist')->whereBetween('created_at', [$start_date, $end_date])->where('is_submit', '===', 0)->where('artist_id', $artis->id)
             ->get();
 
         return redirect()->back()->with(['results' => $results])->withInput();
@@ -706,9 +708,12 @@ class ArtistVerifiedController extends Controller
 
         $start_date = Carbon::parse($startDate)->startOfDay();
         $end_date = Carbon::parse($endDate)->endOfDay();
+        $artis = artist::where('user_id', auth()->user()->id)->first();
 
-        $results = penghasilan::with('artist')->whereBetween('Pengajuan_tanggal', [$start_date, $end_date])->where('is_submit', true)
+        $results = penghasilan::with('artist')->whereBetween('Pengajuan_tanggal', [$start_date, $end_date])->where('is_submit', true)->where('artist_id', $artis->id)
             ->get();
+
+        dd($results);
 
         return redirect()->back()->with(['results' => $results])->withInput();
     }
