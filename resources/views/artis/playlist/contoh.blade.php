@@ -212,7 +212,7 @@
                     <div class="card-body">
                         <div class="row" style="margin-top: -20px">
                             <div class="col-12">
-                                <div class="preview-list">
+                                <div class="preview-list playlist-list">
                                     @foreach ($songs as $item)
                                         @if ($item->is_approved)
                                             <div class="preview-item">
@@ -394,34 +394,33 @@
                     dataType: 'json',
                     success: function(response) {
                         var results = response.results;
-                        var $previewList = $('.preview-list');
+                        var $previewList = $('.playlist-list');
                         $previewList.empty();
 
                         $.each(results, function(index, result) {
                             var $previewItem = $(
                                 '<div class="preview-item" data-song-id="' + result
                                 .id + '">');
-
                             $previewItem.append(
                                 '<div class="preview-thumbnail"><img src="http://127.0.0.1:8000/storage/' +
                                 result.image + '" width="10%"></div>'
                             );
-
                             $previewItem.append(
-                                `<div class="preview-item-content d-sm-flex flex-grow" href="#lagu-diputar" onclick="putar(${result.id})">
-            <div class="flex-grow">
-                <h6 class="preview-subject">${result.judul}</h6>
-                <p class="text-muted mb-0">${result.artist.user.name}</p>
-            </div>
-            <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                <div class="text-group">
-                    <i id="like-playlist-${result.id}" data-id="${result.id}" onclick="toggleLike(this, ${result.id})" class="shared-icon-like ${result.isLiked ? 'fas' : 'far'} fa-heart pr-2"></i>
-                    <p>${result.waktu}</p>
-                </div>
-            </div>
-        </div>`
+                                `<div class="preview-item-content d-sm-flex flex-grow" onclick="putar(${result.id})">
+                                    <div class="flex-grow">
+                                        <a href='#lagu-diputar'>
+                                            <h6 class="preview-subject">${result.judul}</h6>
+                                            <p class="text-muted mb-0">${result.artist.user.name}</p>
+                                        </a>
+                                    </div>
+                                    <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                        <div class="text-group">
+                                            <i id="like-playlist-${result.id}" data-id="${result.id}" onclick="toggleLike(this, ${result.id})" class="shared-icon-like ${result.isLiked ? 'fas' : 'far'} fa-heart pr-2"></i>
+                                            <p>${result.waktu}</p>
+                                        </div>
+                                    </div>
+                                </div>`
                             );
-
                             $previewList.append($previewItem);
                         });
 
@@ -524,9 +523,6 @@
             }
             updateMuteButtonIcon();
         }
-        // track.addEventListener('loadedmetadata', function() {
-        //     slider.max = track.duration;
-        // });
 
 
         // fungsi untuk memeriksa lagu diputar atau tidak

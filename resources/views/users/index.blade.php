@@ -242,7 +242,6 @@
         });
     </script>
 
-    {{-- untuk paginate --}}
     <script>
         $(document).ready(function() {
             var itemsPerPage = 3;
@@ -371,7 +370,6 @@
         });
     </script>
 
-    {{-- untuk href table --}}
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const rows = document.querySelectorAll("tr[data-href]");

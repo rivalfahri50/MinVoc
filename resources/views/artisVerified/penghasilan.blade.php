@@ -294,12 +294,12 @@
                                             @endforeach
                                         </tbody>
                                     @else
-                                        {{-- <table>
+                                        <table>
                                             <span
                                                 style="display: flex; justify-content: center; margin-top: 14px; margin-bottom: 4px; font-size: 14px; color: #4f4f4f">
                                                 Tidak ada dalam history pencairan dana.
                                             </span>
-                                        </table> --}}
+                                        </table>
                                     @endif
                                 @else
                                     @if (count($penghasilanArtis) >= 1)
@@ -320,12 +320,12 @@
                                             @endforeach
                                         </tbody>
                                     @else
-                                        {{-- <table>
+                                        <table>
                                             <span
                                                 style="display: flex; justify-content: center; margin-top: 14px; margin-bottom: 4px; font-size: 14px; color: #4f4f4f">
                                                 Tidak ada dalam history pencairan dana.
                                             </span>
-                                        </table> --}}
+                                        </table>
                                     @endif
                                 @endif
                             </table>

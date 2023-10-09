@@ -179,13 +179,14 @@
                             <div class="row" style="margin-top: -20px">
                                 <div class="col-12">
                                     <div class="preview-list">
-                                        @foreach ($artist as $item)
-                                            @if ($item->likes >= 0)
-                                                <div class="preview-item">
-                                                    <div class="preview-thumbnail">
-                                                        <img src="{{ asset('storage/' . $item->user->avatar) }}"
-                                                            class="fotoartis">
-                                                    </div>
+                                        @foreach ($artist->reverse() as $item)
+                                        @if ($item->user_id !== auth()->user()->id)
+                                            <div class="preview-item">
+                                                <div class="preview-thumbnail">
+                                                    <img src="{{ asset('storage/' . $item->user->avatar) }}"
+                                                        class="fotoartis">
+                                                </div>
+                                                <div class="preview-item-content d-sm-flex flex-grow">
                                                     <div
                                                         class="preview-item-content d-sm-flex flex-grow align-items-center">
                                                         <div class="flex-grow">
@@ -197,7 +198,7 @@
                                                                         class="mdi mdi-check-decagram text-primary verified-text"></span>
                                                                 @endif
                                                             </h6>
-                                                            <p class="text-muted mb-0" style="font-weight: 400">
+                                                            <p class="text-muted mb-0">
                                                                 <span
                                                                     id="likeCount{{ $item->id }}">{{ number_format($item->likes, 0, ',', '.') }}</span>
                                                                 suka
@@ -206,13 +207,14 @@
                                                         <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                             <i id="like-artist{{ $item->id }}"
                                                                 data-id="{{ $item->id }}"
-                                                                onclick="likeArtist(this, {{ $item->id }}, {{ $item->isLiked ? 'true' : 'false' }})"
+                                                                onclick="likeArtist(this, {{ $item->id }})"
                                                                 class="like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            @endif
-                                        @endforeach
+                                            </div>
+                                        @endif
+                                    @endforeach
                                     </div>
                                 </div>
                             </div>
@@ -478,7 +480,7 @@
 
     {{-- ini untuk like pada halaman ini --}}
     <script>
-          var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         $(document).ready(function() {
             $.ajax({
                 url: `/song/check`,
@@ -519,7 +521,7 @@
                 dataType: 'json',
                 success: function(response) {
                     if (response.success) {
-                    if (isLiked) {
+                        if (isLiked) {
                             iconElement.classList.remove('fas');
                             iconElement.classList.add('far');
                         } else {
@@ -994,6 +996,87 @@
                 volume_show.innerHTML = Math.round(track.volume * 100);
                 recent_volume.value = track.volume * 100;
             }
+        }
+    </script>
+
+    <script>
+        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: `/artist/check`,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response);
+                    response.forEach(function(item) {
+                        let artistId = item.artist_id;
+                        let like = document.getElementById(`like-artist${item.artist_id}`);
+                        like.classList.toggle('fas');
+                    })
+                },
+                error: function(response) {
+                    console.log(response)
+                }
+            });
+            $.ajax({
+                url: `/artist/count`,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    let totalLikes = 0;
+                    response.forEach(function(item) {
+                        totalLikes += item.likes;
+                        let artistId = item.artist_id;
+                    })
+                    let count = document.getElementById('likeCount');
+                    if (count) {
+                        count.textContent = totalLikes;
+                    }
+                },
+                error: function(response) {}
+            })
+        });
+
+        function likeArtist(iconElement, artistId) {
+            let isLiked = iconElement.classList.contains('fas');
+            $.ajax({
+                url: `/artist/${artistId}/like`,
+                type: 'POST',
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response);
+                    if (response.success) {
+                        const likeCountElement = document.getElementById(`likeCount${artistId}`);
+                        if (likeCountElement) {
+                            likeCountElement.textContent = response.likes;
+                        }
+                        if (isLiked) {
+                            iconElement.classList.remove('fas');
+                            iconElement.classList.add('far');
+                        } else {
+                            iconElement.classList.remove('far');
+                            iconElement.classList.add('fas');
+                        }
+                        updateLikeStatus(artistId, !isLiked);
+                    }
+                },
+                error: function(response) {
+                    console.log(response);
+                }
+            })
+        }
+
+        function updateLikeStatus(artistId, isLiked) {
+            let likeIcons = document.querySelectorAll(`.like[data-id="${artistId}"]`);
+            likeIcons.forEach(likeIcon => {
+                likeIcon.classList.toggle('fas', isLiked);
+                likeIcon.classList.toggle('far', !isLiked);
+            });
         }
     </script>
 @endsection
