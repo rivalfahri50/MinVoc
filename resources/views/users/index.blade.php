@@ -169,7 +169,7 @@
                                                     <div>
                                                         <a href="#lagu-diputar"
                                                             class="flex-grow text-decoration-none link"
-                                                            onclick="putar({{ $item->id }})">
+                                                            onclick="putaran({{ $item->id }})">
                                                             <h6 class="preview-subject">{{ $item->judul }}</h6>
                                                             <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
                                                         </a>
@@ -479,7 +479,7 @@
     </script>
 
     {{-- untuk lagu atas dan bawah --}}
-    <script>
+    {{-- <script>
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
         let next = document.querySelector('#next');
@@ -504,6 +504,7 @@
 
         let index_no = 0;
         let Playing_song = false;
+        let currentSongId = null;
 
         // create a audio element
         let track = document.createElement('audio');
@@ -538,7 +539,6 @@
                 }
             });
         }
-        ambilDataLaguDidengar();
 
         function ambilDataLagu() {
             $.ajax({
@@ -572,6 +572,7 @@
                 }
             });
         }
+        ambilDataLaguDidengar();
         ambilDataLagu();
 
         // function load the track
@@ -738,6 +739,7 @@
                 const new_index_no = All_song.indexOf(lagu);
                 if (new_index_no >= 0) {
                     index_no = new_index_no;
+                    currentSongId = id;
                     load_track(index_no);
                     playsong();
                     ambilDataLaguDidengar();
@@ -756,10 +758,433 @@
             console.log('ID yang dikirim:', id);
             id = parseInt(id); // Pastikan id berupa bilangan bulat
             const lagu = All_song.find(song => song.id === id);
-            console.log('lagu yang dikirim :', lagu);
+            console.log('lagu yang dikirim :', All_song);
 
             if (lagu) {
                 const new_index_no = All_song.indexOf(lagu);
+                if (new_index_no >= 0) {
+                    index_no = new_index_no;
+                    currentSongId = id;
+                    load_track(index_no);
+                    playsong();
+                    ambilDataLagu();
+                } else {
+                    index_no = 0; // Atur ke 0 jika lagu tidak ditemukan
+                    load_track(index_no);
+                    playsong();
+                }
+            } else {
+                console.error('Lagu dengan ID ' + id + ' tidak ditemukan dalam data lagu.');
+            }
+        }
+
+
+        track.addEventListener('ended', function() {
+            next_song();
+        });
+
+        function next_song() {
+            const currentSongIndex = All_song.findIndex(song => song.id === currentSongId);
+            if (currentSongIndex !== -1 && currentSongIndex < All_song.length - 1) {
+                currentSongId = All_song[currentSongIndex + 1].id;
+                load_track(currentSongIndex + 1);
+                playsong();
+            } else {
+                currentSongId = All_song[0].id;
+                load_track(0);
+                playsong();
+            }
+            if (autoplay == 1) {
+                // Set interval sebelum memulai lagu selanjutnya
+                setTimeout(function() {
+                    track.play();
+                }, 1000); // Delay 1 detik sebelum memulai lagu selanjutnya
+            }
+        }
+
+        // fungsi untuk memutar lagu sebelumnya
+        function previous_song() {
+            const currentSongIndex = All_song.findIndex(song => song.id === currentSongId);
+            if (currentSongIndex !== -1 && currentSongIndex > 0) {
+                currentSongId = All_song[currentSongIndex - 1].id;
+                load_track(currentSongIndex - 1);
+                playsong();
+            } else {
+                currentSongId = All_song[All_song.length - 1].id;
+                load_track(All_song.length - 1);
+                playsong();
+            }
+        }
+
+        // ubah volume
+        function volume_change() {
+            volume_show.innerHTML = recent_volume.value;
+            track.volume = recent_volume.value / 100;
+        }
+
+        // ubah posisi slider
+        // Fungsi untuk mengubah posisi slider
+        function change_duration() {
+            let slider_value = slider.value;
+            if (!isNaN(track.duration) && isFinite(slider_value)) {
+                track.currentTime = track.duration * (slider_value / 100);
+                console.log(track.duration * (slider_value / 100), slider_value, track.currentTime)
+            }
+        }
+
+        slider.addEventListener('input', function() {
+            change_duration();
+            clearInterval(timer);
+            Playing_song = true;
+            play.innerHTML = '<i class="far fa-pause-circle fr" aria-hidden="true"></i>';
+            track.addEventListener('timeupdate', updateDuration)
+            track.play();
+        })
+
+        // range slider
+        function range_slider() {
+            let position = 0;
+            // memperbaharui posisi slider
+            if (!isNaN(track.duration)) {
+                position = track.currentTime * (100 / track.duration);
+                slider.value = position;
+            }
+            if (track.ended) {
+                play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>';
+                if (autoplay == 1) {
+                    const songId = All_song[index_no].id;
+                    history(songId);
+                    index_no += 1;
+                    load_track(index_no);
+                    playsong();
+                }
+            }
+
+            // kalkulasi waktu dari durasi audio
+            const durationElement = document.getElementById('duration');
+            const durationMinutes = Math.floor(track.duration / 60);
+            const durationSeconds = Math.floor(track.duration % 60);
+            const formattedDuration = `${durationMinutes}:${durationSeconds < 10 ? '0' : ''}${durationSeconds}`;
+            durationElement.textContent = formattedDuration;
+        }
+
+        track.addEventListener('timeupdate', range_slider);
+
+        // fungsi ini akan dijalankan ketika lagu selesai (mengubah icon play menjadi pause)
+        if (track.ended) {
+            play.innerHTML = '<i class="fa fa-play-circle" aria-hidden="true"></i>';
+            if (autoplay == 1) {
+                index_no += 1;
+                load_track(index_no);
+                playsong();
+            }
+        }
+
+        // Fungsi untuk mengupdate durasi waktu (waktu berjalan sesuai real time)
+        function updateDuration() {
+            // Menghitung durasi waktu yang telah berlalu
+            const currentMinutes = Math.floor(track.currentTime / 60);
+            const currentSeconds = Math.floor(track.currentTime % 60);
+            // Memformat durasi waktu yang akan ditampilkan
+            const formattedCurrentTime = `${currentMinutes}:${currentSeconds < 10 ? '0' : ''}${currentSeconds}`;
+            // console.log(formattedCurrentTime);
+            // Menampilkan durasi waktu pada elemen yang sesuai
+            const currentTimeElement = document.getElementById('current-time');
+            currentTimeElement.textContent = formattedCurrentTime;
+        }
+
+        // Fungsi yang dipanggil saat audio selesai dimainkan
+        function onTrackEnded() {
+
+            // Menghapus event listener setelah audio selesai dimainkan
+            track.removeEventListener('timeupdate', updateDuration);
+        }
+
+        // Event listener for mute button
+        muteButton.addEventListener('click', function() {
+            mute_sound();
+            updateMuteButtonIcon();
+        });
+
+        recent_volume.addEventListener('input', function() {
+            // Calculate volume value based on slider position
+            let slider_value = recent_volume.value / 100;
+            track.volume = slider_value;
+
+            // Update mute button icon and volume display
+            updateMuteButtonIcon();
+            volume_show.innerHTML = Math.round(slider_value * 100);
+        });
+
+
+        // Function to update mute button icon
+        function updateMuteButtonIcon() {
+            if (track.volume === 0) {
+                muteButton.classList.remove('mdi-volume-heigh');
+                muteButton.classList.add('mdi-volume-off');
+                volume_show.innerHTML = 0;
+            } else {
+                muteButton.classList.remove('mdi-volume-off');
+                muteButton.classList.add('mdi-volume-heigh');
+                volume_show.innerHTML = Math.round(track.volume * 100);
+                recent_volume.value = track.volume * 100;
+            }
+        }
+    </script> --}}
+    <script>
+        let previous = document.querySelector('#pre');
+        let play = document.querySelector('#play');
+        let next = document.querySelector('#next');
+        let title = document.querySelector('#title');
+        let artist = document.querySelector('#artist');
+
+        let muteButton = document.querySelector('#volume_icon')
+        let recent_volume = document.querySelector('#volume');
+        let volume_show = document.querySelector('#volume_show');
+
+        let slider = document.querySelector('#duration_slider');
+        let show_duration = document.querySelector('#show_duration');
+        let track_image = document.querySelector('#track_image');
+        let shuffleButton = document.querySelector('#shuffle_button');
+        let auto_play = document.querySelector('#auto');
+
+        let timer;
+        let autoplay = 1;
+        let playCount = 0;
+        let prevVolume;
+        let currentTime = 1;
+
+        let index_no = 0;
+        let Playing_song = false;
+
+        // create a audio element
+        let track = document.createElement('audio');
+
+        let All_song = [];
+
+        function ambilDataLagu() {
+            $.ajax({
+                url: '/ambil-lagu',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    All_song = data.filter(lagu => lagu.is_approved === 1).map(lagu => {
+                        return {
+                            id: lagu.id,
+                            judul: lagu.judul,
+                            audio: lagu.audio,
+                            image: lagu.image,
+                            artistId: lagu.artist.user.name
+                        };
+                    });
+                    console.log("data lagu yang diambil:", All_song);
+                    if (All_song.length > 0) {
+                        // Memanggil load_track dengan indeks 0 sebagai lagu pertama
+                        load_track();
+                    } else {
+                        console.error("Data lagu kosong.");
+                    }
+                },
+                error: function(error) {
+                    console.error('Error fetching data:', error);
+                }
+            });
+        }
+        ambilDataLagu();
+
+        function ambilDataLaguDidengar() {
+            $.ajax({
+                url: '/ambil-lagu',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    All_song = data.filter(lagu => lagu.didengar >= 1000).map(lagu => {
+                        return {
+                            id: lagu.id,
+                            judul: lagu.judul,
+                            audio: lagu.audio,
+                            image: lagu.image,
+                            artistId: lagu.artist.user.name,
+                            didengar: lagu.didengar
+                        };
+                    });
+                    All_song.sort((a, b) => b.didengar - a.didengar);
+                    // untuk menurutkan lagu yang tampil pada browser :)
+                    console.log("data lagu bawah:", All_song);
+
+                    if (All_song.length > 0) {
+                        // Memanggil load_track dengan indeks 0 sebagai lagu pertama
+                        load_track();
+                    } else {
+                        console.error("Data lagu kosong.");
+                    }
+                },
+                error: function(error) {
+                    console.error('Error fetching data:', error);
+                }
+            });
+        }
+        ambilDataLaguDidengar(); 
+
+        function load_track(index_no) {
+            if (index_no >= 0 && index_no < All_song.length) {
+                track.src = `https://drive.google.com/uc?export=view&id=${All_song[index_no].audio}`;
+                title.innerHTML = All_song[index_no].judul;
+                artist.innerHTML = All_song[index_no].artistId;
+                track_image.src = '{{ asset('storage') }}' + '/' + All_song[index_no].image;
+                track.load();
+                timer = setInterval(range_slider, 1000);
+            } else {
+                console.error("Index_no tidak valid.");
+            }
+        }
+        load_track(0);
+
+        // fungsi mute sound
+        function mute_sound() {
+            if (track.volume === 0) {
+                track.volume = prevVolume;
+                recent_volume.value = prevVolume * 100;
+            } else {
+                prevVolume = track.volume;
+                track.volume = 0;
+                recent_volume.value = 0;
+            }
+            updateMuteButtonIcon();
+        }
+        // track.addEventListener('loadedmetadata', function() {
+        //     slider.max = track.duration;
+        // });
+
+        // fungsi untuk memeriksa lagu diputar atau tidak
+        function justplay() {
+            if (Playing_song == false) {
+                playsong();
+            } else {
+                pausesong();
+            }
+        }
+
+        // reset song slider
+        function reset_slider() {
+            slider.value = 100;
+        }
+
+        // play song
+        function playsong() {
+            if (track.paused) {
+                if (index_no >= 0 && index_no < All_song.length) {
+                    track.play();
+                    Playing_song = true;
+                    play.innerHTML = '<i class="far fa-pause-circle fr" aria-hidden="true"></i>';
+                } else {
+                    console.log('Tidak ada lagu yang dipilih.');
+                }
+            } else {
+                track.pause();
+                Playing_song = false;
+                play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>';
+            }
+
+            // Periksa apakah index_no memiliki nilai yang benar
+            if (index_no >= 0 && index_no < All_song.length) {
+                // Perbarui playCount dengan songId yang sesuai
+                const songId = All_song[index_no].id;
+                // history(songId);
+                console.log(All_song[index_no])
+                updatePlayCount(songId);
+            }
+            track.addEventListener('timeupdate', updateDuration);
+            playCount++;
+        }
+
+        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        function updatePlayCount(songId) {
+            fetch(`/update-play-count/${songId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Play count updated:', data.message);
+                })
+                .catch(error => {
+                    // Tangani error jika diperlukan
+                    console.error('Error updating play count:', error);
+                });
+        }
+
+        function history(songId) {
+            console.log('Mengirim riwayat untuk songId:', songId);
+            $.ajax({
+                url: '/simpan-riwayat',
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                data: {
+                    song_id: songId,
+                },
+                success: function(response) {
+                    console.log('Respon dari simpan-riwayat:', response);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error saat mengirim riwayat:', error);
+
+                    // Tambahkan ini untuk mencetak pesan kesalahan dari respons server
+                    // console.log('Pesan Kesalahan Server:', xhr.responseText);
+                }
+            });
+        }
+
+        shuffleButton.addEventListener('click', function() {
+            shuffle_song();
+            console.log(shuffleButton);
+        });
+
+
+        function shuffle_song() {
+            let currentIndex = All_song.length,
+                randomIndex, temporaryValue;
+
+            // Selama masih ada elemen untuk diacak
+            while (currentIndex !== 0) {
+                // Pilih elemen yang tersisa secara acak
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+
+                // Tukar elemen terpilih dengan elemen saat ini
+                temporaryValue = All_song[currentIndex];
+                All_song[currentIndex] = All_song[randomIndex];
+                All_song[randomIndex] = temporaryValue;
+            }
+            // Setel ulang indeks lagu saat ini ke 0
+            index_no = 0;
+            // Memuat lagu yang diacak
+            load_track(index_no);
+            playsong();
+        }
+
+
+        // pause song
+        function pausesong() {
+            track.pause();
+            Playing_song = false;
+            play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>'
+        }
+
+        function putaran(id) {
+            console.log('ID yang dikirim dari lagu approved:', id);
+            id = parseInt(id); // Pastikan id berupa bilangan bulat
+            const song = All_song.find(song => song.id === id);
+            console.log('lagu yang dikirim dari atas:', All_song);
+
+            if (song) {
+                const new_index_no = All_song.indexOf(song);
                 if (new_index_no >= 0) {
                     index_no = new_index_no;
                     load_track(index_no);
@@ -773,6 +1198,31 @@
             } else {
                 console.error('Lagu dengan ID ' + id + ' tidak ditemukan dalam data lagu.');
             }
+
+        }
+
+        function putar(id) {
+            console.log('ID yang dikirim dari lagu didengar:', id);
+            id = parseInt(id); // Pastikan id berupa bilangan bulat
+            const lagu = All_song.find(song => song.id === id);
+            console.log('lagu yang dikirim dari bawah:', lagu);
+
+            if (lagu) {
+                const new_index_no = All_song.indexOf(lagu);
+                if (new_index_no >= 0) {
+                    index_no = new_index_no;
+                    load_track(index_no);
+                    playsong();
+                    ambilDataLaguDidengar();
+                } else {
+                    index_no = 0; // Atur ke 0 jika lagu tidak ditemukan
+                    load_track(index_no);
+                    playsong();
+                }
+            } else {
+                console.error('Lagu dengan ID ' + id + ' tidak ditemukan dalam data lagu.');
+            }
+
         }
 
 

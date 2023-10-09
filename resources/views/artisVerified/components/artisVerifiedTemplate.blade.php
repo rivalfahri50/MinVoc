@@ -663,7 +663,7 @@
                 //     });
                 // });
             </script>
-            
+
             <script>
                 var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                 $(document).ready(function() {
