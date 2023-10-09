@@ -16,7 +16,8 @@
         "league/oauth2-client": "^2.7",
         "league/oauth2-google": "^4.0",
         "nesbot/carbon": "^2.69",
-        "realrashid/sweet-alert": "*"
+        "realrashid/sweet-alert": "*",
+        "yaza/laravel-google-drive-storage": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
