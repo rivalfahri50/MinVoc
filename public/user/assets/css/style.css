@@ -13210,7 +13210,7 @@ input[type="button"].btn-block {
 .dropdown-item:focus {
   color: #16181b;
   text-decoration: none;
-  background-color: #eaeaea;
+  background-color: #d1d1d1;
 }
 
 /*DISINI WARNA HOVER DROPDOWN*/
@@ -29756,7 +29756,7 @@ div.tagsinput span.tag a {
 }
 
 .navbar .navbar-menu-wrapper .navbar-nav .nav-item.dropdown .dropdown-menu.navbar-dropdown .dropdown-item:hover {
-  color: #919191;
+  color: #6C6C6C;
 }
 
 .navbar .navbar-menu-wrapper .navbar-nav .nav-item.dropdown .dropdown-menu.navbar-dropdown .dropdown-item i {
@@ -30017,7 +30017,7 @@ div.tagsinput span.tag a {
   -webkit-transition-duration: 0.45s;
   -moz-transition-duration: 0.45s;
   -o-transition-duration: 0.45s;
-  transition-duration: 0.45s;
+  transition-duration: 0s;
   transition-property: color;
   -webkit-transition-property: color;
   height: 46px;
@@ -30356,7 +30356,7 @@ div.tagsinput span.tag a {
 }
 
 .sidebar .nav:not(.sub-menu)>.nav-item:hover:not(.nav-category):not(.account-dropdown)>.nav-link {
-  background: #d1d1d1;
+  background: #c0a7d9;
   /*DISINI WARNA HOVER SIDEBAR*/
   color: #ffffff;
 }
@@ -30733,7 +30733,7 @@ div.tagsinput span.tag a {
 }
 
 .gh {
-  color: inherit;
+  color: #d5d5d5;
   position: absolute;
   left: 195px;
   top: 140px;
@@ -30797,4 +30797,9 @@ div.tagsinput span.tag a {
   width: 20px;
   height: 20px;
   object-fit: cover;
+}
+
+.tengahvertical {
+  display: flex;
+  align-items: center;
 }

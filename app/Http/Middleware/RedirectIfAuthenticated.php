@@ -19,7 +19,7 @@ class RedirectIfAuthenticated
     {
         $guards = empty($guards) ? [null] : $guards;
 
-        if (Auth::check() && !Auth::logout()) {
+        if (Auth::check()) {
             return back();
         }
         foreach ($guards as $guard) {

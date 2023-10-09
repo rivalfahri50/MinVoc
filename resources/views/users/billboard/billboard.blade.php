@@ -13,24 +13,28 @@
                                 <div class="col-7">
                                     <div class="preview-list">
                                         <div class="d-flex flex-column gap-3" style="color: #6C6C6C;">
-                                            <span class="fw-bold fs-4">{{ $billboard->artis->user->name }}</span>
+                                            <span class="fw-bold fs-4">{{ $billboard->artis->user->name }}
+                                                @if ($billboard->artis->is_verified)
+                                                    <span class="mdi mdi-check-decagram text-primary verified-text"></span>
+                                                @endif
+                                            </span>
                                             <span class="deskbill">{{ $billboard->deskripsi }}.</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-4 d-flex text-right justify-content-center">
-                                    <img src="{{ asset('storage/' . $billboard->image_artis) }}" alt="" class="d-block fotoartisbill">
+                                    <img src="{{ asset('storage/' . $billboard->image_artis) }}" alt=""
+                                        class="d-block fotoartisbill">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="cards d-flex justify-content-center z-3 gap-4"
-                        style="margin-top: -150px; margin-left: 12px;">
+                    <div class="cards z-3" style="margin-top: -150px; margin-left: 12px;">
                         @foreach ($albums as $item)
-                            <a href="{{ route('albumBillboard.pengguna', $item->code) }}">
-                                <img src="{{ asset('storage/' . $item->image) }}" width="170"
+                            <a href="{{ route('albumBillboard.pengguna', $item->code) }}"  class="card cardi card-scroll rounded-4">
+                                <img src="{{ asset('storage/' . $item->image) }}" width="100%" height="100%"
                                     class="img-fluid rounded-4 fit">
                             </a>
                         @endforeach
@@ -211,7 +215,7 @@
                             artistId: lagu.artist.user.name
                         };
                     });
-                    console.log('data lagu biilboard',All_song);
+                    console.log('data lagu biilboard', All_song);
                     if (All_song.length > 0) {
                         // Memanggil load_track dengan indeks 0 sebagai lagu pertama
                         load_track(0);
@@ -231,7 +235,7 @@
         function load_track(index_no) {
             if (index_no >= 0 && index_no < All_song.length) {
                 console.log("tester " + index_no);
-                track.src = '{{ asset('storage') }}' + '/' + All_song[index_no].audio;
+                track.src = `https://drive.google.com/uc?export=view&id=${All_song[index_no].audio}`;
                 title.innerHTML = All_song[index_no].judul;
                 artist.innerHTML = All_song[index_no].artistId;
                 track_image.src = '{{ asset('storage') }}' + '/' + All_song[index_no].image;

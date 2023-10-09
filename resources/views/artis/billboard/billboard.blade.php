@@ -13,13 +13,18 @@
                                 <div class="col-7">
                                     <div class="preview-list">
                                         <div class="d-flex flex-column gap-3" style="color: #6C6C6C;">
-                                            <span class="fw-bold fs-4">{{ $billboard->artis->user->name }}</span>
+                                            <span class="fw-bold fs-4">{{ $billboard->artis->user->name }}
+                                                @if ($billboard->artis->is_verified)
+                                                    <span class="mdi mdi-check-decagram text-primary verified-text"></span>
+                                                @endif
+                                            </span>
                                             <span class="deskbill">{{ $billboard->deskripsi }}.</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-4 d-flex text-right justify-content-center">
-                                    <img src="{{ asset('storage/' . $billboard->image_artis) }}" alt="" class="d-block fotoartisbill">
+                                    <img src="{{ asset('storage/' . $billboard->image_artis) }}" alt=""
+                                        class="d-block fotoartisbill">
                                 </div>
                             </div>
                         </div>
@@ -232,12 +237,12 @@
         // function load the track
         function load_track(index_no) {
             if (index_no >= 0 && index_no < All_song.length) {
-                    track.src = '{{ asset('storage') }}' + '/' + All_song[index_no].audio;
-                    title.innerHTML = All_song[index_no].judul;
-                    artist.innerHTML = All_song[index_no].artistId;
-                    track_image.src = '{{ asset('storage') }}' + '/' + All_song[index_no].image;
-                    track.load();
-                    timer = setInterval(range_slider, 1000);
+                track.src = '{{ asset('storage') }}' + '/' + All_song[index_no].audio;
+                title.innerHTML = All_song[index_no].judul;
+                artist.innerHTML = All_song[index_no].artistId;
+                track_image.src = '{{ asset('storage') }}' + '/' + All_song[index_no].image;
+                track.load();
+                timer = setInterval(range_slider, 1000);
             } else {
                 console.error("Index_no tidak valid.");
             }

@@ -50,7 +50,7 @@ class AdminController extends Controller
     protected function persetujuan(): Response
     {
         $title = "MusiCave";
-        $persetujuan = song::where('is_approved', false)->where('type', 'pengajuan')->get();
+        $persetujuan = song::where('type', 'pengajuan')->get();
         return response()->view('admin.persetujuan', compact('title', 'persetujuan'));
     }
     protected function show($id): Response
@@ -232,6 +232,17 @@ class AdminController extends Controller
     protected function pencairanReject(Request $request, string $code)
     {
         try {
+            $penghasilanArtisId = penghasilan::where('id', $code)->first()->artist_id;
+            $id = artist::where('id', $penghasilanArtisId)->first();
+
+            notif::create([
+                'code' => Str::uuid(),
+                'title' => 'pengajuan pencairan uang gagal, ditolak oleh admin',
+                'user_id' => $id->user_id,
+                'is_reject' => false,
+                'type' => 'pencairan'
+            ]);
+
             $penghasilan = penghasilan::where(function ($query) use ($code) {
                 $query->where('is_take', true)->where('is_submit', false)
                     ->orWhere('id', $code);
@@ -490,7 +501,7 @@ class AdminController extends Controller
         $validator = $request->validate(
             [
                 'name' => 'required|string|max:50',
-                'images' => 'image|mimes:jpeg,jpg,png,gif|max:10000', // Menggunakan "image" sebagai aturan validasi
+                'images' => 'image|mimes:jpeg,jpg,png,gif|max:10000',
             ],
             [
                 'images.mimes' => 'File gambar harus berupa JPEG, JPG, PNG, atau GIF.',

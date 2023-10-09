@@ -36,6 +36,10 @@
                                         </span>
                                         <p class="m-0" style="font-weight: 300; font-size: 16px">
                                             {{ $playlistDetail->user->name }}
+                                            @if ($playlistDetail->user->role_id == 1)
+                                                <span class="mdi mdi-check-decagram text-primary verified-text"></span>
+                                            @endif
+                                        </p>
                                     </div>
                                     </p>
                                 </div>
@@ -56,7 +60,7 @@
                     <div class="card-body">
                         <div class="row" style="margin-top: -20px">
                             <div class="col-12">
-                                <div class="preview-list">
+                                <div class="preview-list" id="preview-list-playlist">
                                     @foreach ($songs as $item)
                                         @if ($item->is_approved)
                                             <div class="preview-item">
@@ -172,6 +176,56 @@
             });
 
             reader.readAsDataURL(this.files[0]);
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#search_song').on('keyup', function() {
+                var query = $(this).val();
+                var id = $('#album_id').val()
+                var playlist_id = '{{ $playlistDetail->code }}'
+                $.ajax({
+                    url: `/artis-verified/search_song/${playlist_id}`,
+                    type: 'GET',
+                    data: {
+                        query: query,
+                        id: id
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        var results = response.results;
+                        var $previewList = $('#preview-list-playlist');
+                        $previewList.empty();
+
+                        $.each(results, function(index, result) {
+                            console.log(results);
+                            var $previewItem = $(
+                                '<div class="preview-item" data-song-id="' + result
+                                .id + '">');
+
+                            $previewItem.append(
+                                '<div class="preview-thumbnail"><img src="http://127.0.0.1:8000/storage/' +
+                                result.image + '" width="10%"></div>');
+                            $previewItem.append(
+                                `<div class="preview-item-content d-sm-flex flex-grow"><div class="flex-grow" onclick="putar(${result.id})"><h6 class="preview-subject">` +
+                                result.judul + '</h6><p class="text-muted mb-0">' +
+                                result.artist.user.name +
+                                `</p></div><div class="mr-auto text-sm-right pt-2 pt-sm-0"><div class="text-group">
+                                    <i id="like${result.id}" data-id="${result.id}"
+                                                                onclick="toggleLike(this, ${result.id})"
+                                                                class="shared-icon-like  ${result.isLiked ? 'fas' : 'far'} fa-heart pr-2"></i>
+                                                            </i>
+                                    <p>` +
+                                result.waktu +
+                                `</p>
+                                        </div></div></div>`
+                            );
+
+                            $previewList.append($previewItem);
+                        });
+                    }
+                });
+            });
         });
     </script>
     <script>

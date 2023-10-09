@@ -107,7 +107,12 @@
                                                         <div class="flex-grow">
                                                             <h6 class="preview-subject"
                                                                 onclick="redirectArtis('{{ $item->code }}')"
-                                                                style="cursor: pointer">{{ $item->user->name }}</h6>
+                                                                style="cursor: pointer">{{ $item->user->name }}
+                                                                @if ($item->is_verified)
+                                                                    <span
+                                                                        class="mdi mdi-check-decagram text-primary verified-text"></span>
+                                                                @endif
+                                                            </h6>
                                                             <p class="text-muted mb-0" style="font-weight: 400">
                                                                 <span
                                                                     id="likeCount{{ $item->id }}">{{ number_format($item->likes, 0, ',', '.') }}</span>
@@ -130,7 +135,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 mb-5">
+                <div class="col-12" style="margin-bottom: 4rem;">
                     <h3 class="card-title mt-2 judul" style="font-size: 20px; font-weight: 600">Lagu Yang Sering Didengar
                     </h3>
                     <div class="bordertabel">
@@ -179,7 +184,6 @@
                     <div class="text-center">
                         <div class="text-center">
                             <ul class="pagination justify-content-center">
-                                <!-- Pagination links will be dynamically generated here -->
                             </ul>
                         </div>
                     </div>
@@ -189,7 +193,6 @@
     </div>
     </div>
     </div>
-    {{-- like --}}
     <script>
         var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         $(document).ready(function() {
@@ -198,7 +201,6 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
-                    console.log('like atas', response);
                     response.forEach(function(item) {
                         let songId = item.song_id;
                         let like = document.getElementById(`like-atas${item.song_id}`);
@@ -213,7 +215,6 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
-                    console.log('like bawah', response);
                     response.forEach(function(item) {
                         let songId = item.song_id;
                         let like = document.getElementById(`like-bawah${item.song_id}`);
@@ -255,23 +256,19 @@
             });
         }
     </script>
-    {{-- untuk header sortir --}}
     <script>
         $(document).ready(function() {
-            var ascendingOrder = true; // Menyimpan status urutan saat ini
+            var ascendingOrder = true;
 
             $(".sortable").on("click", function() {
-                // Mengubah urutan saat ini
                 ascendingOrder = !ascendingOrder;
 
-                // Mengubah ikon sesuai dengan urutan saat ini
                 if (ascendingOrder) {
                     $(this).find("i").removeClass("fa-caret-up").addClass("fa-caret-down");
                 } else {
                     $(this).find("i").removeClass("fa-caret-down").addClass("fa-caret-up");
                 }
 
-                // Memanggil fungsi untuk mengurutkan tabel
                 sortTable(ascendingOrder);
             });
 
@@ -289,7 +286,6 @@
                     }
                 });
 
-                // Mengganti urutan baris dalam tabel
                 for (var i = 0; i < rows.length; i++) {
                     $(".table tbody").append(rows[i]);
                 }
@@ -297,34 +293,28 @@
         });
     </script>
 
-    {{-- untuk paginate --}}
     <script>
         $(document).ready(function() {
             var itemsPerPage = 3;
-            var ascendingOrder = true; // Menyimpan status urutan saat ini
+            var ascendingOrder = true;
             var currentPage = 1;
 
-            // Fungsi untuk menyimpan halaman saat ini ke local storage
             function saveCurrentPageToLocalStorage(page) {
                 localStorage.setItem("currentPage", page);
             }
 
-            // Fungsi untuk mendapatkan halaman saat ini dari local storage
             function getCurrentPageFromLocalStorage() {
                 return parseInt(localStorage.getItem("currentPage")) || 1;
             }
 
-            // Mendapatkan halaman saat ini dari local storage atau default ke 1
             currentPage = getCurrentPageFromLocalStorage();
 
             function showTableRows() {
                 var start = (currentPage - 1) * itemsPerPage;
                 var end = start + itemsPerPage;
 
-                // Mengambil semua baris tabel yang ada di tabel
                 var rows = $(".baris").toArray();
 
-                // Urutkan baris sesuai dengan urutan saat ini
                 rows.sort(function(a, b) {
                     var valA = parseInt($(a).find(".table-cell:first-child").text());
                     var valB = parseInt($(b).find(".table-cell:first-child").text());
@@ -336,10 +326,8 @@
                     }
                 });
 
-                // Menyembunyikan semua baris tabel
                 $(".baris").hide();
 
-                // Menampilkan baris-baris yang sesuai dengan halaman saat ini
                 for (var i = start; i < end && i < rows.length; i++) {
                     $(rows[i]).show();
                 }
@@ -349,15 +337,12 @@
                 $(".pagination").empty();
                 var numPages = Math.ceil($(".baris").length / itemsPerPage);
 
-                var maxPaginationPages = 3; // Jumlah maksimum halaman pagination yang ditampilkan
+                var maxPaginationPages = 3;
 
-                // Menentukan halaman pertama yang akan ditampilkan
                 var startPage = Math.max(currentPage - Math.floor(maxPaginationPages / 2), 1);
 
-                // Menentukan halaman terakhir yang akan ditampilkan
                 var endPage = Math.min(startPage + maxPaginationPages - 1, numPages);
 
-                // Tambahkan tombol "Previous" jika ada halaman sebelumnya
                 if (currentPage > 1) {
                     var prevButton = $("<a>")
                         .addClass("page-item")
@@ -368,7 +353,7 @@
                     prevButton.append(prevIcon);
 
                     prevButton.click(function(event) {
-                        event.preventDefault(); // Menghentikan tindakan default
+                        event.preventDefault();
                         currentPage--;
                         showTableRows();
                         updatePagination();
@@ -388,7 +373,7 @@
                     button.text(i);
 
                     button.click(function(event) {
-                        event.preventDefault(); // Menghentikan tindakan default
+                        event.preventDefault();
                         currentPage = parseInt($(this).text());
                         showTableRows();
                         updatePagination();
@@ -398,7 +383,6 @@
                     $(".pagination").append($("<li>").append(button));
                 }
 
-                // Tambahkan tombol "Next" jika ada lebih banyak halaman
                 if (currentPage < numPages) {
                     var nextButton = $("<a>")
                         .addClass("page-item")
@@ -409,7 +393,7 @@
                     nextButton.append(nextIcon);
 
                     nextButton.click(function(event) {
-                        event.preventDefault(); // Menghentikan tindakan default
+                        event.preventDefault();
                         currentPage++;
                         showTableRows();
                         updatePagination();
@@ -434,11 +418,10 @@
             showTableRows();
             updatePagination();
 
-            saveCurrentPageToLocalStorage(currentPage); // Simpan halaman saat ini ke local storage
+            saveCurrentPageToLocalStorage(currentPage);
         });
     </script>
 
-    {{-- untuk href table --}}
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const rows = document.querySelectorAll("tr[data-href]");
@@ -479,7 +462,6 @@
         let Playing_song = false;
         let currentSongId = null;
 
-        // create a audio element
         let track = document.createElement('audio');
 
         let All_song = [];
@@ -499,9 +481,8 @@
                             artistId: lagu.artist.user.name
                         };
                     });
-                    console.log("data lagu yang diambil:", All_song);
+                    localStorage.setItem('All_song', JSON.stringify(All_song));
                     if (All_song.length > 0) {
-                        // Memanggil load_track dengan indeks 0 sebagai lagu pertama
                         load_track();
                     } else {
                         console.error("Data lagu kosong.");
@@ -531,11 +512,8 @@
                         };
                     });
                     All_song.sort((a, b) => b.didengar - a.didengar);
-                    // untuk menurutkan lagu yang tampil pada browser :)
-                    console.log("data lagu bawah:", All_song);
-
+                    localStorage.setItem('All_song_bawah', JSON.stringify(All_song));
                     if (All_song.length > 0) {
-                        // Memanggil load_track dengan indeks 0 sebagai lagu pertama
                         load_track();
                     } else {
                         console.error("Data lagu kosong.");
@@ -548,7 +526,6 @@
         }
         ambilDataLagu();
 
-        // function load the track
         function load_track(index_no) {
             if (index_no >= 0 && index_no < All_song.length) {
                 track.src = `https://drive.google.com/uc?export=view&id=${All_song[index_no].audio}`;
@@ -562,9 +539,7 @@
             }
         }
         load_track(0);
-        // semua function
 
-        // fungsi mute sound
         function mute_sound() {
             if (track.volume === 0) {
                 track.volume = prevVolume;
@@ -576,12 +551,7 @@
             }
             updateMuteButtonIcon();
         }
-        // track.addEventListener('loadedmetadata', function() {
-        //     slider.max = track.duration;
-        // });
 
-
-        // fungsi untuk memeriksa lagu diputar atau tidak
         function justplay() {
             if (Playing_song == false) {
                 playsong();
@@ -590,20 +560,16 @@
             }
         }
 
-        // reset song slider
         function reset_slider() {
             slider.value = 100;
         }
 
-        // play song
         function playsong() {
             if (track.paused) {
                 if (index_no >= 0 && index_no < All_song.length) {
                     track.play();
                     Playing_song = true;
                     play.innerHTML = '<i class="far fa-pause-circle fr" aria-hidden="true"></i>';
-                } else {
-                    console.log('Tidak ada lagu yang dipilih.');
                 }
             } else {
                 track.pause();
@@ -611,12 +577,8 @@
                 play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>';
             }
 
-            // Periksa apakah index_no memiliki nilai yang benar
             if (index_no >= 0 && index_no < All_song.length) {
-                // Perbarui playCount dengan songId yang sesuai
                 const songId = All_song[index_no].id;
-                // history(songId);
-                console.log(All_song[index_no])
                 updatePlayCount(songId);
             }
             track.addEventListener('timeupdate', updateDuration);
@@ -634,17 +596,9 @@
                     },
                 })
                 .then(response => response.json())
-                .then(data => {
-                    console.log('Play count updated:', data.message);
-                })
-                .catch(error => {
-                    // Tangani error jika diperlukan
-                    console.error('Error updating play count:', error);
-                });
         }
 
         function history(songId) {
-            console.log('Mengirim riwayat untuk songId:', songId);
             $.ajax({
                 url: '/simpan-riwayat',
                 method: 'POST',
@@ -654,21 +608,11 @@
                 data: {
                     song_id: songId,
                 },
-                success: function(response) {
-                    console.log('Respon dari simpan-riwayat:', response);
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error saat mengirim riwayat:', error);
-
-                    // Tambahkan ini untuk mencetak pesan kesalahan dari respons server
-                    // console.log('Pesan Kesalahan Server:', xhr.responseText);
-                }
             });
         }
 
         shuffleButton.addEventListener('click', function() {
             shuffle_song();
-            console.log(shuffleButton);
         });
 
 
@@ -676,26 +620,18 @@
             let currentIndex = All_song.length,
                 randomIndex, temporaryValue;
 
-            // Selama masih ada elemen untuk diacak
             while (currentIndex !== 0) {
-                // Pilih elemen yang tersisa secara acak
                 randomIndex = Math.floor(Math.random() * currentIndex);
                 currentIndex--;
-
-                // Tukar elemen terpilih dengan elemen saat ini
                 temporaryValue = All_song[currentIndex];
                 All_song[currentIndex] = All_song[randomIndex];
                 All_song[randomIndex] = temporaryValue;
             }
-            // Setel ulang indeks lagu saat ini ke 0
             index_no = 0;
-            // Memuat lagu yang diacak
             load_track(index_no);
             playsong();
         }
 
-
-        // pause song
         function pausesong() {
             track.pause();
             Playing_song = false;
@@ -703,10 +639,11 @@
         }
 
         function putaran(id) {
-            console.log('ID yang dikirim:', id);
-            id = parseInt(id); // Pastikan id berupa bilangan bulat
+            const storedAllSong = localStorage.getItem('All_song');
+            if (storedAllSong) {
+                All_song = JSON.parse(storedAllSong);
+            }
             const lagu = All_song.find(song => song.id === id);
-            console.log('lagu yang dikirim :', lagu);
 
             if (lagu) {
                 const new_index_no = All_song.indexOf(lagu);
@@ -717,7 +654,7 @@
                     playsong();
                     ambilDataLaguDidengar();
                 } else {
-                    index_no = 0; // Atur ke 0 jika lagu tidak ditemukan
+                    index_no = 0;
                     load_track(index_no);
                     playsong();
                 }
@@ -728,10 +665,11 @@
         }
 
         function putar(id) {
-            console.log('ID yang dikirim:', id);
-            id = parseInt(id); // Pastikan id berupa bilangan bulat
+            const storedAllSong = localStorage.getItem('All_song_bawah');
+            if (storedAllSong) {
+                All_song = JSON.parse(storedAllSong);
+            }
             const lagu = All_song.find(song => song.id === id);
-            console.log('lagu yang dikirim :', lagu);
 
             if (lagu) {
                 const new_index_no = All_song.indexOf(lagu);
@@ -742,7 +680,7 @@
                     playsong();
                     ambilDataLagu();
                 } else {
-                    index_no = 0; // Atur ke 0 jika lagu tidak ditemukan
+                    index_no = 0;
                     load_track(index_no);
                     playsong();
                 }
@@ -768,14 +706,12 @@
                 playsong();
             }
             if (autoplay == 1) {
-                // Set interval sebelum memulai lagu selanjutnya
                 setTimeout(function() {
                     track.play();
-                }, 1000); // Delay 1 detik sebelum memulai lagu selanjutnya
+                }, 1000);
             }
         }
 
-        // fungsi untuk memutar lagu sebelumnya
         function previous_song() {
             const currentSongIndex = All_song.findIndex(song => song.id === currentSongId);
             if (currentSongIndex !== -1 && currentSongIndex > 0) {
@@ -789,19 +725,15 @@
             }
         }
 
-        // ubah volume
         function volume_change() {
             volume_show.innerHTML = recent_volume.value;
             track.volume = recent_volume.value / 100;
         }
 
-        // ubah posisi slider
-        // Fungsi untuk mengubah posisi slider
         function change_duration() {
             let slider_value = slider.value;
             if (!isNaN(track.duration) && isFinite(slider_value)) {
                 track.currentTime = track.duration * (slider_value / 100);
-                console.log(track.duration * (slider_value / 100), slider_value, track.currentTime)
             }
         }
 
@@ -814,10 +746,8 @@
             track.play();
         })
 
-        // range slider
         function range_slider() {
             let position = 0;
-            // memperbaharui posisi slider
             if (!isNaN(track.duration)) {
                 position = track.currentTime * (100 / track.duration);
                 slider.value = position;
@@ -833,7 +763,6 @@
                 }
             }
 
-            // kalkulasi waktu dari durasi audio
             const durationElement = document.getElementById('duration');
             const durationMinutes = Math.floor(track.duration / 60);
             const durationSeconds = Math.floor(track.duration % 60);
@@ -843,7 +772,6 @@
 
         track.addEventListener('timeupdate', range_slider);
 
-        // fungsi ini akan dijalankan ketika lagu selesai (mengubah icon play menjadi pause)
         if (track.ended) {
             play.innerHTML = '<i class="fa fa-play-circle" aria-hidden="true"></i>';
             if (autoplay == 1) {
@@ -853,44 +781,30 @@
             }
         }
 
-        // Fungsi untuk mengupdate durasi waktu (waktu berjalan sesuai real time)
         function updateDuration() {
-            // Menghitung durasi waktu yang telah berlalu
             const currentMinutes = Math.floor(track.currentTime / 60);
             const currentSeconds = Math.floor(track.currentTime % 60);
-            // Memformat durasi waktu yang akan ditampilkan
             const formattedCurrentTime = `${currentMinutes}:${currentSeconds < 10 ? '0' : ''}${currentSeconds}`;
-            // console.log(formattedCurrentTime);
-            // Menampilkan durasi waktu pada elemen yang sesuai
             const currentTimeElement = document.getElementById('current-time');
             currentTimeElement.textContent = formattedCurrentTime;
         }
 
-        // Fungsi yang dipanggil saat audio selesai dimainkan
         function onTrackEnded() {
-
-            // Menghapus event listener setelah audio selesai dimainkan
             track.removeEventListener('timeupdate', updateDuration);
         }
 
-        // Event listener for mute button
         muteButton.addEventListener('click', function() {
             mute_sound();
             updateMuteButtonIcon();
         });
 
         recent_volume.addEventListener('input', function() {
-            // Calculate volume value based on slider position
             let slider_value = recent_volume.value / 100;
             track.volume = slider_value;
-
-            // Update mute button icon and volume display
             updateMuteButtonIcon();
             volume_show.innerHTML = Math.round(slider_value * 100);
         });
 
-
-        // Function to update mute button icon
         function updateMuteButtonIcon() {
             if (track.volume === 0) {
                 muteButton.classList.remove('mdi-volume-heigh');

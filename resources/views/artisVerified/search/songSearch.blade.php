@@ -50,28 +50,35 @@
                                 <div class="col-12">
                                     <div class="preview-list">
                                         @foreach ($songs as $item)
-                                            <div class="preview-item">
-                                                <div class="preview-thumbnail">
-                                                    <img src="{{ asset('storage/' . $item->image) }}" width="10%">
-                                                </div>
-                                                <div class="preview-item-content d-sm-flex flex-grow">
-                                                    <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
-                                                        onclick="putar({{ $item->id }})">
-                                                        <h6 class="preview-subject">{{ $item->judul }}</h6>
-                                                        <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
-                                                    </a>
-                                                    <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                        <div class="text-group">
-                                                            <i id="like{{ $item->id }}" data-id="{{ $item->id }}"
-                                                                onclick="toggleLike(this, {{ $item->id }})"
-                                                                class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
-                                                            </i>
-                                                            <p>{{ $item->waktu }}</p>
+                                            @foreach ($songs as $item)
+                                                @if ($item->is_approved)
+                                                    <div class="preview-item">
+                                                        <div class="preview-thumbnail">
+                                                            <img src="{{ asset('storage/' . $item->image) }}"
+                                                                width="10%">
+                                                        </div>
+                                                        <div class="preview-item-content d-sm-flex flex-grow">
+                                                            <a href="#lagu-diputar"
+                                                                class="flex-grow text-decoration-none link"
+                                                                onclick="putar({{ $item->id }})">
+                                                                <h6 class="preview-subject">{{ $item->judul }}</h6>
+                                                                <p class="text-muted mb-0">{{ $item->artist->user->name }}
+                                                                </p>
+                                                            </a>
+                                                            <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                                                <div class="text-group">
+                                                                    <i id="like{{ $item->id }}"
+                                                                        data-id="{{ $item->id }}"
+                                                                        onclick="toggleLike(this, {{ $item->id }})"
+                                                                        class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2"></i>
+                                                                    </i>
+                                                                    <p>{{ $item->waktu }}</p>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        @endforeach
+                                                @endIf
+                                            @endforeach
                                     </div>
                                 </div>
                             </div>
@@ -103,7 +110,6 @@
             //     justplay();
             // }
         </script>
-
     </div>
 
     <script>

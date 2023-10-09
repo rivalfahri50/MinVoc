@@ -189,7 +189,8 @@
                 <hr class="divider"> <!-- Divider -->
             </div>
             <div class="col-md-12 grid-margin stretch-card">
-                <h3 class="card-title judul">{{ $playlistDetail->deskripsi == 'none' ? '' : "$playlistDetail->deskripsi" }}
+                <h3 class="card-title judul">
+                    {{ $playlistDetail->deskripsi == 'none' ? '' : "$playlistDetail->deskripsi" }}
                 </h3>
                 <form class="col-6 mb-4 p-0 nav-link search">
                     <input type="text" id="search_song" class="form-control rounded-4" placeholder="Cari musik">
@@ -347,7 +348,6 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
-                    console.log('like pada playlist',response);
                     response.forEach(function(item) {
                         const songId = item.song_id;
                         const like = document.getElementById(`like-playlist${item.song_id}`);
@@ -391,6 +391,62 @@
     </script>
 
     <script>
+        $(document).ready(function() {
+            $('#search_song').on('keyup', function() {
+                var query = $(this).val();
+                let playlist_id = '{{ $playlistDetail->code }}';
+                $.ajax({
+                    url: `/pengguna/search_song/${playlist_id}`,
+                    type: 'GET',
+                    data: {
+                        query: query
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        var results = response.results;
+                        var $previewList = $('.preview-list');
+                        $previewList.empty();
+
+                        $.each(results, function(index, result) {
+                            var $previewItem = $(
+                                '<div class="preview-item" data-song-id="' + result
+                                .id + '">');
+                            $previewItem.append(
+                                '<div class="preview-thumbnail"><img src="http://127.0.0.1:8000/storage/' +
+                                result.image + '" width="10%"></div>');
+                            $previewItem.append(
+                                `<div class="preview-item-content d-sm-flex flex-grow" href="#lagu-diputar" onclick="putar(${result.id})"><div class="flex-grow"><h6 class="preview-subject">` +
+                                result.judul + '</h6><p class="text-muted mb-0">' +
+                                result.artist.user.name +
+                                `</p></div><div class="mr-auto text-sm-right pt-2 pt-sm-0"><div class="text-group">
+                                    <i id="like-playlist{ ${result.id} }"
+                                                                data-id=" ${result.id} "
+                                                                onclick="toggleLike(this, ${result.id})"
+                                                                class="shared-icon-like ( ${result.isLiked} ? 'fas' : 'far' ) fa-heart pr-2"></i>
+                                    <p>` +
+                                result.waktu + '</p>' +
+                                `<p><form action="/pengguna/hapusSongPlaylist/${result.code}" method="get">
+                                <button type="submit" class="iconminus"><i class="far fa-minus-square text-danger" style="font-size: 19px"></i></button></form></p>` +
+                                `<p><a data-bs-toggle="modal"
+                                                                    data-bs-target="#staticBackdrop-${result.code}"
+                                                                    style="color: #957dad">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" x="0px"
+                                                                        y="0px" width="20" height="20"
+                                                                        viewBox="0 2 24 24">
+                                                                        <path fill="#957DAD"
+                                                                            d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 11 L 7 11 L 7 13 L 11 13 L 11 17 L 13 17 L 13 13 L 17 13 L 17 11 L 13 11 L 13 7 L 11 7 z">
+                                                                        </path>
+                                                                    </svg></a></p></div></div></div>`
+                            );
+                            $previewList.append($previewItem);
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
         let next = document.querySelector('#next');
@@ -422,7 +478,6 @@
         let All_song = [];
 
         function ambilDataLagu(playlistId) {
-            console.log('id playlist', playlistId);
             $.ajax({
                 url: '/ambil-lagu-playlist',
                 type: 'GET',
@@ -439,7 +494,6 @@
                         };
                     });
                     All_song = All_song.filter(lagu => lagu.playlist_id == playlistId)
-                    console.log("data lagu sesuai playlist:", All_song);
                     if (All_song.length > 0) {
                         // Memanggil load_track dengan indeks 0 sebagai lagu pertama
                         load_track(0);
@@ -518,8 +572,6 @@
             if (index_no >= 0 && index_no < All_song.length) {
                 // Perbarui playCount dengan songId yang sesuai
                 const songId = All_song[index_no].id;
-                // history(songId);
-                console.log(All_song[index_no])
                 updatePlayCount(songId);
 
             }
@@ -538,17 +590,9 @@
                     },
                 })
                 .then(response => response.json())
-                .then(data => {
-                    console.log('Play count updated:', data.message);
-                })
-                .catch(error => {
-                    // Tangani error jika diperlukan
-                    console.error('Error updating play count:', error);
-                });
         }
 
         function history(songId) {
-            console.log('Mengirim riwayat untuk songId:', songId);
             $.ajax({
                 url: '/simpan-riwayat',
                 method: 'POST',
@@ -558,21 +602,11 @@
                 data: {
                     song_id: songId,
                 },
-                success: function(response) {
-                    console.log('Respon dari simpan-riwayat:', response);
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error saat mengirim riwayat:', error);
-
-                    // Tambahkan ini untuk mencetak pesan kesalahan dari respons server
-                    // console.log('Pesan Kesalahan Server:', xhr.responseText);
-                }
             });
         }
 
         shuffleButton.addEventListener('click', function() {
             shuffle_song();
-            console.log(shuffleButton);
         });
 
 
@@ -607,10 +641,8 @@
         }
 
         function putar(id) {
-            console.log('ID yang dikirim:', id);
             id = parseInt(id); // Pastikan id berupa bilangan bulat
             const lagu = All_song.find(song => song.id === id);
-            console.log('lagu yang dikirim :', lagu);
 
             if (lagu) {
                 const new_index_no = All_song.indexOf(lagu);
@@ -672,7 +704,6 @@
             let slider_value = slider.value;
             if (!isNaN(track.duration) && isFinite(slider_value)) {
                 track.currentTime = track.duration * (slider_value / 100);
-                console.log(track.duration * (slider_value / 100), slider_value, track.currentTime)
             }
         }
 
@@ -731,7 +762,6 @@
             const currentSeconds = Math.floor(track.currentTime % 60);
             // Memformat durasi waktu yang akan ditampilkan
             const formattedCurrentTime = `${currentMinutes}:${currentSeconds < 10 ? '0' : ''}${currentSeconds}`;
-            // console.log(formattedCurrentTime);
             // Menampilkan durasi waktu pada elemen yang sesuai
             const currentTimeElement = document.getElementById('current-time');
             currentTimeElement.textContent = formattedCurrentTime;

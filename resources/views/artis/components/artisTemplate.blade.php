@@ -143,13 +143,6 @@
             color: inherit;
         }
 
-        .dropdown-item:hover,
-        .dropdown-item:focus {
-            color: inherit;
-            text-decoration: none;
-            background-color: inherit;
-        }
-
         .popupalasan:hover {
             color: #957DAD
         }
@@ -281,7 +274,7 @@
                         <span class="menu-title">Album</span>
                         <a href="#ui-basic" data-toggle="collapse" aria-expanded="false" aria-controls="ui-basic">
                             <span class="menu-arrow gh">
-                                <i class="mdi mdi-chevron-right"></i>
+                                <i class="mdi mdi-chevron-down"></i>
                             </span>
                         </a>
                     </a>
@@ -364,8 +357,8 @@
                                         aria-hidden="true"></i></button>
                                 <button onclick="previous_song()" id="pre"><i class="fa fa-step-backward"
                                         aria-hidden="true"></i></button>
-                                    <button onclick="justplay()" id="play"><i class="far fa-play-circle fr"
-                                            aria-hidden="true"></i></button>
+                                <button onclick="justplay()" id="play"><i class="far fa-play-circle fr"
+                                        aria-hidden="true"></i></button>
                                 <button onclick="next_song()" id="next"><i class="fa fa-step-forward"
                                         aria-hidden="true"></i></button>
                             </div>
@@ -417,7 +410,8 @@
                                             </svg>
                                         </span>
                                         <input type="text" id="search" name="search" class="form-control"
-                                            placeholder="cari di sini" style="border-radius: 0px 15px 15px 0px" value="{{ old('search') }}" >
+                                            placeholder="cari di sini" style="border-radius: 0px 15px 15px 0px"
+                                            value="{{ old('search') }}">
                                     </div>
                                 </form>
                                 <ul id="search-results"></ul>
@@ -617,61 +611,6 @@
 
             <script>
                 $(document).ready(function() {
-                    $('#search_song').on('keyup', function() {
-                        var query = $(this).val();
-                        var id = $('#album_id').val()
-                        $.ajax({
-                            url: '/artis/search_song/',
-                            type: 'GET',
-                            data: {
-                                query: query,
-                                id: id,
-                            },
-                            dataType: 'json',
-                            success: function(response) {
-                                var results = response.results;
-                                var $previewList = $('.preview-list');
-                                $previewList.empty();
-
-                                $.each(results, function(index, result) {
-                                    var $previewItem = $(
-                                        '<div class="preview-item" data-song-id="' + result
-                                        .id + '">');
-
-                                    $previewItem.append(
-                                        '<div class="preview-thumbnail"><img src="http://127.0.0.1:8000/storage/' +
-                                        result.image + '" width="10%"></div>');
-                                    $previewItem.append(
-                                        '<div class="preview-item-content d-sm-flex flex-grow"><div class="flex-grow"><h6 class="preview-subject">' +
-                                        result.judul + '</h6><p class="text-muted mb-0">' +
-                                        result.artist.user.name +
-                                        '</p></div><div class="mr-auto text-sm-right pt-2 pt-sm-0"><div class="text-group"><i onclick="myFunction(this)" class="far fa-heart pr-2"></i><p>' +
-                                        result.waktu +
-                                        `</p>
-
-                                        <a data-bs-toggle="modal"
-                                                            data-bs-target="#staticBackdrop-${result.code}"
-                                                            style="color: #957dad">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" x="0px"
-                                                                y="0px" width="20" height="20"
-                                                                viewBox="0 2 24 24">
-                                                                <path fill="#957DAD"
-                                                                    d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 11 L 7 11 L 7 13 L 11 13 L 11 17 L 13 17 L 13 13 L 17 13 L 17 11 L 13 11 L 13 7 L 11 7 z">
-                                                                </path>
-                                                            </svg>
-                                                        </a>
-
-                                        </div></div></div>`
-                                    );
-
-                                    $previewList.append($previewItem);
-                                });
-                            }
-                        });
-                    });
-                });
-
-                $(document).ready(function() {
                     $('#search').on('keyup', function() {
                         var query = $(this).val();
                         $.ajax({
@@ -702,7 +641,7 @@
                 });
             </script>
 
-            {{-- <script>
+            <script>
                 var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                 $(document).ready(function() {
                     $.ajax({
@@ -710,59 +649,10 @@
                         type: 'GET',
                         dataType: 'json',
                         success: function(response) {
-                            console.log(response);
+                            // console.log(response);
                             response.forEach(function(item) {
-                                let songId = item.song_id;
-                                let like = document.getElementById(`like${item.song_id}`);
-                                like.classList.toggle('fas');
-                            })
-                        }
-                    });
-                });
-                $(document).ready(function() {
-                    $.ajax({
-                        url: `/song/check`,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(response) {
-                            console.log(response);
-                            response.forEach(function(item) {
-                                let songId = item.song_id;
-                                let like = document.getElementById(`like-2${item.song_id}`);
-                                if (like) {
-                                    like.classList.toggle('fas');
-                                }
-                            })
-                        }
-                    });
-                });
-                $(document).ready(function() {
-                    $.ajax({
-                        url: `/song/check`,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(response) {
-                            console.log(response);
-                            response.forEach(function(item) {
-                                let songId = item.song_id;
-                                let like = document.getElementById(`like-3${item.song_id}`);
-                                if (like) {
-                                    like.classList.toggle('fas');
-                                }
-                            })
-                        }
-                    });
-                });
-                $(document).ready(function() {
-                    $.ajax({
-                        url: `/song/check`,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(response) {
-                            console.log(response);
-                            response.forEach(function(item) {
-                                let songId = item.song_id;
-                                let like = document.getElementById(`like-suka${item.song_id}`);
+                                const songId = item.song_id;
+                                const like = document.getElementById(`like${item.song_id}`);
                                 if (like) {
                                     like.classList.toggle('fas');
                                 }
@@ -772,7 +662,12 @@
                 });
 
                 function toggleLike(iconElement, songId) {
-                    let isLiked = iconElement.classList.contains('fas');
+                    const isLiked = iconElement.classList.contains('fas');
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
 
                     $.ajax({
                         url: `/song/${songId}/like`,
@@ -792,492 +687,43 @@
                     })
                 }
 
+                function likeArtist(iconElement, artistId) {
+                    let isLiked = iconElement.classList.contains('fas');
+                    $.ajax({
+                        url: `/artist/${artistId}/like`,
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function(response) {
+                            console.log(response);
+                            if (response.success) {
+                                const likeCountElement = document.getElementById(`likeCount${artistId}`);
+                                if (likeCountElement) {
+                                    likeCountElement.textContent = response.likes;
+                                }
+                                if (isLiked) {
+                                    iconElement.classList.remove('fas');
+                                    iconElement.classList.add('far');
+                                } else {
+                                    iconElement.classList.remove('far');
+                                    iconElement.classList.add('fas');
+                                }
+                                updateLikeStatus(artistId, !isLiked);
+                            }
+                        },
+                        error: function(response) {
+                            console.log(response);
+                        }
+                    })
+                }
 
                 function updateSongLikeStatus(songId, isLiked) {
-                    let likeIcons = document.querySelectorAll(`.shared-icon-like[data-id="${songId}"]`);
+                    const likeIcons = document.querySelectorAll(`.shared-icon-like[data-id="${songId}"]`);
                     likeIcons.forEach(likeIcon => {
                         likeIcon.classList.toggle('fas', isLiked);
                         likeIcon.classList.toggle('far', !isLiked);
                     });
                 }
-            </script> --}}
-
-
-            {{-- <script>
-                let previous = document.querySelector('#pre');
-                let play = document.querySelector('#play');
-                let next = document.querySelector('#next');
-                let title = document.querySelector('#title');
-                let artist = document.querySelector('#artist');
-
-                let muteButton = document.querySelector('#volume_icon')
-                let recent_volume = document.querySelector('#volume');
-                let volume_show = document.querySelector('#volume_show');
-
-                let slider = document.querySelector('#duration_slider');
-                let show_duration = document.querySelector('#show_duration');
-                let track_image = document.querySelector('#track_image');
-                let shuffleButton = document.querySelector('#shuffle_button');
-                let auto_play = document.querySelector('#auto');
-
-                let timer;
-                let autoplay = 1;
-                let playCount = 0;
-                let prevVolume;
-                let currentTime = 1;
-
-                let index_no = 0;
-                let Playing_song = false;
-
-                // create a audio element
-                let track = document.createElement('audio');
-
-
-                let All_song = [];
-
-                // const playButton = document.getElementById('playButton');
-                // const pauseButton = document.getElementById('pauseButton');
-                // const progress = document.getElementById('progress');
-                // const currentTime = document.getElementById('currentTime');
-                // const duration = document.getElementById('duration');
-
-                // function ambilDataLagu() {
-                // fetch('/ambil-lagu')
-                //     .then(response => response.json())
-                //     .then(data => {
-                //         All_song = data.map(lagu => {
-                //             return {
-                //                 id: lagu.id,
-                //                 judul: lagu.judul,
-                //                 audio: lagu.audio,
-                //                 image: lagu.image,
-                //                 artistId: lagu.artist.user.name
-                //             };
-                //         });
-                //         play_song()
-                //     })
-                //     .catch(error => {
-                //         console.error('Error fetching data:', error);
-                //     });
-                // // }
-
-                // function play_song() {
-                //     const audioUrls = All_song.map(song => song.audio);
-                //     console.log(audioUrls);
-                //     const sound = new Howl({
-                //         src: [
-                //             ['http://127.0.0.1:8000/storage/musics/h0dTC0RQfUHTqfgHm7ncF54rwjo83T94eBdv1pxQ.mp3']
-                //         ],
-                //         html5: true,
-                //         onplay: () => {
-                //             playButton.disabled = true;
-                //             pauseButton.disabled = false;
-                //         },
-                //         onpause: () => {
-                //             playButton.disabled = false;
-                //             pauseButton.disabled = true;
-                //         },
-                //         onend: () => {
-                //             playButton.disabled = false;
-                //             pauseButton.disabled = true;
-                //         },
-                //         onload: () => {
-                //             // The audio file is loaded, so we can update the duration
-                //             duration.textContent = formatTime(sound.duration());
-                //         },
-                //         onseek: () => {
-                //             updateUI();
-                //         }
-                //     });
-
-                //     playButton.addEventListener('click', () => {
-                //         sound.play();
-                //     });
-
-                //     pauseButton.addEventListener('click', () => {
-                //         sound.pause();
-                //     });
-
-                //     sound.on('play', () => {
-                //         // Start a timer to update the progress bar and current time
-                //         updateProgressInterval = setInterval(updateUI, 100);
-                //     });
-
-                //     sound.on('pause', () => {
-                //         // Clear the timer when paused
-                //         clearInterval(updateProgressInterval);
-                //     });
-
-                //     progress.addEventListener('input', () => {
-                //         const seekTime = (progress.value / 100) * sound.duration();
-                //         sound.seek(seekTime);
-                //         updateUI();
-                //     });
-
-                //     let updateProgressInterval;
-
-                //     function updateUI() {
-                //         const currentTimeValue = sound.seek();
-                //         const durationValue = sound.duration();
-
-                //         const percentage = (currentTimeValue / durationValue) * 100;
-                //         progress.value = isNaN(percentage) ? 0 : percentage;
-                //         currentTime.textContent = formatTime(currentTimeValue);
-                //     }
-
-                //     function formatTime(seconds) {
-                //         const minutes = Math.floor(seconds / 60);
-                //         const remainingSeconds = Math.floor(seconds % 60);
-                //         return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
-                //     }
-                // }
-
-                $.ajax({
-                    url: '/ambil-lagu',
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(data) {
-                        All_song = data.map(lagu => {
-                            return {
-                                id: lagu.id,
-                                judul: lagu.judul,
-                                audio: lagu.audio,
-                                image: lagu.image,
-                                artistId: lagu.artist.user.name
-                            };
-                        });
-                        console.log("data lagu yang diambil:", All_song);
-                        if (All_song.length > 0) {
-                            // Memanggil load_track dengan indeks 0 sebagai lagu pertama
-                            load_track(0);
-                        } else {
-                            console.error("Data lagu kosong.");
-                        }
-                    },
-                    error: function(error) {
-                        console.error('Error fetching data:', error);
-                    }
-                });
-
-                console.log("audio media -> ", slider);
-
-                ambilDataLagu();
-
-                // function load the track
-                function load_track(index_no) {
-                    if (index_no >= 0 && index_no < All_song.length) {
-                        console.log("tester " + index_no);
-                        track.src = '{{ asset('storage') }}' + '/' + All_song[index_no].audio;
-                        title.innerHTML = All_song[index_no].judul;
-                        artist.innerHTML = All_song[index_no].artistId;
-                        track_image.src = '{{ asset('storage') }}' + '/' + All_song[index_no].image;
-                        track.load();
-                        timer = setInterval(range_slider, 1000);
-                    } else {
-                        console.log(All_song.length);
-                        console.error("Index_no tidak valid.");
-                    }
-                }
-
-                load_track(0);
-
-                // fungsi mute sound
-                function mute_sound() {
-                    if (track.volume === 0) {
-                        track.volume = prevVolume;
-                        recent_volume.value = prevVolume * 100;
-                    } else {
-                        prevVolume = track.volume;
-                        track.volume = 0;
-                        recent_volume.value = 0;
-                    }
-                    updateMuteButtonIcon();
-                }
-
-                // fungsi untuk memeriksa lagu diputar atau tidak
-                function justplay() {
-                    if (Playing_song == false) {
-                        playsong();
-                    } else {
-                        pausesong();
-                    }
-                }
-
-                // reset song slider
-                function reset_slider() {
-                    slider.value = 100;
-                }
-
-                // play song
-                function playsong() {
-                    if (track.paused) {
-                        track.play();
-                        Playing_song = true;
-                        play.innerHTML = '<i class="far fa-pause-circle fr" aria-hidden="true"></i>';
-                    } else {
-                        track.pause();
-                        Playing_song = false;
-                        play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>';
-                    }
-
-                    // Periksa apakah index_no memiliki nilai yang benar
-                    if (index_no >= 0 && index_no < All_song.length) {
-                        // Perbarui playCount dengan songId yang sesuai
-                        let songId = All_song[index_no].id;
-                        console.log(All_song[index_no])
-                        updatePlayCount(songId);
-                        history(songId);
-
-                    }
-                    track.addEventListener('timeupdate', updateDuration);
-                    playCount++;
-                }
-
-                var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-                function updatePlayCount(songId) {
-                    fetch(`/update-play-count/${songId}`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': csrfToken
-                            },
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log('Play count updated:', data.message);
-                        })
-                        .catch(error => {
-                            // Tangani error jika diperlukan
-                            console.error('Error updating play count:', error);
-                        });
-                }
-
-                function history(songId) {
-                    console.log('Mengirim riwayat untuk songId:', songId);
-                    $.ajax({
-                        url: '/simpan-riwayat',
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': csrfToken
-                        },
-                        data: {
-                            song_id: songId,
-                        },
-                        success: function(response) {
-                            console.log('Respon dari simpan-riwayat:', response);
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Error saat mengirim riwayat:', error);
-                        }
-                    });
-                }
-
-                shuffleButton.addEventListener('click', function() {
-                    shuffle_song();
-                });
-
-
-                function shuffle_song() {
-                    let currentIndex = All_song.length,
-                        randomIndex, temporaryValue;
-
-                    if (track.paused === false) {
-                        track.pause();
-                    }
-
-                    // Selama masih ada elemen untuk diacak
-                    while (currentIndex !== 0) {
-                        // Pilih elemen yang tersisa secara acak
-                        randomIndex = Math.floor(Math.random() * currentIndex);
-                        currentIndex--;
-
-                        // Tukar elemen terpilih dengan elemen saat ini
-                        temporaryValue = All_song[currentIndex];
-                        All_song[currentIndex] = All_song[randomIndex];
-                        All_song[randomIndex] = temporaryValue;
-                    }
-                    // Setel ulang indeks lagu saat ini ke 0
-                    index_no = 0;
-                    // Memuat lagu yang diacak
-                    load_track(index_no);
-                    playsong();
-                }
-                // pause song
-                function pausesong() {
-                    track.pause();
-                    Playing_song = false;
-                    play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>'
-                }
-
-                function putar(id) {
-                    console.log('ID yang dikirim:', id);
-                    id = id - 1;
-                    let lagu = All_song[id];
-                    // alert(All_song.length - 1 + " " + id);
-                    if (lagu) {
-                        let new_index_no = All_song.indexOf(lagu);
-                        if (new_index_no >= 0) {
-                            index_no = new_index_no;
-                            load_track(id);
-                            playsong();
-                        } else {
-                            index_no = 0;
-                            load_track(index_no);
-                            playsong();
-                        }
-                    } else {
-                        console.error('Lagu dengan ID ' + id + ' tidak ditemukan dalam data lagu.');
-                    }
-                }
-
-                track.addEventListener('ended', function() {
-                    // Panggil fungsi untuk memutar lagu selanjutnya
-                    next_song();
-                });
-
-                // fungsi untuk memutar lagu sesudahnya
-                function next_song() {
-                    if (index_no < All_song.length - 1) {
-                        index_no += 1;
-                    } else {
-                        index_no = 0;
-                    }
-                    load_track(index_no);
-                    playsong();
-                    if (autoplay == 1) {
-                        // Set interval sebelum memulai lagu selanjutnya
-                        setTimeout(function() {
-                            track.play();
-                        }, 1000); // Delay 1 detik sebelum memulai lagu selanjutnya
-                    }
-                }
-
-                // fungsi untuk memutar lagu sebelumnya
-                function previous_song() {
-                    if (index_no > 0) {
-                        index_no -= 1;
-                    } else {
-                        index_no = All_song.length - 1;
-                    }
-                    load_track(index_no);
-                    playsong();
-                }
-
-                // ubah volume
-                function volume_change() {
-                    volume_show.innerHTML = recent_volume.value;
-                    track.volume = recent_volume.value / 100;
-                }
-
-                function change_duration() {
-                    let slider_value = parseInt(slider.value);
-                    if (!isNaN(track.duration) && isFinite(slider_value)) {
-                        // track.duration * (slider_value / 100);
-                        // console.log(slider);
-                        slider.currentTime = track.duration * (slider_value / 100);
-                        console.log(slider.currentTime);
-                    }
-                }
-
-                slider.addEventListener('click', function() {
-                    change_duration();
-                    clearInterval(timer);
-                    Playing_song = true;
-                    play.innerHTML = '<i class="far fa-pause-circle fr" aria-hidden="true"></i>';
-                    track.addEventListener('timeupdate', updateDuration)
-                    track.play();
-                })
-
-                // range slider
-                function range_slider() {
-                    let position = 0;
-                    if (!isNaN(track.duration)) {
-                        position = track.currentTime * (100 / track.duration);
-                        slider.value = position;
-                    }
-                    if (track.ended) {
-                        play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>';
-                        if (autoplay == 1) {
-                            index_no += 1;
-                            load_track(index_no);
-                            playsong();
-                        }
-                    }
-
-                    // kalkulasi waktu dari durasi audio
-                    let durationElement = document.getElementById('duration');
-                    let durationMinutes = Math.floor(track.duration / 60);
-                    let durationSeconds = Math.floor(track.duration % 60);
-                    let formattedDuration = `${durationMinutes}:${durationSeconds < 10 ? '0' : ''}${durationSeconds}`;
-                    durationElement.textContent = formattedDuration;
-                }
-
-                track.addEventListener('timeupdate', range_slider);
-
-                // fungsi ini akan dijalankan ketika lagu selesai (mengubah icon play menjadi pause)
-                if (track.ended) {
-                    play.innerHTML = '<i class="fa fa-play-circle" aria-hidden="true"></i>';
-                    if (autoplay == 1) {
-                        index_no += 1;
-                        load_track(index_no);
-                        playsong();
-                    }
-                }
-
-                // Fungsi untuk mengupdate durasi waktu (waktu berjalan sesuai real time)
-                function updateDuration() {
-                    // Menghitung durasi waktu yang telah berlalu
-                    let currentMinutes = Math.floor(track.currentTime / 60);
-                    let currentSeconds = Math.floor(track.currentTime % 60);
-                    // Memformat durasi waktu yang akan ditampilkan
-                    let formattedCurrentTime = `${currentMinutes}:${currentSeconds < 10 ? '0' : ''}${currentSeconds}`;
-                    // console.log(formattedCurrentTime);
-                    // Menampilkan durasi waktu pada elemen yang sesuai
-                    let currentTimeElement = document.getElementById('current-time');
-                    currentTimeElement.textContent = formattedCurrentTime;
-                }
-
-                // Fungsi yang dipanggil saat audio selesai dimainkan
-                function onTrackEnded() {
-
-                    // Menghapus event listener setelah audio selesai dimainkan
-                    track.removeEventListener('timeupdate', updateDuration);
-                }
-
-                // Event listener for mute button
-                muteButton.addEventListener('click', function() {
-                    mute_sound();
-                    updateMuteButtonIcon();
-                });
-
-                recent_volume.addEventListener('input', function() {
-                    // Calculate volume value based on slider position
-                    let slider_value = recent_volume.value / 100;
-                    track.volume = slider_value;
-
-
-                    // Update mute button icon and volume display
-                    updateMuteButtonIcon();
-                    volume_show.innerHTML = Math.round(slider_value * 100);
-                });
-
-                console.log("SLIDER VALUE ->" + recent_volume);
-
-                // Function to update mute button icon
-                function updateMuteButtonIcon() {
-                    if (track.volume === 0) {
-                        muteButton.classList.remove('mdi-volume-heigh');
-                        muteButton.classList.add('mdi-volume-off');
-                        volume_show.innerHTML = 0;
-                    } else {
-                        muteButton.classList.remove('mdi-volume-off');
-                        muteButton.classList.add('mdi-volume-heigh');
-                        volume_show.innerHTML = Math.round(track.volume * 100);
-                        recent_volume.value = track.volume * 100;
-                    }
-                }
-            </script> --}}
+            </script>
 
             <script src="/user/assets/vendors/js/vendor.bundle.base.js"></script>
             <script src="/user/assets/vendors/chart.js/Chart.min.js"></script>

@@ -1,12 +1,5 @@
 <?php
 
-
-use App\Models\admin;
-use App\Models\artist;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\authController;
 use App\Http\Controllers\songController;
@@ -31,27 +24,24 @@ use App\Models\notif;
 */
 
 
-Route::middleware(['logout.check', 'guest'])->controller(authController::class)->group(function () {
+Route::middleware(['guest'])->controller(authController::class)->group(function () {
     Route::get('/', 'viewWelcome')->name('masuk');
-    Route::get('/masuk', 'viewMasuk')->name('pengguna');
     Route::get('/masuk-Admin', 'viewMasukAdmin')->name('admin');
     Route::get('/buat-akun', 'viewBuatAkun');
     Route::get('/lupa-password', 'viewLupaPassword')->name('lupaSandi');
+    Route::get('/masuk', 'viewMasuk')->name('pengguna');
 
-    // operations datas
     Route::post('/validationSignIn', 'storeSignIn')->name('storeSignIn');
     Route::post('/validationSignUp', 'storeSignUp')->name('storeSignUp');
 
-    // ubah password
     Route::get('/reset-password/{token}', 'resetPasswordToken')->name('password.reset');
     Route::post('/reset-password', 'resetPassword')->name('password.email');
     Route::post('/ubah-password', 'ubahPassword')->name('password.update');
 });
+
 Route::get('/logout-user', [authController::class, 'logout'])->name('logout');
 
 Route::prefix('admin')->middleware(['admin', 'auth'])->controller(AdminController::class)->group(function () {
-    // Route::post('/validationSignInAdmin', 'storeSignIn')->name('storeSignIn.admin');
-
     Route::get('/dashboard', 'index')->name('admin.dashboard');
     Route::get('/persetujuan', 'persetujuan');
     Route::get('/kategori', 'kategori');
@@ -110,7 +100,7 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
     Route::get('/verified', 'verified');
     Route::get('/hapus-playlist/{code}', 'hapusPlaylist')->name('hapus.playlist.artis');
     Route::get('/hapus-album/{code}', 'hapusAlbum')->name('hapus.albums.artis');
-    Route::get('/search_song', 'search_song')->name('search.song.artis');
+    Route::get('/search_song/{code}', 'search_song')->name('search.song.artis');
     Route::get('/search/{code}', 'search_result');
     Route::get('/hapusSongPlaylist/{code}', 'hapusSongPlaylist')->name('hapusSongPlaylist.artis');
     Route::get('/peraturan', function () {
@@ -134,7 +124,6 @@ Route::prefix('artis')->middleware(['auth', 'artist'])->controller(ArtistControl
     Route::post('/ubah-album/{code}', 'ubahAlbum')->name('ubah.album.artis');
     Route::post('/update/profile/{code}', 'updateProfile')->name('update.profile.artis');
     Route::post('/unggahAudio', 'unggahAudio')->name('unggah.artis');
-    // Route::post('/filter', 'filter')->name('filter');
 });
 
 Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->controller(ArtistVerifiedController::class)->group(function () {
@@ -165,7 +154,7 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
     Route::get('/hapus-playlist/{code}', 'hapusPlaylist')->name('hapus.playlist.artisVerified');
     Route::get('/hapus-album/{code}', 'hapusAlbum')->name('hapus.albums.artisVerified');
     Route::get('/hapusSongPlaylist/{code}', 'hapusSongPlaylist')->name('hapusSongPlaylist.artisVerified');
-    Route::get('/search_song', 'search_song')->name('search.song.artisVerified');
+    Route::get('/search_song/{code}', 'search_song')->name('search.song.artisVerified');
     Route::get('/search/{code}', 'search_result');
     Route::get('/peraturan', function () {
         $notifs = notif::where('user_id', auth()->user()->id)->get();
@@ -194,7 +183,6 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
     Route::post('/reject-project', 'rejectProject')->name('reject.project.artisVerified');
     Route::post('/ubah-album/{code}', 'ubahAlbum')->name('ubah.album.artisVerified');
     Route::post('/update/profile/{code}', 'updateProfile')->name('update.profile.artisVerified');
-    // Route::post('/unggahAudio', 'unggahAudio')->name('unggah.artisVerified');
 });
 
 Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(penggunaController::class)->group(function () {
@@ -217,7 +205,7 @@ Route::prefix('pengguna')->middleware(['auth', 'pengguna'])->controller(pengguna
     Route::get('/search', 'search')->name('search');
     Route::get('/toggle-like', 'like')->name('toggle-like');
     Route::get('/hapus-playlist/{code}', 'hapusPlaylist')->name('hapus.playlist.user');
-    Route::get('/search_song', 'search_song')->name('search.song.pengguna');
+    Route::get('/search_song/{code}', 'search_song')->name('search.song.pengguna');
     Route::get('/search/{code}', 'search_result');
     Route::get('/hapusSongPlaylist/{code}', 'hapusSongPlaylist')->name('hapusSongPlaylist');
     Route::get('/peraturan', function () {

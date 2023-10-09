@@ -18,7 +18,11 @@
                             </div>
                             <div class="col-9">
                                 <div class="bottom-left-text">
-                                    <h3 class="judul">{{ $user->name }}</h3>
+                                    <h3 class="judul">{{ $user->name }}
+                                        @if ($user->artist->is_verified)
+                                            <span class="mdi mdi-check-decagram text-primary verified-text"></span>
+                                        @endif
+                                    </h3>
                                     <p class="m-0" style="color: #957dad; font-weight: 400;">{{ $totalDidengar }}
                                         didengar
                                         <span class="fas fa-circle mr-2 ml-2"
@@ -40,27 +44,30 @@
                                 <div class="col-12">
                                     <div class="preview-list">
                                         @foreach ($songs as $item)
-                                            <div class="preview-item">
-                                                <div class="preview-thumbnail">
-                                                    <img src="{{ asset('storage/' . $item->image) }}" width="10%">
-                                                </div>
-                                                <div class="preview-item-content d-sm-flex flex-grow">
-                                                    <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
-                                                        onclick="putar({{ $item->id }})">
-                                                        <h6 class="preview-subject">{{ $item->judul }}</h6>
-                                                        <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
-                                                    </a>
-                                                    <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                        <div class="text-group">
-                                                            <i id="like{{ $item->id }}" data-id="{{ $item->id }}"
-                                                                onclick="toggleLike(this, {{ $item->id }})"
-                                                                class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2">
-                                                            </i>
-                                                            <p>{{ $item->waktu }}</p>
+                                            @if ($item->is_approved)
+                                                <div class="preview-item">
+                                                    <div class="preview-thumbnail">
+                                                        <img src="{{ asset('storage/' . $item->image) }}" width="10%">
+                                                    </div>
+                                                    <div class="preview-item-content d-sm-flex flex-grow">
+                                                        <a href="#lagu-diputar" class="flex-grow text-decoration-none link"
+                                                            onclick="putar({{ $item->id }})">
+                                                            <h6 class="preview-subject">{{ $item->judul }}</h6>
+                                                            <p class="text-muted mb-0">{{ $item->artist->user->name }}</p>
+                                                        </a>
+                                                        <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                                            <div class="text-group">
+                                                                <i id="like{{ $item->id }}"
+                                                                    data-id="{{ $item->id }}"
+                                                                    onclick="toggleLike(this, {{ $item->id }})"
+                                                                    class="shared-icon-like {{ $item->isLiked ? 'fas' : 'far' }} fa-heart pr-2">
+                                                                </i>
+                                                                <p>{{ $item->waktu }}</p>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            @endIf
                                         @endforeach
                                     </div>
                                 </div>
@@ -93,7 +100,7 @@
         }
     </script>
 
-      <script>
+    <script>
         var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         $(document).ready(function() {
             $.ajax({
@@ -110,9 +117,9 @@
                 }
             });
         });
+
         function toggleLike(iconElement, songId) {
             let isLiked = iconElement.classList.contains('fas');
-
             $.ajax({
                 url: `/song/${songId}/like`,
                 type: 'POST',
@@ -141,8 +148,7 @@
         }
     </script>
 
-     <script>
-        console.log('oooooooooooooooooooooo');
+    <script>
         let previous = document.querySelector('#pre');
         let play = document.querySelector('#play');
         let next = document.querySelector('#next');
@@ -170,7 +176,7 @@
 
         // create a audio element
         let track = document.createElement('audio');
-        const artistId = {{$artis_id}};
+        const artistId = {{ $artis_id }};
         let All_song = [];
 
         function ambilDataLagu(artistId) {
@@ -413,16 +419,14 @@
         }
 
         function change_duration() {
-            let slider_value = parseInt(slider.value);
+            let slider_value = slider.value;
             if (!isNaN(track.duration) && isFinite(slider_value)) {
-                // track.duration * (slider_value / 100);
-                // console.log(slider);
-                slider.currentTime = track.duration * (slider_value / 100);
-                console.log(slider.currentTime);
+                track.currentTime = track.duration * (slider_value / 100);
+                console.log(track.duration * (slider_value / 100), slider_value, track.currentTime)
             }
         }
 
-        slider.addEventListener('click', function() {
+        slider.addEventListener('input', function() {
             change_duration();
             clearInterval(timer);
             Playing_song = true;
@@ -434,6 +438,7 @@
         // range slider
         function range_slider() {
             let position = 0;
+            // memperbaharui posisi slider
             if (!isNaN(track.duration)) {
                 position = track.currentTime * (100 / track.duration);
                 slider.value = position;
@@ -441,6 +446,8 @@
             if (track.ended) {
                 play.innerHTML = '<i class="far fa-play-circle" aria-hidden="true"></i>';
                 if (autoplay == 1) {
+                    const songId = All_song[index_no].id;
+                    history(songId);
                     index_no += 1;
                     load_track(index_no);
                     playsong();
@@ -448,10 +455,10 @@
             }
 
             // kalkulasi waktu dari durasi audio
-            let durationElement = document.getElementById('duration');
-            let durationMinutes = Math.floor(track.duration / 60);
-            let durationSeconds = Math.floor(track.duration % 60);
-            let formattedDuration = `${durationMinutes}:${durationSeconds < 10 ? '0' : ''}${durationSeconds}`;
+            const durationElement = document.getElementById('duration');
+            const durationMinutes = Math.floor(track.duration / 60);
+            const durationSeconds = Math.floor(track.duration % 60);
+            const formattedDuration = `${durationMinutes}:${durationSeconds < 10 ? '0' : ''}${durationSeconds}`;
             durationElement.textContent = formattedDuration;
         }
 

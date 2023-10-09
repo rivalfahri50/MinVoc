@@ -22,19 +22,9 @@ class RiwayatController extends Controller
         $user_id = Auth::user()->id;
         $song_id = $request->song_id;
 
-        $pendapatan = aturanPembayaran::where('opsi_id', 1)->first();
         $play_date = Carbon::now()->format('Y-m-d H:i:s');
-        $penghasilanArtist = isset($pendapatan->pendapatanArtis) != null ? $pendapatan->pendapatanArtis : 2000;
-        $artist_id =  song::findOrFail($song_id)->artist->id;
-        artist::findOrFail($artist_id)->update(['penghasilan' => song::findOrFail($song_id)->artist->penghasilan + $penghasilanArtist]);
-        $cek_penghasilan = penghasilan::create(['artist_id' => $artist_id, 'bulan' => Carbon::now()->format('m'), 'penghasilan' => (string)$penghasilanArtist, 'status' => "riwayat lagu"]);
 
         Log::info("Mencoba menyimpan riwayat: user_id=$user_id, song_id=$song_id, play_date=$play_date");
-        $admin = admin::where('user_id', 1)->first();
-        $penghasilanSaatIni = $admin->penghasilan;
-        $jumlahTambahan = 200;
-        $penghasilanBaru = $penghasilanSaatIni + $jumlahTambahan;
-        $admin->update(['penghasilan' => $penghasilanBaru]);
 
         Riwayat::create([
             'user_id' => $user_id,

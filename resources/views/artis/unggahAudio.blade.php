@@ -144,7 +144,7 @@
                                                     <span>
                                                         Di Tolak
                                                     </span>
-                                                    <a onclick="confirmDelete('{{ $item->code }}')">
+                                                    <a onclick="confirmDelete('{{ $item->code }}')" style="cursor: pointer">
                                                         <span class="mdi mdi-delete-outline fs-5"></span>
                                                     </a>
                                                 </td>

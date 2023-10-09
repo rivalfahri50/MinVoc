@@ -34,11 +34,18 @@
                                     </h3>
                                     <div style="display: flex; flex-direction: row; gap: 5px; align-items: center">
                                         <span>
-                                            <img src="{{ asset('storage/' . $albumDetail->artis->user->avatar) }}" class="avatarpembuat">
+                                            <img src="{{ asset('storage/' . $albumDetail->artis->user->avatar) }}"
+                                                class="avatarpembuat">
                                         </span>
                                         <p class="m-0" style="font-weight: 300; font-size: 16px">
                                             {{ $albumDetail->artis->user->name }}
+                                            @if ($albumDetail->artis->is_verified)
+                                                <span class="mdi mdi-check-decagram text-primary"
+                                                    style="height: 12px;"></span>
+                                            @endif
+                                        </p>
                                     </div>
+
                                     </p>
                                     <p style="font-size: 18px;">
                                         {{ $albumDetail->deskripsi == 'none' ? '' : "$albumDetail->deskripsi" }}
@@ -53,11 +60,7 @@
                 <hr class="divider"> <!-- Divider -->
             </div>
             <div class="col-md-12 grid-margin stretch-card">
-                <h3 class="card-title judul">Temukan berbagai lagu</h3>
-                <form class="col-6 mb-4 p-0 nav-link search">
-                    <input type="text" id="search_song" class="form-control rounded-4" placeholder="Cari musik">
-                    <input type="hidden" id="album_id" value="{{ $albumDetail->id }}">
-                </form>
+                <h3 class="card-title judul">Temukan berbagai lagu {{ $albumDetail->artis->user->name }}</h3>
                 <div class="card scroll scrollbar-down thin">
                     <div class="card-body">
                         <div class="row" style="margin-top: -20px">
@@ -115,10 +118,10 @@
         }
 
         /* .shorten {
-                    width: 500px;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                } */
+                            width: 500px;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                        } */
     </style>
 
     <div id="popup">

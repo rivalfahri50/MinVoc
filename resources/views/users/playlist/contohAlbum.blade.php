@@ -66,6 +66,11 @@
                                         </span>
                                         <p class="m-0" style="font-weight: 300; font-size: 16px">
                                             {{ $albumDetail->artis->user->name }}
+                                            @if ($albumDetail->artis->is_verified)
+                                                <span class="mdi mdi-check-decagram text-primary"
+                                                    style="height: 12px;"></span>
+                                            @endif
+                                        </p>
                                     </div>
                                     </p>
                                     <p style="font-size: 18px;">
@@ -82,10 +87,6 @@
             </div>
             <div class="col-md-12 grid-margin stretch-card">
                 <h3 class="card-title judul">Temukan berbagai lagu {{ $albumDetail->artis->user->name }}</h3>
-                <form class="col-6 mb-4 p-0 nav-link search">
-                    <input type="text" id="search_song" class="form-control rounded-4" placeholder="Cari musik">
-                    <ul id="search-results-song"></ul>
-                </form>
                 <div class="card scroll scrollbar-down thin">
                     <div class="card-body">
                         <div class="row" style="margin-top: -20px">
@@ -322,7 +323,7 @@
                     });
 
                     All_song_album = All_song.filter(lagu => lagu.album_id == albumId);
-                    console.log('lagu pada album',All_song_album);
+                    console.log('lagu pada album', All_song_album);
                     if (All_song.length > 0) {
                         // Memanggil load_track dengan indeks 0 sebagai lagu pertama
                         load_track(0);

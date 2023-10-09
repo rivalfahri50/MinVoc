@@ -17,6 +17,24 @@
                 object-fit: cover;
                 margin-top: 10px;
             }
+
+            .modal-content {
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                pointer-events: auto;
+                background-color: white;
+                background-clip: padding-box;
+                border: none;
+                border-radius: 1rem;
+                outline: 0;
+            }
+
+            button {
+                border: none;
+                background: none;
+            }
         </style>
         <div class="content-wrapper">
             <div class="row">
@@ -59,7 +77,8 @@
                                                             {{ $item->created_at->format('d F Y') }}</td>
                                                         <td class="table-cell">
                                                             <button type="button" class="btn btnicon"
-                                                                data-toggle="modal"data-target="#exampleModalCenter{{ $item->id }}">
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#exampleModalCenter{{ $item->id }}">
                                                                 <i class="fas fa-pencil-alt" style="color: #5b6b89"></i>
                                                             </button>
                                                             <button class="btn btnicon"
@@ -106,8 +125,8 @@
                                     @csrf
                                     <div class="mb-3">
                                         <label for="namakategori" class="form-label judulnottebal">Nama Kategori</label>
-                                        <input type="text" name="name" class="form-control form-i" id="namaproyek" maxlength="55"
-                                            required>
+                                        <input type="text" name="name" class="form-control form-i" id="namaproyek"
+                                            maxlength="55" required>
                                         @error('name')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
@@ -115,7 +134,9 @@
 
                                     <div class="mb-3">
                                         <label for="upload" class="form-label judulnottebal">Upload Foto</label>
-                                        <input type="file" name="images" class="form-control form-i" id="images" accept=".jpeg, .jpg, .png, .gif" required oninput="clearImageError('image-error-tambah')">
+                                        <input type="file" name="images" class="form-control form-i" id="images"
+                                            accept=".jpeg, .jpg, .png, .gif" required
+                                            oninput="clearImageError('image-error-tambah')">
                                         <span id="image-error-tambah" style="color: red;"></span>
                                     </div>
 
@@ -128,43 +149,54 @@
                     </div>
                 </div>
 
+                
 
                 @foreach ($genres->reverse() as $item)
                     <div class="modal fade" id="exampleModalCenter{{ $item->id }}" tabindex="-1" role="dialog"
                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="card window">
-                            <div class="card-body">
-                                <a href="" class="close-button far fa-times-circle"></a>
-                                <h3 class="judul">Edit Kategori</h3>
-                                <form class="row" action="{{ route('edit.genre', $item->id) }}" method="POST"
-                                    enctype="multipart/form-data">
-                                    @csrf
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header pb-0 border-bottom-0">
+                                    <h3 class="judul">Edit Kategori</h3>
+                                    <button type="button" class="close-button far fa-times-circle"
+                                        data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="row" action="{{ route('edit.genre', $item->id) }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
 
-                                    <div class="col-md-12">
-                                        <div class="mb-3">
-                                            <label for="namakategori" class="form-label judulnottebal">Nama
-                                                Kategori</label>
-                                            <input type="text" name="name" class="form-control form-i"
-                                                id="namaproyek" value="{{ $item->name }}" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="upload" class="form-label judulnottebal">Upload Foto</label>
-                                            <input type="file" name="images" class="form-control form-i" id="image-input" accept=".jpeg, .jpg, .png, .gif" required>
-                                            <img id="preview-image" src="{{ $item->images ? asset('storage/' . $item->images) : '' }}" alt="Foto" width="50" class="fit">
-                                            <span id="image-error-edit" style="color: red;"></span>
-                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <label for="namakategori" class="form-label judulnottebal">Nama
+                                                    Kategori</label>
+                                                <input type="text" name="name" class="form-control form-i"
+                                                    id="namaproyek" value="{{ $item->name }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="upload" class="form-label judulnottebal">Upload Foto</label>
+                                                <input type="file" name="images" class="form-control form-i"
+                                                    id="image-input{{ $item->id }}" accept=".jpeg, .jpg, .png, .gif"
+                                                    required>
+                                                <img id="preview-image{{ $item->id }}"
+                                                    src="{{ $item->images ? asset('storage/' . $item->images) : '' }}"
+                                                    alt="Foto" width="50" class="fit">
+                                                <span id="image-error-edit{{ $item->id }}"
+                                                    style="color: red;"></span>
+                                            </div>
 
-                                    </div>
-                                    <div class="text-md-right">
-                                        <button type="submit" class="btn" type="submit">Simpan</button>
-                                    </div>
-                                </form>
+                                        </div>
+                                        <div class="text-md-right">
+                                            <button type="submit" class="btn" type="submit">Simpan</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 @endforeach
-                 <!-- JavaScript untuk validasi jenis file -->
-                 <script>
+                <!-- JavaScript untuk validasi jenis file -->
+                <script>
                     function clearImageError(errorId) {
                         document.getElementById(errorId).innerText = '';
                     }
@@ -184,52 +216,85 @@
                         }
                     });
 
-                    document.getElementById('image-input').addEventListener('change', function() {
-                        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
-                        const file = this.files[0];
-                        const imageError = document.getElementById('image-error-edit');
-                        const previewImage = document.getElementById('preview-image');
+                    // document.getElementById('image-input').addEventListener('change', function() {
+                    //     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+                    //     const file = this.files[0];
+                    //     const imageError = document.getElementById('image-error-edit');
+                    //     const previewImage = document.getElementById('preview-image');
 
-                        if (file && !allowedTypes.includes(file.type)) {
-                            imageError.innerText = 'Jenis file tidak valid. Pilih file gambar (JPEG, JPG, PNG, GIF).';
-                            imageError.style.color = 'red'; // Mengubah warna teks menjadi merah
-                            this.value = ''; // Mengosongkan input file
-                            previewImage.src = ''; // Menghapus gambar pratinjau
-                        } else {
-                            imageError.innerText = '';
-                            imageError.style.color = ''; // Menghapus warna teks merah
+                    //     if (file && !allowedTypes.includes(file.type)) {
+                    //         imageError.innerText = 'Jenis file tidak valid. Pilih file gambar (JPEG, JPG, PNG, GIF).';
+                    //         imageError.style.color = 'red'; // Mengubah warna teks menjadi merah
+                    //         this.value = ''; // Mengosongkan input file
+                    //         previewImage.src = ''; // Menghapus gambar pratinjau
+                    //     } else {
+                    //         imageError.innerText = '';
+                    //         imageError.style.color = ''; // Menghapus warna teks merah
 
-                            const reader = new FileReader();
-                            reader.unload = function(e) {
-                                previewImage.src = e.target.result;
-                            };
-                            reader.readAsDataURL(file);
-                        }
-                    });
+                    //         const reader = new FileReader();
+                    //         reader.onload = function(e) {
+                    //             previewImage.src = e.target.result;
+                    //         };
+                    //         reader.readAsDataURL(file);
+                    //     }
+                    // });
                 </script>
+
+                @foreach ($genres->reverse() as $item)
+                    <script>
+                        document.getElementById('image-input{{ $item->id }}').addEventListener('change', function() {
+                            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+                            const file = this.files[0];
+                            const imageError = document.getElementById('image-error-edit{{ $item->id }}');
+                            const previewImage = document.getElementById('preview-image{{ $item->id }}');
+
+                            if (file && !allowedTypes.includes(file.type)) {
+                                imageError.innerText = 'Jenis file tidak valid. Pilih file gambar (JPEG, JPG, PNG, GIF).';
+                                imageError.style.color = 'red'; // Mengubah warna teks menjadi merah
+                                this.value = ''; // Mengosongkan input file
+                                previewImage.src = ''; // Menghapus gambar pratinjau
+                            } else {
+                                imageError.innerText = '';
+                                imageError.style.color = ''; // Menghapus warna teks merah
+
+                                const reader = new FileReader();
+                                reader.onload = function(e) {
+                                    previewImage.src = e.target.result;
+                                };
+                                reader.readAsDataURL(file);
+                            }
+                        });
+                    </script>
+                @endforeach
 
                 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+                @foreach ($genres->reverse() as $item)
+                    <script>
+                        const imageInput{{ $item->id }} = document.getElementById('image-input{{ $item->id }}');
+                        const previewImage{{ $item->id }} = document.getElementById('preview-image{{ $item->id }}');
+
+                        imageInput{{ $item->id }}.addEventListener('change', function() {
+                            const file = this.files[0];
+
+                            if (file) {
+                                const reader = new FileReader();
+
+                                reader.onload = function(e) {
+                                    previewImage{{ $item->id }}.src = e.target.result;
+                                };
+
+                                reader.readAsDataURL(file);
+                            } else {
+                                // If no file is selected, clear the image
+                                previewImage{{ $item->id }}.src = '';
+                            }
+                        });
+                    </script>
+                @endforeach
+
                 <script>
-                    const imageInput = document.getElementById('image-input');
-                                            const previewImage = document.getElementById('preview-image');
-
-                                            imageInput.addEventListener('change', function () {
-                                                const file = this.files[0];
-
-                                                if (file) {
-                                                    const reader = new FileReader();
-
-                                                    reader.onload = function (e) {
-                                                        previewImage.src = e.target.result;
-                                                    };
-
-                                                    reader.readAsDataURL(file);
-                                                } else {
-                                                    // Jika tidak ada file yang dipilih, kosongkan gambar
-                                                    previewImage.src = '';
-                                                }
-                                            });
                     /* ============Dengan Rupiah=========== */
                     var harga = document.getElementById('harga');
                     harga.addEventListener('keyup', function(e) {

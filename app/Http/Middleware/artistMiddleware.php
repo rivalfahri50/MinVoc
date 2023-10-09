@@ -25,6 +25,5 @@ class artistMiddleware
             return $next($request);
         }
         return back();
-        // return response()->redirectTo('/masuk')->with('message', 'Anda Tidak Mendapatkan Akses Untuk Halaman Ini.');
     }
 }
